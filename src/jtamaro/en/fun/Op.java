@@ -6,6 +6,7 @@ import jtamaro.en.oo.CircularSector;
 import jtamaro.en.oo.Compose;
 import jtamaro.en.oo.Ellipse;
 import jtamaro.en.oo.EmptyGraphic;
+import jtamaro.en.oo.Overlay;
 import jtamaro.en.oo.Rectangle;
 import jtamaro.en.oo.Rotate;
 import jtamaro.en.oo.Text;
@@ -51,6 +52,10 @@ public final class Op {
   //-- binary graphic operations
   public Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Compose(foregroundGraphic, backgroundGraphic);
+  }
+
+  public Graphic overlay(Graphic foregroundGraphic, Graphic backgroundGraphic) {
+    return new Overlay(foregroundGraphic, backgroundGraphic);
   }
 
 }

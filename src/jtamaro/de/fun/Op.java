@@ -10,6 +10,7 @@ import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
 import jtamaro.de.oo.Rechteck;
 import jtamaro.de.oo.Text;
+import jtamaro.de.oo.Ueberlagere;
 
 
 public final class Op {
@@ -51,6 +52,10 @@ public final class Op {
   //-- binary graphic operations
   public Grafik kombiniere(Grafik vordereGrafik, Grafik hintereGrafik) {
     return new Kombiniere(vordereGrafik, hintereGrafik);
+  }
+
+  public Grafik ueberlagere(Grafik vordereGrafik, Grafik hintereGrafik) {
+    return new Ueberlagere(vordereGrafik, hintereGrafik);
   }
 
 }
