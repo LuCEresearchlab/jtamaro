@@ -8,6 +8,7 @@ import jtamaro.en.oo.EmptyGraphic;
 import jtamaro.en.oo.Rectangle;
 import jtamaro.en.oo.Rotate;
 import jtamaro.en.oo.Text;
+import jtamaro.en.oo.Triangle;
 
 
 public final class Op {
@@ -35,6 +36,10 @@ public final class Op {
 
   public Graphic text(String content, String font, double points, Color color) {
     return new Text(content, font, points, color);
+  }
+
+  public Graphic triangle(double side, Color color) {
+    return new Triangle(side, color);
   }
 
   //-- unary graphic operations

@@ -3,6 +3,7 @@ package jtamaro.de.fun;
 import jtamaro.de.Farbe;
 import jtamaro.de.Grafik;
 import jtamaro.de.oo.Drehe;
+import jtamaro.de.oo.Dreieck;
 import jtamaro.de.oo.Ellipse;
 import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
@@ -35,6 +36,10 @@ public final class Op {
 
   public Grafik text(String inhalt, String schriftart, double punkte, Farbe farbe) {
     return new Text(inhalt, schriftart, punkte, farbe);
+  }
+
+  public Grafik dreieck(double seite, Farbe farbe) {
+    return new Dreieck(seite, farbe);
   }
 
   //-- unary graphic operations
