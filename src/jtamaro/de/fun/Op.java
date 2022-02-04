@@ -11,6 +11,7 @@ import jtamaro.de.oo.LeereGrafik;
 import jtamaro.de.oo.Neben;
 import jtamaro.de.oo.Rechteck;
 import jtamaro.de.oo.Text;
+import jtamaro.de.oo.Ueber;
 import jtamaro.de.oo.Ueberlagere;
 
 
@@ -59,8 +60,12 @@ public final class Op {
     return new Ueberlagere(vordereGrafik, hintereGrafik);
   }
 
-  public Grafik Neben(Grafik linkeGrafik, Grafik rechteGrafik) {
+  public Grafik neben(Grafik linkeGrafik, Grafik rechteGrafik) {
     return new Neben(linkeGrafik, rechteGrafik);
+  }
+
+  public Grafik ueber(Grafik obereGrafik, Grafik untereGrafik) {
+    return new Ueber(obereGrafik, untereGrafik);
   }
 
 }

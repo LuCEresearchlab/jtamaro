@@ -2,6 +2,7 @@ package jtamaro.en.fun;
 
 import jtamaro.en.Color;
 import jtamaro.en.Graphic;
+import jtamaro.en.oo.Above;
 import jtamaro.en.oo.Beside;
 import jtamaro.en.oo.CircularSector;
 import jtamaro.en.oo.Compose;
@@ -61,6 +62,10 @@ public final class Op {
 
   public Graphic beside(Graphic leftGraphic, Graphic rightGraphic) {
     return new Beside(leftGraphic, rightGraphic);
+  }
+
+  public Graphic above(Graphic topGraphic, Graphic bottomGraphic) {
+    return new Above(topGraphic, bottomGraphic);
   }
 
 }
