@@ -3,6 +3,7 @@ package jtamaro.en.fun;
 import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import jtamaro.en.oo.CircularSector;
+import jtamaro.en.oo.Compose;
 import jtamaro.en.oo.Ellipse;
 import jtamaro.en.oo.EmptyGraphic;
 import jtamaro.en.oo.Rectangle;
@@ -45,6 +46,11 @@ public final class Op {
   //-- unary graphic operations
   public Graphic rotate(double degrees, Graphic graphic) {
     return new Rotate(degrees, graphic);
+  }
+
+  //-- binary graphic operations
+  public Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
+    return new Compose(foregroundGraphic, backgroundGraphic);
   }
 
 }

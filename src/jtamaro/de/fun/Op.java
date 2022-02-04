@@ -5,6 +5,7 @@ import jtamaro.de.Grafik;
 import jtamaro.de.oo.Drehe;
 import jtamaro.de.oo.Dreieck;
 import jtamaro.de.oo.Ellipse;
+import jtamaro.de.oo.Kombiniere;
 import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
 import jtamaro.de.oo.Rechteck;
@@ -45,6 +46,11 @@ public final class Op {
   //-- unary graphic operations
   public Grafik drehe(double winkel, Grafik grafik) {
     return new Drehe(winkel, grafik);
+  }
+
+  //-- binary graphic operations
+  public Grafik kombiniere(Grafik vordereGrafik, Grafik hintereGrafik) {
+    return new Kombiniere(vordereGrafik, hintereGrafik);
   }
 
 }
