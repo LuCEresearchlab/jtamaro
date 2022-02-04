@@ -2,6 +2,7 @@ package jtamaro.en.fun;
 
 import jtamaro.en.Color;
 import jtamaro.en.Graphic;
+import jtamaro.en.oo.Beside;
 import jtamaro.en.oo.CircularSector;
 import jtamaro.en.oo.Compose;
 import jtamaro.en.oo.Ellipse;
@@ -56,6 +57,10 @@ public final class Op {
 
   public Graphic overlay(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Overlay(foregroundGraphic, backgroundGraphic);
+  }
+
+  public Graphic beside(Graphic leftGraphic, Graphic rightGraphic) {
+    return new Beside(leftGraphic, rightGraphic);
   }
 
 }

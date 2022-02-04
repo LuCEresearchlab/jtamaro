@@ -8,6 +8,7 @@ import jtamaro.de.oo.Ellipse;
 import jtamaro.de.oo.Kombiniere;
 import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
+import jtamaro.de.oo.Neben;
 import jtamaro.de.oo.Rechteck;
 import jtamaro.de.oo.Text;
 import jtamaro.de.oo.Ueberlagere;
@@ -56,6 +57,10 @@ public final class Op {
 
   public Grafik ueberlagere(Grafik vordereGrafik, Grafik hintereGrafik) {
     return new Ueberlagere(vordereGrafik, hintereGrafik);
+  }
+
+  public Grafik Neben(Grafik linkeGrafik, Grafik rechteGrafik) {
+    return new Neben(linkeGrafik, rechteGrafik);
   }
 
 }
