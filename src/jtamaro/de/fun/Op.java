@@ -5,6 +5,7 @@ import jtamaro.de.Grafik;
 import jtamaro.de.oo.Drehe;
 import jtamaro.de.oo.Dreieck;
 import jtamaro.de.oo.Ellipse;
+import jtamaro.de.oo.Fixiere;
 import jtamaro.de.oo.Kombiniere;
 import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
@@ -20,7 +21,8 @@ public final class Op {
   // prevent instantiation
   private Op() {
   }
-    
+  
+
   //-- nullary graphic operations
   public Grafik leereGrafik() {
     return new LeereGrafik();
@@ -46,11 +48,17 @@ public final class Op {
     return new Dreieck(seite, farbe);
   }
 
+
   //-- unary graphic operations
   public Grafik drehe(double winkel, Grafik grafik) {
     return new Drehe(winkel, grafik);
   }
 
+  public Grafik fixiere(String horizontalePosition, String vertikalePosition, Grafik grafik) {
+    return new Fixiere(horizontalePosition, vertikalePosition, grafik);
+  }
+
+  
   //-- binary graphic operations
   public Grafik kombiniere(Grafik vordereGrafik, Grafik hintereGrafik) {
     return new Kombiniere(vordereGrafik, hintereGrafik);

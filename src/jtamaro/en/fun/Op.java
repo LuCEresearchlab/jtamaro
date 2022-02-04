@@ -9,6 +9,7 @@ import jtamaro.en.oo.Compose;
 import jtamaro.en.oo.Ellipse;
 import jtamaro.en.oo.EmptyGraphic;
 import jtamaro.en.oo.Overlay;
+import jtamaro.en.oo.Pin;
 import jtamaro.en.oo.Rectangle;
 import jtamaro.en.oo.Rotate;
 import jtamaro.en.oo.Text;
@@ -20,7 +21,8 @@ public final class Op {
   // prevent instantiation
   private Op() {
   }
-    
+  
+
   //-- nullary graphic operations
   public Graphic emptyGraphic() {
     return new EmptyGraphic();
@@ -46,11 +48,17 @@ public final class Op {
     return new Triangle(side, color);
   }
 
+
   //-- unary graphic operations
   public Graphic rotate(double degrees, Graphic graphic) {
     return new Rotate(degrees, graphic);
   }
 
+  public Graphic pin(String horizontalPlace, String verticalPlace, Graphic graphic) {
+    return new Pin(horizontalPlace, verticalPlace, graphic);
+  }
+
+  
   //-- binary graphic operations
   public Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Compose(foregroundGraphic, backgroundGraphic);
