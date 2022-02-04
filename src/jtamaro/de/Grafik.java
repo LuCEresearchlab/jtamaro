@@ -9,4 +9,7 @@ package jtamaro.de;
  */
 public interface Grafik {
   
+  public double gibBreite();
+  public double gibHoehe();
+
 }

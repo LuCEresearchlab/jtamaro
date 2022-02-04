@@ -16,4 +16,12 @@ public abstract class AbstractGraphic implements Graphic {
     return implementation;
   }
   
+  public double getWidth() {
+    return implementation.getWidth();
+  }
+
+  public double getHeight() {
+    return implementation.getHeight();
+  }
+  
 }

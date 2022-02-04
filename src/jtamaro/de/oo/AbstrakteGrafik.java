@@ -16,4 +16,12 @@ public abstract class AbstrakteGrafik implements Grafik {
     return implementation;
   }
   
+  public double gibBreite() {
+    return implementation.getWidth();
+  }
+
+  public double gibHoehe() {
+    return implementation.getHeight();
+  }
+  
 }

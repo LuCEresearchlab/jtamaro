@@ -8,5 +8,8 @@ package jtamaro.en;
  * - graphic composition (two graphics get composed aligning their pinning position).
  */
 public interface Graphic {
+  
+  public double getWidth();
+  public double getHeight();
 
 }
