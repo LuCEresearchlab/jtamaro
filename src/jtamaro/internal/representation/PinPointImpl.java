@@ -1,40 +1,49 @@
 package jtamaro.internal.representation;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.AffineTransform;
 
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
 
 
-public final class RotateImpl extends GraphicImpl implements CompositeImpl {
+public class PinPointImpl extends GraphicImpl implements CompositeImpl {
 
-  private final double angle;
+  private final Point point;
   private final GraphicImpl graphic;
+  private final double dx;
+  private final double dy;
 
+  // pin
+  public PinPointImpl(Place place, GraphicImpl graphic) {
+    this(graphic.getPoint(place), graphic);
+  }
 
-  public RotateImpl(double angle, GraphicImpl graphic) {
-    this.angle = angle;
+  // pinPoint
+  public PinPointImpl(Point point, GraphicImpl graphic) {
     this.graphic = graphic;
+    this.point = point;
+    this.dx = graphic.xForPoint(point);
+    if (Double.isNaN(this.dx)) {
+      throw new IllegalArgumentException("pinPoint: " + point + " does not exist in " + graphic + ".");
+    }
+    this.dy = graphic.yForPoint(point);
+    if (Double.isNaN(this.dy)) {
+      throw new IllegalArgumentException("pinPoint: " + point + " does not exist in " + graphic + ".");
+    }
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
-    path.transform(AffineTransform.getRotateInstance(Math.toRadians(angle)));
+    path.transform(AffineTransform.getTranslateInstance(-this.dx, -this.dy));
     setPath(path);
-    addBoundingBoxPoints();
+    this.addBoundingBoxPoints();
   }
 
   protected double xForPoint(final Point point) {
     if (point.getGraphic() == this) {
       return point.getX();
     } else {
-      // rotate xInGraphic by angle
       final double xInGraphic = graphic.xForPoint(point);
-      final double yInGraphic = graphic.yForPoint(point);
-      if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
-        return Math.cos(-Math.toRadians(angle)) * xInGraphic - Math.sin(-Math.toRadians(angle)) * yInGraphic;
-      } else {
-        return Double.NaN;
-      }
+      return Double.isNaN(xInGraphic) ? Double.NaN : xInGraphic - this.dx;
     }
   }
 
@@ -42,27 +51,23 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     if (point.getGraphic() == this) {
       return point.getY();
     } else {
-      // rotate yInGraphic by angle
-      final double xInGraphic = graphic.xForPoint(point);
       final double yInGraphic = graphic.yForPoint(point);
-      if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
-        return Math.sin(-Math.toRadians(angle)) * xInGraphic + Math.cos(-Math.toRadians(angle)) * yInGraphic;
-      } else {
-        return Double.NaN;
-      }
+      return Double.isNaN(yInGraphic) ? Double.NaN : yInGraphic - this.dy;
     }
   }
 
   @Override
   public double getBaseline() {
-    return getBBox().getMaxY();
+    // set baseline of translated shape to
+    // translated baseline
+    return graphic.getBaseline() - dy;
   }
 
   @Override
   public void render(final Graphics2D g2, final RenderOptions o) {
     AffineTransform baseTransform = g2.getTransform();
 
-    g2.rotate(Math.toRadians(Math.toRadians(-angle)));
+    g2.translate(-dx, -dy);
     graphic.render(g2, o);
 
     g2.setTransform(baseTransform);
@@ -71,7 +76,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   @Override
   public void dump(StringBuilder sb, String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "angle", ""+angle);
+    appendField(sb, indent, "point", ""+point);
     appendChild(sb, indent, "graphic", graphic);
   }
 
