@@ -12,7 +12,7 @@ public abstract class AbstrakteGrafik implements Grafik {
     this.implementation = implementation;
   }
 
-  GraphicImpl getImplementation() {
+  public GraphicImpl getImplementation() {
     return implementation;
   }
   

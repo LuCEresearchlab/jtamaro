@@ -44,9 +44,9 @@ public class GraphicCanvas extends JComponent {
   public void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D)g;
     final int padding = renderOptions.getPadding();
+    paintBackground(g);
     g2.translate(padding, padding);
     g2.translate(-graphic.getBBox().getMinX(), -graphic.getBBox().getMinY());
-    paintBackground(g);
     graphic.render(g2, renderOptions);
 
     // debugging
@@ -57,8 +57,10 @@ public class GraphicCanvas extends JComponent {
   }
 
   private void paintBackground(Graphics g) {
-    final int width = (int)graphic.getWidth();
-    final int height = (int)graphic.getHeight();
+    //final int width = (int)graphic.getWidth();
+    //final int height = (int)graphic.getHeight();
+    final int width = getWidth();
+    final int height = getHeight();
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, width, height);
     Color BRIGHT = new Color(250, 250, 250);

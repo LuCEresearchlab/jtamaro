@@ -32,6 +32,10 @@ public final class CircularSectorImpl extends GraphicImpl {
     addPoint(Place.END, ex, ey);
   }
 
+  public ColorImpl getColor() {
+    return color;
+  }
+  
   @Override
   public void render(final Graphics2D g2, final RenderOptions o) {
     g2.setPaint(color.toAWT());

@@ -24,6 +24,10 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     addBoundingBoxPoints();
   }
 
+  public double getAngle() {
+    return angle;
+  }
+  
   protected double xForPoint(final Point point) {
     if (point.getGraphic() == this) {
       return point.getX();

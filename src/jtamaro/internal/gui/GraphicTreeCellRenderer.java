@@ -35,7 +35,7 @@ public class GraphicTreeCellRenderer extends DefaultTreeCellRenderer {
         String toolTipText = "<html><b>" + graphic.getClass().getSimpleName()+"</b>" +
           "<br>width: " + graphic.getWidth() +
           "<br>height: " + graphic.getHeight() +
-          "<br>baseline: " + graphic.getBaseline();
+          "<br>baseY: " + graphic.getBaseY();
         if (graphic instanceof CompositeImpl) {
           final CompositeImpl composite = (CompositeImpl)graphic;
           //setIcon(compositeIcon);

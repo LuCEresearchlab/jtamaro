@@ -34,6 +34,10 @@ public final class TextImpl extends GraphicImpl {
     addPoint(Place.BAR, getBBox().getWidth(), 0);
   }
 
+  public ColorImpl getColor() {
+    return color;
+  }
+  
   @Override
   public void render(Graphics2D g2, RenderOptions o) {
     g2.setPaint(color.toAWT());

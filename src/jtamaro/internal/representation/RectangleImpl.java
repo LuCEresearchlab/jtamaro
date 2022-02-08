@@ -28,6 +28,10 @@ public final class RectangleImpl extends GraphicImpl {
     addBoundingBoxPoints();
   }
 
+  public ColorImpl getColor() {
+    return color;
+  }
+  
   @Override
   public void render(final Graphics2D g2, final RenderOptions o) {
     g2.setPaint(color.toAWT());

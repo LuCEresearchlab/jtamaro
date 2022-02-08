@@ -21,6 +21,16 @@ public abstract class DelegatingGraphicImpl extends GraphicImpl {
   }
 
   @Override
+  public TightBoundingBox getBBox() {
+    return delegate.getBBox();
+  }
+
+  @Override
+  public Point getPoint(final Place place) {
+    return delegate.getPoint(place);
+  }
+
+  @Override
   protected double xForPoint(final Point point) {
     return delegate.xForPoint(point);
   }
