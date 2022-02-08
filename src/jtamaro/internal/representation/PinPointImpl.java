@@ -15,6 +15,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
   private final double dx;
   private final double dy;
 
+
   // pin
   public PinPointImpl(Place place, GraphicImpl graphic) {
     this(graphic.getPoint(place), graphic);
@@ -35,6 +36,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
     path.transform(AffineTransform.getTranslateInstance(-this.dx, -this.dy));
     setPath(path);
+    setBaseY(graphic.getBaseY() - dy);
     this.addBoundingBoxPoints();
   }
 
@@ -54,13 +56,6 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
       final double yInGraphic = graphic.yForPoint(point);
       return Double.isNaN(yInGraphic) ? Double.NaN : yInGraphic - this.dy;
     }
-  }
-
-  @Override
-  public double getBaseline() {
-    // set baseline of translated shape to
-    // translated baseline
-    return graphic.getBaseline() - dy;
   }
 
   @Override

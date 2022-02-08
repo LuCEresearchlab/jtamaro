@@ -27,15 +27,11 @@ public final class TextImpl extends GraphicImpl {
     //final LineMetrics lineMetrics = font.getLineMetrics(content, frc);
     final GlyphVector glyphVector = font.createGlyphVector(frc, content);
     setPath(new Path2D.Double(glyphVector.getOutline()));
+    setBaseY(0);
     addBoundingBoxPoints();
     addPoint(Place.BAL, 0, 0);
     addPoint(Place.BAM, getBBox().getWidth() / 2, 0);
     addPoint(Place.BAR, getBBox().getWidth(), 0);
-  }
-
-  @Override
-  public double getBaseline() {
-    return 0;
   }
 
   @Override

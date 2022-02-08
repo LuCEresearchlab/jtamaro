@@ -20,6 +20,7 @@ public final class CircularSectorImpl extends GraphicImpl {
     this.color = color;
     final Arc2D.Double arc = new Arc2D.Double(0, 0, radius * 2, radius * 2, 0, -angle, Arc2D.PIE);
     setPath(new Path2D.Double(arc));
+    setBaseY(radius); // even if below BB bottom
     addBoundingBoxPoints();
     addPoint(Place.CENTER, 0, 0);
     addPoint(Place.BEGIN, radius, 0);
@@ -29,11 +30,6 @@ public final class CircularSectorImpl extends GraphicImpl {
     final double ex = radius * Math.cos(angleRad);
     final double ey = -radius * Math.sin(angleRad);
     addPoint(Place.END, ex, ey);
-  }
-
-  @Override
-  public double getBaseline() {
-    return radius; // even if below BB bottom
   }
 
   @Override

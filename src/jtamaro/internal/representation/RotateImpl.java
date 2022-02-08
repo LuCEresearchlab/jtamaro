@@ -20,6 +20,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
     path.transform(AffineTransform.getRotateInstance(Math.toRadians(angle)));
     setPath(path);
+    setBaseY(getBBox().getMaxY());
     addBoundingBoxPoints();
   }
 
@@ -51,11 +52,6 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
         return Double.NaN;
       }
     }
-  }
-
-  @Override
-  public double getBaseline() {
-    return getBBox().getMaxY();
   }
 
   @Override

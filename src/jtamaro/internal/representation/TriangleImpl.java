@@ -23,16 +23,12 @@ public final class TriangleImpl extends GraphicImpl {
     path.lineTo(-side / 2, inRadius);
     path.closePath();
     setPath(path);
+    setBaseY(getBBox().getMaxY());
     addBoundingBoxPoints();
     addPoint(Place.CENTER, 0, 0);
     addPoint(Place.TOP, 0, -circumRadius);
     addPoint(Place.RIGHT, side / 2, inRadius);
     addPoint(Place.LEFT, -side / 2, inRadius);
-  }
-
-  @Override
-  public double getBaseline() {
-    return getBBox().getMaxY();
   }
 
   @Override

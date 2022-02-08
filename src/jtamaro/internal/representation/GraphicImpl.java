@@ -20,10 +20,12 @@ public abstract class GraphicImpl {
   private Path2D.Double path;
   private TightBoundingBox bbox;
   private final HashMap<Place,Point> points;
-  
+  private double baseY; // Y-coordinate of the graphic's baseline (especially for text)
+
 
   protected GraphicImpl() {
     points = new HashMap<>();
+    addPoint(Place.PIN, 0, 0);
   }
 
   /**
@@ -36,6 +38,10 @@ public abstract class GraphicImpl {
   protected final void setPath(Path2D.Double path) {
     this.path = path;
     bbox = new TightBoundingBox(path);
+  }
+
+  protected final void setBaseY(final double baseY) {
+    this.baseY = baseY;
   }
 
   protected final void addPoint(final Place place, final double x, final double y) {
@@ -135,12 +141,12 @@ public abstract class GraphicImpl {
 
   public void drawBaseline(Graphics2D g2) {
     g2.setColor(DEBUG_COLOR);
-    g2.drawLine(0, (int)getBaseline(), (int)getWidth(), (int)getBaseline());
+    g2.drawLine(0, (int)getBaseY(), (int)getWidth(), (int)getBaseY());
   }
 
   public void drawBounds(Graphics2D g2) {
     g2.setColor(DEBUG_COLOR);
-    g2.drawRect(0, 0, (int)getWidth(), (int)getHeight());
+    g2.drawRect((int)bbox.getMinX(), (int)bbox.getMinY(), (int)getWidth(), (int)getHeight());
   }
 
   public void drawPinhole(Graphics2D g2) {
@@ -162,7 +168,7 @@ public abstract class GraphicImpl {
     sb.append(indent + getClass().getSimpleName() + "\n");
     appendField(sb, indent, "width", ""+getWidth());
     appendField(sb, indent, "height", ""+getHeight());
-    appendField(sb, indent, "baseline", ""+getBaseline());
+    appendField(sb, indent, "baseY", ""+getBaseY());
   }
 
   protected final void appendField(StringBuilder sb, String indent, String name, String value) {
@@ -185,23 +191,25 @@ public abstract class GraphicImpl {
   /**
    * Get the width of the bounding box.
    */
-  public final double getWidth() {
+  public double getWidth() {
     return bbox.getWidth();
   }
 
   /**
    * Get the height of the bounding box.
    */
-  public final double getHeight() {
+  public double getHeight() {
     return bbox.getHeight();
   }
 
   /**
    * Get the location of the baseline (from pinhole, i.e., from y = 0).
    */
-  public abstract double getBaseline();
+  public double getBaseY() {
+    return baseY;
+  }
 
-  public final Path2D.Double getPath() {
+  public Path2D.Double getPath() {
     return path;
   }
 

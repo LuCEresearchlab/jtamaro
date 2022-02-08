@@ -24,12 +24,8 @@ public final class RectangleImpl extends GraphicImpl {
     path.lineTo(-width / 2, height / 2);
     path.closePath();
     setPath(path);
+    setBaseY(height / 2);
     addBoundingBoxPoints();
-  }
-
-  @Override
-  public double getBaseline() {
-    return height / 2;
   }
 
   @Override

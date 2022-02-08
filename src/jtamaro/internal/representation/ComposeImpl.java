@@ -20,6 +20,8 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     path.append(backgroundGraphic.getPath(), false);
     path.append(foregroundGraphic.getPath(), false);
     setPath(path);
+    setBaseY(0);
+    addBoundingBoxPoints();
   }
 
   protected double xForPoint(final Point point) {
@@ -56,11 +58,6 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
         return Double.NaN;
       }
     }
-  }
-
-  @Override
-  public double getBaseline() {
-    return 0;
   }
 
   @Override

@@ -9,19 +9,11 @@ import jtamaro.internal.gui.RenderOptions;
 public final class EmptyGraphicImpl extends GraphicImpl {
 
   public EmptyGraphicImpl() {
-    setPath(makePath());
-    addBoundingBoxPoints();
-  }
-
-  private static Path2D.Double makePath() {
-    Path2D.Double path = new Path2D.Double();
+    final Path2D.Double path = new Path2D.Double();
     path.moveTo(0, 0);
-    return path;
-  }
-
-  @Override
-  public double getBaseline() {
-    return 0;
+    setPath(path);
+    setBaseY(0);
+    addBoundingBoxPoints();
   }
 
   @Override

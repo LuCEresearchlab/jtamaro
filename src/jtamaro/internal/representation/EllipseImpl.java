@@ -20,12 +20,8 @@ public final class EllipseImpl extends GraphicImpl {
     this.color = color;
     final Ellipse2D.Double ellipse = new Ellipse2D.Double(-width / 2, -height / 2, width, height);
     setPath(new Path2D.Double(ellipse));
+    setBaseY(height / 2); // bottom of ellipse
     addBoundingBoxPoints();
-  }
-
-  @Override
-  public double getBaseline() {
-    return height / 2;
   }
 
   @Override
