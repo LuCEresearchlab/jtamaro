@@ -20,6 +20,22 @@ public class Demo {
     Grafik d = Op.dreieck(300, Farbe.MAGENTA);
     Grafik dr = Op.drehe(15, d);
     IO.zeige(dr);
+
+    IO.zeige(sektoren(60));
+  }
+
+  private static Grafik sektoren(final int nummer, final int anzahl) {
+    if (nummer == 0) {
+      return Op.leereGrafik();
+    } else {
+      final double winkel = 360 * nummer / anzahl;
+      final Grafik sektor = Op.drehe(winkel, Op.kreisSektor(180, 360 / anzahl, Farbe.hsl(winkel, 1, 0.5)));
+      return Op.kombiniere(sektor, sektoren(nummer - 1, anzahl));
+    }
+  }
+
+  private static Grafik sektoren(final int anzahl) {
+    return sektoren(anzahl, anzahl);
   }
 
 }

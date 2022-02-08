@@ -43,4 +43,12 @@ public final class Farbe {
     return new Farbe(new ColorImpl(rot, gruen, blau, alpha));
   }
   
+  public static Farbe hsl(double farbwinkel, double saettigung, double helligkeit) {
+    return hsla(farbwinkel, saettigung, helligkeit, 255);
+  }
+
+  public static Farbe hsla(double farbwinkel, double saettigung, double helligkeit, int alpha) {
+    return new Farbe(ColorImpl.fromHSLA(farbwinkel, saettigung, helligkeit, alpha));
+  }
+
 }

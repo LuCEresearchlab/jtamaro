@@ -43,4 +43,12 @@ public final class Color {
     return new Color(new ColorImpl(rot, gruen, blau, alpha));
   }
   
+  public static Color hsl(double hue, double saturation, double lightness) {
+    return hsla(hue, saturation, lightness, 255);
+  }
+
+  public static Color hsla(double hue, double saturation, double lightness, int alpha) {
+    return new Color(ColorImpl.fromHSLA(hue, saturation, lightness, alpha));
+  }
+  
 }
