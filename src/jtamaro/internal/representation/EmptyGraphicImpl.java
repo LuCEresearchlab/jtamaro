@@ -18,8 +18,7 @@ public final class EmptyGraphicImpl extends GraphicImpl {
 
   @Override
   public void render(final Graphics2D g2, final RenderOptions o) {
-    // draw no shape, just the debug info
-    drawDebugInfo(g2, o);
+    // draw no shape
   }
 
 }

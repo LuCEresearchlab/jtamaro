@@ -37,12 +37,11 @@ public final class TextImpl extends GraphicImpl {
   public ColorImpl getColor() {
     return color;
   }
-  
+
   @Override
   public void render(Graphics2D g2, RenderOptions o) {
     g2.setPaint(color.toAWT());
     g2.fill(getPath());
-    drawDebugInfo(g2, o);
   }
 
   @Override

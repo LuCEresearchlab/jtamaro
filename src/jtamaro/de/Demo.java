@@ -12,6 +12,14 @@ public class Demo {
     Grafik grund = Op.rechteck(320, 320, Farbe.ROT);
     Grafik fahne = Op.ueberlagere(kreuz, grund);
     IO.zeige(fahne);
+
+    Grafik pac = Op.kreisSektor(200, 270, Farbe.GELB);
+    Grafik pacman = Op.drehe(45, pac);
+    IO.zeige(pacman);
+
+    Grafik d = Op.dreieck(300, Farbe.MAGENTA);
+    Grafik dr = Op.drehe(15, d);
+    IO.zeige(dr);
   }
 
 }

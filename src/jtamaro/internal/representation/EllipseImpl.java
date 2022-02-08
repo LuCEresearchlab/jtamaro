@@ -32,7 +32,6 @@ public final class EllipseImpl extends GraphicImpl {
   public void render(final Graphics2D g2, final RenderOptions o) {
     g2.setPaint(color.toAWT());
     g2.fill(getPath());
-    drawDebugInfo(g2, o);
   }
 
   @Override

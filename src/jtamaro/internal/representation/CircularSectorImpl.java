@@ -18,7 +18,7 @@ public final class CircularSectorImpl extends GraphicImpl {
     this.radius = radius;
     this.angle = angle;
     this.color = color;
-    final Arc2D.Double arc = new Arc2D.Double(0, 0, radius * 2, radius * 2, 0, -angle, Arc2D.PIE);
+    final Arc2D.Double arc = new Arc2D.Double(-radius, -radius, radius * 2, radius * 2, 0, -angle, Arc2D.PIE);
     setPath(new Path2D.Double(arc));
     setBaseY(radius); // even if below BB bottom
     addBoundingBoxPoints();
@@ -35,12 +35,11 @@ public final class CircularSectorImpl extends GraphicImpl {
   public ColorImpl getColor() {
     return color;
   }
-  
+
   @Override
   public void render(final Graphics2D g2, final RenderOptions o) {
     g2.setPaint(color.toAWT());
     g2.fill(getPath());
-    drawDebugInfo(g2, o);
   }
 
   @Override

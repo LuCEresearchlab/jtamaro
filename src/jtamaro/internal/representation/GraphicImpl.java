@@ -11,11 +11,13 @@ import jtamaro.internal.gui.RenderOptions;
 
 public abstract class GraphicImpl {
 
+  private static final Color OUTLINE_COLOR = new Color(200, 0, 100);
   private static final Color BASELINE_COLOR = new Color(0, 200, 100);
   private static final Color BOUNDING_BOX_COLOR = new Color(0, 100, 200);
   private static final Color HOLE_COLOR = new Color(0, 0, 0);
   private static final int POINT_INNER_RADIUS = 5;
   private static final int POINT_OUTER_RADIUS = 7;
+  private static final int POINT_SHADOW_RADIUS = 9;
   
   private Path2D.Double path;
   private TightBoundingBox bbox;
@@ -81,22 +83,30 @@ public abstract class GraphicImpl {
     return point.getGraphic() == this ? point.getY() : Double.NaN;
   }
 
+  public void renderOutline(Graphics2D g2) {
+    g2.setColor(OUTLINE_COLOR);
+    g2.draw(getPath());
+  }
 
   public void renderBaseline(Graphics2D g2) {
+    final TightBoundingBox bbox = getBBox();
     g2.setColor(BASELINE_COLOR);
-    g2.drawLine(0, (int)getBaseY(), (int)getWidth(), (int)getBaseY());
+    g2.drawLine((int)bbox.getMinX(), (int)getBaseY(), (int)bbox.getMaxX(), (int)getBaseY());
   }
 
   public void renderBounds(Graphics2D g2) {
+    final TightBoundingBox bbox = getBBox();
     g2.setColor(BOUNDING_BOX_COLOR);
     g2.drawRect((int)bbox.getMinX(), (int)bbox.getMinY(), (int)getWidth(), (int)getHeight());
   }
 
   public void renderPoint(Graphics2D g2, double x, double y, Color color) {
+    g2.setColor(new Color(0, 0, 0, 16));
+    g2.fillOval((int)x - POINT_SHADOW_RADIUS, (int)y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
     g2.setColor(Color.WHITE);
-    g2.drawOval((int)x - POINT_OUTER_RADIUS, (int)y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
+    g2.fillOval((int)x - POINT_OUTER_RADIUS, (int)y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
     g2.setColor(color);
-    g2.drawOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
+    g2.fillOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
   }
 
   public void renderHole(Graphics2D g2) {
@@ -105,6 +115,7 @@ public abstract class GraphicImpl {
   }
 
   public void renderBoundingBoxPoints(Graphics2D g2) {
+    final TightBoundingBox bbox = getBBox();
     final double tY = bbox.getMinY();
     final double bY = bbox.getMaxY();
     final double mY = (bY + tY) / 2;
@@ -124,8 +135,10 @@ public abstract class GraphicImpl {
 
   public void drawDebugInfo(Graphics2D g2, RenderOptions o) {
     if (o.isSelected(this)) {
+      renderOutline(g2);
       renderBaseline(g2);
       renderBounds(g2);
+      renderBoundingBoxPoints(g2);
       renderHole(g2);
     }
   }

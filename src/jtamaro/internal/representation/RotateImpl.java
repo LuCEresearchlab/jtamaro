@@ -27,7 +27,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   public double getAngle() {
     return angle;
   }
-  
+
   protected double xForPoint(final Point point) {
     if (point.getGraphic() == this) {
       return point.getX();
@@ -62,7 +62,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   public void render(final Graphics2D g2, final RenderOptions o) {
     AffineTransform baseTransform = g2.getTransform();
 
-    g2.rotate(Math.toRadians(Math.toRadians(-angle)));
+    g2.rotate(Math.toRadians(angle));
     graphic.render(g2, o);
 
     g2.setTransform(baseTransform);

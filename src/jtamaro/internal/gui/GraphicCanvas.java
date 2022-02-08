@@ -48,12 +48,7 @@ public class GraphicCanvas extends JComponent {
     g2.translate(padding, padding);
     g2.translate(-graphic.getBBox().getMinX(), -graphic.getBBox().getMinY());
     graphic.render(g2, renderOptions);
-
-    // debugging
-    final BasicStroke dashed = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] {10.0f}, 0.0f);
-    g2.setStroke(dashed);
-    g2.setColor(new Color(200, 150, 0));
-    g2.draw(graphic.getPath());
+    graphic.drawDebugInfo(g2, renderOptions);
   }
 
   private void paintBackground(Graphics g) {
@@ -64,7 +59,7 @@ public class GraphicCanvas extends JComponent {
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, width, height);
     Color BRIGHT = new Color(250, 250, 250);
-    Color DARK = new Color(210, 210, 210);
+    Color DARK = new Color(230, 230, 230);
     final int tileSize = 10;
     final int rows = height / tileSize;
     final int cols = width / tileSize;
