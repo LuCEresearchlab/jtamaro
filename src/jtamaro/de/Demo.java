@@ -21,6 +21,21 @@ public class Demo {
     Grafik dr = Op.drehe(15, d);
     IO.zeige(dr);
 
+    Grafik ka = Op.ellipse(300, 200, Farbe.BLAU);
+    Grafik kb = Op.ellipse(200, 200, Farbe.CYAN);
+    Grafik ks = Op.neben(ka, kb);
+    IO.zeige(ks);
+
+    Grafik da = Op.dreieck(300, Farbe.BLAU);
+    Grafik db = Op.dreieck(200, Farbe.CYAN);
+    Grafik ds = Op.ueber(da, db);
+    IO.zeige(ds);
+
+    Grafik ra = Op.rechteck(200, 200, Farbe.WEISS);
+    Grafik rb = Op.rechteck(300, 300, Farbe.ROT);
+    Grafik rs = Op.ueberlagere(ra, rb);
+    IO.zeige(rs);
+
     IO.zeige(sektoren(60));
   }
 
