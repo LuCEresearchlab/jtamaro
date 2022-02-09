@@ -36,6 +36,11 @@ public class Demo {
     Grafik rs = Op.ueberlagere(ra, rb);
     IO.zeige(rs);
 
+    Grafik ta = Op.fixiere("rechts", "basis", Op.text("Hi", "Arial", 200, Farbe.SCHWARZ));
+    Grafik tb = Op.fixiere("links", "basis", Op.text("oo", "Arial", 200, Farbe.ROT));
+    Grafik ts = Op.kombiniere(ta, tb);
+    IO.zeige(ts);
+
     IO.zeige(sektoren(60));
   }
 

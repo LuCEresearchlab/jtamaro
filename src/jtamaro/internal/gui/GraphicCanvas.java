@@ -9,7 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
-import java.awt.BasicStroke;
+import java.awt.RenderingHints;
 
 
 public class GraphicCanvas extends JComponent {
@@ -43,6 +43,9 @@ public class GraphicCanvas extends JComponent {
 
   public void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D)g;
+    g2.setRenderingHints(new RenderingHints(
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON));
     final int padding = renderOptions.getPadding();
     paintBackground(g);
     g2.translate(padding, padding);

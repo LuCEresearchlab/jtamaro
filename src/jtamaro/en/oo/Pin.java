@@ -22,6 +22,9 @@ public final class Pin extends AbstractGraphic {
     PLACES.put("bottom-left", Place.BL);
     PLACES.put("bottom-middle", Place.BM);
     PLACES.put("bottom-right", Place.BR);
+    PLACES.put("base-links", Place.BAL);
+    PLACES.put("base-mitte", Place.BAM);
+    PLACES.put("base-rechts", Place.BAR);
   }
 
   public Pin(String horizontalPlace, String verticalPlace, Graphic graphic) {

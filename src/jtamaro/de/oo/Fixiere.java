@@ -22,8 +22,11 @@ public final class Fixiere extends AbstrakteGrafik {
     PLACES.put("unten-links", Place.BL);
     PLACES.put("unten-mitte", Place.BM);
     PLACES.put("unten-rechts", Place.BR);
+    PLACES.put("basis-links", Place.BAL);
+    PLACES.put("basis-mitte", Place.BAM);
+    PLACES.put("basis-rechts", Place.BAR);
   }
-  
+
   public Fixiere(String horizontalePosition, String vertikalePosition, Grafik grafik) {
     super(new PinPointImpl(makePlace(horizontalePosition, vertikalePosition), ((AbstrakteGrafik)grafik).getImplementation()));
   }
