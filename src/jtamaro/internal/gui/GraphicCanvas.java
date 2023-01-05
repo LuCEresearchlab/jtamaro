@@ -31,16 +31,22 @@ public class GraphicCanvas extends JComponent {
   }
   
   public void setGraphic(GraphicImpl graphic) {
+    System.out.println("GraphicCanvas.setGraphic(" + graphic + ")");
+
     this.graphic = graphic;
     revalidate();
     repaint();
   }
 
   public Dimension getPreferredSize() {
+    System.out.println("GraphicCanvas.getPreferredSize()");
+
     final int padding = renderOptions.getPadding();
     if (renderOptions.hasFixedSize()) {
+      System.out.println("fixed: " + renderOptions.getFixedWidth() + "x" + renderOptions.getFixedHeight());
       return new Dimension(renderOptions.getFixedWidth() + 2 * padding, renderOptions.getFixedHeight() + 2 * padding);
     } else {
+      System.out.println("graphic-based");
       return new Dimension((int)graphic.getWidth() + 2 * padding, (int)graphic.getHeight() + 2 * padding);
     }
   }

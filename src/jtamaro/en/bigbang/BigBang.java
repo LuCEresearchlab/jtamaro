@@ -1,4 +1,5 @@
 package jtamaro.en.bigbang;
+
 import jtamaro.en.Graphic;
 import jtamaro.en.fun.Op;
 import jtamaro.en.oo.AbstractGraphic;
@@ -13,7 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.Timer;
-
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,8 +27,10 @@ public class BigBang<Model> {
     private Function<Model,Model> tickHandler;
     private BiFunction<Model,KeyboardKey,Model> keyPressHandler;
     private BiFunction<Model,KeyboardKey,Model> keyReleaseHandler;
-    private BiFunction<Model,MouseButton,Model> mousePressHandler;
-    private BiFunction<Model,MouseButton,Model> mouseReleaseHandler;
+    private BiFunction<Model,KeyboardChar,Model> keyTypeHandler;
+    private TriFunction<Model,Coordinate,MouseButton,Model> mousePressHandler;
+    private TriFunction<Model,Coordinate,MouseButton,Model> mouseReleaseHandler;
+    private BiFunction<Model,Coordinate,Model> mouseMoveHandler;
     private Predicate<Model> stoppingPredicate;
     private Function<Model,Graphic> finalGraphicRenderer;
     private boolean closeOnStop;
@@ -45,13 +48,13 @@ public class BigBang<Model> {
     private Predicate<Model> wellFormedWorldPredicate;
     
     // state
-    Model model;
-    long tick;
+    private Model model;
+    private long tick;
     
     // GUI
-    JFrame frame;
-    GraphicCanvas graphicComponent;
-    Timer timer;
+    private JFrame frame;
+    private GraphicCanvas graphicCanvas;
+    private Timer timer;
     
     
     public BigBang() {
@@ -59,8 +62,10 @@ public class BigBang<Model> {
         tickHandler = m -> m;
         keyPressHandler = (m, k) -> m;
         keyReleaseHandler = (m, k) -> m;
-        mousePressHandler = (m, b) -> m;
-        mouseReleaseHandler = (m, b) -> m;
+        keyTypeHandler = (m, k) -> m;
+        mousePressHandler = (m, c, b) -> m;
+        mouseReleaseHandler = (m, c, b) -> m;
+        mouseMoveHandler = (m, c) -> m;
         stoppingPredicate = m -> false;
         finalGraphicRenderer = m -> Op.emptyGraphic();
         closeOnStop = true;
@@ -100,12 +105,20 @@ public class BigBang<Model> {
         this.keyReleaseHandler = keyReleaseHandler;
     }
     
-    public void setMousePressHandler(BiFunction<Model,MouseButton,Model> mousePressHandler) {
+    public void setKeyTypeHandler(BiFunction<Model,KeyboardChar,Model> keyTypeHandler) {
+        this.keyTypeHandler = keyTypeHandler;
+    }
+    
+    public void setMousePressHandler(TriFunction<Model,Coordinate,MouseButton,Model> mousePressHandler) {
         this.mousePressHandler = mousePressHandler;
     }
     
-    public void setMouseReleaseHandler(BiFunction<Model,MouseButton,Model> mouseReleaseHandler) {
+    public void setMouseReleaseHandler(TriFunction<Model,Coordinate,MouseButton,Model> mouseReleaseHandler) {
         this.mouseReleaseHandler = mouseReleaseHandler;
+    }
+    
+    public void setMouseMoveHandler(BiFunction<Model,Coordinate,Model> mouseMoveHandler) {
+        this.mouseMoveHandler = mouseMoveHandler;
     }
     
     public void setRenderer(Function<Model,Graphic> renderer) {
@@ -154,7 +167,7 @@ public class BigBang<Model> {
     
     private void setGraphic(Graphic graphic) {
         AbstractGraphic abstractGraphic = (AbstractGraphic)graphic;
-        graphicComponent.setGraphic(abstractGraphic.getImplementation());
+        graphicCanvas.setGraphic(abstractGraphic.getImplementation());
     }
 
     private void check(String what) {
@@ -173,31 +186,62 @@ public class BigBang<Model> {
         check("initial model");
 
         if (width < 0 || height < 0) {
+            System.out.println("Rendering initial model to determine size...");
             Graphic g = renderer.apply(model);
             width = (int)g.getWidth();
             height = (int)g.getHeight();
+            System.out.println("Rendering size is " + width + "x" + height);
         }
         frame = new JFrame(name);
         RenderOptions renderOptions = new RenderOptions(0, width, height);
-        graphicComponent = new GraphicCanvas(renderOptions);
-        graphicComponent.addKeyListener(new KeyAdapter() {
-           public void keyPressed(KeyEvent ev) {
-               model = keyPressHandler.apply(model, new KeyboardKey());
-               check("model after key press");
-               renderAndShowGraphic();
-           }
-           public void keyReleased(KeyEvent ev) {
-               model = keyReleaseHandler.apply(model, new KeyboardKey());
-               check("model after key release");
-               renderAndShowGraphic();
-           }
+        graphicCanvas = new GraphicCanvas(renderOptions);
+        graphicCanvas.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ev) {
+                model = keyPressHandler.apply(model, new KeyboardKey(ev));
+                check("model after key press");
+                renderAndShowGraphic();
+            }
+            public void keyReleased(KeyEvent ev) {
+                model = keyReleaseHandler.apply(model, new KeyboardKey(ev));
+                check("model after key release");
+                renderAndShowGraphic();
+            }
+            public void keyTyped(KeyEvent ev) {
+                model = keyTypeHandler.apply(model, new KeyboardChar(ev));
+                check("model after key type");
+                renderAndShowGraphic();
+            }
         });
-        frame.add(graphicComponent);
+        graphicCanvas.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent ev) {
+                model = mousePressHandler.apply(model, new Coordinate(ev.getX(), ev.getY()), new MouseButton(ev));
+                check("model after mouse press");
+                renderAndShowGraphic();
+            }
+            public void mouseReleased(MouseEvent ev) {
+                model = mouseReleaseHandler.apply(model, new Coordinate(ev.getX(), ev.getY()), new MouseButton(ev));
+                check("model after mouse release");
+                renderAndShowGraphic();
+            }
+        });
+        graphicCanvas.addMouseMotionListener(new MouseAdapter() {
+            public void mouseMoved(MouseEvent ev) {
+                model = mouseMoveHandler.apply(model, new Coordinate(ev.getX(), ev.getY()));
+                check("model after mouse move (move)");
+                renderAndShowGraphic();
+            }
+            public void mouseDragged(MouseEvent ev) {
+                model = mouseMoveHandler.apply(model, new Coordinate(ev.getX(), ev.getY()));
+                check("model after mouse move (drag)");
+                renderAndShowGraphic();
+            }
+        });
+        frame.add(graphicCanvas, BorderLayout.CENTER);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
-        SwingUtilities.invokeLater(() -> {graphicComponent.requestFocus();});
+        SwingUtilities.invokeLater(() -> {graphicCanvas.requestFocus();});
         
         timer = new Timer(msBetweenTicks, new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -206,6 +250,7 @@ public class BigBang<Model> {
                 } else {
                     model = tickHandler.apply(model);
                     check("model after tick");
+                    renderAndShowGraphic();
                 }
             }
         });
