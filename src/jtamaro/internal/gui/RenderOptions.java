@@ -12,13 +12,21 @@ import jtamaro.internal.representation.GraphicImpl;
 public final class RenderOptions {
   
   private int padding;
+  private int fixedWidth;
+  private int fixedHeight;
   private final Set<GraphicImpl> selection;
   private GraphicImpl leadSelection;
   private final List<RenderOptionsListener> listeners;
 
   
   public RenderOptions(int padding) {
+    this(padding, -1, -1);
+  }
+
+  public RenderOptions(int padding, int fixedWidth, int fixedHeight) {
     this.padding = padding;
+    this.fixedWidth = fixedWidth;
+    this.fixedHeight = fixedHeight;
     selection = Collections.newSetFromMap(new IdentityHashMap<>());
     listeners = new ArrayList<RenderOptionsListener>();
   }
@@ -30,6 +38,18 @@ public final class RenderOptions {
   
   public int getPadding() {
     return padding;
+  }
+
+  public boolean hasFixedSize() {
+    return fixedWidth < 0 || fixedHeight < 0;
+  }
+  
+  public int getFixedWidth() {
+    return fixedWidth;
+  }
+
+  public int getFixedHeight() {
+    return fixedHeight;
   }
 
   public void clearSelection() {

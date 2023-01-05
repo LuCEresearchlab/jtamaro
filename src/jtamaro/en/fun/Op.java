@@ -24,55 +24,55 @@ public final class Op {
   
 
   //-- nullary graphic operations
-  public Graphic emptyGraphic() {
+  public static Graphic emptyGraphic() {
     return new EmptyGraphic();
   }
 
-  public Graphic circularSector(double radius, double angle, Color color) {
+  public static Graphic circularSector(double radius, double angle, Color color) {
     return new CircularSector(radius, angle, color);
   }
 
-  public Graphic ellipse(double width, double height, Color color) {
+  public static Graphic ellipse(double width, double height, Color color) {
     return new Ellipse(width, height, color);
   }
 
-  public Graphic rectangle(double width, double height, Color color) {
+  public static Graphic rectangle(double width, double height, Color color) {
     return new Rectangle(width, height, color);
   }
 
-  public Graphic text(String content, String font, double points, Color color) {
+  public static Graphic text(String content, String font, double points, Color color) {
     return new Text(content, font, points, color);
   }
 
-  public Graphic triangle(double side, Color color) {
+  public static Graphic triangle(double side, Color color) {
     return new Triangle(side, color);
   }
 
 
   //-- unary graphic operations
-  public Graphic rotate(double degrees, Graphic graphic) {
+  public static Graphic rotate(double degrees, Graphic graphic) {
     return new Rotate(degrees, graphic);
   }
 
-  public Graphic pin(String horizontalPlace, String verticalPlace, Graphic graphic) {
+  public static Graphic pin(String horizontalPlace, String verticalPlace, Graphic graphic) {
     return new Pin(horizontalPlace, verticalPlace, graphic);
   }
 
   
   //-- binary graphic operations
-  public Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
+  public static Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Compose(foregroundGraphic, backgroundGraphic);
   }
 
-  public Graphic overlay(Graphic foregroundGraphic, Graphic backgroundGraphic) {
+  public static Graphic overlay(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Overlay(foregroundGraphic, backgroundGraphic);
   }
 
-  public Graphic beside(Graphic leftGraphic, Graphic rightGraphic) {
+  public static Graphic beside(Graphic leftGraphic, Graphic rightGraphic) {
     return new Beside(leftGraphic, rightGraphic);
   }
 
-  public Graphic above(Graphic topGraphic, Graphic bottomGraphic) {
+  public static Graphic above(Graphic topGraphic, Graphic bottomGraphic) {
     return new Above(topGraphic, bottomGraphic);
   }
 

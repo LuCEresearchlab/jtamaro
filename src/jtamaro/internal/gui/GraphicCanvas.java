@@ -38,7 +38,11 @@ public class GraphicCanvas extends JComponent {
 
   public Dimension getPreferredSize() {
     final int padding = renderOptions.getPadding();
-    return new Dimension((int)graphic.getWidth() + 2 * padding, (int)graphic.getHeight() + 2 * padding);
+    if (renderOptions.hasFixedSize()) {
+      return new Dimension(renderOptions.getFixedWidth() + 2 * padding, renderOptions.getFixedHeight() + 2 * padding);
+    } else {
+      return new Dimension((int)graphic.getWidth() + 2 * padding, (int)graphic.getHeight() + 2 * padding);
+    }
   }
 
   public void paintComponent(Graphics g) {
