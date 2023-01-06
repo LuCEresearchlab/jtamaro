@@ -8,37 +8,39 @@ import java.util.function.*;
 
 /**
  * A BigBang is the configuration for an interactive application or simulation.
+ * It's immutable and provides a fluent API.
  */
-public class BigBang<Model> {
+public class BigBang<M> {
     
     // configuration options
-    private Model initialModel;
-    private Function<Model,Graphic> renderer;
-    private Function<Model,Model> tickHandler;
-    private BiFunction<Model,KeyboardKey,Model> keyPressHandler;
-    private BiFunction<Model,KeyboardKey,Model> keyReleaseHandler;
-    private BiFunction<Model,KeyboardChar,Model> keyTypeHandler;
-    private TriFunction<Model,Coordinate,MouseButton,Model> mousePressHandler;
-    private TriFunction<Model,Coordinate,MouseButton,Model> mouseReleaseHandler;
-    private BiFunction<Model,Coordinate,Model> mouseMoveHandler;
-    private Predicate<Model> stoppingPredicate;
-    private Function<Model,Graphic> finalGraphicRenderer;
-    private boolean closeOnStop;
-    private double closeOnStopDelay;
-    private int canvasWidth;
-    private int canvasHeight;
-    private boolean fullScreen;
-    private int msBetweenTicks;
-    private long tickLimit;
-    private String name;
+    private final M initialModel;
+    private final Function<M,Graphic> renderer;
+    private final Function<M,M> tickHandler;
+    private final BiFunction<M,KeyboardKey,M> keyPressHandler;
+    private final BiFunction<M,KeyboardKey,M> keyReleaseHandler;
+    private final BiFunction<M,KeyboardChar,M> keyTypeHandler;
+    private final TriFunction<M,Coordinate,MouseButton,M> mousePressHandler;
+    private final TriFunction<M,Coordinate,MouseButton,M> mouseReleaseHandler;
+    private final BiFunction<M,Coordinate,M> mouseMoveHandler;
+    private final Predicate<M> stoppingPredicate;
+    private final Function<M,Graphic> finalGraphicRenderer;
+    private final boolean closeOnStop;
+    private final double closeOnStopDelay;
+    private final int canvasWidth;
+    private final int canvasHeight;
+    private final boolean fullScreen;
+    private final int msBetweenTicks;
+    private final long tickLimit;
+    private final String name;
     // debugging options
-    private boolean showState;
-    private boolean recording;
-    private String recordingDirectoryName;
-    private Predicate<Model> wellFormedWorldPredicate;
+    private final boolean showState;
+    private final boolean recording;
+    private final String recordingDirectoryName;
+    private final Predicate<M> wellFormedWorldPredicate;
         
     
-    public BigBang() {
+    public BigBang(M initialModel) {
+        this.initialModel = initialModel;
         renderer = m -> Op.emptyGraphic();
         tickHandler = m -> m;
         keyPressHandler = (m, k) -> m;
@@ -59,100 +61,148 @@ public class BigBang<Model> {
         name = "Big Bang";
         showState = false;
         recording = false;
+        recordingDirectoryName = ".";
         wellFormedWorldPredicate = (m) -> true;
     }
-    
-    public void setInitialModel(Model initialModel) {
-        this.initialModel = initialModel;
-    }
 
-    public Model getInitialModel() {
+    // copy constructor
+    private BigBang(
+        M initialModel,
+        Function<M,Graphic> renderer,
+        Function<M,M> tickHandler,
+        BiFunction<M,KeyboardKey,M> keyPressHandler,
+        BiFunction<M,KeyboardKey,M> keyReleaseHandler,
+        BiFunction<M,KeyboardChar,M> keyTypeHandler,
+        TriFunction<M,Coordinate,MouseButton,M> mousePressHandler,
+        TriFunction<M,Coordinate,MouseButton,M> mouseReleaseHandler,
+        BiFunction<M,Coordinate,M> mouseMoveHandler,
+        Predicate<M> stoppingPredicate,
+        Function<M,Graphic> finalGraphicRenderer,
+        boolean closeOnStop,
+        double closeOnStopDelay,
+        int canvasWidth,
+        int canvasHeight,
+        boolean fullScreen,
+        int msBetweenTicks,
+        long tickLimit,
+        String name,
+        // debugging options
+        boolean showState,
+        boolean recording,
+        String recordingDirectoryName,
+        Predicate<M> wellFormedWorldPredicate
+    ) {
+        this.initialModel = initialModel;
+        this.renderer = renderer;
+        this.tickHandler = tickHandler;
+        this.keyPressHandler = keyPressHandler;
+        this.keyReleaseHandler = keyReleaseHandler;
+        this.keyTypeHandler = keyTypeHandler;
+        this.mousePressHandler = mousePressHandler;
+        this.mouseReleaseHandler = mouseReleaseHandler;
+        this.mouseMoveHandler = mouseMoveHandler;
+        this.stoppingPredicate = stoppingPredicate;
+        this.finalGraphicRenderer = finalGraphicRenderer;
+        this.closeOnStop = closeOnStop;
+        this.closeOnStopDelay = closeOnStopDelay;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.fullScreen = fullScreen;
+        this.msBetweenTicks = msBetweenTicks;
+        this.tickLimit = tickLimit;
+        this.name = name;
+        this.showState = showState;
+        this.recording = recording;
+        this.recordingDirectoryName = recordingDirectoryName;
+        this.wellFormedWorldPredicate = wellFormedWorldPredicate;
+    }
+    
+    public M getInitialModel() {
         return initialModel;
     }
     
-    public void setTickHandler(Function<Model,Model> tickHandler) {
-        this.tickHandler = tickHandler;
+    public BigBang<M> withTickHandler(Function<M,M> tickHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
     
-    public Function<Model,Model> getTickHandler() {
+    public Function<M,M> getTickHandler() {
         return tickHandler;
     }
 
-    public void setMsBetweenTicks(int msBetweenTicks) {
-        this.msBetweenTicks = msBetweenTicks;
+    public BigBang<M> withMsBetweenTicks(int msBetweenTicks) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public int getMsBetweenTicks() {
         return msBetweenTicks;
     }
     
-    public void setTickLimit(long tickLimit) {
-        this.tickLimit = tickLimit;
+    public BigBang<M> withTickLimit(long tickLimit) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public long getTickLimit() {
         return tickLimit;
     }
     
-    public void setKeyPressHandler(BiFunction<Model,KeyboardKey,Model> keyPressHandler) {
-        this.keyPressHandler = keyPressHandler;
+    public BigBang<M> withKeyPressHandler(BiFunction<M,KeyboardKey,M> keyPressHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public BiFunction<Model,KeyboardKey,Model> getKeyPressHandler() {
+    public BiFunction<M,KeyboardKey,M> getKeyPressHandler() {
         return keyPressHandler;
     }
     
-    public void setKeyReleaseHandler(BiFunction<Model,KeyboardKey,Model> keyReleaseHandler) {
-        this.keyReleaseHandler = keyReleaseHandler;
+    public BigBang<M> withKeyReleaseHandler(BiFunction<M,KeyboardKey,M> keyReleaseHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
     
-    public BiFunction<Model,KeyboardKey,Model> getKeyReleaseHandler() {
+    public BiFunction<M,KeyboardKey,M> getKeyReleaseHandler() {
         return keyReleaseHandler;
     }
 
-    public void setKeyTypeHandler(BiFunction<Model,KeyboardChar,Model> keyTypeHandler) {
-        this.keyTypeHandler = keyTypeHandler;
+    public BigBang<M> withKeyTypeHandler(BiFunction<M,KeyboardChar,M> keyTypeHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public BiFunction<Model,KeyboardChar,Model> getKeyTypeHandler() {
+    public BiFunction<M,KeyboardChar,M> getKeyTypeHandler() {
         return keyTypeHandler;
     }
     
-    public void setMousePressHandler(TriFunction<Model,Coordinate,MouseButton,Model> mousePressHandler) {
-        this.mousePressHandler = mousePressHandler;
+    public BigBang<M> withMousePressHandler(TriFunction<M,Coordinate,MouseButton,M> mousePressHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public TriFunction<Model,Coordinate,MouseButton,Model> getMousePressHandler() {
+    public TriFunction<M,Coordinate,MouseButton,M> getMousePressHandler() {
         return mousePressHandler;
     }
     
-    public void setMouseReleaseHandler(TriFunction<Model,Coordinate,MouseButton,Model> mouseReleaseHandler) {
-        this.mouseReleaseHandler = mouseReleaseHandler;
+    public BigBang<M> withMouseReleaseHandler(TriFunction<M,Coordinate,MouseButton,M> mouseReleaseHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public TriFunction<Model,Coordinate,MouseButton,Model> getMouseReleaseHandler() {
+    public TriFunction<M,Coordinate,MouseButton,M> getMouseReleaseHandler() {
         return mouseReleaseHandler;
     }
     
-    public void setMouseMoveHandler(BiFunction<Model,Coordinate,Model> mouseMoveHandler) {
-        this.mouseMoveHandler = mouseMoveHandler;
+    public BigBang<M> withMouseMoveHandler(BiFunction<M,Coordinate,M> mouseMoveHandler) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public BiFunction<Model,Coordinate,Model> getMouseMoveHandler() {
+    public BiFunction<M,Coordinate,M> getMouseMoveHandler() {
         return mouseMoveHandler;
     }
     
-    public void setRenderer(Function<Model,Graphic> renderer) {
-        this.renderer = renderer;
+    public BigBang<M> withRenderer(Function<M,Graphic> renderer) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public Function<Model,Graphic> getRenderer() {
+    public Function<M,Graphic> getRenderer() {
         return renderer;
     }
     
-    public void setCanvasSize(int width, int height) {
-        this.canvasWidth = width;
-        this.canvasHeight = height;
+    public BigBang<M> withCanvasSize(int canvasWidth, int canvasHeight) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public int getCanvasWidth() {
@@ -163,33 +213,32 @@ public class BigBang<Model> {
         return canvasHeight;
     }
 
-    public void setFullScreen(boolean fullScreen) {
-        this.fullScreen = fullScreen;
+    public BigBang<M> withFullScreen(boolean fullScreen) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public boolean getFullScreen() {
         return fullScreen;
     }
     
-    public void setStoppingPredicate(Predicate<Model> stoppingPredicate) {
-        this.stoppingPredicate = stoppingPredicate;
+    public BigBang<M> withStoppingPredicate(Predicate<M> stoppingPredicate) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public Predicate<Model> getStoppingPredicate() {
+    public Predicate<M> getStoppingPredicate() {
         return stoppingPredicate;
     }
     
-    public void setFinalGraphicRenderer(Function<Model,Graphic> finalGraphicRenderer) {
-        this.finalGraphicRenderer = finalGraphicRenderer;
+    public BigBang<M> withFinalGraphicRenderer(Function<M,Graphic> finalGraphicRenderer) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public Function<Model,Graphic> getFinalGraphicRenderer() {
+    public Function<M,Graphic> getFinalGraphicRenderer() {
         return finalGraphicRenderer;
     }
 
-    public void setCloseOnStop(boolean closeOnStop, double delay) {
-        this.closeOnStop = closeOnStop;
-        this.closeOnStopDelay = delay;
+    public BigBang<M> withCloseOnStop(boolean closeOnStop, double closeOnStopDelay) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public boolean getCloseOnStop() {
@@ -200,17 +249,16 @@ public class BigBang<Model> {
         return closeOnStopDelay;
     }
 
-    public void checkWith(Predicate<Model> wellFormedWorldPredicate) {
-        this.wellFormedWorldPredicate = wellFormedWorldPredicate;
+    public BigBang<M> withWellFormedPredicate(Predicate<M> wellFormedWorldPredicate) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
-    public Predicate<Model> getWellFormedWorldPredicate() {
+    public Predicate<M> getWellFormedWorldPredicate() {
         return wellFormedWorldPredicate;
     }
     
-    public void setRecording(boolean recording, String recordingDirectoryName) {
-        this.recording = recording;
-        this.recordingDirectoryName = recordingDirectoryName;
+    public BigBang<M> withRecording(boolean recording, String recordingDirectoryName) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public boolean getRecording() {
@@ -221,16 +269,16 @@ public class BigBang<Model> {
         return recordingDirectoryName;
     }
 
-    public void setShowState(boolean showState) {
-        this.showState = showState;
+    public BigBang<M> withShowState(boolean showState) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public boolean getShowState() {
         return showState;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public BigBang<M> withName(String name) {
+        return new BigBang<>(initialModel, renderer, tickHandler, keyPressHandler, keyPressHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
     }
 
     public String getName() {

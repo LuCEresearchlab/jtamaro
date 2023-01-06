@@ -22,16 +22,14 @@ public class ControllableSpinner {
   }
   
   public static void main(String[] args) {
-    //TODO turn into fluent API -- that way BigBang can be immutable!
-      BigBang<Spinner> bang = new BigBang<>();
-      bang.setName("Spinner");
-      bang.setCanvasSize(600, 400);
-      bang.setMsBetweenTicks(30);
-      bang.setInitialModel(new Spinner(0, 1, 100));
-      bang.setTickHandler(ControllableSpinner::tick);
-      bang.setRenderer(ControllableSpinner::render);
-      bang.setMouseMoveHandler((wheel,c) -> new Spinner(wheel.angle, c.x() / 100.0, c.y()));
-      bang.run();
+      new BigBang<>(new Spinner(0, 1, 100))
+        .withName("Spinner")
+        .withCanvasSize(600, 400)
+        .withMsBetweenTicks(30)
+        .withTickHandler(ControllableSpinner::tick)
+        .withRenderer(ControllableSpinner::render)
+        .withMouseMoveHandler((wheel,c) -> new Spinner(wheel.angle, c.x() / 100.0, c.y()))
+        .run();
   }
   
 }
