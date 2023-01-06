@@ -14,6 +14,13 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   private final GraphicImpl graphic;
 
 
+  /**
+   * Rotate the graphic clockwise by the given angle
+   * (this is different from PyTamaro, where Rotate works counterclockwise).
+   * 
+   * @param angle
+   * @param graphic
+   */
   public RotateImpl(double angle, GraphicImpl graphic) {
     this.angle = angle;
     this.graphic = graphic;
