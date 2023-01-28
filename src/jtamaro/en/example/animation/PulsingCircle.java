@@ -8,10 +8,9 @@ import static jtamaro.en.Graphics.ellipse;
 import static jtamaro.en.Graphics.rectangle;
 import static jtamaro.en.Graphics.overlay;
 import static jtamaro.en.Sequences.cycle;
-import static jtamaro.en.Sequences.intersperse;
-import static jtamaro.en.Sequences.filter;
 import static jtamaro.en.Sequences.range;
 import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Sequences.concat;
 
 
 public class PulsingCircle {
@@ -32,13 +31,10 @@ public class PulsingCircle {
     animate(
       map(
         size -> frame(size),
-        filter(
-          s -> s < MAX_SIZE / 2,
-          intersperse(
-            MIN_SIZE,
-            cycle(
-              range(MIN_SIZE, MAX_SIZE, STEP)
-            )
+        cycle(
+          concat(
+            range(MIN_SIZE, MAX_SIZE, STEP),
+            range(MAX_SIZE, MIN_SIZE, -STEP)
           )
         )
       ),
