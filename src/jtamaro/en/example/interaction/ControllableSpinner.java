@@ -1,9 +1,12 @@
 package jtamaro.en.example.interaction;
 
-import jtamaro.en.Color;
 import jtamaro.en.Graphic;
-import jtamaro.en.bigbang.BigBang;
-import jtamaro.en.fun.Op;
+import static jtamaro.en.Colors.RED;
+import static jtamaro.en.Colors.BLUE;
+import static jtamaro.en.Graphics.overlay;
+import static jtamaro.en.Graphics.rotate;
+import static jtamaro.en.Graphics.rectangle;
+import static jtamaro.en.IO.interact;
 
 
 public class ControllableSpinner {
@@ -11,9 +14,9 @@ public class ControllableSpinner {
   record Spinner(double angle, double speed, double size) {}
 
   private static Graphic render(Spinner spinner) {
-      return Op.overlay(
-        Op.rotate(spinner.angle, Op.rectangle(spinner.size, spinner.size, Color.RED)),
-        Op.rectangle(600, 400, Color.BLUE)
+      return overlay(
+        rotate(spinner.angle, rectangle(spinner.size, spinner.size, RED)),
+        rectangle(600, 400, BLUE)
       );
   }
   
@@ -22,7 +25,7 @@ public class ControllableSpinner {
   }
   
   public static void main(String[] args) {
-      new BigBang<>(new Spinner(0, 1, 100))
+      interact(new Spinner(0, 1, 100))
         .withName("Spinner")
         .withCanvasSize(600, 400)
         .withMsBetweenTicks(30)

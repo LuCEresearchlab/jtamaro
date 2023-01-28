@@ -17,6 +17,18 @@ public final class Color {
     this.implementation = implementation;
   }
 
+  public Color(int rot, int gruen, int blau, double opacity) {
+    this(new ColorImpl(rot, gruen, blau, opacity));
+  }
+
+  public Color(double hue, double saturation, double lightness, double opacity) {
+    this(ColorImpl.fromHSLA(hue, saturation, lightness, opacity));
+  }
+
+  public static Color fromHSVA(double hue, double saturation, double value, double opacity) {
+    return new Color(ColorImpl.fromHSVA(hue, saturation, value, opacity));
+  }
+
   /**
    * This is an internal method. Please don't use it.
    */
@@ -24,31 +36,4 @@ public final class Color {
     return implementation;
   }
 
-  //-- well-known colors
-  public static final Color BLACK = rgb(0, 0, 0);
-  public static final Color WHITE = rgb(255, 255, 255);
-  public static final Color RED = rgb(255, 0, 0);
-  public static final Color GREEN = rgb(0, 255, 0);
-  public static final Color BLUE = rgb(0, 0, 255);
-  public static final Color CYAN = rgb(0, 255, 255);
-  public static final Color MAGENTA = rgb(255, 0, 255);
-  public static final Color YELLOW = rgb(255, 255, 0);
-  public static final Color TRANSPARENT = rgba(0, 0, 0, 0);
-
-  public static Color rgb(int rot, int gruen, int blau) {
-    return rgba(rot, gruen, blau, 255);
-  }
-
-  public static Color rgba(int rot, int gruen, int blau, int alpha) {
-    return new Color(new ColorImpl(rot, gruen, blau, alpha));
-  }
-  
-  public static Color hsl(double hue, double saturation, double lightness) {
-    return hsla(hue, saturation, lightness, 255);
-  }
-
-  public static Color hsla(double hue, double saturation, double lightness, int alpha) {
-    return new Color(ColorImpl.fromHSLA(hue, saturation, lightness, alpha));
-  }
-  
 }

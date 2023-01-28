@@ -6,7 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-import jtamaro.en.oo.AbstractGraphic;
+import jtamaro.en.graphic.AbstractGraphic;
+import jtamaro.en.io.BigBang;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
@@ -14,10 +15,40 @@ import jtamaro.internal.representation.GraphicImpl;
 
 public class IO {
 
+  /**
+   * Open a window showing the given graphic.
+   * @param graphic
+   */
   public static void show(Graphic graphic) {
     final GraphicFrame frame = new GraphicFrame();
     frame.setGraphic(((AbstractGraphic)graphic).getImplementation());
     frame.setVisible(true);
+  }
+  
+  /**
+   * Open a window with an animation of the given graphics, with the given delay between frames.
+   * @param graphics sequence of graphics (frames) to animate
+   * @param loop whether to loop the animation
+   * @param millisecondsPerFrame delay between frames
+   */
+  public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
+    new BigBang<>(graphics)
+      .withName("Animation")
+      .withMsBetweenTicks(millisecondsPerFrame)
+      .withTickHandler(model -> model.isEmpty() ? (loop ? graphics : model) : model.rest())
+      .withRenderer(model -> model.first())
+      //.withStoppingPredicate(model -> !loop || model.isEmpty())
+      .run();
+  }
+
+  /**
+   * Open a window with an interactive application.
+   * @param <M> Model type
+   * @param initialModel The initial model state of the application
+   * @return
+   */
+  public static <M> BigBang<M> interact(M initialModel) {
+    return new BigBang<>(initialModel);
   }
 
   public static void save(Graphic graphic, String filename) {
