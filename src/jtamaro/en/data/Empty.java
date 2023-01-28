@@ -16,8 +16,4 @@ public class Empty<T> extends Sequence<T> {
     return true;
   }
 
-  public boolean isCons() {
-    return false;
-  }
-
 }

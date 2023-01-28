@@ -14,12 +14,8 @@ public class Range extends Sequence<Integer> {
     this.step = step;
   }
 
-  public boolean isCons() {
-    return from < toExclusive;
-  }
-
   public boolean isEmpty() {
-    return !isCons();
+    return from >= toExclusive;
   }
 
   public Integer first() {

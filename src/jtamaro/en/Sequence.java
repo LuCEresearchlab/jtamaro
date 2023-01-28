@@ -9,14 +9,6 @@ import java.util.Iterator;
  */
 public abstract class Sequence<T> implements Iterable<T> {
   
-  // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._cons~3f%29%29
-  /**
-   * Determines whether this is a constructed sequence
-   * (i.e., it has at least one element).
-   * @return true of the sequence is constructed, false otherwise.
-   */
-  public abstract boolean isCons();
-
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._empty~3f%29%29
   /**
    * Determines whether this is an empty sequence
@@ -48,7 +40,7 @@ public abstract class Sequence<T> implements Iterable<T> {
     return new Iterator<T>() {
       private Sequence<T> current = Sequence.this;
       public boolean hasNext() {
-        return current.isCons();
+        return !current.isEmpty();
       }
       public T next() {
         final T result = current.first();
@@ -76,5 +68,5 @@ public abstract class Sequence<T> implements Iterable<T> {
     }
     return current.first();
   }
-  
+
 }
