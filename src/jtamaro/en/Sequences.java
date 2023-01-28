@@ -116,11 +116,11 @@ public class Sequences {
   }
 
   public static Sequence<Character> range(char from, char toExclusive) {
-    return range(from, toExclusive, (char)1);
+    return range(from, toExclusive, 1);
   }
 
-  public static Sequence<Character> range(char from, char toExclusive, char step) {
-    return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, (int) step));
+  public static Sequence<Character> range(char from, char toExclusive, int step) {
+    return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, step));
   }
 
   public static <T> Sequence<T> repeat(T element) {
@@ -204,6 +204,15 @@ public class Sequences {
       });
     }
   }
+
+  public static <T> Sequence<T> concat(Sequence<T> firstPart, Sequence<T> secondPart) {
+    if (firstPart.isEmpty()) {
+      return secondPart;
+    } else {
+      return lazyCons(firstPart.first(), () -> concat(firstPart.rest(), secondPart));
+    }
+  }
+
 
   //--- folding
   public static <T,U> U reduce(BiFunction<U, T, U> f, U initial, Sequence<T> sequence) {

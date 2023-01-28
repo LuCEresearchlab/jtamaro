@@ -13,6 +13,7 @@ import static jtamaro.en.Sequences.repeat;
 import static jtamaro.en.Sequences.replicate;
 import static jtamaro.en.Sequences.iterate;
 import static jtamaro.en.Sequences.cycle;
+import static jtamaro.en.Sequences.concat;
 
 public class Demo {
   
@@ -84,6 +85,16 @@ public class Demo {
     }
 
     for (char c : range('A', 'F')) {
+      System.out.print(c);
+    }
+    System.out.println();
+
+    for (char c : concat(range('A', 'F'), range('a', 'f'))) {
+      System.out.print(c);
+    }
+    System.out.println();
+
+    for (char c : concat(range('A', 'F'), range('F', 'A', -1))) {
       System.out.print(c);
     }
     System.out.println();
