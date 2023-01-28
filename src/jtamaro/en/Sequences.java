@@ -6,17 +6,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jtamaro.en.data.Cons;
-import jtamaro.en.data.Cycle;
 import jtamaro.en.data.Empty;
-import jtamaro.en.data.Filter;
-import jtamaro.en.data.Intersperse;
-import jtamaro.en.data.Iterate;
 import jtamaro.en.data.LazyCons;
-import jtamaro.en.data.Map;
-import jtamaro.en.data.Range;
-import jtamaro.en.data.Repeat;
-import jtamaro.en.data.Replicate;
-import jtamaro.en.data.Take;
 
 /**
  * A collection of static methods for working with sequences in JTamaro.
@@ -102,7 +93,34 @@ public class Sequences {
   }
 
   public static Sequence<Integer> range(int from, int toExclusive, int step) {
-    return new Range(from, toExclusive, step);
+    assert step != 0: "step must not be zero";
+    if (from == toExclusive) {
+      return empty();
+    } else if (step > 0) {
+      if (from > toExclusive) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> range(from + step, toExclusive, step));
+      }
+    } else {
+      if (from < toExclusive) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> range(from + step, toExclusive, step));
+      }
+    }
+  }
+
+  public static Sequence<Character> range(char toExclusive) {
+    return range((char)0, toExclusive);
+  }
+
+  public static Sequence<Character> range(char from, char toExclusive) {
+    return range(from, toExclusive, (char)1);
+  }
+
+  public static Sequence<Character> range(char from, char toExclusive, char step) {
+    return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, (int) step));
   }
 
   public static <T> Sequence<T> repeat(T element) {

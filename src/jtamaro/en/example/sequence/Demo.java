@@ -66,6 +66,27 @@ public class Demo {
     for (String s : take(5, cycle(of("a", "b", "c")))) {
       System.out.println(s);
     }
+
+    for (int i : range(2)) {
+      System.out.println(i);
+    }
+
+    for (int i : range(10, 13)) {
+      System.out.println(i);
+    }
+
+    for (int i : range(1, 5, 2)) {
+      System.out.println(i);
+    }
+
+    for (int i : range(10, 0, -1)) {
+      System.out.println(i);
+    }
+
+    for (char c : range('A', 'F')) {
+      System.out.print(c);
+    }
+    System.out.println();
   }
 
 }
