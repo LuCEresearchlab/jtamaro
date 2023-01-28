@@ -58,4 +58,23 @@ public abstract class Sequence<T> implements Iterable<T> {
     };
   }
 
+  //--- should we add these?
+  public T get(int index) {
+    if (index < 0) {
+      throw new IndexOutOfBoundsException("index must be non-negative");
+    }
+    Sequence<T> current = this;
+    while (index > 0) {
+      if (current.isEmpty()) {
+        throw new IndexOutOfBoundsException("index is too large");
+      }
+      current = current.rest();
+      index--;
+    }
+    if (current.isEmpty()) {
+      throw new IndexOutOfBoundsException("index is too large");
+    }
+    return current.first();
+  }
+  
 }
