@@ -32,12 +32,16 @@ public class IO {
    * @param millisecondsPerFrame delay between frames
    */
   public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
+    assert !graphics.isEmpty() : "Animation must have at least one frame";
     new BigBang<>(graphics)
       .withName("Animation")
       .withMsBetweenTicks(millisecondsPerFrame)
-      .withTickHandler(model -> model.isEmpty() ? (loop ? graphics : model) : model.rest())
+      .withTickHandler(model -> {
+        Sequence<Graphic> rest = model.rest();
+        return rest.isEmpty() ? (loop ? graphics : rest) : rest;
+      })
       .withRenderer(model -> model.first())
-      //.withStoppingPredicate(model -> !loop || model.isEmpty())
+      .withStoppingPredicate(model -> model.isEmpty())
       .run();
   }
 

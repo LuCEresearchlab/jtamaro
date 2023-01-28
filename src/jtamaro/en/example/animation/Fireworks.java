@@ -123,7 +123,7 @@ public class Fireworks {
         range(20)
       ),
       true,
-      50
+      1
     );
   }
 
