@@ -24,7 +24,16 @@ public class IO {
     frame.setGraphic(((AbstractGraphic)graphic).getImplementation());
     frame.setVisible(true);
   }
-  
+
+  /**
+   * Open a window with a looped animation of the given graphics,
+   * at 25 frames per second.
+   * @param graphics sequence of graphics (frames) to animate
+   */
+  public static void animate(Sequence<Graphic> graphics) {
+    animate(graphics, true, 25);
+  }
+
   /**
    * Open a window with an animation of the given graphics, with the given delay between frames.
    * @param graphics sequence of graphics (frames) to animate

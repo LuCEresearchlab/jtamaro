@@ -37,9 +37,7 @@ public class PulsingCircle {
             range(MAX_SIZE, MIN_SIZE, -STEP)
           )
         )
-      ),
-      true,
-      25
+      )
     );
   }
 
