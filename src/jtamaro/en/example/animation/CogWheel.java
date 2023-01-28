@@ -26,15 +26,15 @@ public class CogWheel {
 
   private static Graphic tooth(double innerDiameter, double outerDiameter, double angle, Color color) {
     final double diameter = (innerDiameter + outerDiameter) / 2;
-    final double angle_rad = angle * 2 * Math.PI / 360;
-    final double width = Math.sin(angle_rad / 2) * diameter;
-    final double height = Math.cos(angle_rad / 2) * outerDiameter / 2;
+    final double angleRad = angle * 2 * Math.PI / 360;
+    final double width = Math.sin(angleRad / 2) * diameter;
+    final double height = Math.cos(angleRad / 2) * outerDiameter / 2;
     return pin("middle", "bottom", rectangle(width, height, color));
   }
 
   private static Graphic cogs(double innerDiameter, double outerDiameter, int toothCount, Color color) {
-    final double tooth_angle = 360 / (2 * toothCount);
-    final Graphic tooth = tooth(innerDiameter, outerDiameter, tooth_angle, color);
+    final double toothAngle = 360 / (2 * toothCount);
+    final Graphic tooth = tooth(innerDiameter, outerDiameter, toothAngle, color);
     final Sequence<Integer> angles = range(0, 360, 360 / toothCount);
     Graphic composition = emptyGraphic();
     for (final int angle : angles) {
