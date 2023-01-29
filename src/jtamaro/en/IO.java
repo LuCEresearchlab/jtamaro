@@ -6,11 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
+import static jtamaro.en.Sequences.map;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.BigBang;
 import jtamaro.en.io.FilmStripFrame;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
+import jtamaro.internal.io.GifWriter;
 import jtamaro.internal.representation.GraphicImpl;
 
 
@@ -103,6 +105,14 @@ public class IO {
       ImageIO.write(bufferedImage, "png", new File(filename));
     } catch (IOException ex) {
       System.err.println("Error saving image to " + filename + ": " + ex.getMessage());
+    }
+  }
+
+  public static void saveAnimatedGif(Sequence<Graphic> graphics, int millisecondsPerFrame, boolean loop, String filename) {
+    try {
+      GifWriter.saveAnimation(map(g -> ((AbstractGraphic)g).getImplementation(), graphics), millisecondsPerFrame, loop, filename);
+    } catch (IOException ex) {
+      System.err.println("Error saving animated GIF to " + filename + ": " + ex.getMessage());
     }
   }
 

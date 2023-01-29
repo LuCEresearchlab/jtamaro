@@ -16,17 +16,19 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 
+import jtamaro.en.Sequence;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
 
 // based on https://memorynotfound.com/generate-gif-image-java-delay-infinite-loop-example/
 public class GifWriter {
 
-  public static void saveAnimation(List<GraphicImpl> graphicImpls, int millisecondsPerFrame, boolean loop, String filename) throws IOException {
+  public static void saveAnimation(Sequence<GraphicImpl> graphicImpls, int millisecondsPerFrame, boolean loop, String filename) throws IOException {
     // https://docs.oracle.com/javase/8/docs/api/javax/imageio/metadata/doc-files/gif_metadata.html
     assert millisecondsPerFrame / 10 > 0;
     assert millisecondsPerFrame / 10 < 65536;
-    assert graphicImpls.size() > 0;
+    assert !graphicImpls.isEmpty() : "Animation must have at least one frame";
+    assert graphicImpls.hasDefiniteSize() : "Animation must have a finite number of frames";
 
     final int bufferedImageType = BufferedImage.TYPE_INT_ARGB;
     final ImageOutputStream out = new FileImageOutputStream(new File(filename));
