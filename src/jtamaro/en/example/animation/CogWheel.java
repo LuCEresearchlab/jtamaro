@@ -67,7 +67,7 @@ public class CogWheel {
   }
 
   public static void main(String[] args) {
-    saveAnimatedGif(animation(false), 25, true, "cogwheel.gif");
+    saveAnimatedGif(animation(false), true, 25, "cogwheel.gif");
     animate(
       cycle(animation(true))
     );
