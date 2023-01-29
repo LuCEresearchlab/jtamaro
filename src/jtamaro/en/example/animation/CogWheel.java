@@ -5,6 +5,8 @@ import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 
 import static jtamaro.en.IO.animate;
+import static jtamaro.en.IO.saveAnimatedGif;
+import static jtamaro.en.Colors.WHITE;
 import static jtamaro.en.Colors.TRANSPARENT;
 import static jtamaro.en.Colors.rgb;
 import static jtamaro.en.Graphics.ellipse;
@@ -54,18 +56,20 @@ public class CogWheel {
     );
   }
 
-  private static Sequence<Graphic> animation() {
+  private static Sequence<Graphic> animation(boolean transparentBackground) {
     final int toothCount = 9;
     final double innerDiameter = 400;
     final double outerDiameter = 520;
     final Graphic wheel = cogwheel(innerDiameter, outerDiameter, toothCount, rgb(96, 96, 96));
     final Sequence<Integer> angles = range(0, 360 / toothCount, 2);
-    return map(angle -> rotate(angle, wheel), angles);
+    final Graphic background = transparentBackground ? emptyGraphic() : rectangle(outerDiameter, outerDiameter, WHITE);
+    return map(angle -> compose(rotate(angle, wheel), background), angles);
   }
 
   public static void main(String[] args) {
+    saveAnimatedGif(animation(false), 25, true, "cogwheel.gif");
     animate(
-      cycle(animation())
+      cycle(animation(true))
     );
   }
 
