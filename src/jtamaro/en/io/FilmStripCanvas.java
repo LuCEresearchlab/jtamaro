@@ -36,7 +36,7 @@ public class FilmStripCanvas extends JComponent {
     this.graphics = graphics;
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
-    completeFrameWidth = (int)(frameWidth * (1 + GAP_FRACTION));
+    completeFrameWidth = computeCompleteFrameWidth(frameWidth);
     gapWidth = (int)(frameWidth * GAP_FRACTION);
     completeFrameHeight = (int)(frameHeight * (1 + 2 * TRACK_FRACTION));
     trackHeight = (int)(frameHeight * TRACK_FRACTION);
@@ -44,11 +44,19 @@ public class FilmStripCanvas extends JComponent {
     framesToShow = 2;
   }
   
+  public static int computeCompleteFrameWidth(int frameWidth) {
+    return (int)(frameWidth * (1 + GAP_FRACTION));
+  }
+
+  public double getPosition() {
+    return position;
+  }
+
   public void setPosition(double position) {
     this.position = position;
     repaint();
   }
-  
+
   @Override
   public Dimension getPreferredSize() {
     return new Dimension(framesToShow * completeFrameWidth, completeFrameHeight);
@@ -62,7 +70,7 @@ public class FilmStripCanvas extends JComponent {
       RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON));
     final int firstFrameIndex = (int)position;
-    final int framesVisible = (int)Math.ceil(getWidth() / (double)completeFrameWidth);
+    final int framesVisible = getWidth() / completeFrameWidth + 1;
     final Sequence<Graphic> visibleGraphics = take(framesVisible, drop(firstFrameIndex, graphics));
     final int positionInFrame = (int)((position - Math.floor(position)) * completeFrameWidth);
     g2.translate(-positionInFrame, 0);
