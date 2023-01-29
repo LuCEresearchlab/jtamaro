@@ -15,6 +15,20 @@ import jtamaro.internal.representation.GraphicImpl;
 
 public class IO {
 
+  public static <T> void print(Sequence<T> sequence) {
+    for (T element : sequence) {
+      System.out.print(element);
+    }
+    System.out.println();
+  }
+
+  public static <T> void println(Sequence<T> sequence) {
+    for (T element : sequence) {
+      System.out.println(element);
+    }
+  }
+
+
   /**
    * Open a window showing the given graphic.
    * @param graphic

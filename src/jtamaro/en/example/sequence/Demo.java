@@ -1,11 +1,14 @@
 package jtamaro.en.example.sequence;
 
 import jtamaro.en.Sequence;
+import static jtamaro.en.IO.print;
+import static jtamaro.en.IO.println;
 import static jtamaro.en.Sequences.range;
 import static jtamaro.en.Sequences.filter;
 import static jtamaro.en.Sequences.intersperse;
 import static jtamaro.en.Sequences.of;
 import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Sequences.mapToString;
 import static jtamaro.en.Sequences.take;
 import static jtamaro.en.Sequences.drop;
 import static jtamaro.en.Sequences.reduce;
@@ -23,21 +26,13 @@ public class Demo {
       System.out.println(i);
     }
 
-    for (int i : filter(i -> i % 2 == 0, is)) {
-      System.out.println(i);
-    }
+    println(filter(i -> i % 2 == 0, is));
 
-    for (int i : intersperse(99, is)) {
-      System.out.println(i);
-    }
+    print(intersperse(":", mapToString(is)));
 
-    for (int i : of(3, 2, 1)) {
-      System.out.println(i);
-    }
+    println(of(3, 2, 1));
 
-    for (String s : map(s -> s+ "!", of("Hi", "Ho"))) {
-      System.out.println(s);
-    }
+    println(map(s -> s+ "!", of("Hi", "Ho")));
 
     for (String s : take(2, of("A", "B", "C", "D"))) {
       System.out.println(s);
@@ -80,9 +75,7 @@ public class Demo {
       System.out.println(i);
     }
 
-    for (int i : range(10, 0, -1)) {
-      System.out.println(i);
-    }
+    println(range(10, 0, -1));
 
     for (char c : range('A', 'F')) {
       System.out.print(c);
@@ -94,10 +87,7 @@ public class Demo {
     }
     System.out.println();
 
-    for (char c : concat(range('A', 'F'), range('F', 'A', -1))) {
-      System.out.print(c);
-    }
-    System.out.println();
+    print(concat(range('A', 'F'), range('F', 'A', -1)));
   }
 
 }

@@ -178,6 +178,10 @@ public class Sequences {
     }
   }
 
+  public static <T> Sequence<String> mapToString(Sequence<T> sequence) {
+    return map(Object::toString, sequence);
+  }
+
   public static <T> Sequence<T> filter(Predicate<T> predicate, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return sequence;
