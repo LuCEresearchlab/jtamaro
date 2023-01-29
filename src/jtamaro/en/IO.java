@@ -108,7 +108,7 @@ public class IO {
     }
   }
 
-  public static void saveAnimatedGif(Sequence<Graphic> graphics, int millisecondsPerFrame, boolean loop, String filename) {
+  public static void saveAnimatedGif(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame, String filename) {
     try {
       GifWriter.saveAnimation(map(g -> ((AbstractGraphic)g).getImplementation(), graphics), millisecondsPerFrame, loop, filename);
     } catch (IOException ex) {
