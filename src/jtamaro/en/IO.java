@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.BigBang;
+import jtamaro.en.io.FilmStripFrame;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
@@ -73,8 +74,9 @@ public class IO {
    * with each from for each of the given graphics.
    * @param graphics sequence of graphics (frames) to show in the film strip
    */
-  public static void showFilmStrip(Sequence<Graphic> graphics) {
-    // TODO
+  public static void showFilmStrip(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
+    final FilmStripFrame frame = new FilmStripFrame(graphics, frameWidth, frameHeight);
+    frame.setVisible(true);
   }
 
   /**
