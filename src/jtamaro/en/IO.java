@@ -69,6 +69,15 @@ public class IO {
   }
 
   /**
+   * Open a window with a scrollable film strip,
+   * with each from for each of the given graphics.
+   * @param graphics sequence of graphics (frames) to show in the film strip
+   */
+  public static void showFilmStrip(Sequence<Graphic> graphics) {
+    // TODO
+  }
+
+  /**
    * Open a window with an interactive application.
    * @param <M> Model type
    * @param initialModel The initial model state of the application

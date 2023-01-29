@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.LazyCons;
+import jtamaro.en.data.Pair;
 
 /**
  * A collection of static methods for working with sequences in JTamaro.
@@ -84,6 +85,10 @@ public class Sequences {
   }
 
   //--- lazy construction sequences
+  public static Sequence<Integer> from(int from) {
+    return lazyCons(from, () -> from(from + 1));
+  }
+
   public static Sequence<Integer> range(int toExclusive) {
     return range(0, toExclusive);
   }
@@ -217,7 +222,20 @@ public class Sequences {
     }
   }
 
+  public static <T,U> Sequence<Pair<T,U>> zip(Sequence<T> first, Sequence<U> second) {
+    if (first.isEmpty() || second.isEmpty()) {
+      return empty();
+    } else {
+      return lazyCons(new Pair<>(first.first(), second.first()),
+                      () -> zip(first.rest(), second.rest()));
+    }
+  }
 
+  public static <T,U> Sequence<Pair<T,Integer>> zipWithIndex(Sequence<T> sequence) {
+    return zip(sequence, from(0));
+  }
+
+  
   //--- folding
   public static <T,U> U reduce(BiFunction<U, T, U> f, U initial, Sequence<T> sequence) {
     U result = initial;

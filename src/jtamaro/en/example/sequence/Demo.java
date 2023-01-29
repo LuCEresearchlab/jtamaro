@@ -17,6 +17,8 @@ import static jtamaro.en.Sequences.replicate;
 import static jtamaro.en.Sequences.iterate;
 import static jtamaro.en.Sequences.cycle;
 import static jtamaro.en.Sequences.concat;
+import static jtamaro.en.Sequences.zip;
+import static jtamaro.en.Sequences.zipWithIndex;
 
 public class Demo {
   
@@ -88,6 +90,10 @@ public class Demo {
     System.out.println();
 
     print(concat(range('A', 'F'), range('F', 'A', -1)));
+
+    println(zip(of("a", "b", "c"), of(1, 2, 3)));
+
+    println(zipWithIndex(range('A', (char)('Z'+1))));
   }
 
 }
