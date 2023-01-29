@@ -31,6 +31,12 @@ public abstract class Sequence<T> implements Iterable<T> {
    */
   public abstract Sequence<T> rest();
 
+  /**
+   * Checks if this Sequence is known to have a finite size.
+   * @return true if this Sequence is known to have a finite size, false otherwise.
+   */
+  public abstract boolean hasDefiniteSize();
+
   //--- to allow use in for-each loop
   /**
    * Returns an iterator over the elements in this sequence.

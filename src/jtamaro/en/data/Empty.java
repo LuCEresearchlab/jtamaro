@@ -16,4 +16,8 @@ public class Empty<T> extends Sequence<T> {
     return true;
   }
 
+  public boolean hasDefiniteSize() {
+    return true;
+  }
+
 }

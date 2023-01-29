@@ -80,13 +80,13 @@ public class Sequences {
     return new Cons<T>(first, rest);
   }
 
-  private static <T> Sequence<T> lazyCons(T first, Supplier<Sequence<T>> restSupplier) {
-    return new LazyCons<T>(first, restSupplier);
+  private static <T> Sequence<T> lazyCons(T first, Supplier<Sequence<T>> restSupplier, boolean hasDefiniteSize) {
+    return new LazyCons<T>(first, restSupplier, hasDefiniteSize);
   }
 
   //--- lazy construction sequences
   public static Sequence<Integer> from(int from) {
-    return lazyCons(from, () -> from(from + 1));
+    return lazyCons(from, () -> from(from + 1), false);
   }
 
   public static Sequence<Integer> range(int toExclusive) {
@@ -105,13 +105,13 @@ public class Sequences {
       if (from > toExclusive) {
         return empty();
       } else {
-        return lazyCons(from, () -> range(from + step, toExclusive, step));
+        return lazyCons(from, () -> range(from + step, toExclusive, step), true);
       }
     } else {
       if (from < toExclusive) {
         return empty();
       } else {
-        return lazyCons(from, () -> range(from + step, toExclusive, step));
+        return lazyCons(from, () -> range(from + step, toExclusive, step), true);
       }
     }
   }
@@ -129,7 +129,7 @@ public class Sequences {
   }
 
   public static <T> Sequence<T> repeat(T element) {
-    return lazyCons(element, () -> repeat(element));
+    return lazyCons(element, () -> repeat(element), false);
   }
 
   public static <T> Sequence<T> replicate(T element, int count) {
@@ -137,7 +137,7 @@ public class Sequences {
     if (count == 0) {
       return empty();
     } else {
-      return lazyCons(element, () -> replicate(element, count - 1));
+      return lazyCons(element, () -> replicate(element, count - 1), false);
     }
   }
 
@@ -150,12 +150,12 @@ public class Sequences {
     if (sequence.isEmpty()) {
       return cycle(cycle);
     } else {
-      return lazyCons(sequence.first(), () -> cycle(sequence.rest(), cycle));
+      return lazyCons(sequence.first(), () -> cycle(sequence.rest(), cycle), false);
     }
   }
 
   public static <T> Sequence<T> iterate(Function<T, T> f, T seed) {
-    return lazyCons(seed, () -> iterate(f, f.apply(seed)));
+    return lazyCons(seed, () -> iterate(f, f.apply(seed)), false);
   }
 
   public static <T> Sequence<T> take(int n, Sequence<T> sequence) {
@@ -163,7 +163,7 @@ public class Sequences {
     if (n == 0 || sequence.isEmpty()) {
       return empty();
     } else {
-      return lazyCons(sequence.first(), () -> take(n - 1, sequence.rest()));
+      return lazyCons(sequence.first(), () -> take(n - 1, sequence.rest()), true);
     }
   }
 
@@ -179,7 +179,7 @@ public class Sequences {
     if (sequence.isEmpty()) {
       return empty();
     } else {
-      return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()));
+      return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()), sequence.rest().hasDefiniteSize());
     }
   }
 
@@ -197,7 +197,7 @@ public class Sequences {
       }
       final Sequence<T> finalCurrent = current;
       return current.isEmpty() ? empty()
-             : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()));
+             : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
     }
   }
 
@@ -209,8 +209,8 @@ public class Sequences {
     } else {
       return lazyCons(sequence.first(), () -> {
           final Sequence<T> rest = sequence.rest();
-          return rest.isEmpty() ? rest : lazyCons(element, () -> intersperse(element, rest));
-      });
+          return rest.isEmpty() ? rest : lazyCons(element, () -> intersperse(element, rest), rest.hasDefiniteSize());
+      }, sequence.rest().hasDefiniteSize());
     }
   }
 
@@ -218,7 +218,7 @@ public class Sequences {
     if (firstPart.isEmpty()) {
       return secondPart;
     } else {
-      return lazyCons(firstPart.first(), () -> concat(firstPart.rest(), secondPart));
+      return lazyCons(firstPart.first(), () -> concat(firstPart.rest(), secondPart), firstPart.hasDefiniteSize() && secondPart.hasDefiniteSize());
     }
   }
 
@@ -227,7 +227,8 @@ public class Sequences {
       return empty();
     } else {
       return lazyCons(new Pair<>(first.first(), second.first()),
-                      () -> zip(first.rest(), second.rest()));
+                      () -> zip(first.rest(), second.rest()),
+                      first.rest().hasDefiniteSize() || second.rest().hasDefiniteSize());
     }
   }
 
@@ -235,7 +236,7 @@ public class Sequences {
     return zip(sequence, from(0));
   }
 
-  
+
   //--- folding
   public static <T,U> U reduce(BiFunction<U, T, U> f, U initial, Sequence<T> sequence) {
     U result = initial;
