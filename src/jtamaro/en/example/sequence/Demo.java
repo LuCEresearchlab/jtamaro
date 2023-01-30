@@ -19,6 +19,7 @@ import static jtamaro.en.Sequences.cycle;
 import static jtamaro.en.Sequences.concat;
 import static jtamaro.en.Sequences.zip;
 import static jtamaro.en.Sequences.zipWithIndex;
+import static jtamaro.en.Sequences.crossProduct;
 
 public class Demo {
   
@@ -94,6 +95,8 @@ public class Demo {
     println(zip(of("a", "b", "c"), of(1, 2, 3)));
 
     println(zipWithIndex(range('A', (char)('Z'+1))));
+
+    println(crossProduct(range('A', 'D'), range(1, 3)));
   }
 
 }

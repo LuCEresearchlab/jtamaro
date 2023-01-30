@@ -187,6 +187,14 @@ public class Sequences {
     return map(Object::toString, sequence);
   }
 
+  public static <T,U> Sequence<U> flatMap(Function<T, Sequence<U>> f, Sequence<T> sequence) {
+    if (sequence.isEmpty()) {
+      return empty();
+    } else {
+      return concat(f.apply(sequence.first()), flatMap(f, sequence.rest()));
+    }
+  }
+
   public static <T> Sequence<T> filter(Predicate<T> predicate, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return sequence;
@@ -200,7 +208,7 @@ public class Sequences {
              : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
     }
   }
-
+  
   // Naming inspired by:
   // https://www.javadoc.io/static/io.vavr/vavr/1.0.0-alpha-4/io/vavr/collection/Seq.html#intersperse-T-
   public static <T> Sequence<T> intersperse(T element, Sequence<T> sequence) {
@@ -234,6 +242,14 @@ public class Sequences {
 
   public static <T,U> Sequence<Pair<T,Integer>> zipWithIndex(Sequence<T> sequence) {
     return zip(sequence, from(0));
+  }
+
+  public static <T,U> Sequence<Pair<T,U>> crossProduct(Sequence<T> first, Sequence<U> second) {
+    if (first.isEmpty() || second.isEmpty()) {
+      return empty();
+    } else {
+      return flatMap(f -> map(s -> new Pair<>(f, s), second), first);
+    }
   }
 
 
