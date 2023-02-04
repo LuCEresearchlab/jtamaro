@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import jtamaro.en.Graphic;
+import jtamaro.en.Sequence;
+
+import static jtamaro.en.Sequences.*;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.gui.GraphicCanvas;
 import jtamaro.internal.gui.RenderOptions;
@@ -23,14 +26,26 @@ public class BigBangFrame<M> extends JFrame {
   private final GraphicCanvas graphicCanvas;
   private final Timer timer;
   private final BigBangState<M> state;
+  private final Trace trace;
 
 
   public BigBangFrame(BigBang<M> bang) {
     this.bang = bang;
     state = new BigBangState<>(bang);
-    
+    trace = new Trace();
+    timer = new Timer(bang.getMsBetweenTicks(), new ActionListener() {
+      public void actionPerformed(ActionEvent ev) {
+          if (state.getTick() >= bang.getTickLimit() || bang.getStoppingPredicate().test(state.getModel())) {
+            stop();
+          } else {
+            handle(TraceEvent.createTick());
+            state.tick();
+          }
+      }
+    });
+  
     setTitle(bang.getName());
-    add(new BigBangToolbar<>(state), BorderLayout.NORTH);
+    add(new BigBangToolbar<>(bang, state, timer, trace), BorderLayout.NORTH);
 
     int canvasWidth = bang.getCanvasWidth();
     int canvasHeight = bang.getCanvasHeight();
@@ -46,50 +61,40 @@ public class BigBangFrame<M> extends JFrame {
     graphicCanvas = new GraphicCanvas(renderOptions);
     graphicCanvas.addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent ev) {
-        state.update(
-          "model after key press", 
-          bang.getKeyPressHandler().apply(state.getModel(), new KeyboardKey(ev)));
-        renderAndShowGraphic();
+        final KeyboardKey key = new KeyboardKey(ev);
+        handle(TraceEvent.createKeyPress(key));
       }
       public void keyReleased(KeyEvent ev) {
-        state.update(
-          "model after key release",
-          bang.getKeyReleaseHandler().apply(state.getModel(), new KeyboardKey(ev)));
-        renderAndShowGraphic();
+        final KeyboardKey key = new KeyboardKey(ev);
+        handle(TraceEvent.createKeyRelease(key));
       }
       public void keyTyped(KeyEvent ev) {
-        state.update(
-          "model after key type",
-          bang.getKeyTypeHandler().apply(state.getModel(), new KeyboardChar(ev)));
-        renderAndShowGraphic();
+        final KeyboardChar ch = new KeyboardChar(ev);
+        handle(TraceEvent.createKeyType(ch));
       }
     });
     graphicCanvas.addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent ev) {
-        state.update(
-          "model after mouse press",
-          bang.getMousePressHandler().apply(state.getModel(), new Coordinate(ev.getX(), ev.getY()), new MouseButton(ev)));
-        renderAndShowGraphic();
+        graphicCanvas.requestFocus();
+        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
+        final MouseButton button = new MouseButton(ev);
+        handle(TraceEvent.createMousePress(coordinate, button));
       }
       public void mouseReleased(MouseEvent ev) {
-        state.update(
-          "model after mouse release",
-          bang.getMouseReleaseHandler().apply(state.getModel(), new Coordinate(ev.getX(), ev.getY()), new MouseButton(ev)));
-        renderAndShowGraphic();
+        graphicCanvas.requestFocus();
+        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
+        final MouseButton button = new MouseButton(ev);
+        handle(TraceEvent.createMouseRelease(coordinate, button));
       }
     });
     graphicCanvas.addMouseMotionListener(new MouseAdapter() {
       public void mouseMoved(MouseEvent ev) {
-        state.update(
-          "model after mouse move (move)",
-          bang.getMouseMoveHandler().apply(state.getModel(), new Coordinate(ev.getX(), ev.getY())));
-        renderAndShowGraphic();
+        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
+        handle(TraceEvent.createMouseMove(coordinate));
       }
       public void mouseDragged(MouseEvent ev) {
-        state.update(
-          "model after mouse move (drag)",
-          bang.getMouseMoveHandler().apply(state.getModel(), new Coordinate(ev.getX(), ev.getY())));
-        renderAndShowGraphic();
+        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
+        handle(TraceEvent.createMouseMove(coordinate));
       }
     });
     add(graphicCanvas, BorderLayout.CENTER);
@@ -102,18 +107,15 @@ public class BigBangFrame<M> extends JFrame {
       graphicCanvas.requestFocus();
     });
     
-    timer = new Timer(bang.getMsBetweenTicks(), new ActionListener() {
-        public void actionPerformed(ActionEvent ev) {
-            if (state.getTick() >= bang.getTickLimit() || bang.getStoppingPredicate().test(state.getModel())) {
-                stop();
-            } else {
-                state.updateForTick(bang.getTickHandler().apply(state.getModel()));
-                renderAndShowGraphic();
-            }
-        }
-    });
-    
     timer.start();
+  }
+
+  private void handle(final TraceEvent event) {
+    trace.append(event);
+    M before = state.getModel();
+    M after = event.process(bang, before);
+    state.update("model after " + event.getKind(), after);
+    renderAndShowGraphic();
   }
 
   private void renderAndShowGraphic() {
@@ -135,6 +137,23 @@ public class BigBangFrame<M> extends JFrame {
   private void setGraphic(Graphic graphic) {
     AbstractGraphic abstractGraphic = (AbstractGraphic)graphic;
     graphicCanvas.setGraphic(abstractGraphic.getImplementation());
+  }
+
+  public Sequence<TraceEvent> getSequenceOfEvents() {
+    return trace.getEventSequence();
+  }
+
+  public Sequence<M> getSequenceOfModels() {
+    //TODO: make lazy
+    return reduce(
+      (Sequence<M> models, TraceEvent ev) -> cons(ev.process(bang, models.first()), models), 
+      empty(), 
+      trace.getEventSequence()
+    );
+  }
+
+  public Sequence<Graphic> getSequenceOfGraphics() {
+    return map((M model) -> bang.getRenderer().apply(model), getSequenceOfModels());
   }
 
 }

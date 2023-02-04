@@ -278,4 +278,22 @@ public class Sequences {
     return result;
   }
 
+  //--- from Strings
+  public static Sequence<Character> ofStringCharacters(String string) {
+    Sequence<Character> result = empty();
+    for (int i = string.length() - 1; i >= 0; i--) {
+      result = cons(string.charAt(i), result);
+    }
+    return result;
+  }
+
+  public static Sequence<String> ofStringLines(String string) {
+    final String[] lines = string.split(System.lineSeparator());
+    Sequence<String> result = empty();
+    for (int i = lines.length - 1; i >= 0; i--) {
+      result = cons(lines[i], result);
+    }
+    return result;
+  }
+
 }

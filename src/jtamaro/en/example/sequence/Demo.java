@@ -20,7 +20,8 @@ import static jtamaro.en.Sequences.concat;
 import static jtamaro.en.Sequences.zip;
 import static jtamaro.en.Sequences.zipWithIndex;
 import static jtamaro.en.Sequences.crossProduct;
-
+import static jtamaro.en.Sequences.ofStringLines;
+import static jtamaro.en.Sequences.ofStringCharacters;
 public class Demo {
   
   public static void main(String[] args) {
@@ -97,6 +98,12 @@ public class Demo {
     println(zipWithIndex(range('A', (char)('Z'+1))));
 
     println(crossProduct(range('A', 'D'), range(1, 3)));
+
+    println(ofStringCharacters("ABC"));
+
+    println(ofStringLines("Hello\nWorld!\nHow are you?"));
+
+    println(map(line -> ofStringCharacters(line), ofStringLines("ABC\nCDE\nEFG")));
   }
 
 }

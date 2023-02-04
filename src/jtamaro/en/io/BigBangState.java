@@ -29,10 +29,13 @@ public class BigBangState<M> {
     }
   }
 
-  public void updateForTick(M model) {
-    this.tick++;
-    update("model after tick", model);
+  public void tick() {
+    tick++;
   }
+  // public void updateForTick(M model) {
+  //   this.tick++;
+  //   update("model after tick", model);
+  // }
 
   public void update(String what, M model) {
     check(what, model);
