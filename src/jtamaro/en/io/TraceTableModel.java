@@ -72,7 +72,14 @@ public final class TraceTableModel implements TableModel {
     case INDEX_COLUMN:
       return rowIndex;
     case TIME_COLUMN:
-      return event.getTimeStamp();
+      TraceEvent first = trace.get(getRowCount() - 1);
+      long startTime = first.getTimeStamp();
+      long eventTime = event.getTimeStamp();
+      long delta = eventTime - startTime;
+      int minutes = (int) (delta / 60000);
+      int seconds = (int) ((delta % 60000) / 1000);
+      int millis = (int) (delta % 1000);
+      return String.format("%02d:%02d.%03d", minutes, seconds, millis);
     case EVENT_COLUMN:
       return event.getKind();
     default:
