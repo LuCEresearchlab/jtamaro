@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import static jtamaro.en.Sequences.map;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.BigBang;
+import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
@@ -31,6 +32,14 @@ public class IO {
     }
   }
 
+  /**
+   * Open a window showing the given color.
+   * @param color
+   */
+  public static void show(Color color) {
+    final ColorFrame frame = new ColorFrame(color.getImplementation());
+    frame.setVisible(true);
+  }
 
   /**
    * Open a window showing the given graphic.
