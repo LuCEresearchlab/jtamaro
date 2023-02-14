@@ -45,7 +45,8 @@ public class BigBangFrame<M> extends JFrame {
     });
   
     setTitle(bang.getName());
-    add(new BigBangToolbar<>(bang, state, timer, trace), BorderLayout.NORTH);
+    final BigBangToolbar<M> toolbar = new BigBangToolbar<>(bang, state, timer, trace);
+    add(toolbar, BorderLayout.NORTH);
 
     int canvasWidth = bang.getCanvasWidth();
     int canvasHeight = bang.getCanvasHeight();
@@ -108,6 +109,7 @@ public class BigBangFrame<M> extends JFrame {
     });
     
     timer.start();
+    toolbar.configureButtons(); // because timer is now running
   }
 
   private void handle(final TraceEvent event) {

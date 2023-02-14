@@ -25,7 +25,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     this.angle = angle;
     this.graphic = graphic;
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
-    path.transform(AffineTransform.getRotateInstance(Math.toRadians(angle)));
+    path.transform(AffineTransform.getRotateInstance(-Math.toRadians(angle)));
     setPath(path);
     setBaseY(getBBox().getMaxY());
     addBoundingBoxPoints();
@@ -43,7 +43,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
       final double xInGraphic = graphic.xForPoint(point);
       final double yInGraphic = graphic.yForPoint(point);
       if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
-        return Math.cos(-Math.toRadians(angle)) * xInGraphic - Math.sin(-Math.toRadians(angle)) * yInGraphic;
+        return Math.cos(Math.toRadians(angle)) * xInGraphic - Math.sin(Math.toRadians(angle)) * yInGraphic;
       } else {
         return Double.NaN;
       }
@@ -58,7 +58,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
       final double xInGraphic = graphic.xForPoint(point);
       final double yInGraphic = graphic.yForPoint(point);
       if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
-        return Math.sin(-Math.toRadians(angle)) * xInGraphic + Math.cos(-Math.toRadians(angle)) * yInGraphic;
+        return Math.sin(Math.toRadians(angle)) * xInGraphic + Math.cos(Math.toRadians(angle)) * yInGraphic;
       } else {
         return Double.NaN;
       }
@@ -69,7 +69,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   public void render(final Graphics2D g2, final RenderOptions o) {
     AffineTransform baseTransform = g2.getTransform();
 
-    g2.rotate(Math.toRadians(angle));
+    g2.rotate(-Math.toRadians(angle));
     graphic.render(g2, o);
 
     g2.setTransform(baseTransform);

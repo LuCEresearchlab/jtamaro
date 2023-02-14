@@ -50,8 +50,8 @@ public final class Op {
     return new GleichseitigesDreieck(seite, farbe);
   }
 
-  public static Grafik dreieck(double seite, Farbe farbe) {
-    return new Dreieck(seite, farbe);
+  public static Grafik dreieck(double seite1, double seite2, double winkel, Farbe farbe) {
+    return new Dreieck(seite1, seite2, winkel, farbe);
   }
 
 

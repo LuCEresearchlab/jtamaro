@@ -37,7 +37,7 @@ public class BigBangToolbar<M> extends JPanel {
     state.addBigBangStateListener(s -> {tickLabel.setText("" + s.getTick());});
   }
 
-  private void configureButtons() {
+  public void configureButtons() {
     startButton.setEnabled(!timer.isRunning());
     stopButton.setEnabled(timer.isRunning());
   }
