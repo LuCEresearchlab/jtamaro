@@ -18,9 +18,9 @@ public class Fireworks {
 
   private static Graphic pytamaroLogo(double size) {
     var logoRed = rgb(210, 7, 29);
-    var mountain = triangle(size, logoRed);
+    var mountain = equilateralTriangle(size, logoRed);
     var logoBlue = rgb(0, 139, 203);
-    var lake = rotate(180, triangle(size / 2, logoBlue));
+    var lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
     return compose(
       pin("middle", "bottom", lake),
       pin("left", "bottom",

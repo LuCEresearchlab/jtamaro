@@ -17,7 +17,7 @@ public class Demo {
     Grafik pacman = Op.drehe(45, pac);
     IO.zeige(pacman);
 
-    Grafik d = Op.dreieck(300, Farbe.MAGENTA);
+    Grafik d = Op.gleichseitigesDreieck(300, Farbe.MAGENTA);
     Grafik dr = Op.drehe(15, d);
     IO.zeige(dr);
 
@@ -26,8 +26,8 @@ public class Demo {
     Grafik ks = Op.neben(ka, kb);
     IO.zeige(ks);
 
-    Grafik da = Op.dreieck(300, Farbe.BLAU);
-    Grafik db = Op.dreieck(200, Farbe.CYAN);
+    Grafik da = Op.gleichseitigesDreieck(300, Farbe.BLAU);
+    Grafik db = Op.gleichseitigesDreieck(200, Farbe.CYAN);
     Grafik ds = Op.ueber(da, db);
     IO.zeige(ds);
 

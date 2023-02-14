@@ -6,6 +6,7 @@ import jtamaro.en.graphic.CircularSector;
 import jtamaro.en.graphic.Compose;
 import jtamaro.en.graphic.Ellipse;
 import jtamaro.en.graphic.EmptyGraphic;
+import jtamaro.en.graphic.EquilateralTriangle;
 import jtamaro.en.graphic.Overlay;
 import jtamaro.en.graphic.Pin;
 import jtamaro.en.graphic.Rectangle;
@@ -40,6 +41,11 @@ public final class Graphics {
 
   public static Graphic text(String content, String font, double points, Color color) {
     return new Text(content, font, points, color);
+  }
+
+  //OLD
+  public static Graphic equilateralTriangle(double side, Color color) {
+    return new EquilateralTriangle(side, color);
   }
 
   public static Graphic triangle(double side, Color color) {

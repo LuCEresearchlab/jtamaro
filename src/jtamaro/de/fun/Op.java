@@ -6,6 +6,7 @@ import jtamaro.de.oo.Drehe;
 import jtamaro.de.oo.Dreieck;
 import jtamaro.de.oo.Ellipse;
 import jtamaro.de.oo.Fixiere;
+import jtamaro.de.oo.GleichseitigesDreieck;
 import jtamaro.de.oo.Kombiniere;
 import jtamaro.de.oo.KreisSektor;
 import jtamaro.de.oo.LeereGrafik;
@@ -42,6 +43,11 @@ public final class Op {
 
   public static Grafik text(String inhalt, String schriftart, double punkte, Farbe farbe) {
     return new Text(inhalt, schriftart, punkte, farbe);
+  }
+
+  //OLD
+  public static Grafik gleichseitigesDreieck(double seite, Farbe farbe) {
+    return new GleichseitigesDreieck(seite, farbe);
   }
 
   public static Grafik dreieck(double seite, Farbe farbe) {
