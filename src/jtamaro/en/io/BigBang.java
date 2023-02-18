@@ -5,6 +5,8 @@ import jtamaro.en.Graphics;
 
 import java.util.function.*;
 
+import javax.swing.SwingUtilities;
+
 
 /**
  * A BigBang is the configuration for an interactive application or simulation.
@@ -286,7 +288,9 @@ public class BigBang<M> {
     }
    
     public void run() {
-        new BigBangFrame<>(this);
+        SwingUtilities.invokeLater(() -> {
+            new BigBangFrame<>(this);
+        });
     }
 
 }

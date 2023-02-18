@@ -2,6 +2,8 @@ package jtamaro.en;
 
 import java.io.IOException;
 
+import javax.swing.SwingUtilities;
+
 import static jtamaro.en.Sequences.map;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.BigBang;
@@ -32,8 +34,10 @@ public class IO {
    * @param color
    */
   public static void show(Color color) {
-    final ColorFrame frame = new ColorFrame(color.getImplementation());
-    frame.setVisible(true);
+    SwingUtilities.invokeLater(() -> {
+      final ColorFrame frame = new ColorFrame(color.getImplementation());
+      frame.setVisible(true);
+    });
   }
 
   /**
@@ -41,9 +45,11 @@ public class IO {
    * @param graphic
    */
   public static void show(Graphic graphic) {
-    final GraphicFrame frame = new GraphicFrame();
-    frame.setGraphic(((AbstractGraphic)graphic).getImplementation());
-    frame.setVisible(true);
+    SwingUtilities.invokeLater(() -> {
+      final GraphicFrame frame = new GraphicFrame();
+      frame.setGraphic(((AbstractGraphic)graphic).getImplementation());
+      frame.setVisible(true);
+    });
   }
 
   /**
@@ -81,8 +87,10 @@ public class IO {
    * @param graphics sequence of graphics (frames) to show in the film strip
    */
   public static void showFilmStrip(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
-    final FilmStripFrame frame = new FilmStripFrame(graphics, frameWidth, frameHeight);
-    frame.setVisible(true);
+    SwingUtilities.invokeLater(() -> {
+      final FilmStripFrame frame = new FilmStripFrame(graphics, frameWidth, frameHeight);
+      frame.setVisible(true);
+    });
   }
 
   /**

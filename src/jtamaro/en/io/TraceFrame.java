@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
 public class TraceFrame extends JFrame {
   
   public TraceFrame(final Trace trace) {

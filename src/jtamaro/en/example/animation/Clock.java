@@ -22,6 +22,7 @@ import static jtamaro.en.Colors.RED;
 import static jtamaro.en.Colors.TRANSPARENT;
 import static jtamaro.en.IO.showFilmStrip;
 import static jtamaro.en.IO.animate;
+import static jtamaro.en.IO.interact;
 
 
 public class Clock {
@@ -38,7 +39,7 @@ public class Clock {
 
   private static int winkel(int schritte, int schritte_pro_umdrehung) {
     //return -360 * schritte / schritte_pro_umdrehung; // PyTamaro
-    return 360 * schritte / schritte_pro_umdrehung;
+    return -360 * schritte / schritte_pro_umdrehung;
   }
 
   private static Graphic hintergrund(double durchmesser) {
@@ -122,7 +123,7 @@ public class Clock {
   }
 
   public static void main(String[] args) {
-    int durchmesser = 200;
+    int durchmesser = 300;
     // int stunden = 12;
     // int minuten = 30;
     // int sekunden = 10;
@@ -131,6 +132,13 @@ public class Clock {
     Sequence<Graphic> animation = map(s -> uhr(durchmesser, (s / 60) / 60, s / 60, s), from(0));
     showFilmStrip(animation, durchmesser, durchmesser);
     animate(animation, true, 1000);
+    
+    interact(0)
+      .withCanvasSize(durchmesser, durchmesser)
+      .withMsBetweenTicks(1000)
+      .withTickHandler(time -> time + 1)
+      .withRenderer(time -> uhr(durchmesser, (time / 60) / 60, time / 60, time))
+      .run();
   }
 
 }
