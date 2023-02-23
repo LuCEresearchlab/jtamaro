@@ -28,20 +28,20 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     path.transform(AffineTransform.getRotateInstance(-Math.toRadians(angle)));
     setPath(path);
     setBaseY(getBBox().getMaxY());
-    addBoundingBoxPoints();
+    addBoundingBoxLocations();
   }
 
   public double getAngle() {
     return angle;
   }
 
-  protected double xForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getX();
+  protected double xForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getX();
     } else {
       // rotate xInGraphic by angle
-      final double xInGraphic = graphic.xForPoint(point);
-      final double yInGraphic = graphic.yForPoint(point);
+      final double xInGraphic = graphic.xForLocation(location);
+      final double yInGraphic = graphic.yForLocation(location);
       if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
         return Math.cos(Math.toRadians(angle)) * xInGraphic - Math.sin(Math.toRadians(angle)) * yInGraphic;
       } else {
@@ -50,13 +50,13 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     }
   }
 
-  protected double yForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getY();
+  protected double yForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getY();
     } else {
       // rotate yInGraphic by angle
-      final double xInGraphic = graphic.xForPoint(point);
-      final double yInGraphic = graphic.yForPoint(point);
+      final double xInGraphic = graphic.xForLocation(location);
+      final double yInGraphic = graphic.yForLocation(location);
       if (!Double.isNaN(xInGraphic) && !Double.isNaN(yInGraphic)) {
         return Math.sin(Math.toRadians(angle)) * xInGraphic + Math.cos(Math.toRadians(angle)) * yInGraphic;
       } else {

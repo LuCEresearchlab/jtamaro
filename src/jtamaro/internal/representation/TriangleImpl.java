@@ -42,11 +42,9 @@ public final class TriangleImpl extends GraphicImpl {
 
     setPath(path);
     setBaseY(getBBox().getMaxY());
-    addBoundingBoxPoints();
-    addPoint(Place.CENTER, 0, 0);
-    //addPoint(Place.TOP, 0, -circumRadius);
-    //addPoint(Place.RIGHT, side / 2, inRadius);
-    //addPoint(Place.LEFT, -side / 2, inRadius);
+    addBoundingBoxLocations();
+    addLocation(Place.CENTER, 0, 0);
+    //addLocation(Place.ANGLE, -centroidX, -centroidY);
   }
 
   public ColorImpl getColor() {

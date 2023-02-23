@@ -21,15 +21,15 @@ public final class CircularSectorImpl extends GraphicImpl {
     final Arc2D.Double arc = new Arc2D.Double(-radius, -radius, radius * 2, radius * 2, 0, angle, Arc2D.PIE);
     setPath(new Path2D.Double(arc));
     setBaseY(radius); // even if below BB bottom
-    addBoundingBoxPoints();
-    addPoint(Place.CENTER, 0, 0);
-    addPoint(Place.BEGIN, radius, 0);
+    addBoundingBoxLocations();
+    addLocation(Place.CENTER, 0, 0);
+    addLocation(Place.BEGIN, radius, 0);
     final double angleRad = -angle * 2 * Math.PI / 360;
     // Note: The following ex, ey calculation only works for circle, not for ellipse
     // https://math.stackexchange.com/questions/493104/evaluating-int-ab-frac12-r2-mathrm-d-theta-to-find-the-area-of-an-ellips/687384#687384
     final double ex = radius * Math.cos(angleRad);
     final double ey = -radius * Math.sin(angleRad);
-    addPoint(Place.END, ex, ey);
+    addLocation(Place.END, ex, ey);
   }
 
   public ColorImpl getColor() {

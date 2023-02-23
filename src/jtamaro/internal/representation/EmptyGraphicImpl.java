@@ -13,7 +13,7 @@ public final class EmptyGraphicImpl extends GraphicImpl {
     path.moveTo(0, 0);
     setPath(path);
     setBaseY(0);
-    addBoundingBoxPoints();
+    addBoundingBoxLocations();
   }
 
   @Override

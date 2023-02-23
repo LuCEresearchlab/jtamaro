@@ -28,12 +28,12 @@ public final class TextImpl extends GraphicImpl {
     final GlyphVector glyphVector = font.createGlyphVector(frc, content);
     setPath(new Path2D.Double(glyphVector.getOutline()));
     setBaseY(0);
-    addBoundingBoxPoints();
+    addBoundingBoxLocations();
     // Those are bbox bounds on the baseline.
     // We could also add places for text-metric-based bounds (left, right).
-    addPoint(Place.BAL, getBBox().getMinX(), 0);
-    addPoint(Place.BAM, (getBBox().getMinX() + getBBox().getMaxX()) / 2, 0);
-    addPoint(Place.BAR, getBBox().getMaxX(), 0);
+    addLocation(Place.BAL, getBBox().getMinX(), 0);
+    addLocation(Place.BAM, (getBBox().getMinX() + getBBox().getMaxX()) / 2, 0);
+    addLocation(Place.BAR, getBBox().getMaxX(), 0);
   }
 
   public ColorImpl getColor() {

@@ -2,16 +2,16 @@ package jtamaro.internal.representation;
 
 
 /**
- * A point corresponds to a place on a specific graphic.
+ * A location corresponds to a place on a specific graphic.
  */
-public class Point {
+public class Location {
 
   private final GraphicImpl graphic;
   private final Place place;
   private final double x;
   private final double y;
 
-  public Point(final GraphicImpl graphic, final Place place, final double x, final double y) {
+  public Location(final GraphicImpl graphic, final Place place, final double x, final double y) {
     this.graphic = graphic;
     this.place = place;
     this.x = x;
@@ -31,7 +31,7 @@ public class Point {
   }
 
   public String toString() {
-    return "Point[graphic=" + graphic + ", place=" + place +"]";
+    return "Location[graphic=" + graphic + ", place=" + place +"]";
   }
 
 }

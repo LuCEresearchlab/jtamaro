@@ -10,7 +10,7 @@ import jtamaro.internal.gui.RenderOptions;
 
 public class PinPointImpl extends GraphicImpl implements CompositeImpl {
 
-  private final Point point;
+  private final Location location;
   private final GraphicImpl graphic;
   private final double dx;
   private final double dy;
@@ -18,42 +18,42 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
 
   // pin
   public PinPointImpl(Place place, GraphicImpl graphic) {
-    this(graphic.getPoint(place), graphic);
+    this(graphic.getLocation(place), graphic);
   }
 
   // pinPoint
-  public PinPointImpl(Point point, GraphicImpl graphic) {
+  public PinPointImpl(Location location, GraphicImpl graphic) {
     this.graphic = graphic;
-    this.point = point;
-    this.dx = graphic.xForPoint(point);
+    this.location = location;
+    this.dx = graphic.xForLocation(location);
     if (Double.isNaN(this.dx)) {
-      throw new IllegalArgumentException("pinPoint: " + point + " does not exist in " + graphic + ".");
+      throw new IllegalArgumentException("pinPoint: " + location + " does not exist in " + graphic + ".");
     }
-    this.dy = graphic.yForPoint(point);
+    this.dy = graphic.yForLocation(location);
     if (Double.isNaN(this.dy)) {
-      throw new IllegalArgumentException("pinPoint: " + point + " does not exist in " + graphic + ".");
+      throw new IllegalArgumentException("pinPoint: " + location + " does not exist in " + graphic + ".");
     }
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
     path.transform(AffineTransform.getTranslateInstance(-this.dx, -this.dy));
     setPath(path);
     setBaseY(graphic.getBaseY() - dy);
-    this.addBoundingBoxPoints();
+    this.addBoundingBoxLocations();
   }
 
-  protected double xForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getX();
+  protected double xForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getX();
     } else {
-      final double xInGraphic = graphic.xForPoint(point);
+      final double xInGraphic = graphic.xForLocation(location);
       return Double.isNaN(xInGraphic) ? Double.NaN : xInGraphic - this.dx;
     }
   }
 
-  protected double yForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getY();
+  protected double yForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getY();
     } else {
-      final double yInGraphic = graphic.yForPoint(point);
+      final double yInGraphic = graphic.yForLocation(location);
       return Double.isNaN(yInGraphic) ? Double.NaN : yInGraphic - this.dy;
     }
   }
@@ -71,7 +71,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
   @Override
   public void dump(StringBuilder sb, String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "point", ""+point);
+    appendField(sb, indent, "location", ""+location);
     appendChild(sb, indent, "graphic", graphic);
   }
 

@@ -26,18 +26,18 @@ public abstract class DelegatingGraphicImpl extends GraphicImpl {
   }
 
   @Override
-  public Point getPoint(final Place place) {
-    return delegate.getPoint(place);
+  public Location getLocation(final Place location) {
+    return delegate.getLocation(location);
   }
 
   @Override
-  protected double xForPoint(final Point point) {
-    return delegate.xForPoint(point);
+  protected double xForLocation(final Location location) {
+    return delegate.xForLocation(location);
   }
 
   @Override
-  protected double yForPoint(final Point point) {
-    return delegate.yForPoint(point);
+  protected double yForLocation(final Location location) {
+    return delegate.yForLocation(location);
   }
 
   @Override

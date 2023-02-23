@@ -21,17 +21,17 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     path.append(foregroundGraphic.getPath(), false);
     setPath(path);
     setBaseY(0);
-    addBoundingBoxPoints();
+    addBoundingBoxLocations();
   }
 
-  protected double xForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getX();
+  protected double xForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getX();
     } else {
-      final double xInBottom = backgroundGraphic.xForPoint(point);
-      final double xInTop = foregroundGraphic.xForPoint(point);
+      final double xInBottom = backgroundGraphic.xForLocation(location);
+      final double xInTop = foregroundGraphic.xForLocation(location);
       if (!Double.isNaN(xInBottom) && !Double.isNaN(xInTop)) {
-        throw new IllegalArgumentException(point + " exists multiple times in composition " + this + ". Did you add the same " + point.getGraphic() + " graphic twice?");
+        throw new IllegalArgumentException(location + " exists multiple times in composition " + this + ". Did you add the same " + location.getGraphic() + " graphic twice?");
       } else if (!Double.isNaN(xInBottom)) {
         return xInBottom;
       } else if (!Double.isNaN(xInTop)) {
@@ -42,14 +42,14 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     }
   }
 
-  protected double yForPoint(final Point point) {
-    if (point.getGraphic() == this) {
-      return point.getY();
+  protected double yForLocation(final Location location) {
+    if (location.getGraphic() == this) {
+      return location.getY();
     } else {
-      final double yInBottom = backgroundGraphic.yForPoint(point);
-      final double yInTop = foregroundGraphic.yForPoint(point);
+      final double yInBottom = backgroundGraphic.yForLocation(location);
+      final double yInTop = foregroundGraphic.yForLocation(location);
       if (!Double.isNaN(yInBottom) && !Double.isNaN(yInTop)) {
-        throw new IllegalArgumentException(point + " exists multiple times in composition " + this + ". Did you add the same " + point.getGraphic() + " graphic twice?");
+        throw new IllegalArgumentException(location + " exists multiple times in composition " + this + ". Did you add the same " + location.getGraphic() + " graphic twice?");
       } else if (!Double.isNaN(yInBottom)) {
         return yInBottom;
       } else if (!Double.isNaN(yInTop)) {

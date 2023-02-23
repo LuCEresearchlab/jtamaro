@@ -21,13 +21,13 @@ public abstract class GraphicImpl {
   
   private Path2D.Double path;
   private TightBoundingBox bbox;
-  private final HashMap<Place,Point> points;
+  private final HashMap<Place,Location> locations;
   private double baseY; // Y-coordinate of the graphic's baseline (especially for text)
 
 
   protected GraphicImpl() {
-    points = new HashMap<>();
-    addPoint(Place.PIN, 0, 0);
+    locations = new HashMap<>();
+    addLocation(Place.PIN, 0, 0);
   }
 
   /**
@@ -46,40 +46,40 @@ public abstract class GraphicImpl {
     this.baseY = baseY;
   }
 
-  protected final void addPoint(final Place place, final double x, final double y) {
-    points.put(place, new Point(this, place, x, y));
+  protected final void addLocation(final Place place, final double x, final double y) {
+    locations.put(place, new Location(this, place, x, y));
   }
 
-  protected final void addBoundingBoxPoints() {
-    this.addPoint(Place.TL, bbox.getMinX(), bbox.getMinY());
-    this.addPoint(Place.ML, bbox.getMinX(), (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addPoint(Place.BL, bbox.getMinX(), bbox.getMaxY());
-    this.addPoint(Place.TM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMinY());
-    this.addPoint(Place.MM, (bbox.getMinX()+bbox.getMaxX())/2, (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addPoint(Place.BM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMaxY());
-    this.addPoint(Place.TR, bbox.getMaxX(), bbox.getMinY());
-    this.addPoint(Place.MR, bbox.getMaxX(), (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addPoint(Place.BR, bbox.getMaxX(), bbox.getMaxY());
+  protected final void addBoundingBoxLocations() {
+    this.addLocation(Place.TL, bbox.getMinX(), bbox.getMinY());
+    this.addLocation(Place.ML, bbox.getMinX(), (bbox.getMinY()+bbox.getMaxY())/2);
+    this.addLocation(Place.BL, bbox.getMinX(), bbox.getMaxY());
+    this.addLocation(Place.TM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMinY());
+    this.addLocation(Place.MM, (bbox.getMinX()+bbox.getMaxX())/2, (bbox.getMinY()+bbox.getMaxY())/2);
+    this.addLocation(Place.BM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMaxY());
+    this.addLocation(Place.TR, bbox.getMaxX(), bbox.getMinY());
+    this.addLocation(Place.MR, bbox.getMaxX(), (bbox.getMinY()+bbox.getMaxY())/2);
+    this.addLocation(Place.BR, bbox.getMaxX(), bbox.getMaxY());
   }
 
   public TightBoundingBox getBBox() {
     return bbox;
   }
 
-  public Point getPoint(final Place place) {
-    final Point point = points.get(place);
+  public Location getLocation(final Place place) {
+    final Location point = locations.get(place);
     if (point != null) {
       return point;
     } else {
-      throw new IllegalArgumentException("getPoint: Place "+place+" does not exist in graphic "+this);
+      throw new IllegalArgumentException("getLocation: Place "+place+" does not exist in graphic "+this);
     }
   }
 
-  protected double xForPoint(final Point point) {
+  protected double xForLocation(final Location point) {
     return point.getGraphic() == this ? point.getX() : Double.NaN;
   }
 
-  protected double yForPoint(final Point point) {
+  protected double yForLocation(final Location point) {
     return point.getGraphic() == this ? point.getY() : Double.NaN;
   }
 
