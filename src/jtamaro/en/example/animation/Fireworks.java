@@ -23,11 +23,11 @@ public class Fireworks {
     var logoBlue = rgb(0, 139, 203);
     var lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
     return compose(
-      pin(BOTTOM_MIDDLE, lake),
+      pin(BOTTOM_CENTER, lake),
       pin(BOTTOM_LEFT,
         compose(
           pin(BOTTOM_RIGHT, mountain),
-          pin(BOTTOM_MIDDLE, lake)
+          pin(BOTTOM_CENTER, lake)
         )
       )
     );

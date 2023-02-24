@@ -22,7 +22,7 @@ public class CogWheel {
     final double angleRad = angle * 2 * Math.PI / 360;
     final double width = Math.sin(angleRad / 2) * diameter;
     final double height = Math.cos(angleRad / 2) * outerDiameter / 2;
-    return pin(BOTTOM_MIDDLE, rectangle(width, height, color));
+    return pin(BOTTOM_CENTER, rectangle(width, height, color));
   }
 
   private static Graphic cogs(double innerDiameter, double outerDiameter, int toothCount, Color color) {

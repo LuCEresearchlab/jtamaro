@@ -37,8 +37,8 @@ public class Clock {
 
   private static Graphic zeiger(double lange_laenge, double kurze_laenge, double breite) {
     return compose(
-        pin(BOTTOM_MIDDLE, rectangle(breite, lange_laenge, BLACK)),
-        pin(TOP_MIDDLE, rectangle(breite, kurze_laenge, BLACK))
+        pin(BOTTOM_CENTER, rectangle(breite, lange_laenge, BLACK)),
+        pin(TOP_CENTER, rectangle(breite, kurze_laenge, BLACK))
     );
   }
 
@@ -56,13 +56,13 @@ public class Clock {
     Graphic kurzer_teil = rectangle(breite, 0.165 * durchmesser, RED);
     Graphic scheibe = kreis(0.105 * durchmesser, RED);
     return compose(
-        pin(BOTTOM_MIDDLE,
+        pin(BOTTOM_CENTER,
             compose(
-                pin(MIDDLE, scheibe),
-                pin(TOP_MIDDLE, langer_teil)
+                pin(CENTER, scheibe),
+                pin(TOP_CENTER, langer_teil)
             )
         ),
-        pin(TOP_MIDDLE, kurzer_teil)
+        pin(TOP_CENTER, kurzer_teil)
     );    
   }
 
@@ -78,10 +78,10 @@ public class Clock {
     double innen_radius = aussen_radius - laenge;
     Graphic strich = rectangle(breite, laenge, BLACK);
     Graphic luecke = rectangle(breite, innen_radius, TRANSPARENT);
-    Graphic positionierter_strich = pin(BOTTOM_MIDDLE, 
+    Graphic positionierter_strich = pin(BOTTOM_CENTER, 
         compose(
-            pin(BOTTOM_MIDDLE, strich),
-            pin(TOP_MIDDLE, luecke)
+            pin(BOTTOM_CENTER, strich),
+            pin(TOP_CENTER, luecke)
         )
     );
     return ueberlagere_mehrere(
