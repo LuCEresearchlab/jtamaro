@@ -2,6 +2,7 @@ package jtamaro.de.fun;
 
 import jtamaro.de.Farbe;
 import jtamaro.de.Grafik;
+import jtamaro.de.Punkt;
 import jtamaro.de.oo.Drehe;
 import jtamaro.de.oo.Dreieck;
 import jtamaro.de.oo.Ellipse;
@@ -60,8 +61,8 @@ public final class Op {
     return new Drehe(winkel, grafik);
   }
 
-  public static Grafik fixiere(String horizontalePosition, String vertikalePosition, Grafik grafik) {
-    return new Fixiere(horizontalePosition, vertikalePosition, grafik);
+  public static Grafik fixiere(Punkt punkt, Grafik grafik) {
+    return new Fixiere(punkt, grafik);
   }
 
   

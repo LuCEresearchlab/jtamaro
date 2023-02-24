@@ -24,8 +24,8 @@ public final class RectangleImpl extends GraphicImpl {
     path.lineTo(-width / 2, height / 2);
     path.closePath();
     setPath(path);
-    setBaseY(height / 2);
-    addBoundingBoxLocations();
+    //setBaseY(height / 2);
+    //addBoundingBoxLocations();
   }
 
   public ColorImpl getColor() {

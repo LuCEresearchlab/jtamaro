@@ -45,8 +45,7 @@ public final class GraphicPropertiesPanel extends JPanel {
     } else {
       label.setText("<html><b>" + graphic.getClass().getSimpleName()+"</b>" +
         "<br>width: " + graphic.getWidth() +
-        "<br>height: " + graphic.getHeight() +
-        "<br>baseY: " + graphic.getBaseY());
+        "<br>height: " + graphic.getHeight());
       canvas.setGraphic(graphic);
       canvasRenderOptions.clearSelection();
       canvasRenderOptions.select(graphic);

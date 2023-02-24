@@ -19,6 +19,10 @@ public final class TriangleImpl extends GraphicImpl {
   private final double side2;
   private final double angle;
   private final ColorImpl color;
+  private final Location centroid;
+  private final Location angleVertex;
+  private final Location side1End;
+  private final Location side2End;
 
 
   public TriangleImpl(final double side1, final double side2, final double angle, final ColorImpl color) {
@@ -41,10 +45,32 @@ public final class TriangleImpl extends GraphicImpl {
     path.transform(AffineTransform.getTranslateInstance(-centroidX, -centroidY));
 
     setPath(path);
-    setBaseY(getBBox().getMaxY());
-    addBoundingBoxLocations();
-    addLocation(Place.CENTER, 0, 0);
+    //setBaseY(getBBox().getMaxY());
+    //addBoundingBoxLocations();
+    //addLocation(Place.CENTER, 0, 0);
     //addLocation(Place.ANGLE, -centroidX, -centroidY);
+    // new Point API
+    centroid = new Location(this, 0, 0);
+    angleVertex = new Location(this, -centroidX, -centroidY);
+    side1End = new Location(this, side1 - centroidX, -centroidY);
+    side2End = new Location(this, thirdPointX - centroidX, thirdPointY - centroidY);
+  }
+
+  // new Point API
+  public Location getCentroid() {
+    return centroid;
+  }
+
+  public Location getAngleVertex() {
+    return angleVertex;
+  }
+
+  public Location getSide1End() {
+    return side1End;
+  }
+
+  public Location getSide2End() {
+    return side2End;
   }
 
   public ColorImpl getColor() {

@@ -11,8 +11,8 @@ public final class OverlayImpl extends DelegatingGraphicImpl implements Composit
 
   public OverlayImpl(GraphicImpl foregroundGraphic, GraphicImpl backgroundGraphic) {
     super(new ComposeImpl(
-      new PinPointImpl(Place.MM, foregroundGraphic), 
-      new PinPointImpl(Place.MM, backgroundGraphic)));
+      new PinPointImpl(PointImpl.MIDDLE, foregroundGraphic), 
+      new PinPointImpl(PointImpl.MIDDLE, backgroundGraphic)));
     this.foregroundGraphic = foregroundGraphic;
     this.backgroundGraphic = backgroundGraphic;
   }

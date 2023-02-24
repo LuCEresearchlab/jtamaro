@@ -1,16 +1,10 @@
 package jtamaro.en.example.animation;
 
 import jtamaro.en.Graphic;
-import static jtamaro.en.IO.animate;
-import static jtamaro.en.Colors.BLUE;
-import static jtamaro.en.Colors.BLACK;
-import static jtamaro.en.Graphics.ellipse;
-import static jtamaro.en.Graphics.rectangle;
-import static jtamaro.en.Graphics.overlay;
-import static jtamaro.en.Sequences.cycle;
-import static jtamaro.en.Sequences.range;
-import static jtamaro.en.Sequences.map;
-import static jtamaro.en.Sequences.concat;
+import static jtamaro.en.IO.*;
+import static jtamaro.en.Colors.*;
+import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Sequences.*;
 
 
 public class PulsingCircle {

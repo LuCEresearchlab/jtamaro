@@ -15,10 +15,9 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
   private final double dx;
   private final double dy;
 
-
   // pin
-  public PinPointImpl(Place place, GraphicImpl graphic) {
-    this(graphic.getLocation(place), graphic);
+  public PinPointImpl(PointImpl point, GraphicImpl graphic) {
+    this(graphic.getLocation(point), graphic);
   }
 
   // pinPoint
@@ -36,8 +35,8 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
     final Path2D.Double path = new Path2D.Double(graphic.getPath());
     path.transform(AffineTransform.getTranslateInstance(-this.dx, -this.dy));
     setPath(path);
-    setBaseY(graphic.getBaseY() - dy);
-    this.addBoundingBoxLocations();
+    //setBaseY(graphic.getBaseY() - dy);
+    //this.addBoundingBoxLocations();
   }
 
   protected double xForLocation(final Location location) {

@@ -6,6 +6,7 @@ import jtamaro.en.Sequence;
 
 import static jtamaro.en.Sequences.*;
 import static jtamaro.en.Colors.*;
+import static jtamaro.en.Points.*;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.*;
 
@@ -22,11 +23,11 @@ public class Fireworks {
     var logoBlue = rgb(0, 139, 203);
     var lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
     return compose(
-      pin("middle", "bottom", lake),
-      pin("left", "bottom",
+      pin(BOTTOM_MIDDLE, lake),
+      pin(BOTTOM_LEFT,
         compose(
-          pin("right", "bottom", mountain),
-          pin("middle", "bottom", lake)
+          pin(BOTTOM_RIGHT, mountain),
+          pin(BOTTOM_MIDDLE, lake)
         )
       )
     );
@@ -46,7 +47,7 @@ public class Fireworks {
       final int c = (int)(band + 2 * BANDS - BANDS * (time + time_offset)) % BANDS;
       final Color color = COLORS.get(c);
       final double radius = 1 + size / BANDS * band;
-      final Graphic sector = pin("left", "top", circularSector(radius, angle, color));
+      final Graphic sector = pin(TOP_LEFT, circularSector(radius, angle, color));
       result = compose(result, sector);
     }
     return result;
@@ -61,7 +62,7 @@ public class Fireworks {
       final int v = (int)(band + 2 * BANDS - BANDS * (time + timeOffset)) % BANDS;
       final Color color = hsv(hue, 1, v / (double)BANDS);
       final double radius = 1 + size / BANDS * band;
-      final Graphic sector = pin("left", "top", circularSector(radius, angle, color));
+      final Graphic sector = pin(BOTTOM_LEFT, circularSector(radius, angle, color));
       result = compose(result, sector);
     }
     return result;
@@ -81,7 +82,6 @@ public class Fireworks {
       compose(
         center(size, time, YELLOW_HUE),
         compose(
-          //TODO: We use opposite rotation direction from PyTamaro (fix PyTamaro?)
           rotate(-5, streaks(12, 10, RED_HUE, 0, size, time)),
           compose(
             rotate(-2.5 + 15, streaks(6, 5, BLUE_HUE, 1.0 / 3, size, time)),
@@ -95,16 +95,16 @@ public class Fireworks {
 
   private static Graphic frame(double size, double time) {
     return compose(
-      pin("right", "bottom", 
+      pin(BOTTOM_RIGHT, 
         above(
           pytamaroLogo(size / 8),
           above(
             rectangle(1, size / 40, TRANSPARENT),
-            text("Made with PyTamaro", "Din Alternate", size / 20, WHITE)
+            text("Made with JTamaro", "Din Alternate", size / 20, WHITE)
           )
         )
       ),
-      pin("right", "bottom", 
+      pin(BOTTOM_RIGHT, 
         overlay(
           above(
             text("Happy New Year!", "Din Alternate", size / 4, rgb(255, 255, 255, 0.8)),

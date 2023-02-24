@@ -3,7 +3,7 @@ package jtamaro.internal.representation;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
-import java.util.HashMap;
+//import java.util.HashMap;
 
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
@@ -12,22 +12,80 @@ import jtamaro.internal.gui.RenderOptions;
 public abstract class GraphicImpl {
 
   private static final Color OUTLINE_COLOR = new Color(200, 0, 100);
-  private static final Color BASELINE_COLOR = new Color(0, 200, 100);
+  //private static final Color BASELINE_COLOR = new Color(0, 200, 100);
   private static final Color BOUNDING_BOX_COLOR = new Color(0, 100, 200);
   private static final Color HOLE_COLOR = new Color(0, 0, 0);
   private static final int POINT_INNER_RADIUS = 5;
   private static final int POINT_OUTER_RADIUS = 7;
   private static final int POINT_SHADOW_RADIUS = 9;
   
+
   private Path2D.Double path;
   private TightBoundingBox bbox;
-  private final HashMap<Place,Location> locations;
-  private double baseY; // Y-coordinate of the graphic's baseline (especially for text)
+  private final Location pin;
+  //private final HashMap<Place,Location> locations;
+  //private double baseY; // Y-coordinate of the graphic's baseline (especially for text)
 
 
   protected GraphicImpl() {
-    locations = new HashMap<>();
-    addLocation(Place.PIN, 0, 0);
+    //locations = new HashMap<>();
+    //addLocation(Place.PIN, 0, 0);
+    pin = new Location(this, 0, 0);
+  }
+
+  // new Point API
+  public Location getLocation(PointImpl point) {
+    // point.x == -1 corresponds to bbox.getMinX()
+    // point.x == 0 corresponds to (bbox.getMinX() + bbox.getMaxX()) / 2
+    // point.x == 1 corresponds to bbox.getMaxX()
+    final double xForPointX0 = (bbox.getMinX() + bbox.getMaxX()) / 2; // corresponding to point.x == 0
+    final double yForPointY0 = (bbox.getMinY() + bbox.getMaxY()) / 2; // corresponding to point.y == 0
+    final double dxForPointX1 = bbox.getWidth() / 2;
+    final double dyForPointY1 = bbox.getHeight() / 2;
+    final double x = xForPointX0 + point.getX() * dxForPointX1;
+    final double y = yForPointY0 + point.getY() * dyForPointY1;
+    return new Location(this, x, y);
+  }
+
+  // noteable locations (points on bounding box) for all graphics
+  public Location getPin() {
+    return pin;
+  }
+
+  public Location getTopLeft() {
+    return getLocation(PointImpl.TOP_LEFT);
+  }
+
+  public Location getTopMiddle() {
+    return getLocation(PointImpl.TOP_MIDDLE);
+  }
+
+  public Location getTopRight() {
+    return getLocation(PointImpl.TOP_RIGHT);
+  }
+
+  public Location getMiddleLeft() {
+    return getLocation(PointImpl.MIDDLE_LEFT);
+  }
+
+  public Location getMiddle() {
+    return getLocation(PointImpl.MIDDLE);
+  }
+
+  public Location getMiddleRight() {
+    return getLocation(PointImpl.MIDDLE_RIGHT);
+  }
+
+  public Location getBottomLeft() {
+    return getLocation(PointImpl.BOTTOM_LEFT);
+  }
+
+  public Location getBottomMiddle() {
+    return getLocation(PointImpl.BOTTOM_MIDDLE);
+  }
+
+  public Location getBottomRight() {
+    return getLocation(PointImpl.BOTTOM_RIGHT);
   }
 
   /**
@@ -42,12 +100,13 @@ public abstract class GraphicImpl {
     bbox = new TightBoundingBox(path);
   }
 
-  protected final void setBaseY(final double baseY) {
-    this.baseY = baseY;
-  }
+  //protected final void setBaseY(final double baseY) {
+  //  this.baseY = baseY;
+  //}
 
-  protected final void addLocation(final Place place, final double x, final double y) {
-    locations.put(place, new Location(this, place, x, y));
+  /**
+  protected final void addLocation(final PointImpl point, final double x, final double y) {
+    locations.put(point, new Location(this, point, x, y));
   }
 
   protected final void addBoundingBoxLocations() {
@@ -61,11 +120,13 @@ public abstract class GraphicImpl {
     this.addLocation(Place.MR, bbox.getMaxX(), (bbox.getMinY()+bbox.getMaxY())/2);
     this.addLocation(Place.BR, bbox.getMaxX(), bbox.getMaxY());
   }
+  */
 
   public TightBoundingBox getBBox() {
     return bbox;
   }
 
+  /*
   public Location getLocation(final Place place) {
     final Location point = locations.get(place);
     if (point != null) {
@@ -74,13 +135,14 @@ public abstract class GraphicImpl {
       throw new IllegalArgumentException("getLocation: Place "+place+" does not exist in graphic "+this);
     }
   }
+  */
 
-  protected double xForLocation(final Location point) {
-    return point.getGraphic() == this ? point.getX() : Double.NaN;
+  protected double xForLocation(final Location location) {
+    return location.getGraphic() == this ? location.getX() : Double.NaN;
   }
 
-  protected double yForLocation(final Location point) {
-    return point.getGraphic() == this ? point.getY() : Double.NaN;
+  protected double yForLocation(final Location location) {
+    return location.getGraphic() == this ? location.getY() : Double.NaN;
   }
 
   public void renderOutline(Graphics2D g2) {
@@ -88,11 +150,13 @@ public abstract class GraphicImpl {
     g2.draw(getPath());
   }
 
+  /*
   public void renderBaseline(Graphics2D g2) {
     final TightBoundingBox bbox = getBBox();
     g2.setColor(BASELINE_COLOR);
     g2.drawLine((int)bbox.getMinX(), (int)getBaseY(), (int)bbox.getMaxX(), (int)getBaseY());
   }
+  */
 
   public void renderBounds(Graphics2D g2) {
     final TightBoundingBox bbox = getBBox();
@@ -136,7 +200,7 @@ public abstract class GraphicImpl {
   public void drawDebugInfo(Graphics2D g2, RenderOptions o) {
     if (o.isSelected(this)) {
       renderOutline(g2);
-      renderBaseline(g2);
+      //renderBaseline(g2);
       renderBounds(g2);
       renderBoundingBoxPoints(g2);
       renderHole(g2);
@@ -154,7 +218,7 @@ public abstract class GraphicImpl {
     sb.append(indent + getClass().getSimpleName() + "\n");
     appendField(sb, indent, "width", ""+getWidth());
     appendField(sb, indent, "height", ""+getHeight());
-    appendField(sb, indent, "baseY", ""+getBaseY());
+    //appendField(sb, indent, "baseY", ""+getBaseY());
   }
 
   protected final void appendField(StringBuilder sb, String indent, String name, String value) {
@@ -191,9 +255,9 @@ public abstract class GraphicImpl {
   /**
    * Get the location of the baseline (from pinhole, i.e., from y = 0).
    */
-  public double getBaseY() {
-    return baseY;
-  }
+  //public double getBaseY() {
+  //  return baseY;
+  //}
 
   public Path2D.Double getPath() {
     return path;

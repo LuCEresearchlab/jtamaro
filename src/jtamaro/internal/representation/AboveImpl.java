@@ -11,8 +11,8 @@ public final class AboveImpl extends DelegatingGraphicImpl implements CompositeI
 
   public AboveImpl(GraphicImpl topGraphic, GraphicImpl bottomGraphic) {
     super(new ComposeImpl(
-      new PinPointImpl(Place.BM, topGraphic), 
-      new PinPointImpl(Place.TM, bottomGraphic)));
+      new PinPointImpl(PointImpl.BOTTOM_MIDDLE, topGraphic), 
+      new PinPointImpl(PointImpl.TOP_MIDDLE, bottomGraphic)));
     this.topGraphic = topGraphic;
     this.bottomGraphic = bottomGraphic;
   }

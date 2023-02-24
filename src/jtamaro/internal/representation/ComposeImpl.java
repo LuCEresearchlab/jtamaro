@@ -20,8 +20,8 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     path.append(backgroundGraphic.getPath(), false);
     path.append(foregroundGraphic.getPath(), false);
     setPath(path);
-    setBaseY(0);
-    addBoundingBoxLocations();
+    //setBaseY(0);
+    //addBoundingBoxLocations();
   }
 
   protected double xForLocation(final Location location) {

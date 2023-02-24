@@ -5,6 +5,7 @@ import jtamaro.en.Graphic;
 
 import static jtamaro.en.Sequences.*;
 import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Points.*;
 import static jtamaro.en.Colors.*;
 import static jtamaro.en.IO.*;
 
@@ -111,7 +112,7 @@ public class TriangleDemo {
       (Graphic a, Graphic b) -> compose(a, b),
       emptyGraphic(),
       map(
-        i -> rotate(i * 360.0 / sides, pin("left", "bottom", triangle(radius, radius, 360.0 / sides, hsv(i * 360.0 / sides, 1, 1)))),
+        i -> rotate(i * 360.0 / sides, pin(BOTTOM_LEFT, triangle(radius, radius, 360.0 / sides, hsv(i * 360.0 / sides, 1, 1)))),
         range(sides)
       )
     );

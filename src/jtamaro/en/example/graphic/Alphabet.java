@@ -152,12 +152,10 @@ public class Alphabet {
   static {
     GLYPH_ELEMENTS.put(' ', (size, color) -> rectangle(size, size, TRANSPARENT));
     GLYPH_ELEMENTS.put('■', (size, color) -> rectangle(size, size, color));
-    GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(0, circularSector(size, 90, color)));
-    //GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(90, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(270, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(180, circularSector(size, 90, color)));
-    //GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(270, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(90, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, circularSector(size, 90, color)));
   }
 
   private static Graphic renderLetter(char symbol, double size) {

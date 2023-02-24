@@ -82,8 +82,8 @@ public final class Graphics {
     return new Rotate(degrees, graphic);
   }
 
-  public static Graphic pin(String horizontalPlace, String verticalPlace, Graphic graphic) {
-    return new Pin(horizontalPlace, verticalPlace, graphic);
+  public static Graphic pin(Point point, Graphic graphic) {
+    return new Pin(point, graphic);
   }
 
   

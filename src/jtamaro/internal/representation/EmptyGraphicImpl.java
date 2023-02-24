@@ -12,8 +12,8 @@ public final class EmptyGraphicImpl extends GraphicImpl {
     final Path2D.Double path = new Path2D.Double();
     path.moveTo(0, 0);
     setPath(path);
-    setBaseY(0);
-    addBoundingBoxLocations();
+    //setBaseY(0);
+    //addBoundingBoxLocations();
   }
 
   @Override

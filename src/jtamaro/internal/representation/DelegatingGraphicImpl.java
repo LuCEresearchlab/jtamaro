@@ -26,8 +26,8 @@ public abstract class DelegatingGraphicImpl extends GraphicImpl {
   }
 
   @Override
-  public Location getLocation(final Place location) {
-    return delegate.getLocation(location);
+  public Location getLocation(final PointImpl point) {
+    return delegate.getLocation(point);
   }
 
   @Override
@@ -50,10 +50,12 @@ public abstract class DelegatingGraphicImpl extends GraphicImpl {
     return delegate.getHeight();
   }
 
+  /*
   @Override
   public double getBaseY() {
     return delegate.getBaseY();
   }
+  */
 
   @Override
   public Path2D.Double getPath() {

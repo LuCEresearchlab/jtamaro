@@ -11,8 +11,8 @@ public final class BesideImpl extends DelegatingGraphicImpl implements Composite
 
   public BesideImpl(GraphicImpl leftGraphic, GraphicImpl rightGraphic) {
     super(new ComposeImpl(
-      new PinPointImpl(Place.MR, leftGraphic), 
-      new PinPointImpl(Place.ML, rightGraphic)));
+      new PinPointImpl(PointImpl.MIDDLE_RIGHT, leftGraphic), 
+      new PinPointImpl(PointImpl.MIDDLE_LEFT, rightGraphic)));
     this.leftGraphic = leftGraphic;
     this.rightGraphic = rightGraphic;
   }

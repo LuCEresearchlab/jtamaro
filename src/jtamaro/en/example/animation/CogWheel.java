@@ -4,20 +4,11 @@ import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 
-import static jtamaro.en.IO.animate;
-import static jtamaro.en.IO.saveAnimatedGif;
-import static jtamaro.en.Colors.WHITE;
-import static jtamaro.en.Colors.TRANSPARENT;
-import static jtamaro.en.Colors.rgb;
-import static jtamaro.en.Graphics.ellipse;
-import static jtamaro.en.Graphics.rectangle;
-import static jtamaro.en.Graphics.pin;
-import static jtamaro.en.Graphics.compose;
-import static jtamaro.en.Graphics.emptyGraphic;
-import static jtamaro.en.Graphics.rotate;
-import static jtamaro.en.Sequences.range;
-import static jtamaro.en.Sequences.map;
-import static jtamaro.en.Sequences.cycle;
+import static jtamaro.en.IO.*;
+import static jtamaro.en.Colors.*;
+import static jtamaro.en.Points.*;
+import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Sequences.*;
 
 
 public class CogWheel {
@@ -31,7 +22,7 @@ public class CogWheel {
     final double angleRad = angle * 2 * Math.PI / 360;
     final double width = Math.sin(angleRad / 2) * diameter;
     final double height = Math.cos(angleRad / 2) * outerDiameter / 2;
-    return pin("middle", "bottom", rectangle(width, height, color));
+    return pin(BOTTOM_MIDDLE, rectangle(width, height, color));
   }
 
   private static Graphic cogs(double innerDiameter, double outerDiameter, int toothCount, Color color) {

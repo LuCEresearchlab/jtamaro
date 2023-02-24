@@ -1,14 +1,10 @@
 package jtamaro.en.example.animation;
 
 import jtamaro.en.Graphic;
-import static jtamaro.en.IO.showFilmStrip;
-import static jtamaro.en.Colors.BLACK;
-import static jtamaro.en.Colors.YELLOW;
-import static jtamaro.en.Graphics.text;
-import static jtamaro.en.Graphics.rectangle;
-import static jtamaro.en.Graphics.overlay;
-import static jtamaro.en.Sequences.from;
-import static jtamaro.en.Sequences.map;
+import static jtamaro.en.IO.*;
+import static jtamaro.en.Colors.*;
+import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Sequences.*;
 
 
 public class InfiniteFilm {

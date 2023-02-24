@@ -24,12 +24,12 @@ public final class EquilateralTriangleImpl extends GraphicImpl {
     path.lineTo(-side / 2, inRadius);
     path.closePath();
     setPath(path);
-    setBaseY(getBBox().getMaxY());
-    addBoundingBoxLocations();
-    addLocation(Place.CENTER, 0, 0);
-    addLocation(Place.TOP, 0, -circumRadius);
-    addLocation(Place.RIGHT, side / 2, inRadius);
-    addLocation(Place.LEFT, -side / 2, inRadius);
+    //setBaseY(getBBox().getMaxY());
+    //addBoundingBoxLocations();
+    //addLocation(Place.CENTER, 0, 0);
+    //addLocation(Place.TOP, 0, -circumRadius);
+    //addLocation(Place.RIGHT, side / 2, inRadius);
+    //addLocation(Place.LEFT, -side / 2, inRadius);
   }
 
   public ColorImpl getColor() {
