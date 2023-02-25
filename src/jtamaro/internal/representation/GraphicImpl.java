@@ -18,6 +18,12 @@ public abstract class GraphicImpl {
   private static final int POINT_INNER_RADIUS = 5;
   private static final int POINT_OUTER_RADIUS = 7;
   private static final int POINT_SHADOW_RADIUS = 9;
+  private static final int CROSS_INNER_LINE_WIDTH = 2;
+  private static final int CROSS_OUTER_LINE_WIDTH = 6;
+  private static final int CROSS_SHADOW_LINE_WIDTH = 10;
+  private static final int CROSS_INNER_SIZE = 20;
+  private static final int CROSS_OUTER_SIZE = 24;
+  private static final int CROSS_SHADOW_SIZE = 28;
   
 
   private Path2D.Double path;
@@ -173,9 +179,25 @@ public abstract class GraphicImpl {
     g2.fillOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
   }
 
+  public void renderPin(Graphics2D g2, double x, double y, Color color) {
+    g2.setColor(new Color(0, 0, 0, 16));
+    g2.fillRoundRect((int)x - CROSS_SHADOW_LINE_WIDTH / 2, (int)y - CROSS_SHADOW_SIZE / 2, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
+    g2.fillRoundRect((int)x - CROSS_SHADOW_SIZE / 2, (int)y - CROSS_SHADOW_LINE_WIDTH / 2, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
+    g2.fillOval((int)x - POINT_SHADOW_RADIUS, (int)y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
+    g2.setColor(Color.WHITE);
+    g2.fillRoundRect((int)x - CROSS_OUTER_LINE_WIDTH / 2, (int)y - CROSS_OUTER_SIZE / 2, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
+    g2.fillRoundRect((int)x - CROSS_OUTER_SIZE / 2, (int)y - CROSS_OUTER_LINE_WIDTH / 2, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
+    g2.fillOval((int)x - POINT_OUTER_RADIUS, (int)y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
+    g2.setColor(color);
+    g2.fillRoundRect((int)x - CROSS_INNER_LINE_WIDTH / 2, (int)y - CROSS_INNER_SIZE / 2, CROSS_INNER_LINE_WIDTH, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
+    g2.fillRoundRect((int)x - CROSS_INNER_SIZE / 2, (int)y - CROSS_INNER_LINE_WIDTH / 2, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
+    g2.fillOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
+  }
+
   public void renderHole(Graphics2D g2) {
     // hole is always at 0, 0
-    this.renderPoint(g2, 0, 0, HOLE_COLOR);
+    //this.renderPoint(g2, 0, 0, HOLE_COLOR);
+    this.renderPin(g2, 0, 0, HOLE_COLOR);
   }
 
   public void renderBoundingBoxPoints(Graphics2D g2) {
