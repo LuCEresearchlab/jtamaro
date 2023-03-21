@@ -13,10 +13,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import jtamaro.en.Graphic;
+import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
 import static jtamaro.en.Sequences.zipWithIndex;
 import static jtamaro.en.Sequences.reduce;
-import jtamaro.en.data.Pair;
 
 
 public final class FilmStripFrame extends JFrame {

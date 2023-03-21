@@ -1,27 +1,11 @@
 package jtamaro.en.example.sequence;
 
 import jtamaro.en.Sequence;
-import static jtamaro.en.IO.print;
-import static jtamaro.en.IO.println;
-import static jtamaro.en.Sequences.range;
-import static jtamaro.en.Sequences.filter;
-import static jtamaro.en.Sequences.intersperse;
-import static jtamaro.en.Sequences.of;
-import static jtamaro.en.Sequences.map;
-import static jtamaro.en.Sequences.mapToString;
-import static jtamaro.en.Sequences.take;
-import static jtamaro.en.Sequences.drop;
-import static jtamaro.en.Sequences.reduce;
-import static jtamaro.en.Sequences.repeat;
-import static jtamaro.en.Sequences.replicate;
-import static jtamaro.en.Sequences.iterate;
-import static jtamaro.en.Sequences.cycle;
-import static jtamaro.en.Sequences.concat;
-import static jtamaro.en.Sequences.zip;
-import static jtamaro.en.Sequences.zipWithIndex;
-import static jtamaro.en.Sequences.crossProduct;
-import static jtamaro.en.Sequences.ofStringLines;
-import static jtamaro.en.Sequences.ofStringCharacters;
+import jtamaro.en.Pair;
+import static jtamaro.en.IO.*;
+import static jtamaro.en.Sequences.*;
+import static jtamaro.en.Pairs.*;
+
 public class Demo {
   
   public static void main(String[] args) {
@@ -96,6 +80,14 @@ public class Demo {
     println(zip(of("a", "b", "c"), of(1, 2, 3)));
 
     println(zipWithIndex(range('A', (char)('Z'+1))));
+
+    Pair<Sequence<Character>, Sequence<Integer>> pair = unzip(of(pair('A', 1), pair('B', 2), pair('C', 3)));
+    println(pair.first());
+    println(pair.second());
+
+    Pair<Sequence<Integer>,Sequence<Integer>> pair2 = unzip(zip(from(0), from(1)));
+    println(take(5, firstElement(pair2)));
+    println(take(5, secondElement(pair2)));
 
     println(crossProduct(range('A', 'D'), range(1, 3)));
 

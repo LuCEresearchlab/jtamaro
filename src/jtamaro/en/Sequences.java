@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.LazyCons;
-import jtamaro.en.data.Pair;
 
 /**
  * A collection of static methods for working with sequences in JTamaro.
@@ -116,6 +115,14 @@ public class Sequences {
     }
   }
 
+  public static Sequence<Integer> rangeClosed(int from, int to) {
+    return null; // TODO
+  }
+
+  public static Sequence<Integer> rangeClosed(int from, int to, int step) {
+    return null; // TODO
+  }
+
   public static Sequence<Character> range(char toExclusive) {
     return range((char)0, toExclusive);
   }
@@ -126,6 +133,14 @@ public class Sequences {
 
   public static Sequence<Character> range(char from, char toExclusive, int step) {
     return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, step));
+  }
+
+  public static Sequence<Character> rangeClosed(char from, char to) {
+    return null; // TODO
+  }
+
+  public static Sequence<Character> rangeClosed(char from, char to, int step) {
+    return null; // TODO
   }
 
   public static <T> Sequence<T> repeat(T element) {
@@ -242,6 +257,25 @@ public class Sequences {
 
   public static <T,U> Sequence<Pair<T,Integer>> zipWithIndex(Sequence<T> sequence) {
     return zip(sequence, from(0));
+  }
+
+  public static <F,S> Pair<Sequence<F>,Sequence<S>> unzip(Sequence<Pair<F,S>> sequence) {
+    if (sequence.isEmpty()) {
+      return new Pair<>(empty(), empty());
+    } else {
+      return new Pair<>(
+        lazyCons(
+          sequence.first().first(),
+          () -> unzip(sequence.rest()).first(),
+          sequence.rest().hasDefiniteSize()
+        ),
+        lazyCons(
+          sequence.first().second(),
+          () -> unzip(sequence.rest()).second(),
+          sequence.rest().hasDefiniteSize()
+        )
+      );
+    }
   }
 
   public static <T,U> Sequence<Pair<T,U>> crossProduct(Sequence<T> first, Sequence<U> second) {

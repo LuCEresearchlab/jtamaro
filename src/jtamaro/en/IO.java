@@ -29,6 +29,22 @@ public class IO {
     }
   }
 
+  // The show methods open an entire world of visualization of program state.
+  // There are a lot of open questions.
+  // Right now there are just a couple of special-purpose methods,
+  // to show a color or a graphic.
+  // But we could create a general show method, that could show anything,
+  // including a Pair (containing two values that themselves can be shown),
+  // or a Sequence (containing many values that themselves can be shown).
+  // How to show such data structures is an open question.
+  // We could show it as a stack-and-heap diagram,
+  // with arrows between cells.
+  // This reminds me of Erich Gamma's Eclipse Spider plugin,
+  // that allowed incrementally unfolding a data structure shown as a graph
+  // (I think the Eclipse plugins or something).
+  // We could show it using nesting (given the immutable sublanguage we use,
+  // there are no cycles and thus nesting works fine; just some duplication in case of dags).
+
   /**
    * Open a window showing the given color.
    * @param color
@@ -51,6 +67,16 @@ public class IO {
       frame.setVisible(true);
     });
   }
+
+  // TODO: show(Point)
+  // showing a Point, in a -1 ... +1 coordinate system, with a crosshair, 
+  // and special highlighting if it's one of the nine standard points
+
+  // TODO: show(Pair)
+  // showing a Pair, as two cells, where each cell renders whatever it contains (incl. a Graphic, Color, Point, Sequence, ...)
+
+  // TODO: show(Sequence)
+  // show a Sequence, as a list, where each cell renders whatever it contains (incl. a Graphic, Color, Point, Sequence, ...)
 
   /**
    * Open a window with a looped animation of the given graphics,
