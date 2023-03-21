@@ -20,13 +20,22 @@ public class IO {
     for (T element : sequence) {
       System.out.print(element);
     }
-    System.out.println();
   }
 
   public static <T> void println(Sequence<T> sequence) {
     for (T element : sequence) {
       System.out.println(element);
     }
+  }
+
+  public static <F,S> void print(Pair<F,S> pair) {
+    System.out.print(pair.first());
+    System.out.print(pair.second());
+  }
+
+  public static <F,S> void println(Pair<F,S> pair) {
+    System.out.println(pair.first());
+    System.out.println(pair.second());
   }
 
   // The show methods open an entire world of visualization of program state.
