@@ -1,10 +1,5 @@
 package jtamaro.en;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.LazyCons;
@@ -79,7 +74,7 @@ public class Sequences {
     return new Cons<T>(first, rest);
   }
 
-  private static <T> Sequence<T> lazyCons(T first, Supplier<Sequence<T>> restSupplier, boolean hasDefiniteSize) {
+  private static <T> Sequence<T> lazyCons(T first, Function0<Sequence<T>> restSupplier, boolean hasDefiniteSize) {
     return new LazyCons<T>(first, restSupplier, hasDefiniteSize);
   }
 
@@ -169,7 +164,7 @@ public class Sequences {
     }
   }
 
-  public static <T> Sequence<T> iterate(Function<T, T> f, T seed) {
+  public static <T> Sequence<T> iterate(Function1<T, T> f, T seed) {
     return lazyCons(seed, () -> iterate(f, f.apply(seed)), false);
   }
 
@@ -190,7 +185,7 @@ public class Sequences {
     return sequence;
   }
 
-  public static <T,U> Sequence<U> map(Function<T, U> f, Sequence<T> sequence) {
+  public static <T,U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return empty();
     } else {
@@ -202,7 +197,7 @@ public class Sequences {
     return map(Object::toString, sequence);
   }
 
-  public static <T,U> Sequence<U> flatMap(Function<T, Sequence<U>> f, Sequence<T> sequence) {
+  public static <T,U> Sequence<U> flatMap(Function1<T, Sequence<U>> f, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return empty();
     } else {
@@ -210,12 +205,12 @@ public class Sequences {
     }
   }
 
-  public static <T> Sequence<T> filter(Predicate<T> predicate, Sequence<T> sequence) {
+  public static <T> Sequence<T> filter(Function1<T,Boolean> predicate, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return sequence;
     } else {
       Sequence<T> current = sequence;
-      while (!current.isEmpty() && !predicate.test(current.first())) {
+      while (!current.isEmpty() && !predicate.apply(current.first())) {
           current = current.rest();
       }
       final Sequence<T> finalCurrent = current;
@@ -288,7 +283,7 @@ public class Sequences {
 
 
   //--- folding
-  public static <T,U> U reduce(BiFunction<U, T, U> f, U initial, Sequence<T> sequence) {
+  public static <T,U> U reduce(Function2<U, T, U> f, U initial, Sequence<T> sequence) {
     U result = initial;
     for (T element : sequence) {
       result = f.apply(result, element);
