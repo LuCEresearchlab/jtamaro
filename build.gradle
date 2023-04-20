@@ -1,0 +1,128 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+archivesBaseName = rootProject.name
+group = 'jtamaro'
+version = '1.0.0'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+javadoc {
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.addStringOption 'Xdoclint:all,-missing', '-quiet'
+}
+
+sourceSets {
+    main.java.srcDirs 'src'
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+                'Implementation-Title': rootProject.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+def localProps = new Properties()
+def localPropsFile = project.rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localProps.load localPropsFile.newDataInputStream()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = 'Central'
+            url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = localProps.getProperty 'repo.central.username', ''
+                password = localProps.getProperty 'repo.central.password', ''
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = rootProject.name
+            groupId = 'jtamaro'
+            setVersion(project.version)
+
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf 'runtimeClasspath'
+                }
+                usage('java-runtime') {
+                    fromResolutionResult
+                }
+            }
+            pom {
+                name = 'Jtamaro'
+                description = ''
+                url = 'https://github.com/LuCEresearchlab/jtamaro'
+                developers {
+                    developer {
+                        name = 'hauswirth'
+                    }
+                }
+                /*
+                licenses {
+                    license {
+                        name = ''
+                        url = ''
+                    }
+                }
+                */
+                scm {
+                    connection = 'scm:git:git://github.com/LuCEresearchlab/jtamaro.git'
+                    developerConnection = 'scm:git:git://github.com/LuCEresearchlab/jtamaro.git'
+                    url = 'https://github.com/LuCEresearchlab/jtamaro/tree/main'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    def signingKeyPath = localProps.getProperty 'signing.secretKeyFile', ''
+    if (signingKeyPath == '') {
+        required { false }
+    } else {
+        required { true }
+
+        def signingPassword = localProps.getProperty 'signing.password', ''
+        def signingKeyFile = file(rootProject.rootDir.absolutePath + '/' + signingKeyPath)
+
+        if (signingKeyFile.exists()) {
+            useInMemoryPgpKeys signingKeyFile.text, signingPassword
+        }
+    }
+    sign publishing.publications.mavenJava
+}
