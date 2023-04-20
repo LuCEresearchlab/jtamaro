@@ -35,6 +35,7 @@ public class Interaction<M> {
   private final int msBetweenTicks;
   private final long tickLimit;
   private final String name;
+  private final Graphic background;
   // debugging options
   private final boolean showState;
   private final boolean recording;
@@ -66,6 +67,7 @@ public class Interaction<M> {
     recording = false;
     recordingDirectoryName = ".";
     wellFormedWorldPredicate = (m) -> true;
+    background = null;
   }
 
   // copy constructor
@@ -89,6 +91,7 @@ public class Interaction<M> {
       int msBetweenTicks,
       long tickLimit,
       String name,
+      Graphic background,
       // debugging options
       boolean showState,
       boolean recording,
@@ -114,6 +117,7 @@ public class Interaction<M> {
     this.msBetweenTicks = msBetweenTicks;
     this.tickLimit = tickLimit;
     this.name = name;
+    this.background = background;
     this.showState = showState;
     this.recording = recording;
     this.recordingDirectoryName = recordingDirectoryName;
@@ -125,7 +129,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withTickHandler(Function<M, M> tickHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public Function<M, M> getTickHandler() {
@@ -133,7 +137,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withMsBetweenTicks(int msBetweenTicks) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public int getMsBetweenTicks() {
@@ -141,7 +145,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withTickLimit(long tickLimit) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public long getTickLimit() {
@@ -149,7 +153,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withKeyPressHandler(BiFunction<M, KeyboardKey, M> keyPressHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public BiFunction<M, KeyboardKey, M> getKeyPressHandler() {
@@ -157,7 +161,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withKeyReleaseHandler(BiFunction<M, KeyboardKey, M> keyReleaseHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public BiFunction<M, KeyboardKey, M> getKeyReleaseHandler() {
@@ -165,7 +169,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withKeyTypeHandler(BiFunction<M, KeyboardChar, M> keyTypeHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public BiFunction<M, KeyboardChar, M> getKeyTypeHandler() {
@@ -173,7 +177,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withMousePressHandler(TriFunction<M, Coordinate, MouseButton, M> mousePressHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public TriFunction<M, Coordinate, MouseButton, M> getMousePressHandler() {
@@ -181,7 +185,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withMouseReleaseHandler(TriFunction<M, Coordinate, MouseButton, M> mouseReleaseHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public TriFunction<M, Coordinate, MouseButton, M> getMouseReleaseHandler() {
@@ -189,7 +193,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withMouseMoveHandler(BiFunction<M, Coordinate, M> mouseMoveHandler) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public BiFunction<M, Coordinate, M> getMouseMoveHandler() {
@@ -197,15 +201,15 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withRenderer(Function<M, Graphic> renderer) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public Function<M, Graphic> getRenderer() {
-    return renderer;
+    return renderWithBg(renderer);
   }
 
   public Interaction<M> withCanvasSize(int canvasWidth, int canvasHeight) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public int getCanvasWidth() {
@@ -217,7 +221,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withFullScreen(boolean fullScreen) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public boolean getFullScreen() {
@@ -225,7 +229,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withStoppingPredicate(Predicate<M> stoppingPredicate) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public Predicate<M> getStoppingPredicate() {
@@ -233,15 +237,15 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withFinalGraphicRenderer(Function<M, Graphic> finalGraphicRenderer) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public Function<M, Graphic> getFinalGraphicRenderer() {
-    return finalGraphicRenderer;
+    return renderWithBg(finalGraphicRenderer);
   }
 
   public Interaction<M> withCloseOnStop(boolean closeOnStop, double closeOnStopDelay) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public boolean getCloseOnStop() {
@@ -253,7 +257,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withWellFormedPredicate(Predicate<M> wellFormedWorldPredicate) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public Predicate<M> getWellFormedWorldPredicate() {
@@ -261,7 +265,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withRecording(boolean recording, String recordingDirectoryName) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public boolean getRecording() {
@@ -273,7 +277,7 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withShowState(boolean showState) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public boolean getShowState() {
@@ -281,7 +285,11 @@ public class Interaction<M> {
   }
 
   public Interaction<M> withName(String name) {
-    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
+  }
+
+  public Interaction<M> withBackground(Graphic background) {
+    return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
   public String getName() {
@@ -289,9 +297,12 @@ public class Interaction<M> {
   }
 
   public void run() {
-    SwingUtilities.invokeLater(() -> {
-      new BigBangFrame<>(this);
-    });
+    SwingUtilities.invokeLater(() -> new BigBangFrame<>(this));
   }
 
+  private Function<M, Graphic> renderWithBg(Function<M, Graphic> fgRender) {
+    return background == null
+        ? fgRender
+        : m -> Graphics.overlay(fgRender.apply(m), background);
+  }
 }
