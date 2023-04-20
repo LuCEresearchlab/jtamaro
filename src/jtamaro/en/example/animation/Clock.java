@@ -4,11 +4,11 @@ import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 
-import static jtamaro.en.Sequences.*;
-import static jtamaro.en.Graphics.*;
-import static jtamaro.en.Points.*;
 import static jtamaro.en.Colors.*;
+import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.*;
+import static jtamaro.en.Points.*;
+import static jtamaro.en.Sequences.*;
 
 
 public class Clock {
@@ -63,13 +63,13 @@ public class Clock {
             )
         ),
         pin(TOP_CENTER, kurzer_teil)
-    );    
+    );
   }
 
   private static Graphic ueberlagere_mehrere(Sequence<Graphic> grafiken) {
     Graphic resultat = emptyGraphic();
     for (Graphic grafik : grafiken) {
-        resultat = compose(resultat, grafik);
+      resultat = compose(resultat, grafik);
     }
     return resultat;
   }
@@ -78,14 +78,14 @@ public class Clock {
     double innen_radius = aussen_radius - laenge;
     Graphic strich = rectangle(breite, laenge, BLACK);
     Graphic luecke = rectangle(breite, innen_radius, TRANSPARENT);
-    Graphic positionierter_strich = pin(BOTTOM_CENTER, 
+    Graphic positionierter_strich = pin(BOTTOM_CENTER,
         compose(
             pin(BOTTOM_CENTER, strich),
             pin(TOP_CENTER, luecke)
         )
     );
     return ueberlagere_mehrere(
-      map(w -> { return rotate(w, positionierter_strich); }, range(0, 360, zwischen_winkel))
+        map(w -> rotate(w, positionierter_strich), range(0, 360, zwischen_winkel))
     );
   }
 
@@ -118,13 +118,13 @@ public class Clock {
     Sequence<Graphic> animation = map(s -> uhr(durchmesser, (s / 60) / 60, s / 60, s), from(0));
     showFilmStrip(animation, durchmesser, durchmesser);
     animate(animation, true, 1000);
-    
+
     interact(0)
-      .withCanvasSize(durchmesser, durchmesser)
-      .withMsBetweenTicks(1000)
-      .withTickHandler(time -> time + 1)
-      .withRenderer(time -> uhr(durchmesser, (time / 60) / 60, time / 60, time))
-      .run();
+        .withCanvasSize(durchmesser, durchmesser)
+        .withMsBetweenTicks(1000)
+        .withTickHandler(time -> time + 1)
+        .withRenderer(time -> uhr(durchmesser, (time / 60) / 60, time / 60, time))
+        .run();
   }
 
 }

@@ -15,9 +15,10 @@ public class Colors {
 
   /**
    * Returns a fully opaque Color with the given red (R), green (G), and blue (B) values.
-   * @param red red component [0-255]
+   *
+   * @param red   red component [0-255]
    * @param green green component [0-255]
-   * @param blue blue component [0-255]
+   * @param blue  blue component [0-255]
    * @return a Color with the provided RGB components
    */
   public static Color rgb(int red, int green, int blue) {
@@ -27,11 +28,12 @@ public class Colors {
   /**
    * Returns a Color with the given components for red (R), green (G), and blue (B),
    * and a certain degree of opacity (alpha, A).
-   * @param red red component [0-255]
-   * @param green green component [0-255]
-   * @param blue blue component [0-255]
+   *
+   * @param red     red component [0-255]
+   * @param green   green component [0-255]
+   * @param blue    blue component [0-255]
    * @param opacity opacity (alpha) of the color, where 0 means fully
-           transparent and 1 fully opaque.
+   *                transparent and 1 fully opaque.
    * @return a Color with the provided RGBA components
    */
   public static Color rgb(int red, int green, int blue, double opacity) {
@@ -41,16 +43,16 @@ public class Colors {
     assert opacity >= 0 && opacity <= 1;
     return new Color(red, green, blue, opacity);
   }
-  
+
   /**
    * Returns a fully opaque Color with the provided hue (H), saturation (S), lightness (L).
-   * 
+   * <p>
    * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
-   * 
-   * @param hue hue of the color [0-360]
+   *
+   * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
-   * @param lightness the amount of white or black applied [0-1].
-   *        Fully saturated colors have a lightness value of 1/2.
+   * @param lightness  the amount of white or black applied [0-1].
+   *                   Fully saturated colors have a lightness value of 1/2.
    * @return a Color with the provided HSL components
    */
   public static Color hsl(double hue, double saturation, double lightness) {
@@ -60,15 +62,15 @@ public class Colors {
   /**
    * Returns a Color with the provided hue (H), saturation (S), lightness (L),
    * and a certain degree of opacity (alpha, A).
-   * 
+   * <p>
    * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
-   * 
-   * @param hue hue of the color [0-360]
+   *
+   * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
-   * @param lightness the amount of white or black applied [0-1].
-   *        Fully saturated colors have a lightness value of 1/2.
-   * @param opacity opacity (alpha) of the color, where 0 means fully
-            transparent and 1 fully opaque.
+   * @param lightness  the amount of white or black applied [0-1].
+   *                   Fully saturated colors have a lightness value of 1/2.
+   * @param opacity    opacity (alpha) of the color, where 0 means fully
+   *                   transparent and 1 fully opaque.
    * @return a Color with the provided HSLA components
    */
   public static Color hsl(double hue, double saturation, double lightness, double opacity) {
@@ -81,13 +83,13 @@ public class Colors {
 
   /**
    * Returns a fully opaque Color with the provided hue (H), saturation (S), value (V).
-   * 
+   * <p>
    * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
-   * 
-   * @param hue hue of the color [0-360]
+   *
+   * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
-   * @param value the amount of light that is applied [0-1]
-   * @return a Color with the provided HSV components.  
+   * @param value      the amount of light that is applied [0-1]
+   * @return a Color with the provided HSV components.
    */
   public static Color hsv(double hue, double saturation, double value) {
     return hsv(hue, saturation, value, 1);
@@ -96,14 +98,14 @@ public class Colors {
   /**
    * Returns a Color with the provided hue (H), saturation (S), value (V),
    * and a certain degree of opacity (alpha, A).
-   * 
+   * <p>
    * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
-   * 
-   * @param hue hue of the color [0-360]
+   *
+   * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
-   * @param value the amount of light that is applied [0-1]
-   * @param opacity opacity (alpha) of the color, where 0 means fully
-   *        transparent and 1 fully opaque.
+   * @param value      the amount of light that is applied [0-1]
+   * @param opacity    opacity (alpha) of the color, where 0 means fully
+   *                   transparent and 1 fully opaque.
    * @return a Color with the provided HSVA components.
    */
   public static Color hsv(double hue, double saturation, double value, double opacity) {

@@ -3,19 +3,7 @@ package jtamaro.de.fun;
 import jtamaro.de.Farbe;
 import jtamaro.de.Grafik;
 import jtamaro.de.Punkt;
-import jtamaro.de.oo.Drehe;
-import jtamaro.de.oo.Dreieck;
-import jtamaro.de.oo.Ellipse;
-import jtamaro.de.oo.Fixiere;
-import jtamaro.de.oo.GleichseitigesDreieck;
-import jtamaro.de.oo.Kombiniere;
-import jtamaro.de.oo.KreisSektor;
-import jtamaro.de.oo.LeereGrafik;
-import jtamaro.de.oo.Neben;
-import jtamaro.de.oo.Rechteck;
-import jtamaro.de.oo.Text;
-import jtamaro.de.oo.Ueber;
-import jtamaro.de.oo.Ueberlagere;
+import jtamaro.de.oo.*;
 
 
 public final class Op {
@@ -23,7 +11,7 @@ public final class Op {
   // prevent instantiation
   private Op() {
   }
-  
+
 
   //-- nullary graphic operations
   public static Grafik leereGrafik() {
@@ -65,7 +53,7 @@ public final class Op {
     return new Fixiere(punkt, grafik);
   }
 
-  
+
   //-- binary graphic operations
   public static Grafik kombiniere(Grafik vordereGrafik, Grafik hintereGrafik) {
     return new Kombiniere(vordereGrafik, hintereGrafik);

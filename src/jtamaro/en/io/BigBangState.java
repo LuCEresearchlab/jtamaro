@@ -1,11 +1,12 @@
 package jtamaro.en.io;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BigBangState<M> {
 
-  private final ArrayList<BigBangStateListener<M>> listeners = new ArrayList<>();
+  private final List<BigBangStateListener<M>> listeners = new ArrayList<>();
   private final Interaction<M> bang;
   private long tick;
   private M model;
@@ -20,12 +21,12 @@ public class BigBangState<M> {
   }
 
   private void check(String what, M model) {
-    System.out.println("Checking " + what +": " + model);
+    System.out.println("Checking " + what + ": " + model);
     if (model == null) {
-        throw new IllegalStateException(what + " is null");
+      throw new IllegalStateException(what + " is null");
     }
     if (!bang.getWellFormedWorldPredicate().test(model)) {
-        throw new IllegalStateException(what + " is not well formed");
+      throw new IllegalStateException(what + " is not well formed");
     }
   }
 

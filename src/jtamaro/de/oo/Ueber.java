@@ -8,8 +8,8 @@ public final class Ueber extends AbstrakteGrafik {
 
   public Ueber(Grafik obereGrafik, Grafik untereGrafik) {
     super(new AboveImpl(
-      ((AbstrakteGrafik)obereGrafik).getImplementation(),
-      ((AbstrakteGrafik)untereGrafik).getImplementation()));
+        ((AbstrakteGrafik) obereGrafik).getImplementation(),
+        ((AbstrakteGrafik) untereGrafik).getImplementation()));
   }
 
 }

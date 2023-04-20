@@ -4,11 +4,12 @@ import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 
-import static jtamaro.en.Sequences.*;
 import static jtamaro.en.Colors.*;
-import static jtamaro.en.Points.*;
 import static jtamaro.en.Graphics.*;
-import static jtamaro.en.IO.*;
+import static jtamaro.en.IO.animate;
+import static jtamaro.en.Points.*;
+import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Sequences.range;
 
 public class Fireworks {
 
@@ -23,13 +24,13 @@ public class Fireworks {
     var logoBlue = rgb(0, 139, 203);
     var lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
     return compose(
-      pin(BOTTOM_CENTER, lake),
-      pin(BOTTOM_LEFT,
-        compose(
-          pin(BOTTOM_RIGHT, mountain),
-          pin(BOTTOM_CENTER, lake)
+        pin(BOTTOM_CENTER, lake),
+        pin(BOTTOM_LEFT,
+            compose(
+                pin(BOTTOM_RIGHT, mountain),
+                pin(BOTTOM_CENTER, lake)
+            )
         )
-      )
     );
   }
 
@@ -41,10 +42,10 @@ public class Fireworks {
 
   private static Graphic streakPrecomputeColors(double angle, double hue, double time_offset, double size, double time) {
     final int BANDS = 20;
-    final Sequence<Color> COLORS = map(v -> hsv(hue, 1, v / (double)BANDS), range(BANDS));
+    final Sequence<Color> COLORS = map(v -> hsv(hue, 1, v / (double) BANDS), range(BANDS));
     Graphic result = emptyGraphic();
     for (int band : range(BANDS)) {
-      final int c = (int)(band + 2 * BANDS - BANDS * (time + time_offset)) % BANDS;
+      final int c = (int) (band + 2 * BANDS - BANDS * (time + time_offset)) % BANDS;
       final Color color = COLORS.get(c);
       final double radius = 1 + size / BANDS * band;
       final Graphic sector = pin(TOP_LEFT, circularSector(radius, angle, color));
@@ -59,15 +60,15 @@ public class Fireworks {
     final int BANDS = 20;
     Graphic result = emptyGraphic();
     for (int band : range(BANDS)) {
-      final int v = (int)(band + 2 * BANDS - BANDS * (time + timeOffset)) % BANDS;
-      final Color color = hsv(hue, 1, v / (double)BANDS);
+      final int v = (int) (band + 2 * BANDS - BANDS * (time + timeOffset)) % BANDS;
+      final Color color = hsv(hue, 1, v / (double) BANDS);
       final double radius = 1 + size / BANDS * band;
       final Graphic sector = pin(BOTTOM_LEFT, circularSector(radius, angle, color));
       result = compose(result, sector);
     }
     return result;
   }
-    
+
   private static Graphic streaks(int count, double angle, double hue, double timeOffset, double size, double time) {
     var streaks = emptyGraphic();
     for (var s : range(count)) {
@@ -79,51 +80,51 @@ public class Fireworks {
 
   private static Graphic fireworks(double size, double time) {
     return overlay(
-      compose(
-        center(size, time, YELLOW_HUE),
         compose(
-          rotate(-5, streaks(12, 10, RED_HUE, 0, size, time)),
-          compose(
-            rotate(-2.5 + 15, streaks(6, 5, BLUE_HUE, 1.0 / 3, size, time)),
-            rotate(-2.5 - 15, streaks(6, 5, GREEN_HUE, 2.0 / 3, size, time))
-          )
-        )
-      ),
-      rectangle(2 * size + 1, 2 * size + 1, BLACK)
+            center(size, time, YELLOW_HUE),
+            compose(
+                rotate(-5, streaks(12, 10, RED_HUE, 0, size, time)),
+                compose(
+                    rotate(-2.5 + 15, streaks(6, 5, BLUE_HUE, 1.0 / 3, size, time)),
+                    rotate(-2.5 - 15, streaks(6, 5, GREEN_HUE, 2.0 / 3, size, time))
+                )
+            )
+        ),
+        rectangle(2 * size + 1, 2 * size + 1, BLACK)
     );
   }
 
   private static Graphic frame(double size, double time) {
     return compose(
-      pin(BOTTOM_RIGHT, 
-        above(
-          pytamaroLogo(size / 8),
-          above(
-            rectangle(1, size / 40, TRANSPARENT),
-            text("Made with JTamaro", "Din Alternate", size / 20, WHITE)
-          )
+        pin(BOTTOM_RIGHT,
+            above(
+                pytamaroLogo(size / 8),
+                above(
+                    rectangle(1, size / 40, TRANSPARENT),
+                    text("Made with JTamaro", "Din Alternate", size / 20, WHITE)
+                )
+            )
+        ),
+        pin(BOTTOM_RIGHT,
+            overlay(
+                above(
+                    text("Happy New Year!", "Din Alternate", size / 4, rgb(255, 255, 255, 0.8)),
+                    text("With Enlightening Compositions!", "Fira Sans", size / 8, WHITE)
+                ),
+                fireworks(size, time)
+            )
         )
-      ),
-      pin(BOTTOM_RIGHT, 
-        overlay(
-          above(
-            text("Happy New Year!", "Din Alternate", size / 4, rgb(255, 255, 255, 0.8)),
-            text("With Enlightening Compositions!", "Fira Sans", size / 8, WHITE)
-          ),
-          fireworks(size, time)
-        )
-      )
     );
   }
 
   public static void main(String[] args) {
     animate(
-      map(
-        t -> frame(200, t / 20.0), 
-        range(20)
-      ),
-      true,
-      1
+        map(
+            t -> frame(200, t / 20.0),
+            range(20)
+        ),
+        true,
+        1
     );
   }
 

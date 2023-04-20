@@ -8,8 +8,8 @@ public final class Above extends AbstractGraphic {
 
   public Above(Graphic topGraphic, Graphic bottomGraphic) {
     super(new AboveImpl(
-      ((AbstractGraphic)topGraphic).getImplementation(),
-      ((AbstractGraphic)bottomGraphic).getImplementation()));
+        ((AbstractGraphic) topGraphic).getImplementation(),
+        ((AbstractGraphic) bottomGraphic).getImplementation()));
   }
 
 }

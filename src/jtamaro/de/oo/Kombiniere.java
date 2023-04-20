@@ -8,8 +8,8 @@ public final class Kombiniere extends AbstrakteGrafik {
 
   public Kombiniere(Grafik vordereGrafik, Grafik hintereGrafik) {
     super(new ComposeImpl(
-      ((AbstrakteGrafik)vordereGrafik).getImplementation(),
-      ((AbstrakteGrafik)hintereGrafik).getImplementation()));
+        ((AbstrakteGrafik) vordereGrafik).getImplementation(),
+        ((AbstrakteGrafik) hintereGrafik).getImplementation()));
   }
 
 }

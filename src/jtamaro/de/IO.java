@@ -8,7 +8,7 @@ public class IO {
 
   public static void zeige(Grafik grafik) {
     final GraphicFrame frame = new GraphicFrame();
-    frame.setGraphic(((AbstrakteGrafik)grafik).getImplementation());
+    frame.setGraphic(((AbstrakteGrafik) grafik).getImplementation());
     frame.setVisible(true);
   }
 

@@ -1,27 +1,23 @@
 package jtamaro.en.io;
 
-import java.awt.BorderLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-import javax.swing.DefaultBoundedRangeModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import jtamaro.en.Graphic;
 import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
-import static jtamaro.en.Sequences.zipWithIndex;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import static jtamaro.en.Sequences.reduce;
+import static jtamaro.en.Sequences.zipWithIndex;
 
 
 public final class FilmStripFrame extends JFrame {
-  
-  private final Sequence<Pair<Graphic,Integer>> indexedGraphics;
+
+  private final Sequence<Pair<Graphic, Integer>> indexedGraphics;
   private final DefaultBoundedRangeModel sliderModel;
   private final int frameCount;
   private final int completeFrameWith;
@@ -77,14 +73,11 @@ public final class FilmStripFrame extends JFrame {
       }
       canvas.setPosition(position);
     });
-    sliderModel.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent ev) {
-        System.out.println("sliderModel state changed. value = " + sliderModel.getValue() + ", max = " + sliderModel.getMaximum());
-        final int value = sliderModel.getValue();
-        final int max = sliderModel.getMaximum();
-        canvas.setPosition(value / (double)max);
-      }
+    sliderModel.addChangeListener(ev -> {
+      System.out.println("sliderModel state changed. value = " + sliderModel.getValue() + ", max = " + sliderModel.getMaximum());
+      final int value = sliderModel.getValue();
+      final int max = sliderModel.getMaximum();
+      canvas.setPosition(value / (double) max);
     });
 
     addComponentListener(new ComponentAdapter() {
@@ -93,7 +86,7 @@ public final class FilmStripFrame extends JFrame {
         updateSliderModelMax();
       }
     });
-    
+
     pack();
   }
 

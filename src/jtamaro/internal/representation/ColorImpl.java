@@ -14,7 +14,7 @@ public final class ColorImpl {
     this.red = red;
     this.green = green;
     this.blue = blue;
-    this.alpha = (int)Math.floor(opacity * 255);
+    this.alpha = (int) Math.floor(opacity * 255);
   }
 
   public static ColorImpl fromHSLA(double hue, double saturation, double lightness, double opacity) {
@@ -23,14 +23,14 @@ public final class ColorImpl {
     final double H = hue; // [0, 360]
     final double S = saturation; // [0,1]
     final double L = lightness; // [0,1]
-    final Function<Integer,Double> f = (Integer n) -> {
+    final Function<Integer, Double> f = (Integer n) -> {
       final double k = (n + H / 30) % 12;
-      final double a = S * Math.min(L, 1-L);
+      final double a = S * Math.min(L, 1 - L);
       return L - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1)));
     };
-    final int red = (int)Math.floor(f.apply(0) * 255);
-    final int green = (int)Math.floor(f.apply(8) * 255);
-    final int blue = (int)Math.floor(f.apply(4) * 255);
+    final int red = (int) Math.floor(f.apply(0) * 255);
+    final int green = (int) Math.floor(f.apply(8) * 255);
+    final int blue = (int) Math.floor(f.apply(4) * 255);
     return new ColorImpl(red, green, blue, opacity);
   }
 
@@ -40,13 +40,13 @@ public final class ColorImpl {
     final double H = hue; // [0, 360]
     final double S = saturation; // [0,1]
     final double V = value; // [0,1]
-    final Function<Integer,Double> f = (Integer n) -> {
+    final Function<Integer, Double> f = (Integer n) -> {
       final double k = (n + H / 60) % 6;
       return V - V * S * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
     };
-    final int red = (int)Math.floor(f.apply(5) * 255);
-    final int green = (int)Math.floor(f.apply(3) * 255);
-    final int blue = (int)Math.floor(f.apply(1) * 255);
+    final int red = (int) Math.floor(f.apply(5) * 255);
+    final int green = (int) Math.floor(f.apply(3) * 255);
+    final int blue = (int) Math.floor(f.apply(1) * 255);
     return new ColorImpl(red, green, blue, opacity);
   }
 
@@ -56,7 +56,7 @@ public final class ColorImpl {
 
   @Override
   public String toString() {
-    return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha +")";
+    return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
   }
 
 }

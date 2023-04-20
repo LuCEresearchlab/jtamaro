@@ -1,12 +1,10 @@
 package jtamaro.internal.representation;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-//import java.util.HashMap;
-
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
 
 
 public abstract class GraphicImpl {
@@ -24,7 +22,7 @@ public abstract class GraphicImpl {
   private static final int CROSS_INNER_SIZE = 20;
   private static final int CROSS_OUTER_SIZE = 24;
   private static final int CROSS_SHADOW_SIZE = 28;
-  
+
 
   private Path2D.Double path;
   private TightBoundingBox bbox;
@@ -111,22 +109,22 @@ public abstract class GraphicImpl {
   //}
 
   /**
-  protected final void addLocation(final PointImpl point, final double x, final double y) {
-    locations.put(point, new Location(this, point, x, y));
-  }
-
-  protected final void addBoundingBoxLocations() {
-    this.addLocation(Place.TL, bbox.getMinX(), bbox.getMinY());
-    this.addLocation(Place.ML, bbox.getMinX(), (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addLocation(Place.BL, bbox.getMinX(), bbox.getMaxY());
-    this.addLocation(Place.TM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMinY());
-    this.addLocation(Place.MM, (bbox.getMinX()+bbox.getMaxX())/2, (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addLocation(Place.BM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMaxY());
-    this.addLocation(Place.TR, bbox.getMaxX(), bbox.getMinY());
-    this.addLocation(Place.MR, bbox.getMaxX(), (bbox.getMinY()+bbox.getMaxY())/2);
-    this.addLocation(Place.BR, bbox.getMaxX(), bbox.getMaxY());
-  }
-  */
+   * protected final void addLocation(final PointImpl point, final double x, final double y) {
+   * locations.put(point, new Location(this, point, x, y));
+   * }
+   * <p>
+   * protected final void addBoundingBoxLocations() {
+   * this.addLocation(Place.TL, bbox.getMinX(), bbox.getMinY());
+   * this.addLocation(Place.ML, bbox.getMinX(), (bbox.getMinY()+bbox.getMaxY())/2);
+   * this.addLocation(Place.BL, bbox.getMinX(), bbox.getMaxY());
+   * this.addLocation(Place.TM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMinY());
+   * this.addLocation(Place.MM, (bbox.getMinX()+bbox.getMaxX())/2, (bbox.getMinY()+bbox.getMaxY())/2);
+   * this.addLocation(Place.BM, (bbox.getMinX()+bbox.getMaxX())/2, bbox.getMaxY());
+   * this.addLocation(Place.TR, bbox.getMaxX(), bbox.getMinY());
+   * this.addLocation(Place.MR, bbox.getMaxX(), (bbox.getMinY()+bbox.getMaxY())/2);
+   * this.addLocation(Place.BR, bbox.getMaxX(), bbox.getMaxY());
+   * }
+   */
 
   public TightBoundingBox getBBox() {
     return bbox;
@@ -167,31 +165,31 @@ public abstract class GraphicImpl {
   public void renderBounds(Graphics2D g2) {
     final TightBoundingBox bbox = getBBox();
     g2.setColor(BOUNDING_BOX_COLOR);
-    g2.drawRect((int)bbox.getMinX(), (int)bbox.getMinY(), (int)getWidth(), (int)getHeight());
+    g2.drawRect((int) bbox.getMinX(), (int) bbox.getMinY(), (int) getWidth(), (int) getHeight());
   }
 
   public void renderPoint(Graphics2D g2, double x, double y, Color color) {
     g2.setColor(new Color(0, 0, 0, 16));
-    g2.fillOval((int)x - POINT_SHADOW_RADIUS, (int)y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
+    g2.fillOval((int) x - POINT_SHADOW_RADIUS, (int) y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
     g2.setColor(Color.WHITE);
-    g2.fillOval((int)x - POINT_OUTER_RADIUS, (int)y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
+    g2.fillOval((int) x - POINT_OUTER_RADIUS, (int) y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
     g2.setColor(color);
-    g2.fillOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
+    g2.fillOval((int) x - POINT_INNER_RADIUS, (int) y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
   }
 
   public void renderPin(Graphics2D g2, double x, double y, Color color) {
     g2.setColor(new Color(0, 0, 0, 16));
-    g2.fillRoundRect((int)x - CROSS_SHADOW_LINE_WIDTH / 2, (int)y - CROSS_SHADOW_SIZE / 2, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
-    g2.fillRoundRect((int)x - CROSS_SHADOW_SIZE / 2, (int)y - CROSS_SHADOW_LINE_WIDTH / 2, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
-    g2.fillOval((int)x - POINT_SHADOW_RADIUS, (int)y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
+    g2.fillRoundRect((int) x - CROSS_SHADOW_LINE_WIDTH / 2, (int) y - CROSS_SHADOW_SIZE / 2, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
+    g2.fillRoundRect((int) x - CROSS_SHADOW_SIZE / 2, (int) y - CROSS_SHADOW_LINE_WIDTH / 2, CROSS_SHADOW_SIZE, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH, CROSS_SHADOW_LINE_WIDTH);
+    g2.fillOval((int) x - POINT_SHADOW_RADIUS, (int) y - POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS, 2 * POINT_SHADOW_RADIUS);
     g2.setColor(Color.WHITE);
-    g2.fillRoundRect((int)x - CROSS_OUTER_LINE_WIDTH / 2, (int)y - CROSS_OUTER_SIZE / 2, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
-    g2.fillRoundRect((int)x - CROSS_OUTER_SIZE / 2, (int)y - CROSS_OUTER_LINE_WIDTH / 2, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
-    g2.fillOval((int)x - POINT_OUTER_RADIUS, (int)y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
+    g2.fillRoundRect((int) x - CROSS_OUTER_LINE_WIDTH / 2, (int) y - CROSS_OUTER_SIZE / 2, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
+    g2.fillRoundRect((int) x - CROSS_OUTER_SIZE / 2, (int) y - CROSS_OUTER_LINE_WIDTH / 2, CROSS_OUTER_SIZE, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH, CROSS_OUTER_LINE_WIDTH);
+    g2.fillOval((int) x - POINT_OUTER_RADIUS, (int) y - POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS, 2 * POINT_OUTER_RADIUS);
     g2.setColor(color);
-    g2.fillRoundRect((int)x - CROSS_INNER_LINE_WIDTH / 2, (int)y - CROSS_INNER_SIZE / 2, CROSS_INNER_LINE_WIDTH, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
-    g2.fillRoundRect((int)x - CROSS_INNER_SIZE / 2, (int)y - CROSS_INNER_LINE_WIDTH / 2, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
-    g2.fillOval((int)x - POINT_INNER_RADIUS, (int)y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
+    g2.fillRoundRect((int) x - CROSS_INNER_LINE_WIDTH / 2, (int) y - CROSS_INNER_SIZE / 2, CROSS_INNER_LINE_WIDTH, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
+    g2.fillRoundRect((int) x - CROSS_INNER_SIZE / 2, (int) y - CROSS_INNER_LINE_WIDTH / 2, CROSS_INNER_SIZE, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH, CROSS_INNER_LINE_WIDTH);
+    g2.fillOval((int) x - POINT_INNER_RADIUS, (int) y - POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS, 2 * POINT_INNER_RADIUS);
   }
 
   public void renderHole(Graphics2D g2) {
@@ -233,13 +231,14 @@ public abstract class GraphicImpl {
   /**
    * Produce textual representation of this Graphic.
    * This uses indentation to show the tree structure of compound graphics.
-   * @param sb The StringBuilder onto which to append the textual representation
+   *
+   * @param sb     The StringBuilder onto which to append the textual representation
    * @param indent The indent (e.g., one or two spaces) to use for each level of the tree
    */
   public void dump(StringBuilder sb, String indent) {
     sb.append(indent + getClass().getSimpleName() + "\n");
-    appendField(sb, indent, "width", ""+getWidth());
-    appendField(sb, indent, "height", ""+getHeight());
+    appendField(sb, indent, "width", "" + getWidth());
+    appendField(sb, indent, "height", "" + getHeight());
     //appendField(sb, indent, "baseY", ""+getBaseY());
   }
 
@@ -280,7 +279,6 @@ public abstract class GraphicImpl {
   //public double getBaseY() {
   //  return baseY;
   //}
-
   public Path2D.Double getPath() {
     return path;
   }
@@ -288,7 +286,7 @@ public abstract class GraphicImpl {
   /**
    * Render this Graphic into the given Graphics2D graphics context,
    * using the given RenderingOptions.
-   * 
+   * <p>
    * The context can represent a GUI component (used when visualizing the graphic),
    * or a bitmap (used when writing the graphic into a bitmap file).
    */

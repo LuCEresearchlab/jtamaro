@@ -1,10 +1,10 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
+import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
-
-import jtamaro.internal.gui.RenderOptions;
 
 
 public final class CircularSectorImpl extends GraphicImpl {
@@ -64,9 +64,9 @@ public final class CircularSectorImpl extends GraphicImpl {
   @Override
   public void dump(final StringBuilder sb, final String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "radius", ""+radius);
-    appendField(sb, indent, "angle", ""+angle);
-    appendField(sb, indent, "color", ""+color);
+    appendField(sb, indent, "radius", "" + radius);
+    appendField(sb, indent, "angle", "" + angle);
+    appendField(sb, indent, "color", "" + color);
   }
 
 }

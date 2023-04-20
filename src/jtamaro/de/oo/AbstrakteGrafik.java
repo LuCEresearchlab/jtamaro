@@ -15,13 +15,15 @@ public abstract class AbstrakteGrafik implements Grafik {
   public GraphicImpl getImplementation() {
     return implementation;
   }
-  
+
+  @Override
   public double gibBreite() {
     return implementation.getWidth();
   }
 
+  @Override
   public double gibHoehe() {
     return implementation.getHeight();
   }
-  
+
 }

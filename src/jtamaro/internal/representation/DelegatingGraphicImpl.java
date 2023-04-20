@@ -1,9 +1,9 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
 
 
 /**

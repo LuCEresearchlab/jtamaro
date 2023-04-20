@@ -1,13 +1,12 @@
 package jtamaro.internal.representation;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Path2D;
-import java.awt.geom.AffineTransform;
-import java.awt.font.GlyphVector;
-
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 
 
 public final class TextImpl extends GraphicImpl {
@@ -27,7 +26,7 @@ public final class TextImpl extends GraphicImpl {
     this.fontName = fontName;
     this.fontSize = size;
     this.color = color;
-    final Font font = new Font(fontName, Font.PLAIN, (int)size);
+    final Font font = new Font(fontName, Font.PLAIN, (int) size);
     final FontRenderContext frc = new FontRenderContext(null, true, true);
     //final LineMetrics lineMetrics = font.getLineMetrics(content, frc);
     final GlyphVector glyphVector = font.createGlyphVector(frc, content);
@@ -51,10 +50,11 @@ public final class TextImpl extends GraphicImpl {
   }
 
   // new Point API
+
   /**
    * The origin of the outline path of the rendered text.
    * Usually this is a point on the baseline to the left of the bounding box.
-   * The point at which to draw a text, 
+   * The point at which to draw a text,
    * if one wants the left edge of the bounding box of the rendered text to be at x=0.
    */
   public Location getBaselineStart() {
@@ -89,8 +89,8 @@ public final class TextImpl extends GraphicImpl {
     super.dump(sb, indent);
     appendField(sb, indent, "text", text);
     appendField(sb, indent, "fontName", fontName);
-    appendField(sb, indent, "fontSize", ""+fontSize);
-    appendField(sb, indent, "color", ""+color);
+    appendField(sb, indent, "fontSize", "" + fontSize);
+    appendField(sb, indent, "color", "" + color);
   }
 
 }

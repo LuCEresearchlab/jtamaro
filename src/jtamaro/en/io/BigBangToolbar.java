@@ -1,9 +1,6 @@
 package jtamaro.en.io;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 
 public class BigBangToolbar<M> extends JPanel {
@@ -33,8 +30,8 @@ public class BigBangToolbar<M> extends JPanel {
     startButton.addActionListener(ev -> start());
     stopButton.addActionListener(ev -> stop());
     showTraceTableButton.addActionListener(ev -> new TraceFrame(trace).setVisible(true));
-    showModelButton.addActionListener(ev -> new ModelFrame<M>(bang, trace).setVisible(true));
-    state.addBigBangStateListener(s -> {tickLabel.setText("" + s.getTick());});
+    showModelButton.addActionListener(ev -> new ModelFrame<>(bang, trace).setVisible(true));
+    state.addBigBangStateListener(s -> tickLabel.setText("" + s.getTick()));
   }
 
   public void configureButtons() {
@@ -51,5 +48,5 @@ public class BigBangToolbar<M> extends JPanel {
     timer.stop();
     configureButtons();
   }
-  
+
 }

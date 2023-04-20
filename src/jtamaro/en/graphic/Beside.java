@@ -8,8 +8,8 @@ public final class Beside extends AbstractGraphic {
 
   public Beside(Graphic leftGraphic, Graphic rightGraphic) {
     super(new BesideImpl(
-      ((AbstractGraphic)leftGraphic).getImplementation(),
-      ((AbstractGraphic)rightGraphic).getImplementation()));
+        ((AbstractGraphic) leftGraphic).getImplementation(),
+        ((AbstractGraphic) rightGraphic).getImplementation()));
   }
 
 }

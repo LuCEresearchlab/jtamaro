@@ -1,8 +1,8 @@
 package jtamaro.internal.representation;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
-import java.awt.Shape;
 
 
 /**
@@ -71,10 +71,10 @@ public final class TightBoundingBox {
 
   private double f(double t, double p0i, double p1i, double p2i, double p3i) {
     return
-      Math.pow(1 - t, 3) * p0i +
-      3 * Math.pow(1 - t, 2) * t * p1i +
-      3 * (1 - t) * Math.pow(t, 2) * p2i +
-      Math.pow(t, 3) * p3i;
+        Math.pow(1 - t, 3) * p0i +
+            3 * Math.pow(1 - t, 2) * t * p1i +
+            3 * (1 - t) * Math.pow(t, 2) * p2i +
+            Math.pow(t, 3) * p3i;
   }
 
   /**
@@ -112,10 +112,10 @@ public final class TightBoundingBox {
             final double qp1y = coords[1];
             p3x = coords[2];
             p3y = coords[3];
-            cp1x = cx + 2 / 3 * (qp1x - cx);    // CP1 = QP0 + 2/3 * (QP1-QP0)
-            cp1y = cy + 2 / 3 * (qp1y - cy);
-            cp2x = p3x + 2 / 3 * (qp1x - p3x);  // CP2 = QP2 + 2/3 * (QP1-QP2)
-            cp2y = p3y + 2 / 3 * (qp1y - p3y);
+            cp1x = cx + 2.0 / 3.0 * (qp1x - cx);    // CP1 = QP0 + 2/3 * (QP1-QP0)
+            cp1y = cy + 2.0 / 3.0 * (qp1y - cy);
+            cp2x = p3x + 2.0 / 3.0 * (qp1x - p3x);  // CP2 = QP2 + 2/3 * (QP1-QP2)
+            cp2y = p3y + 2.0 / 3.0 * (qp1y - p3y);
           } else {
             cp1x = coords[0];
             cp1y = coords[1];

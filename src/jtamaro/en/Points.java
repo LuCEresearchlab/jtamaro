@@ -11,5 +11,5 @@ public class Points {
   public static final Point BOTTOM_LEFT = Point.BOTTOM_LEFT;
   public static final Point BOTTOM_CENTER = Point.BOTTOM_CENTER;
   public static final Point BOTTOM_RIGHT = Point.BOTTOM_RIGHT;
-  
+
 }

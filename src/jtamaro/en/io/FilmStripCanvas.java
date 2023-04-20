@@ -1,20 +1,16 @@
 package jtamaro.en.io;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
-import javax.swing.JComponent;
-
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
-import static jtamaro.en.Sequences.drop;
-import static jtamaro.en.Sequences.take;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static jtamaro.en.Sequences.drop;
+import static jtamaro.en.Sequences.take;
 
 public class FilmStripCanvas extends JComponent {
 
@@ -37,15 +33,15 @@ public class FilmStripCanvas extends JComponent {
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
     completeFrameWidth = computeCompleteFrameWidth(frameWidth);
-    gapWidth = (int)(frameWidth * GAP_FRACTION);
-    completeFrameHeight = (int)(frameHeight * (1 + 2 * TRACK_FRACTION));
-    trackHeight = (int)(frameHeight * TRACK_FRACTION);
+    gapWidth = (int) (frameWidth * GAP_FRACTION);
+    completeFrameHeight = (int) (frameHeight * (1 + 2 * TRACK_FRACTION));
+    trackHeight = (int) (frameHeight * TRACK_FRACTION);
     position = 0;
     framesToShow = 2;
   }
-  
+
   public static int computeCompleteFrameWidth(int frameWidth) {
-    return (int)(frameWidth * (1 + GAP_FRACTION));
+    return (int) (frameWidth * (1 + GAP_FRACTION));
   }
 
   public double getPosition() {
@@ -64,24 +60,24 @@ public class FilmStripCanvas extends JComponent {
 
   @Override
   protected void paintComponent(Graphics g) {
-    final Graphics2D g2 = (Graphics2D)g;
+    final Graphics2D g2 = (Graphics2D) g;
     final RenderOptions renderOptions = new RenderOptions(0);
     g2.setRenderingHints(new RenderingHints(
-      RenderingHints.KEY_ANTIALIASING,
-      RenderingHints.VALUE_ANTIALIAS_ON));
-    final int firstFrameIndex = (int)position;
+        RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON));
+    final int firstFrameIndex = (int) position;
     final int framesVisible = getWidth() / completeFrameWidth + 1;
     final Sequence<Graphic> visibleGraphics = take(framesVisible, drop(firstFrameIndex, graphics));
-    final int positionInFrame = (int)((position - Math.floor(position)) * completeFrameWidth);
+    final int positionInFrame = (int) ((position - Math.floor(position)) * completeFrameWidth);
     g2.translate(-positionInFrame, 0);
     for (Graphic graphic : visibleGraphics) {
       drawFrameBackground(g2, graphic, renderOptions);
-      final AbstractGraphic abstractGraphic = (AbstractGraphic)graphic;
+      final AbstractGraphic abstractGraphic = (AbstractGraphic) graphic;
       final GraphicImpl graphicImpl = abstractGraphic.getImplementation();
       //g2.setClip(0, 0, frameWidth, frameHeight);
-      g2.translate(-graphicImpl.getBBox().getMinX() + gapWidth / 2, -graphicImpl.getBBox().getMinY() + trackHeight);
+      g2.translate(-graphicImpl.getBBox().getMinX() + gapWidth / 2.0, -graphicImpl.getBBox().getMinY() + trackHeight);
       graphicImpl.render(g2, renderOptions);
-      g2.translate(graphicImpl.getBBox().getMinX() - gapWidth / 2, graphicImpl.getBBox().getMinY() - trackHeight);
+      g2.translate(graphicImpl.getBBox().getMinX() - gapWidth / 2.0, graphicImpl.getBBox().getMinY() - trackHeight);
       g2.translate(completeFrameWidth, 0);
     }
   }
@@ -102,5 +98,5 @@ public class FilmStripCanvas extends JComponent {
       g2.fillRect(stepWidth * i + holeX, completeFrameHeight - holeHeight - holeY, holeWidth, holeHeight);
     }
   }
-  
+
 }

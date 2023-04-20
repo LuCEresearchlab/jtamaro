@@ -1,10 +1,10 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.AffineTransform;
-
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 
 
 /**
@@ -86,10 +86,10 @@ public final class TriangleImpl extends GraphicImpl {
   @Override
   public void dump(final StringBuilder sb, final String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "side1", ""+side1);
-    appendField(sb, indent, "side2", ""+side2);
-    appendField(sb, indent, "angle", ""+angle);
-    appendField(sb, indent, "color", ""+color);
+    appendField(sb, indent, "side1", "" + side1);
+    appendField(sb, indent, "side2", "" + side2);
+    appendField(sb, indent, "angle", "" + angle);
+    appendField(sb, indent, "color", "" + color);
   }
 
 }

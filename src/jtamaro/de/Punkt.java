@@ -3,7 +3,7 @@ package jtamaro.de;
 import jtamaro.internal.representation.PointImpl;
 
 public final class Punkt {
-  
+
   public static final Punkt OBEN_LINKS = new Punkt(PointImpl.TOP_LEFT);
   public static final Punkt OBEN_MITTE = new Punkt(PointImpl.TOP_MIDDLE);
   public static final Punkt OBEN_RECHTS = new Punkt(PointImpl.TOP_RIGHT);

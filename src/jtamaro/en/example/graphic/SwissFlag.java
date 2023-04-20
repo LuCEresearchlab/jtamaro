@@ -1,9 +1,12 @@
 package jtamaro.en.example.graphic;
 
 import jtamaro.en.Graphic;
-import static jtamaro.en.Colors.*;
-import static jtamaro.en.Graphics.*;
-import static jtamaro.en.IO.*;
+
+import static jtamaro.en.Colors.RED;
+import static jtamaro.en.Colors.WHITE;
+import static jtamaro.en.Graphics.overlay;
+import static jtamaro.en.Graphics.rectangle;
+import static jtamaro.en.IO.show;
 
 
 public class SwissFlag {
@@ -16,5 +19,5 @@ public class SwissFlag {
     Graphic flag = overlay(cross, square);
     show(flag);
   }
-  
+
 }

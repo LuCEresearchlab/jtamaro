@@ -1,11 +1,11 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 
 
 public final class RotateImpl extends GraphicImpl implements CompositeImpl {
@@ -17,7 +17,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   /**
    * Rotate the graphic clockwise by the given angle
    * (this is different from PyTamaro, where Rotate works counterclockwise).
-   * 
+   *
    * @param angle
    * @param graphic
    */
@@ -35,6 +35,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     return angle;
   }
 
+  @Override
   protected double xForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getX();
@@ -50,6 +51,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
     }
   }
 
+  @Override
   protected double yForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getY();
@@ -78,7 +80,7 @@ public final class RotateImpl extends GraphicImpl implements CompositeImpl {
   @Override
   public void dump(StringBuilder sb, String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "angle", ""+angle);
+    appendField(sb, indent, "angle", "" + angle);
     appendChild(sb, indent, "graphic", graphic);
   }
 

@@ -42,7 +42,7 @@ public final class Farbe {
   public static Farbe rgba(int rot, int gruen, int blau, int alpha) {
     return new Farbe(new ColorImpl(rot, gruen, blau, alpha));
   }
-  
+
   public static Farbe hsl(double farbwinkel, double saettigung, double helligkeit) {
     return hsla(farbwinkel, saettigung, helligkeit, 255);
   }

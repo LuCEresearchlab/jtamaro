@@ -1,12 +1,10 @@
 package jtamaro.en.io;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 
 
 public class TraceFrame extends JFrame {
-  
+
   public TraceFrame(final Trace trace) {
     setTitle("Event Trace");
     final TraceTableModel traceTableModel = new TraceTableModel(trace);
