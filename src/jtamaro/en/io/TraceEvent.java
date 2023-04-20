@@ -18,12 +18,12 @@ public abstract class TraceEvent {
     return kind;
   }
 
-  public abstract <M> M process(BigBang<M> bang, M model);
+  public abstract <M> M process(Interaction<M> bang, M model);
 
   public static TraceEvent createTick() {
     return new TraceEvent("Tick") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getTickHandler().apply(model);
       }
     };
@@ -32,7 +32,7 @@ public abstract class TraceEvent {
   public static TraceEvent createKeyPress(KeyboardKey key) {
     return new TraceEvent("KeyPress") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getKeyPressHandler().apply(model, key);
       }
     };
@@ -41,7 +41,7 @@ public abstract class TraceEvent {
   public static TraceEvent createKeyRelease(KeyboardKey key) {
     return new TraceEvent("KeyRelease") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getKeyReleaseHandler().apply(model, key);
       }
     };
@@ -50,7 +50,7 @@ public abstract class TraceEvent {
   public static TraceEvent createKeyType(KeyboardChar ch) {
     return new TraceEvent("KeyType") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getKeyTypeHandler().apply(model, ch);
       }
     };
@@ -59,7 +59,7 @@ public abstract class TraceEvent {
   public static TraceEvent createMousePress(Coordinate coordinate, MouseButton button) {
     return new TraceEvent("MousePress") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getMousePressHandler().apply(model, coordinate, button);
       }
     };
@@ -68,7 +68,7 @@ public abstract class TraceEvent {
   public static TraceEvent createMouseRelease(Coordinate coordinate, MouseButton button) {
     return new TraceEvent("MouseRelease") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getMouseReleaseHandler().apply(model, coordinate, button);
       }
     };
@@ -77,7 +77,7 @@ public abstract class TraceEvent {
   public static TraceEvent createMouseMove(Coordinate coordinate) {
     return new TraceEvent("MouseMove") {
       @Override
-      public <M> M process(BigBang<M> bang, M model) {
+      public <M> M process(Interaction<M> bang, M model) {
         return bang.getMouseMoveHandler().apply(model, coordinate);
       }
     };

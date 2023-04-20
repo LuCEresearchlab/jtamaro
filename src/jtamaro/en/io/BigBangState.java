@@ -6,12 +6,12 @@ import java.util.ArrayList;
 public class BigBangState<M> {
 
   private final ArrayList<BigBangStateListener<M>> listeners = new ArrayList<>();
-  private final BigBang<M> bang;
+  private final Interaction<M> bang;
   private long tick;
   private M model;
 
 
-  public BigBangState(BigBang<M> bang) {
+  public BigBangState(Interaction<M> bang) {
     this.bang = bang;
     this.tick = 0;
     M initialModel = bang.getInitialModel();

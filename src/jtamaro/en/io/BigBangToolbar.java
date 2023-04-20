@@ -14,7 +14,7 @@ public class BigBangToolbar<M> extends JPanel {
   private final Timer timer;
   private final Trace trace;
 
-  public BigBangToolbar(final BigBang<M> bang, final BigBangState<M> state, final Timer timer, final Trace trace) {
+  public BigBangToolbar(final Interaction<M> bang, final BigBangState<M> state, final Timer timer, final Trace trace) {
     tickLabel = new JLabel("" + state.getTick());
     this.timer = timer;
     this.trace = trace;

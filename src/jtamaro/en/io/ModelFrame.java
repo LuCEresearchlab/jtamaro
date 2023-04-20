@@ -8,11 +8,11 @@ import jtamaro.en.Sequence;
 
 public class ModelFrame<M> extends JFrame {
 
-  private final BigBang<M> bang;
+  private final Interaction<M> bang;
   private final JTextArea textArea;
 
   
-  public ModelFrame(final BigBang<M> bang, final Trace trace) {
+  public ModelFrame(final Interaction<M> bang, final Trace trace) {
     setTitle("Model");
     this.bang = bang;
     textArea = new JTextArea(3, 40);

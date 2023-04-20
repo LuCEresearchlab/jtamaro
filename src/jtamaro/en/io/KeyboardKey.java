@@ -1,6 +1,9 @@
 package jtamaro.en.io;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JComponent;
 
 
 public class KeyboardKey {
@@ -23,6 +26,10 @@ public class KeyboardKey {
 
   public KeyboardKey(final KeyEvent event) {
     this.event = event;
+  }
+
+  public KeyboardKey(final int keyCode) {
+    this.event = new KeyEvent(new JComponent() {}, 0, 0, 0, keyCode, KeyEvent.CHAR_UNDEFINED);
   }
 
   public int getCode() {

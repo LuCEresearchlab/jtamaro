@@ -22,14 +22,14 @@ import jtamaro.internal.gui.RenderOptions;
 
 public class BigBangFrame<M> extends JFrame {
   
-  private final BigBang<M> bang;
+  private final Interaction<M> bang;
   private final GraphicCanvas graphicCanvas;
   private final Timer timer;
   private final BigBangState<M> state;
   private final Trace trace;
 
 
-  public BigBangFrame(BigBang<M> bang) {
+  public BigBangFrame(Interaction<M> bang) {
     this.bang = bang;
     state = new BigBangState<>(bang);
     trace = new Trace();

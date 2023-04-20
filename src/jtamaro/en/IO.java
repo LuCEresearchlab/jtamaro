@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 import static jtamaro.en.Sequences.map;
 import jtamaro.en.graphic.AbstractGraphic;
-import jtamaro.en.io.BigBang;
+import jtamaro.en.io.Interaction;
 import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
 import jtamaro.internal.gui.GraphicFrame;
@@ -104,7 +104,7 @@ public class IO {
    */
   public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
     assert !graphics.isEmpty() : "Animation must have at least one frame";
-    new BigBang<>(graphics)
+    new Interaction<>(graphics)
       .withName("Animation")
       .withMsBetweenTicks(millisecondsPerFrame)
       .withTickHandler(model -> {
@@ -134,8 +134,8 @@ public class IO {
    * @param initialModel The initial model state of the application
    * @return
    */
-  public static <M> BigBang<M> interact(M initialModel) {
-    return new BigBang<>(initialModel);
+  public static <M> Interaction<M> interact(M initialModel) {
+    return new Interaction<>(initialModel);
   }
 
   public static void save(Graphic graphic, String filename) {
