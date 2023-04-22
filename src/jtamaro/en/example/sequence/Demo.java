@@ -4,6 +4,10 @@ import jtamaro.en.Sequence;
 import jtamaro.en.Pair;
 import static jtamaro.en.IO.*;
 import static jtamaro.en.Sequences.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static jtamaro.en.Pairs.*;
 
 public class Demo {
@@ -95,7 +99,13 @@ public class Demo {
 
     println(ofStringLines("Hello\nWorld!\nHow are you?"));
 
-    println(map(line -> ofStringCharacters(line), ofStringLines("ABC\nCDE\nEFG")));
+    println(flatMap(line -> ofStringCharacters(line), ofStringLines("ABC\nCDE\nEFG")));
+
+    println(map(s -> "(" + s + ")", ofStringLines("1\n2\n3\n4\n5\n6")));
+
+    println(map(s -> "(" + s + ")", fromIterable(new ArrayList<String>(Arrays.asList("one", "two", "three")))));
+
+    println(map(s -> "(" + s + ")", fromStream("a\nb\nc".lines())));
   }
 
 }

@@ -1,7 +1,10 @@
 package jtamaro.en;
 
+import java.util.stream.Stream;
+
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
+import jtamaro.en.data.IteratorCell;
 import jtamaro.en.data.LazyCons;
 
 /**
@@ -316,13 +319,33 @@ public class Sequences {
     return result;
   }
 
-  public static Sequence<String> ofStringLines(String string) {
+  public static Sequence<String> ofStringLinesBUGGY(String string) {
     final String[] lines = string.split(System.lineSeparator());
     Sequence<String> result = empty();
     for (int i = lines.length - 1; i >= 0; i--) {
       result = cons(lines[i], result);
     }
     return result;
+  }
+
+  public static Sequence<String> ofStringLinesEAGER(String string) {
+    final String[] lines = string.lines().toArray(String[]::new);
+    Sequence<String> result = empty();
+    for (int i = lines.length - 1; i >= 0; i--) {
+      result = cons(lines[i], result);
+    }
+    return result;
+  }
+  public static Sequence<String> ofStringLines(String string) {
+    return IteratorCell.fromIterator(string.lines().iterator());
+  }
+  
+  public static <T> Sequence<T> fromIterable(Iterable<T> iterable) {
+    return IteratorCell.fromIterator(iterable.iterator());
+  }
+
+  public static <T> Sequence<T> fromStream(Stream<T> stream) {
+    return IteratorCell.fromIterator(stream.iterator());
   }
 
 }
