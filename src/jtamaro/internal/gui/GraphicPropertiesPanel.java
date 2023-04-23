@@ -1,14 +1,11 @@
 package jtamaro.internal.gui;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import jtamaro.internal.representation.ColorImpl;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RectangleImpl;
 
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
 
 
 public final class GraphicPropertiesPanel extends JPanel {
@@ -28,12 +25,7 @@ public final class GraphicPropertiesPanel extends JPanel {
 
     setGraphic(null);
 
-    renderOptions.addRenderOptionsListener(new RenderOptionsListener() {
-      @Override
-      public void renderOptionsChanged() {
-        setGraphic(renderOptions.getLeadSelection());
-      }
-    });
+    renderOptions.addRenderOptionsListener(() -> setGraphic(renderOptions.getLeadSelection()));
   }
 
   public void setGraphic(GraphicImpl graphic) {
@@ -43,13 +35,13 @@ public final class GraphicPropertiesPanel extends JPanel {
       canvas.setGraphic(new RectangleImpl(300, 200, new ColorImpl(0, 0, 0, 0)));
       canvasRenderOptions.clearSelection();
     } else {
-      label.setText("<html><b>" + graphic.getClass().getSimpleName()+"</b>" +
-        "<br>width: " + graphic.getWidth() +
-        "<br>height: " + graphic.getHeight());
+      label.setText("<html><b>" + graphic.getClass().getSimpleName() + "</b>" +
+          "<br>width: " + graphic.getWidth() +
+          "<br>height: " + graphic.getHeight());
       canvas.setGraphic(graphic);
       canvasRenderOptions.clearSelection();
       canvasRenderOptions.select(graphic);
     }
   }
-  
+
 }

@@ -6,7 +6,7 @@ import javax.swing.JComponent;
 
 
 public class KeyboardChar {
-  
+
   private final KeyEvent event;
 
   public KeyboardChar(final KeyEvent event) {

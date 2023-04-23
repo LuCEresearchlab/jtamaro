@@ -14,18 +14,22 @@ public class Cons<T> extends Sequence<T> {
     this.hasDefiniteSize = tail.hasDefiniteSize();
   }
 
+  @Override
   public T first() {
     return head;
   }
 
+  @Override
   public Sequence<T> rest() {
     return tail;
   }
 
+  @Override
   public boolean isEmpty() {
     return false;
   }
 
+  @Override
   public boolean hasDefiniteSize() {
     return hasDefiniteSize;
   }

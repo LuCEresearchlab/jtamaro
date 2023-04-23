@@ -10,7 +10,7 @@ import jtamaro.internal.representation.ColorImpl;
  * to completely transparent, like the Color TRANSPARENT.
  */
 public final class Color {
-  
+
   private final ColorImpl implementation;
 
   private Color(ColorImpl implementation) {

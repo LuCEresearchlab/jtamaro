@@ -8,8 +8,9 @@ package jtamaro.de;
  * - kombiniere (die zwei Grafiken werden so ausgerichtet, dass ihre Fixierpositionen übereinanderliegen).
  */
 public interface Grafik {
-  
-  public double gibBreite();
-  public double gibHoehe();
+
+  double gibBreite();
+
+  double gibHoehe();
 
 }

@@ -1,7 +1,7 @@
 package jtamaro.en.data;
 
-import jtamaro.en.Sequence;
 import jtamaro.en.Function0;
+import jtamaro.en.Sequence;
 
 public class LazyCons<T> extends Sequence<T> {
 
@@ -15,18 +15,22 @@ public class LazyCons<T> extends Sequence<T> {
     this.hasDefiniteSize = hasDefiniteSize;
   }
 
+  @Override
   public T first() {
     return head;
   }
 
+  @Override
   public Sequence<T> rest() {
     return tailSupplier.apply();
   }
 
+  @Override
   public boolean isEmpty() {
     return false;
   }
 
+  @Override
   public boolean hasDefiniteSize() {
     return hasDefiniteSize;
   }

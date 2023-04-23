@@ -1,9 +1,9 @@
 package jtamaro.en.io;
 
-import java.util.ArrayList;
-
 import jtamaro.en.Sequence;
 import jtamaro.en.Sequences;
+
+import java.util.ArrayList;
 
 
 public class Trace {
@@ -50,5 +50,5 @@ public class Trace {
       listener.eventAppended(event);
     }
   }
-  
+
 }

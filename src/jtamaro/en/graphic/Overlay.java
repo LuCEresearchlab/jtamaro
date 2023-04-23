@@ -8,8 +8,8 @@ public final class Overlay extends AbstractGraphic {
 
   public Overlay(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     super(new OverlayImpl(
-      ((AbstractGraphic)foregroundGraphic).getImplementation(),
-      ((AbstractGraphic)backgroundGraphic).getImplementation()));
+        ((AbstractGraphic) foregroundGraphic).getImplementation(),
+        ((AbstractGraphic) backgroundGraphic).getImplementation()));
   }
 
 }

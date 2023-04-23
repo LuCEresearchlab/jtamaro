@@ -8,8 +8,8 @@ public final class Ueberlagere extends AbstrakteGrafik {
 
   public Ueberlagere(Grafik vordereGrafik, Grafik hintereGrafik) {
     super(new OverlayImpl(
-      ((AbstrakteGrafik)vordereGrafik).getImplementation(),
-      ((AbstrakteGrafik)hintereGrafik).getImplementation()));
+        ((AbstrakteGrafik) vordereGrafik).getImplementation(),
+        ((AbstrakteGrafik) hintereGrafik).getImplementation()));
   }
 
 }

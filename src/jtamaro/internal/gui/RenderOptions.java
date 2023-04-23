@@ -1,51 +1,47 @@
 package jtamaro.internal.gui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Set;
-
 import jtamaro.internal.representation.GraphicImpl;
+
+import java.util.*;
 
 
 public final class RenderOptions {
-  
+
   private int padding;
-  private int fixedWidth;
-  private int fixedHeight;
+  private final int fixedWidth;
+  private final int fixedHeight;
   private final Set<GraphicImpl> selection;
   private GraphicImpl leadSelection;
   private final List<RenderOptionsListener> listeners;
 
-  
+
   public RenderOptions(int padding) {
     this(padding, -1, -1);
   }
 
   public RenderOptions(int padding, int fixedWidth, int fixedHeight) {
-    System.out.println("RenderOptions(" + padding + ", " + fixedWidth + ", " + fixedHeight +")");
+    System.out.println("RenderOptions(" + padding + ", " + fixedWidth + ", " + fixedHeight + ")");
     this.padding = padding;
     this.fixedWidth = fixedWidth;
     this.fixedHeight = fixedHeight;
     selection = Collections.newSetFromMap(new IdentityHashMap<>());
-    listeners = new ArrayList<RenderOptionsListener>();
+    listeners = new ArrayList<>();
   }
 
   public void setPadding(int padding) {
     this.padding = padding;
     fireRenderOptionsChanged();
   }
-  
+
   public int getPadding() {
     return padding;
   }
 
   public boolean hasFixedSize() {
-    System.out.println("RenderOptions.hasFixedSize() (" + padding + ", " + fixedWidth + ", " + fixedHeight +")");
+    System.out.println("RenderOptions.hasFixedSize() (" + padding + ", " + fixedWidth + ", " + fixedHeight + ")");
     return fixedWidth >= 0 || fixedHeight >= 0;
   }
-  
+
   public int getFixedWidth() {
     return fixedWidth;
   }

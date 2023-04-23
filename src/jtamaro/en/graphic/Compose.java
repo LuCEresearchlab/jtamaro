@@ -8,8 +8,8 @@ public final class Compose extends AbstractGraphic {
 
   public Compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     super(new ComposeImpl(
-      ((AbstractGraphic)foregroundGraphic).getImplementation(),
-      ((AbstractGraphic)backgroundGraphic).getImplementation()));
+        ((AbstractGraphic) foregroundGraphic).getImplementation(),
+        ((AbstractGraphic) backgroundGraphic).getImplementation()));
   }
 
 }

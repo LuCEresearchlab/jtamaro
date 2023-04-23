@@ -8,7 +8,7 @@ import jtamaro.internal.representation.PinPointImpl;
 public final class Fixiere extends AbstrakteGrafik {
 
   public Fixiere(Punkt punkt, Grafik grafik) {
-    super(new PinPointImpl(punkt.getImplementation(), ((AbstrakteGrafik)grafik).getImplementation()));
+    super(new PinPointImpl(punkt.getImplementation(), ((AbstrakteGrafik) grafik).getImplementation()));
   }
 
 }

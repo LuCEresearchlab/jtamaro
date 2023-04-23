@@ -1,17 +1,14 @@
 package jtamaro.en.io;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import jtamaro.en.Sequence;
+
+import javax.swing.*;
 
 public class ModelFrame<M> extends JFrame {
 
   private final Interaction<M> bang;
   private final JTextArea textArea;
 
-  
   public ModelFrame(final Interaction<M> bang, final Trace trace) {
     setTitle("Model");
     this.bang = bang;
@@ -24,7 +21,7 @@ public class ModelFrame<M> extends JFrame {
     });
     pack();
   }
-  
+
   private M getLastModel(Sequence<TraceEvent> events, M model) {
     if (events.isEmpty()) {
       return model;

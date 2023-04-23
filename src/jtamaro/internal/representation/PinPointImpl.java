@@ -1,11 +1,11 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.AffineTransform;
-
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 
 
 public class PinPointImpl extends GraphicImpl implements CompositeImpl {
@@ -39,6 +39,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
     //this.addBoundingBoxLocations();
   }
 
+  @Override
   protected double xForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getX();
@@ -48,6 +49,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
     }
   }
 
+  @Override
   protected double yForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getY();
@@ -70,7 +72,7 @@ public class PinPointImpl extends GraphicImpl implements CompositeImpl {
   @Override
   public void dump(StringBuilder sb, String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "location", ""+location);
+    appendField(sb, indent, "location", "" + location);
     appendChild(sb, indent, "graphic", graphic);
   }
 

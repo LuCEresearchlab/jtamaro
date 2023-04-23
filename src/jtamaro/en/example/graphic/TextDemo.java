@@ -1,10 +1,12 @@
 package jtamaro.en.example.graphic;
 
 import jtamaro.en.Graphic;
-import static jtamaro.en.Graphics.*;
-import static jtamaro.en.Points.*;
-import static jtamaro.en.Colors.*;
-import static jtamaro.en.IO.*;
+
+import static jtamaro.en.Colors.BLACK;
+import static jtamaro.en.Graphics.pin;
+import static jtamaro.en.Graphics.text;
+import static jtamaro.en.IO.show;
+import static jtamaro.en.Points.BOTTOM_RIGHT;
 
 public class TextDemo {
 

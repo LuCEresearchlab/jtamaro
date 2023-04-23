@@ -1,18 +1,6 @@
 package jtamaro.en;
 
-import jtamaro.en.graphic.Above;
-import jtamaro.en.graphic.Beside;
-import jtamaro.en.graphic.CircularSector;
-import jtamaro.en.graphic.Compose;
-import jtamaro.en.graphic.Ellipse;
-import jtamaro.en.graphic.EmptyGraphic;
-import jtamaro.en.graphic.EquilateralTriangle;
-import jtamaro.en.graphic.Overlay;
-import jtamaro.en.graphic.Pin;
-import jtamaro.en.graphic.Rectangle;
-import jtamaro.en.graphic.Rotate;
-import jtamaro.en.graphic.Text;
-import jtamaro.en.graphic.Triangle;
+import jtamaro.en.graphic.*;
 
 
 public final class Graphics {
@@ -20,7 +8,7 @@ public final class Graphics {
   // prevent instantiation
   private Graphics() {
   }
-  
+
 
   //-- nullary graphic operations
   public static Graphic emptyGraphic() {
@@ -29,9 +17,10 @@ public final class Graphics {
 
   /**
    * Create a circular sector with the given radius and angle.
+   *
    * @param radius the radius of the circular sector
-   * @param angle the angle of the circular sector in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
-   * @param color the color of the circular sector
+   * @param angle  the angle of the circular sector in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
+   * @param color  the color of the circular sector
    * @return a circular sector
    */
   public static Graphic circularSector(double radius, double angle, Color color) {
@@ -60,6 +49,7 @@ public final class Graphics {
    * The specified angle is at the bottom-left corner of the triangle,
    * while the first side extends horizontally to the right.
    * Its pinning position is the centroid of the triangle.
+   *
    * @param side1 horizontal side
    * @param side2 side opposite to the angle
    * @param angle angle of rotation in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
@@ -72,8 +62,10 @@ public final class Graphics {
 
 
   //-- unary graphic operations
+
   /**
    * Rotate the given graphic by the given angle.
+   *
    * @param degrees angle or rotation in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
    * @param graphic the graphic to rotate
    * @return a rotated graphic
@@ -86,7 +78,7 @@ public final class Graphics {
     return new Pin(point, graphic);
   }
 
-  
+
   //-- binary graphic operations
   public static Graphic compose(Graphic foregroundGraphic, Graphic backgroundGraphic) {
     return new Compose(foregroundGraphic, backgroundGraphic);

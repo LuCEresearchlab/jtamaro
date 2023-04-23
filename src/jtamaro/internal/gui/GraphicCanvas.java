@@ -1,15 +1,10 @@
 package jtamaro.internal.gui;
 
-import javax.swing.JComponent;
-
 import jtamaro.internal.representation.EmptyGraphicImpl;
 import jtamaro.internal.representation.GraphicImpl;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 
 
 public class GraphicCanvas extends JComponent {
@@ -22,14 +17,9 @@ public class GraphicCanvas extends JComponent {
     this.renderOptions = renderOptions;
     graphic = new EmptyGraphicImpl();
 
-    renderOptions.addRenderOptionsListener(new RenderOptionsListener() {
-      @Override
-      public void renderOptionsChanged() {
-        repaint();        
-      }
-    });
+    renderOptions.addRenderOptionsListener(this::repaint);
   }
-  
+
   public void setGraphic(GraphicImpl graphic) {
     System.out.println("GraphicCanvas.setGraphic(" + graphic + ")");
 
@@ -38,6 +28,7 @@ public class GraphicCanvas extends JComponent {
     repaint();
   }
 
+  @Override
   public Dimension getPreferredSize() {
     System.out.println("GraphicCanvas.getPreferredSize()");
 
@@ -47,15 +38,16 @@ public class GraphicCanvas extends JComponent {
       return new Dimension(renderOptions.getFixedWidth() + 2 * padding, renderOptions.getFixedHeight() + 2 * padding);
     } else {
       System.out.println("graphic-based");
-      return new Dimension((int)graphic.getWidth() + 2 * padding, (int)graphic.getHeight() + 2 * padding);
+      return new Dimension((int) graphic.getWidth() + 2 * padding, (int) graphic.getHeight() + 2 * padding);
     }
   }
 
+  @Override
   public void paintComponent(Graphics g) {
-    Graphics2D g2 = (Graphics2D)g;
+    Graphics2D g2 = (Graphics2D) g;
     g2.setRenderingHints(new RenderingHints(
-      RenderingHints.KEY_ANTIALIASING,
-      RenderingHints.VALUE_ANTIALIAS_ON));
+        RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON));
     final int padding = renderOptions.getPadding();
     paintBackground(g);
     g2.translate(padding, padding);

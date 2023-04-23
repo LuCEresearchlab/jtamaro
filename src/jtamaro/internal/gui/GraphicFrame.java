@@ -1,30 +1,21 @@
 package jtamaro.internal.gui;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import jtamaro.internal.io.ClipboardUtil;
 import jtamaro.internal.io.PngWriter;
 import jtamaro.internal.representation.GraphicImpl;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
 
 public class GraphicFrame extends JFrame {
-  
+
   private static JFileChooser FILE_CHOOSER;
 
-  private RenderOptions renderOptions;
+  private final RenderOptions renderOptions;
   private GraphicImpl graphic;
   private final JLabel widthLabel;
   private final JLabel heightLabel;
@@ -89,11 +80,9 @@ public class GraphicFrame extends JFrame {
         } catch (final IOException ex) {
           JOptionPane.showMessageDialog(GraphicFrame.this, ex.getMessage());
         }
-      };
+      }
     });
-    copyButton.addActionListener(e -> {
-      ClipboardUtil.copyToClipboard(graphic, renderOptions);
-    });
+    copyButton.addActionListener(e -> ClipboardUtil.copyToClipboard(graphic, renderOptions));
     paddingField.addActionListener(e -> {
       try {
         int padding = Integer.parseInt(paddingField.getText());
@@ -130,5 +119,5 @@ public class GraphicFrame extends JFrame {
     heightLabel.setText("" + graphic.getHeight());
     pack();
   }
-  
+
 }

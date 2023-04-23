@@ -1,10 +1,10 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-
 import jtamaro.internal.gui.GraphicTreeNode;
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
 
 
 public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
@@ -24,6 +24,7 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     //addBoundingBoxLocations();
   }
 
+  @Override
   protected double xForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getX();
@@ -42,6 +43,7 @@ public final class ComposeImpl extends GraphicImpl implements CompositeImpl {
     }
   }
 
+  @Override
   protected double yForLocation(final Location location) {
     if (location.getGraphic() == this) {
       return location.getY();

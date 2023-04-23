@@ -15,13 +15,15 @@ public abstract class AbstractGraphic implements Graphic {
   public GraphicImpl getImplementation() {
     return implementation;
   }
-  
+
+  @Override
   public double getWidth() {
     return implementation.getWidth();
   }
 
+  @Override
   public double getHeight() {
     return implementation.getHeight();
   }
-  
+
 }

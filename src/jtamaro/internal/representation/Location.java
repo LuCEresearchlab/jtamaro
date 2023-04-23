@@ -29,6 +29,7 @@ public class Location {
     return y;
   }
 
+  @Override
   public String toString() {
     return "Location[graphic=" + graphic + ", x=" + x + ", y=" + y + "]";
   }

@@ -4,15 +4,16 @@ import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 
-import static jtamaro.en.IO.*;
 import static jtamaro.en.Colors.*;
-import static jtamaro.en.Points.*;
 import static jtamaro.en.Graphics.*;
+import static jtamaro.en.IO.animate;
+import static jtamaro.en.IO.saveAnimatedGif;
+import static jtamaro.en.Points.BOTTOM_CENTER;
 import static jtamaro.en.Sequences.*;
 
 
 public class CogWheel {
-  
+
   private static Graphic circle(double diameter, Color color) {
     return ellipse(diameter, diameter, color);
   }
@@ -26,7 +27,7 @@ public class CogWheel {
   }
 
   private static Graphic cogs(double innerDiameter, double outerDiameter, int toothCount, Color color) {
-    final double toothAngle = 360 / (2 * toothCount);
+    final double toothAngle = 360.0 / (2 * toothCount);
     final Graphic tooth = tooth(innerDiameter, outerDiameter, toothAngle, color);
     final Sequence<Integer> angles = range(0, 360, 360 / toothCount);
     Graphic composition = emptyGraphic();
@@ -60,7 +61,7 @@ public class CogWheel {
   public static void main(String[] args) {
     saveAnimatedGif(animation(false), true, 25, "cogwheel.gif");
     animate(
-      cycle(animation(true))
+        cycle(animation(true))
     );
   }
 

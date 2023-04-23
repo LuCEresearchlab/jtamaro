@@ -4,7 +4,7 @@ import jtamaro.de.fun.Op;
 
 
 public class Demo {
-  
+
   public static void main(String[] args) {
     Grafik h = Op.rechteck(200, 60, Farbe.WEISS);
     Grafik v = Op.rechteck(60, 200, Farbe.WEISS);
@@ -49,8 +49,8 @@ public class Demo {
     if (nummer == 0) {
       return Op.leereGrafik();
     } else {
-      final double winkel = 360 * nummer / anzahl;
-      final Grafik sektor = Op.drehe(winkel, Op.kreisSektor(180, 360 / anzahl, Farbe.hsl(winkel, 1, 0.5)));
+      final double winkel = 360.0 * nummer / anzahl;
+      final Grafik sektor = Op.drehe(winkel, Op.kreisSektor(180, 360.0 / anzahl, Farbe.hsl(winkel, 1, 0.5)));
       return Op.kombiniere(sektor, sektoren(nummer - 1, anzahl));
     }
   }

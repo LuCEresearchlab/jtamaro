@@ -7,7 +7,7 @@ import jtamaro.internal.representation.RotateImpl;
 public final class Drehe extends AbstrakteGrafik {
 
   public Drehe(double grad, Grafik grafik) {
-    super(new RotateImpl(grad, ((AbstrakteGrafik)grafik).getImplementation()));
+    super(new RotateImpl(grad, ((AbstrakteGrafik) grafik).getImplementation()));
   }
 
 }

@@ -8,8 +8,8 @@ public final class Neben extends AbstrakteGrafik {
 
   public Neben(Grafik linkeGrafik, Grafik rechteGrafik) {
     super(new BesideImpl(
-      ((AbstrakteGrafik)linkeGrafik).getImplementation(),
-      ((AbstrakteGrafik)rechteGrafik).getImplementation()));
+        ((AbstrakteGrafik) linkeGrafik).getImplementation(),
+        ((AbstrakteGrafik) rechteGrafik).getImplementation()));
   }
 
 }

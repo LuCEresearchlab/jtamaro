@@ -1,23 +1,18 @@
 package jtamaro.internal.io;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import jtamaro.en.Sequence;
+import jtamaro.internal.gui.RenderOptions;
+import jtamaro.internal.representation.GraphicImpl;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
-
-import jtamaro.en.Sequence;
-import jtamaro.internal.gui.RenderOptions;
-import jtamaro.internal.representation.GraphicImpl;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 // based on https://memorynotfound.com/generate-gif-image-java-delay-infinite-loop-example/
 public class GifWriter {
@@ -50,14 +45,14 @@ public class GifWriter {
     child.setAttribute("applicationID", "NETSCAPE");
     child.setAttribute("authenticationCode", "2.0");
     final int loopContinuously = loop ? 0 : 1;
-    child.setUserObject(new byte[] {0x1, (byte)(loopContinuously & 0xFF), (byte)((loopContinuously >> 8) & 0xFF)});
+    child.setUserObject(new byte[]{0x1, (byte) (loopContinuously & 0xFF), (byte) ((loopContinuously >> 8) & 0xFF)});
     appExtensionsNode.appendChild(child);
     metadata.setFromTree(metaFormatName, root);
     writer.setOutput(out);
     writer.prepareWriteSequence(null);
     for (final GraphicImpl graphicImpl : graphicImpls) {
-      final int width = (int)graphicImpl.getWidth();
-      final int height = (int)graphicImpl.getHeight();
+      final int width = (int) graphicImpl.getWidth();
+      final int height = (int) graphicImpl.getHeight();
       final BufferedImage image = new BufferedImage(width, height, bufferedImageType);
       final Graphics2D g2 = image.createGraphics();
       final RenderOptions renderOptions = new RenderOptions(0);
@@ -74,13 +69,13 @@ public class GifWriter {
   private static IIOMetadataNode getOrCreateNode(IIOMetadataNode parent, String childName) {
     final int length = parent.getLength();
     for (int i = 0; i < length; i++) {
-        if (parent.item(i).getNodeName().equalsIgnoreCase(childName)) {
-            return (IIOMetadataNode) parent.item(i);
-        }
+      if (parent.item(i).getNodeName().equalsIgnoreCase(childName)) {
+        return (IIOMetadataNode) parent.item(i);
+      }
     }
     final IIOMetadataNode node = new IIOMetadataNode(childName);
     parent.appendChild(node);
     return node;
   }
-  
+
 }

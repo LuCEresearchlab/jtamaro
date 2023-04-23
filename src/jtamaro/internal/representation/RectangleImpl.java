@@ -1,9 +1,9 @@
 package jtamaro.internal.representation;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-
 import jtamaro.internal.gui.RenderOptions;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
 
 
 public final class RectangleImpl extends GraphicImpl {
@@ -41,9 +41,9 @@ public final class RectangleImpl extends GraphicImpl {
   @Override
   public void dump(final StringBuilder sb, final String indent) {
     super.dump(sb, indent);
-    appendField(sb, indent, "width", ""+width);
-    appendField(sb, indent, "height", ""+height);
-    appendField(sb, indent, "color", ""+color);
+    appendField(sb, indent, "width", "" + width);
+    appendField(sb, indent, "height", "" + height);
+    appendField(sb, indent, "color", "" + color);
   }
 
 }

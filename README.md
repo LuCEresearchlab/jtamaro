@@ -78,3 +78,13 @@ and those classes delegate all work to the corresponding implementation classes.
 
 Color functionality is delegated to class `ColorImpl`.
 Graphic functionality is delegated to class `GraphicImpl` and its subclasses.
+
+## Build
+
+Compile a jar file for usage in other projects:
+
+```bash
+./gradlew jar
+```
+
+The output will be in `build/libs/jtamaro-*.jar`
