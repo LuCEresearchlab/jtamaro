@@ -74,7 +74,6 @@ public final class FilmStripFrame extends JFrame {
       canvas.setPosition(position);
     });
     sliderModel.addChangeListener(ev -> {
-      System.out.println("sliderModel state changed. value = " + sliderModel.getValue() + ", max = " + sliderModel.getMaximum());
       final int value = sliderModel.getValue();
       final int max = sliderModel.getMaximum();
       canvas.setPosition(value / (double) max);
@@ -92,7 +91,6 @@ public final class FilmStripFrame extends JFrame {
 
   private void updateSliderModelMax() {
     if (frameCount >= 0) {
-      System.out.println("resized. width = " + getWidth());
       final int width = getWidth();
       final int filmStripWidth = completeFrameWith * frameCount;
       final int max = Math.max(0, filmStripWidth - width);

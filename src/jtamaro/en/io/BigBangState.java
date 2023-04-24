@@ -21,7 +21,6 @@ public class BigBangState<M> {
   }
 
   private void check(String what, M model) {
-    System.out.println("Checking " + what + ": " + model);
     if (model == null) {
       throw new IllegalStateException(what + " is null");
     }

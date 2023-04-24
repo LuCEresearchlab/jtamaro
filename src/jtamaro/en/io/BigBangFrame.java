@@ -45,11 +45,9 @@ public class BigBangFrame<M> extends JFrame {
     int canvasWidth = bang.getCanvasWidth();
     int canvasHeight = bang.getCanvasHeight();
     if (canvasWidth < 0 || canvasHeight < 0) {
-      System.out.println("Rendering initial model to determine size...");
       Graphic g = bang.getRenderer().apply(state.getModel());
       canvasWidth = (int) g.getWidth();
       canvasHeight = (int) g.getHeight();
-      System.out.println("Canvas size is " + canvasWidth + "x" + canvasHeight);
     }
 
     RenderOptions renderOptions = new RenderOptions(0, canvasWidth, canvasHeight);
@@ -132,7 +130,6 @@ public class BigBangFrame<M> extends JFrame {
 
   // called through the timer
   private void stop() {
-    System.out.println("stopping");
     timer.stop();
     Graphic finalGraphic = bang.getFinalGraphicRenderer().apply(state.getModel());
     setGraphic(finalGraphic);
