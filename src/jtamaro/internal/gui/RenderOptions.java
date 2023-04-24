@@ -20,7 +20,6 @@ public final class RenderOptions {
   }
 
   public RenderOptions(int padding, int fixedWidth, int fixedHeight) {
-    System.out.println("RenderOptions(" + padding + ", " + fixedWidth + ", " + fixedHeight + ")");
     this.padding = padding;
     this.fixedWidth = fixedWidth;
     this.fixedHeight = fixedHeight;
@@ -38,7 +37,6 @@ public final class RenderOptions {
   }
 
   public boolean hasFixedSize() {
-    System.out.println("RenderOptions.hasFixedSize() (" + padding + ", " + fixedWidth + ", " + fixedHeight + ")");
     return fixedWidth >= 0 || fixedHeight >= 0;
   }
 
