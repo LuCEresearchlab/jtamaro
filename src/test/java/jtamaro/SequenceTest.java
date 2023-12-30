@@ -149,14 +149,15 @@ public class SequenceTest {
 
 
   public static void demo() {
+    
+    // TODO: Turn these into unit tests
+
     Sequence<Integer> is = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     println(filter(i -> i % 2 == 0, is));
 
     println(map(s -> s + "!", of("Hi", "Ho")));
 
     System.out.println(reduce((a, e) -> a + e, "", of("a", "b", "c", "d")));
-
-    System.out.println(reduce((a, e) -> a + e, "", intersperse("-", of("S", "M", "L", "XL"))));
 
     print(concat(range('A', 'F'), range('F', 'A', -1)));
 
