@@ -88,3 +88,48 @@ Compile a jar file for usage in other projects:
 ```
 
 The output will be in `build/libs/jtamaro-*.jar`
+
+## Use
+
+### Use in BlueJ
+
+The library can be stored as a JAR file inside the +libs directory of a BlueJ project;
+this way BlueJ will pick it up and one can import names using normal import statements.
+
+In the BlueJ Code Pad, one can enter the necessary import statements
+(which is a bit painful),
+and then enter any JTamaro expressions.
+
+### Use in JShell
+
+To use the library in JShell, using a startup script that configures the class path
+(in the following example, referring to a JAR in the +libs directory)
+and then imports all the necessary classes could be useful:
+
+```jsh
+/env -class-path +libs/jtamaro-1.0.0.jar
+import static jtamaro.en.IO.*;
+import static jtamaro.en.Color.*;
+import static jtamaro.en.Colors.*;
+import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Sequences.*;
+import static jtamaro.en.Pairs.*;
+import static jtamaro.en.Points.*;
+import jtamaro.en.Graphic;
+import jtamaro.en.Color;
+import jtamaro.en.Pair;
+import jtamaro.en.Sequence;
+import jtamaro.en.Point;
+```
+
+Then one can launch JShell as follows, and all the names will be imported already:
+
+```sh
+jshell startup.jsh
+```
+
+This way, one can immediately entire expressions like the following:
+
+```java
+showFilmStrip(map(i->rectangle(i % 10 * 10, 100, RED), range(10)), 100, 100)
+```
