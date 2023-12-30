@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import static jtamaro.en.Sequences.*;
 
@@ -101,9 +102,14 @@ public class BigBangFrame<M> extends JFrame {
         handle(TraceEvent.createMouseMove(coordinate));
       }
     });
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    addWindowListener(new java.awt.event.WindowAdapter() {
+      public void windowClosing(WindowEvent winEvt) {
+        timer.stop();
+      }
+    });
     add(graphicCanvas, BorderLayout.CENTER);
     pack();
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true);
 
     SwingUtilities.invokeLater(() -> {
@@ -134,7 +140,8 @@ public class BigBangFrame<M> extends JFrame {
     Graphic finalGraphic = bang.getFinalGraphicRenderer().apply(state.getModel());
     setGraphic(finalGraphic);
     if (bang.getCloseOnStop()) {
-      setVisible(false);
+      //setVisible(false);
+      dispose();
     }
   }
 

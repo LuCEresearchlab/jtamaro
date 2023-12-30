@@ -25,7 +25,7 @@ public class GraphicFrame extends JFrame {
 
   public GraphicFrame() {
     setTitle("JTamaro");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     renderOptions = new RenderOptions(10);
 

@@ -27,7 +27,7 @@ public final class FilmStripFrame extends JFrame {
     indexedGraphics = zipWithIndex(graphics);
     completeFrameWith = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
     setTitle("Film Strip");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
 
     final FilmStripCanvas canvas = new FilmStripCanvas(graphics, frameWidth, frameHeight);
