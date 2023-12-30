@@ -40,7 +40,7 @@ public class Colors {
     assert red >= 0 && red <= 255;
     assert green >= 0 && green <= 255;
     assert blue >= 0 && blue <= 255;
-    assert opacity >= 0 && opacity <= 1;
+    assert opacity >= 0 && opacity <= 1 : "opacity (alpha) must be between 0 and 1";
     return new Color(red, green, blue, opacity);
   }
 

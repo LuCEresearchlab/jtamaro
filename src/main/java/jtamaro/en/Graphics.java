@@ -96,4 +96,14 @@ public final class Graphics {
     return new Above(topGraphic, bottomGraphic);
   }
 
+
+  //-- query operations
+  public static double width(Graphic graphic) {
+    return graphic.getWidth();
+  }
+
+  public static double height(Graphic graphic) {
+    return graphic.getHeight();
+  }
+
 }

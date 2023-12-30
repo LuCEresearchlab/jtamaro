@@ -162,7 +162,16 @@ public class Sequences {
     if (count == 0) {
       return empty();
     } else {
-      return lazyCons(element, () -> replicate(element, count - 1), false);
+      return cons(element, replicate(element, count - 1));
+    }
+  }
+
+  public static <T> Sequence<T> replicateLazy(T element, int count) {
+    assert count >= 0 : "n must be non-negative";
+    if (count == 0) {
+      return empty();
+    } else {
+      return lazyCons(element, () -> replicateLazy(element, count - 1), true);
     }
   }
 
@@ -343,7 +352,15 @@ public class Sequences {
     return result;
   }
 
-  public static Sequence<String> ofStringLinesEAGER(String string) {
+  /**
+   * Returns a sequence of the lines in the given string (eager version).
+   * This will eagerly split the string and build the entire sequence,
+   * which means that the returned Sequence will have a definite size.
+   * 
+   * @param string the String to split into lines
+   * @return a Sequence of the lines in the given string, with a definite size
+   */
+  public static Sequence<String> ofStringLines(String string) {
     final String[] lines = string.lines().toArray(String[]::new);
     Sequence<String> result = empty();
     for (int i = lines.length - 1; i >= 0; i--) {
@@ -351,7 +368,16 @@ public class Sequences {
     }
     return result;
   }
-  public static Sequence<String> ofStringLines(String string) {
+
+  /**
+   * Returns a sequence of the lines in the given string (lazy version).
+   * This will lazily split the string and build sequence cells as needed,
+   * which means that the returned Sequence will not have a definite size.
+   * 
+   * @param string the String to split into lines
+   * @return a Sequence of the lines in the given string, without a definite size
+   */
+  public static Sequence<String> ofStringLinesLazy(String string) {
     return IteratorCell.fromIterator(string.lines().iterator());
   }
   

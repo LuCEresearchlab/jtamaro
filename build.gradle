@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -9,6 +12,11 @@ repositories {
 }
 
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+
+    //testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    //testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 archivesBaseName = rootProject.name
@@ -28,12 +36,27 @@ javadoc {
     options.addStringOption 'Xdoclint:all,-missing', '-quiet'
 }
 
-sourceSets {
-    main.java.srcDirs 'src'
-}
-
 compileJava {
     options.compilerArgs << '-Xlint:unchecked'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+
+    testLogging {
+        events TestLogEvent.FAILED,
+                   //TestLogEvent.PASSED,
+                   TestLogEvent.SKIPPED,
+                   TestLogEvent.STANDARD_ERROR,
+                   TestLogEvent.STANDARD_OUT
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces false
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+
+    }
 }
 
 tasks.named('jar') {

@@ -199,7 +199,7 @@ public class Alphabet {
   public static void main(String[] args) {
     Graphic rendering = renderString("pf", 200);
     show(rendering);
-    save(overlay(rendering, rectangle(rendering.getWidth() + 50, rendering.getHeight() + 50, TRANSPARENT)), "pf2.png");
+    //save(overlay(rendering, rectangle(rendering.getWidth() + 50, rendering.getHeight() + 50, TRANSPARENT)), "pf2.png");
   }
 
 }
