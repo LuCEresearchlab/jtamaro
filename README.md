@@ -81,13 +81,30 @@ Graphic functionality is delegated to class `GraphicImpl` and its subclasses.
 
 ## Build
 
-Compile a jar file for usage in other projects:
+This project uses Gradle.
+It contains two subprojects:
+
+* `lib` - the JTamaro library
+* `demo-app` - an application that contains some demos that use the library
+
+To build everything and run the demo app:
 
 ```bash
-./gradlew jar
+./gradlew :demo-app:run
 ```
 
-The output will be in `build/libs/jtamaro-*.jar`
+To run individual demos in the demo app, run the corresponding classes
+with `main` methods in the `demo-app` directory
+from within an IDE that understands gradle (e.g., VS Code)
+and thus will find (and if needed build) the library.
+
+To just build the library's jar file for usage in other projects:
+
+```bash
+./gradlew :lib:jar
+```
+
+The output will be in `lib/build/libs/jtamaro-*.jar`
 
 ## Use
 
