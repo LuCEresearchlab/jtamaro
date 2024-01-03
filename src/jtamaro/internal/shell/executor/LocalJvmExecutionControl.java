@@ -2,10 +2,8 @@ package jtamaro.internal.shell.executor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Vector;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,32 +20,32 @@ import jdk.jshell.spi.SPIResolutionException;
  * published under the MIT License.
  */
 public class LocalJvmExecutionControl extends DirectExecutionControl {
-    private static final Object NULL = new Object();
-
     private static final AtomicInteger EXECUTOR_THREAD_ID = new AtomicInteger(0);
 
     private final ExecutorService executor;
 
-    private final Map<String, Object> results = new ConcurrentHashMap<>();
+    private final Vector<Object> results = new Vector<>();
 
     public LocalJvmExecutionControl() {
-        this.executor = Executors.newCachedThreadPool(r ->
+        executor = Executors.newCachedThreadPool(r ->
                 new Thread(r, "LocalJVM-executor-" + EXECUTOR_THREAD_ID.getAndIncrement()));
     }
 
     public Object takeResult(String key) {
-        Object result = this.results.remove(key);
-        if (result == null)
+        final int idx = Integer.parseInt(key);
+        if (results.size() <= idx) {
             throw new IllegalStateException("No result with key: " + key);
-        return result == NULL ? null : result;
+        } else {
+            return results.get(idx);
+        }
     }
 
-    private Object execute(String key, Method doitMethod) throws Exception {
-        final Future<Object> runningTask = this.executor.submit(() -> doitMethod.invoke(null));
+    private Object execute(Method doitMethod) throws Exception {
+        final Future<Object> runningTask = executor.submit(() -> doitMethod.invoke(null));
         try {
             return runningTask.get();
         } catch (CancellationException e) {
-            if (this.executor.isShutdown()) {
+            if (executor.isShutdown()) {
                 // If the executor is shutdown, the situation is the former in which
                 // case the protocol is to throw an ExecutionControl.StoppedException.
                 throw new StoppedException();
@@ -84,9 +82,12 @@ public class LocalJvmExecutionControl extends DirectExecutionControl {
      */
     @Override
     protected String invoke(Method doitMethod) throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final Object value = this.execute(id, doitMethod);
-        this.results.put(id, value);
-        return id;
+        synchronized (results) {
+            final int size = results.size();
+            final String key = String.valueOf(size);
+            final Object value = execute(doitMethod);
+            results.add(value);
+            return key;
+        }
     }
 }

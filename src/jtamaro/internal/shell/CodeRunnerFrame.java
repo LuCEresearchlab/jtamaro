@@ -1,6 +1,7 @@
 package jtamaro.internal.shell;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.ScrollPane;
 import java.awt.event.KeyAdapter;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -63,12 +65,10 @@ public final class CodeRunnerFrame extends JFrame {
 
     private void initUI() {
         final GraphicCanvas canvas = new GraphicCanvas(new RenderOptions(10));
-        final DefaultListModel<String> inputHistoryModel = new DefaultListModel<>();
+        final DefaultListModel<SnippetEvent> inputHistoryModel = new DefaultListModel<>();
 
-        final JTextField inputField = buildInput(tf -> {
-            final String code = tf.getText();
-            evalCode(code, canvas, tf::setText, inputHistoryModel::addElement, true);
-        });
+        final JTextField inputField = buildInput(tf -> evalCode(tf.getText(), canvas,
+                tf::setText, inputHistoryModel::addElement));
 
         final ScrollPane inputHistoryPanel = buildHistoryPanel(canvas, inputHistoryModel, inputField);
 
@@ -86,14 +86,15 @@ public final class CodeRunnerFrame extends JFrame {
     }
 
     private ScrollPane buildHistoryPanel(GraphicCanvas canvas,
-                                         DefaultListModel<String> inputHistoryModel,
+                                         DefaultListModel<SnippetEvent> inputHistoryModel,
                                          JTextField inputField) {
-        final JList<String> inputHistory = new JList<>(inputHistoryModel);
+        final JList<SnippetEvent> inputHistory = new JList<>(inputHistoryModel);
         inputHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        inputHistory.setCellRenderer(new SnippetEventListCellRenderer());
         inputHistory.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                evalCode(inputHistoryModel.get(inputHistory.getSelectedIndex()), canvas,
-                        inputField::setText,  inputHistoryModel::addElement, false);
+                displaySnippetResult(inputHistoryModel.get(inputHistory.getSelectedIndex()), canvas,
+                        inputField::setText, inputHistoryModel::addElement, false);
             }
         });
         final ScrollPane inputHistoryScroll = new ScrollPane();
@@ -120,21 +121,20 @@ public final class CodeRunnerFrame extends JFrame {
     private void evalCode(String code,
                           GraphicCanvas canvas,
                           Consumer<String> setInputFieldText,
-                          Consumer<String> logInHistory,
-                          boolean clearInputFieldIfSuccessful) {
+                          Consumer<SnippetEvent> logInHistory) {
         final List<SnippetEvent> events = shell.eval(code);
         if (events.isEmpty()) {
             LOG.warning("Code evaluation produced no event");
         }
 
         final SnippetEvent event = events.get(events.size() - 1);
-        displaySnippetResult(event, canvas, setInputFieldText, logInHistory, clearInputFieldIfSuccessful);
+        displaySnippetResult(event, canvas, setInputFieldText, logInHistory, true);
     }
 
     private void displaySnippetResult(SnippetEvent event,
                                       GraphicCanvas canvas,
                                       Consumer<String> setInputFieldText,
-                                      Consumer<String> logInHistory,
+                                      Consumer<SnippetEvent> logInHistory,
                                       boolean newEntry) {
         final String key = event.value();
 
@@ -146,7 +146,7 @@ public final class CodeRunnerFrame extends JFrame {
 
             final String source = event.snippet().source();
             if (newEntry) {
-                logInHistory.accept(source);
+                logInHistory.accept(event);
                 setInputFieldText.accept("");
             } else {
                 setInputFieldText.accept(source);
@@ -185,5 +185,17 @@ public final class CodeRunnerFrame extends JFrame {
             JFrame frame = new CodeRunnerFrame();
             frame.setVisible(true);
         });
+    }
+
+    private static class SnippetEventListCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                      boolean isSelected, boolean cellHasFocus) {
+            if (value.getClass() != SnippetEvent.class) {
+                throw new IllegalStateException("This class must be used with SnippetEvents only!");
+            }
+            final String textualValue = ((SnippetEvent) value).snippet().source();
+            return super.getListCellRendererComponent(list, textualValue, index, isSelected, cellHasFocus);
+        }
     }
 }
