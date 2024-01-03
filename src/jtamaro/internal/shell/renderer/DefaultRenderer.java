@@ -8,7 +8,7 @@ final class DefaultRenderer extends ObjectRenderer<Object> {
 
     @Override
     protected GraphicImpl renderImpl(Object o) {
-        return new TextImpl(o.toString(), "monospace", 200, Colors.BLACK.getImplementation());
+        return new TextImpl(o.toString(), "monospace", 50, Colors.BLACK.getImplementation());
     }
 
     @Override

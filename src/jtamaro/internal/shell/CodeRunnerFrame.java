@@ -5,10 +5,10 @@ import java.awt.Font;
 import java.awt.ScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.PrintStream;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -19,12 +19,14 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import jdk.jshell.JShell;
+import jdk.jshell.JShellException;
 import jdk.jshell.SnippetEvent;
 import jtamaro.en.Colors;
 import jtamaro.internal.gui.GraphicCanvas;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RectangleImpl;
+import jtamaro.internal.shell.executor.StatementResult;
 import jtamaro.internal.shell.executor.LocalJvmExecutionControlProvider;
 import jtamaro.internal.shell.renderer.ObjectRenderer;
 import jtamaro.internal.shell.renderer.ObjectRenderersProvider;
@@ -45,20 +47,13 @@ public final class CodeRunnerFrame extends JFrame {
     private final JShell shell;
 
     public CodeRunnerFrame() {
-        final GraphicCanvas canvas = new GraphicCanvas(new RenderOptions(10));
-
-        final GraphicCanvasOutputStream outStream = new GraphicCanvasOutputStream(canvas, false);
-        final GraphicCanvasOutputStream errStream = new GraphicCanvasOutputStream(canvas, true);
-
         execControlProvider = new LocalJvmExecutionControlProvider();
         shell = JShell.builder()
                 .executionEngine(execControlProvider, Map.of())
-                .out(new PrintStream(outStream))
-                .err(new PrintStream(errStream))
                 .build();
         shell.addToClasspath(Paths.get("").toAbsolutePath().toString());
 
-        initUI(canvas);
+        initUI();
         initShell();
     }
 
@@ -66,13 +61,13 @@ public final class CodeRunnerFrame extends JFrame {
         shell.eval(DEFAULT_IMPORTS);
     }
 
-    private void initUI(GraphicCanvas canvas) {
+    private void initUI() {
+        final GraphicCanvas canvas = new GraphicCanvas(new RenderOptions(10));
         final DefaultListModel<String> inputHistoryModel = new DefaultListModel<>();
 
         final JTextField inputField = buildInput(tf -> {
             final String code = tf.getText();
-            inputHistoryModel.addElement(code);
-            evalCode(code, canvas, tf::setText, true);
+            evalCode(code, canvas, tf::setText, inputHistoryModel::addElement, true);
         });
 
         final ScrollPane inputHistoryPanel = buildHistoryPanel(canvas, inputHistoryModel, inputField);
@@ -98,7 +93,7 @@ public final class CodeRunnerFrame extends JFrame {
         inputHistory.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 evalCode(inputHistoryModel.get(inputHistory.getSelectedIndex()), canvas,
-                        inputField::setText, false);
+                        inputField::setText,  inputHistoryModel::addElement, false);
             }
         });
         final ScrollPane inputHistoryScroll = new ScrollPane();
@@ -125,27 +120,53 @@ public final class CodeRunnerFrame extends JFrame {
     private void evalCode(String code,
                           GraphicCanvas canvas,
                           Consumer<String> setInputFieldText,
-                          boolean clearInputField) {
+                          Consumer<String> logInHistory,
+                          boolean clearInputFieldIfSuccessful) {
         final List<SnippetEvent> events = shell.eval(code);
         if (events.isEmpty()) {
             LOG.warning("Code evaluation produced no event");
         }
 
         final SnippetEvent event = events.get(events.size() - 1);
+        displaySnippetResult(event, canvas, setInputFieldText, logInHistory, clearInputFieldIfSuccessful);
+    }
+
+    private void displaySnippetResult(SnippetEvent event,
+                                      GraphicCanvas canvas,
+                                      Consumer<String> setInputFieldText,
+                                      Consumer<String> logInHistory,
+                                      boolean newEntry) {
         final String key = event.value();
+
         final Object obj;
-        if (key == null) {
-            // TODO: handle this
-            obj = "ERROR!";
-        } else if (event.snippet().subKind().isExecutable()) {
-            obj = execControlProvider.get().takeResult(key);
+        if (key != null) {
+            obj = event.snippet().subKind().isExecutable()
+                    ? execControlProvider.get().takeResult(key)
+                    : key;
+
+            final String source = event.snippet().source();
+            if (newEntry) {
+                logInHistory.accept(source);
+                setInputFieldText.accept("");
+            } else {
+                setInputFieldText.accept(source);
+            }
+        } else if (event.causeSnippet() == null) {
+            final JShellException exception = event.exception();
+            obj = Objects.requireNonNullElseGet(exception, () -> switch (event.snippet().kind()) {
+                case ERRONEOUS -> new Exception("Syntax error");
+                case IMPORT -> StatementResult.IMPORT;
+                case METHOD -> StatementResult.METHOD_DECLARATION;
+                case STATEMENT -> StatementResult.STATEMENT;
+                case TYPE_DECL -> StatementResult.TYPE_DECLARATION;
+                default -> "???";
+            });
         } else {
-            obj = key;
+            throw new IllegalStateException("How about we explore the area ahead of us later?");
         }
 
         final GraphicImpl graphic = buildGraphic(obj);
         canvas.setGraphic(graphic);
-        setInputFieldText.accept(clearInputField ? "" : code);
     }
 
     private GraphicImpl buildGraphic(Object obj) {

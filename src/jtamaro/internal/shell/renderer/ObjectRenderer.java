@@ -6,7 +6,7 @@ public abstract class ObjectRenderer<T> {
 
 
     @SuppressWarnings("unchecked") // Actually checked
-    public GraphicImpl render(Object o) {
+    public final GraphicImpl render(Object o) {
         if (supportedClass().isAssignableFrom(o.getClass())) {
             return renderImpl((T) o);
         } else {
