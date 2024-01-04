@@ -26,6 +26,10 @@ public class GraphicCanvas extends JComponent {
     repaint();
   }
 
+  public GraphicImpl getGraphic() {
+    return graphic;
+  }
+
   @Override
   public Dimension getPreferredSize() {
     final int padding = renderOptions.getPadding();

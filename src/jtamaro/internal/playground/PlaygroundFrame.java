@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -20,7 +18,6 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -33,18 +30,18 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import jdk.jshell.JShell;
-import jdk.jshell.JShellException;
 import jdk.jshell.Snippet;
 import jdk.jshell.SnippetEvent;
 import jtamaro.en.Colors;
 import jtamaro.internal.gui.GraphicCanvas;
+import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
-import jtamaro.internal.representation.GraphicImpl;
-import jtamaro.internal.representation.RectangleImpl;
-import jtamaro.internal.playground.executor.StatementResult;
 import jtamaro.internal.playground.executor.LocalJvmExecutionControlProvider;
+import jtamaro.internal.playground.executor.StatementResult;
 import jtamaro.internal.playground.renderer.ObjectRenderer;
 import jtamaro.internal.playground.renderer.ObjectRenderersProvider;
+import jtamaro.internal.representation.GraphicImpl;
+import jtamaro.internal.representation.RectangleImpl;
 
 public final class PlaygroundFrame extends JFrame {
     private static final Logger LOG = Logger.getLogger(PlaygroundFrame.class.getName());
@@ -101,7 +98,14 @@ public final class PlaygroundFrame extends JFrame {
         exportCodeMenuItem.addActionListener(e -> saveCode(inputHistoryModel));
         fileMenu.add(exportCodeMenuItem);
 
+        final JMenu graphicsMenu = new JMenu("Graphics");
+        final JMenuItem inspectGraphicMenuItem = new JMenuItem("Inspect");
+        inspectGraphicMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+        inspectGraphicMenuItem.addActionListener(e -> openInspector(canvas.getGraphic()));
+        graphicsMenu.add(inspectGraphicMenuItem);
+
         menuBar.add(fileMenu);
+        menuBar.add(graphicsMenu);
 
         setJMenuBar(menuBar);
 
@@ -237,6 +241,13 @@ public final class PlaygroundFrame extends JFrame {
                     "Session export",
                     JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    private void openInspector(GraphicImpl graphic) {
+        final GraphicFrame frame = new GraphicFrame();
+        frame.setGraphic(graphic);
+        frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
