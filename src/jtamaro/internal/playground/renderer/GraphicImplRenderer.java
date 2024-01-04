@@ -1,4 +1,4 @@
-package jtamaro.internal.shell.renderer;
+package jtamaro.internal.playground.renderer;
 
 import jtamaro.internal.representation.GraphicImpl;
 

@@ -1,11 +1,11 @@
-package jtamaro.internal.shell.renderer;
+package jtamaro.internal.playground.renderer;
 
 import jtamaro.en.Colors;
 import jtamaro.en.graphic.Overlay;
 import jtamaro.en.graphic.Rectangle;
 import jtamaro.en.graphic.Text;
 import jtamaro.internal.representation.GraphicImpl;
-import jtamaro.internal.shell.executor.StatementResult;
+import jtamaro.internal.playground.executor.StatementResult;
 
 import static jtamaro.en.Graphics.overlay;
 import static jtamaro.en.Graphics.rectangle;

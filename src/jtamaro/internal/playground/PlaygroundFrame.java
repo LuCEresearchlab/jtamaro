@@ -1,4 +1,4 @@
-package jtamaro.internal.shell;
+package jtamaro.internal.playground;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,13 +28,13 @@ import jtamaro.internal.gui.GraphicCanvas;
 import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RectangleImpl;
-import jtamaro.internal.shell.executor.StatementResult;
-import jtamaro.internal.shell.executor.LocalJvmExecutionControlProvider;
-import jtamaro.internal.shell.renderer.ObjectRenderer;
-import jtamaro.internal.shell.renderer.ObjectRenderersProvider;
+import jtamaro.internal.playground.executor.StatementResult;
+import jtamaro.internal.playground.executor.LocalJvmExecutionControlProvider;
+import jtamaro.internal.playground.renderer.ObjectRenderer;
+import jtamaro.internal.playground.renderer.ObjectRenderersProvider;
 
-public final class CodeRunnerFrame extends JFrame {
-    private static final Logger LOG = Logger.getLogger(CodeRunnerFrame.class.getName());
+public final class PlaygroundFrame extends JFrame {
+    private static final Logger LOG = Logger.getLogger(PlaygroundFrame.class.getName());
 
     private static final String DEFAULT_IMPORTS = """
             import static jtamaro.en.Colors.*;
@@ -48,7 +48,7 @@ public final class CodeRunnerFrame extends JFrame {
     private final LocalJvmExecutionControlProvider execControlProvider;
     private final JShell shell;
 
-    public CodeRunnerFrame() {
+    public PlaygroundFrame() {
         execControlProvider = new LocalJvmExecutionControlProvider();
         shell = JShell.builder()
                 .executionEngine(execControlProvider, Map.of())
@@ -80,6 +80,7 @@ public final class CodeRunnerFrame extends JFrame {
 
         canvas.setGraphic(new RectangleImpl(500, 200, Colors.TRANSPARENT.getImplementation()));
 
+        setTitle("Playground");
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -182,7 +183,7 @@ public final class CodeRunnerFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new CodeRunnerFrame();
+            JFrame frame = new PlaygroundFrame();
             frame.setVisible(true);
         });
     }

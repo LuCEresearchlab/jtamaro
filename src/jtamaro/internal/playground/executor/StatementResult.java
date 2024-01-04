@@ -1,4 +1,4 @@
-package jtamaro.internal.shell.executor;
+package jtamaro.internal.playground.executor;
 
 public enum StatementResult {
     IMPORT,
