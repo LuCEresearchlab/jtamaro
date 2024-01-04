@@ -1,5 +1,6 @@
 package jtamaro.internal.playground.renderer;
 
+import java.awt.Font;
 import jtamaro.en.Colors;
 import jtamaro.en.graphic.Overlay;
 import jtamaro.en.graphic.Rectangle;
@@ -19,7 +20,7 @@ final class ExceptionRenderer extends ObjectRenderer<Exception> {
 
     @Override
     protected GraphicImpl renderImpl(Exception e) {
-        final Text message = (Text) text(e.getMessage(), "monospace", 50, Colors.WHITE);
+        final Text message = (Text) text(e.getMessage(), Font.MONOSPACED, 50, Colors.WHITE);
         final Rectangle background = (Rectangle) rectangle(message.getWidth() + 10,
                 message.getHeight() + 5, Colors.RED);
         final Overlay graphic = (Overlay) overlay(message, background);

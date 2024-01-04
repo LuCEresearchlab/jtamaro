@@ -1,5 +1,6 @@
 package jtamaro.internal.playground.renderer;
 
+import java.awt.Font;
 import jtamaro.en.Colors;
 import jtamaro.en.graphic.Overlay;
 import jtamaro.en.graphic.Rectangle;
@@ -26,7 +27,7 @@ final class StatementResultRenderer extends ObjectRenderer<StatementResult> {
             case STATEMENT -> "Statement executed";
             case TYPE_DECLARATION -> "Type declared";
         };
-        final Text foreground = (Text) text(text, "monospace", 50, Colors.WHITE);
+        final Text foreground = (Text) text(text, Font.MONOSPACED, 50, Colors.WHITE);
         final Rectangle background = (Rectangle) rectangle(foreground.getWidth() + 10,
                 foreground.getHeight() + 5, Colors.BLACK);
         final Overlay graphic = (Overlay) overlay(foreground, background);

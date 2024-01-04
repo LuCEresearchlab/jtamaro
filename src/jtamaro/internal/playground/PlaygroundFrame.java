@@ -92,6 +92,7 @@ public final class PlaygroundFrame extends JFrame {
         final JList<SnippetEvent> inputHistory = new JList<>(inputHistoryModel);
         inputHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         inputHistory.setCellRenderer(new SnippetEventListCellRenderer());
+        inputHistory.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
         inputHistory.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 displaySnippetResult(inputHistoryModel.get(inputHistory.getSelectedIndex()), canvas,
@@ -105,7 +106,7 @@ public final class PlaygroundFrame extends JFrame {
 
     private JTextField buildInput(Consumer<JTextField> submitCode) {
         final JTextField inputField = new JTextField(DEFAULT_TEXT, 80);
-        inputField.setFont(Font.getFont("monospace"));
+        inputField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         inputField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -124,11 +125,12 @@ public final class PlaygroundFrame extends JFrame {
                           Consumer<String> setInputFieldText,
                           Consumer<SnippetEvent> logInHistory) {
         final List<SnippetEvent> events = shell.eval(code);
-        if (events.isEmpty()) {
+        final int size = events.size();
+        if (size == 0) {
             LOG.warning("Code evaluation produced no event");
         }
 
-        final SnippetEvent event = events.get(events.size() - 1);
+        final SnippetEvent event = events.get(size - 1);
         displaySnippetResult(event, canvas, setInputFieldText, logInHistory, true);
     }
 
