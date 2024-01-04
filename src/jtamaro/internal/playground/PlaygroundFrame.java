@@ -39,7 +39,6 @@ import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.playground.executor.LocalJvmExecutionControlProvider;
 import jtamaro.internal.playground.executor.StatementResult;
 import jtamaro.internal.playground.renderer.ObjectRenderer;
-import jtamaro.internal.playground.renderer.ObjectRenderersProvider;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RectangleImpl;
 
@@ -54,7 +53,6 @@ public final class PlaygroundFrame extends JFrame {
             """;
     private static final String DEFAULT_TEXT = "rotate(15, circularSector(100, 330, YELLOW))";
 
-    private final List<ObjectRenderer<?>> renderers = ObjectRenderersProvider.getRenderers();
     private final LocalJvmExecutionControlProvider execControlProvider;
     private final JShell shell;
 
@@ -203,19 +201,8 @@ public final class PlaygroundFrame extends JFrame {
             }
         }
 
-        final GraphicImpl graphic = buildGraphic(obj);
+        final GraphicImpl graphic = ObjectRenderer.render(obj);
         canvas.setGraphic(graphic);
-    }
-
-    private GraphicImpl buildGraphic(Object obj) {
-        for (final ObjectRenderer<?> renderer : renderers) {
-            if (renderer.supportedClass().isAssignableFrom(obj.getClass())) {
-                return renderer.render(obj);
-            }
-        }
-
-        // Should never happen
-        throw new IllegalStateException("No renderer for " + obj.getClass());
     }
 
     private void saveCode(DefaultListModel<SnippetEvent> historyModel) {

@@ -3,11 +3,11 @@ package jtamaro.internal.playground.renderer;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.representation.GraphicImpl;
 
-final class AbstractGraphicRenderer extends ObjectRenderer<AbstractGraphic> {
+final class AbstractGraphicRenderer extends BaseObjectRenderer<AbstractGraphic> {
 
     @Override
-    public Class<AbstractGraphic> supportedClass() {
-        return AbstractGraphic.class;
+    public boolean isSupported(Object o) {
+        return AbstractGraphic.class.isAssignableFrom(o.getClass());
     }
 
     @Override

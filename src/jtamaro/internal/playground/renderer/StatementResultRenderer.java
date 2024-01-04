@@ -12,11 +12,11 @@ import static jtamaro.en.Graphics.overlay;
 import static jtamaro.en.Graphics.rectangle;
 import static jtamaro.en.Graphics.text;
 
-final class StatementResultRenderer extends ObjectRenderer<StatementResult> {
+final class StatementResultRenderer extends BaseObjectRenderer<StatementResult> {
 
     @Override
-    public Class<StatementResult> supportedClass() {
-        return StatementResult.class;
+    public boolean isSupported(Object o) {
+        return StatementResult.class.isAssignableFrom(o.getClass());
     }
 
     @Override
@@ -27,7 +27,7 @@ final class StatementResultRenderer extends ObjectRenderer<StatementResult> {
             case STATEMENT -> "Statement executed";
             case TYPE_DECLARATION -> "Type declared";
         };
-        final Text foreground = (Text) text(text, Font.MONOSPACED, 50, Colors.WHITE);
+        final Text foreground = (Text) text(text, Font.MONOSPACED, 16, Colors.WHITE);
         final Rectangle background = (Rectangle) rectangle(foreground.getWidth() + 10,
                 foreground.getHeight() + 5, Colors.BLACK);
         final Overlay graphic = (Overlay) overlay(foreground, background);

@@ -11,16 +11,16 @@ import static jtamaro.en.Graphics.overlay;
 import static jtamaro.en.Graphics.rectangle;
 import static jtamaro.en.Graphics.text;
 
-final class ExceptionRenderer extends ObjectRenderer<Exception> {
+final class ExceptionRenderer extends BaseObjectRenderer<Exception> {
 
     @Override
-    public Class<Exception> supportedClass() {
-        return Exception.class;
+    public boolean isSupported(Object o) {
+        return Exception.class.isAssignableFrom(o.getClass());
     }
 
     @Override
     protected GraphicImpl renderImpl(Exception e) {
-        final Text message = (Text) text(e.getMessage(), Font.MONOSPACED, 50, Colors.WHITE);
+        final Text message = (Text) text(e.getMessage(), Font.MONOSPACED, 16, Colors.WHITE);
         final Rectangle background = (Rectangle) rectangle(message.getWidth() + 10,
                 message.getHeight() + 5, Colors.RED);
         final Overlay graphic = (Overlay) overlay(message, background);

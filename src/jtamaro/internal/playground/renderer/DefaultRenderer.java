@@ -5,15 +5,15 @@ import jtamaro.en.Colors;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.TextImpl;
 
-final class DefaultRenderer extends ObjectRenderer<Object> {
+final class DefaultRenderer extends BaseObjectRenderer<Object> {
 
     @Override
-    protected GraphicImpl renderImpl(Object o) {
-        return new TextImpl(o.toString(), Font.MONOSPACED, 50, Colors.BLACK.getImplementation());
+    public boolean isSupported(Object o) {
+        return true;
     }
 
     @Override
-    public Class<Object> supportedClass() {
-        return Object.class;
+    protected GraphicImpl renderImpl(Object o) {
+        return new TextImpl(o.toString(), Font.MONOSPACED, 12, Colors.BLACK.getImplementation());
     }
 }

@@ -1,20 +1,35 @@
 package jtamaro.internal.playground.renderer;
 
+import java.util.List;
 import jtamaro.internal.representation.GraphicImpl;
 
-public abstract class ObjectRenderer<T> {
+public final class ObjectRenderer {
 
+    private static final List<BaseObjectRenderer<?>> RENDERERS = List.of(
+            new AbstractGraphicRenderer(),
+            new ExceptionRenderer(),
+            new GraphicImplRenderer(),
+            new StatementResultRenderer(),
+            new SequenceRenderer(ObjectRenderer::render),
+            // Always last
+            new DefaultRenderer()
+    );
 
-    @SuppressWarnings("unchecked") // Actually checked
-    public final GraphicImpl render(Object o) {
-        if (supportedClass().isAssignableFrom(o.getClass())) {
-            return renderImpl((T) o);
-        } else {
-            throw new IllegalArgumentException("Wrong class");
-        }
+    private ObjectRenderer() {
     }
 
-    public abstract Class<T> supportedClass();
+    public static GraphicImpl render(Object obj) {
+        return getRenderer(obj, obj.getClass()).render(obj);
+    }
 
-    protected abstract GraphicImpl renderImpl(T o);
+    @SuppressWarnings("unchecked")
+    private static <T> BaseObjectRenderer<? extends T> getRenderer(Object o, Class<T> clazz) {
+        for (BaseObjectRenderer<?> renderer : RENDERERS) {
+            if (renderer.isSupported(o)) {
+                return (BaseObjectRenderer<? extends T>) renderer;
+            }
+        }
+        throw new IllegalArgumentException("No renderer for class: " + clazz.getName());
+    }
+
 }

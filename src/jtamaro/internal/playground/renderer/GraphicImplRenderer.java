@@ -2,11 +2,11 @@ package jtamaro.internal.playground.renderer;
 
 import jtamaro.internal.representation.GraphicImpl;
 
-final class GraphicImplRenderer extends ObjectRenderer<GraphicImpl> {
+final class GraphicImplRenderer extends BaseObjectRenderer<GraphicImpl> {
 
     @Override
-    public Class<GraphicImpl> supportedClass() {
-        return GraphicImpl.class;
+    public boolean isSupported(Object o) {
+        return GraphicImpl.class.isAssignableFrom(o.getClass());
     }
 
     @Override
