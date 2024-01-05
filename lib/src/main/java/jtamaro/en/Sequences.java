@@ -17,15 +17,19 @@ public class Sequences {
   //--- queries
 
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._cons~3f%29%29
-
-  /**
-   * Determines whether the sequence has at least one element.
-   *
-   * @return true if the sequence has at least one element, false otherwise.
-   */
-  public static <T> boolean isCons(Sequence<T> sequence) {
-    return !sequence.isEmpty();
-  }
+  //
+  // We deliberately do not provide isCons, because we have various kinds of cons cells
+  // (e.g., Cons, LazyCons, and IteratorCell).
+  // Students should call isEmpty instead.
+  //
+  ///**
+  // * Determines whether the sequence has at least one element.
+  // *
+  // * @return true if the sequence has at least one element, false otherwise.
+  // */
+  //public static <T> boolean isCons(Sequence<T> sequence) {
+  //  return !sequence.isEmpty();
+  //}
 
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._empty~3f%29%29
 
@@ -47,6 +51,7 @@ public class Sequences {
    * @return The first element of the given sequence.
    */
   public static <T> T first(Sequence<T> sequence) {
+    assert !sequence.isEmpty() : "Cannot get the first element of an empty sequence";
     return sequence.first();
   }
 
@@ -58,6 +63,7 @@ public class Sequences {
    * @return The rest of the given sequence.
    */
   public static <T> Sequence<T> rest(Sequence<T> sequence) {
+    assert !sequence.isEmpty() : "Cannot get the rest of an empty sequence";
     return sequence.rest();
   }
 
@@ -176,7 +182,7 @@ public class Sequences {
   }
 
   public static <T> Sequence<T> cycle(Sequence<T> sequence) {
-    assert !sequence.isEmpty() : "Empty sequences cannot be cycled.";
+    assert !sequence.isEmpty() : "Empty sequences cannot be cycled";
     return cycle(sequence, sequence);
   }
 
