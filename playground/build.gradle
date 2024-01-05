@@ -8,4 +8,9 @@ application {
 
 dependencies {
     implementation project(':lib')
+    implementation 'com.fifesoft:rsyntaxtextarea:3.3.4'
+}
+
+repositories {
+    mavenCentral()
 }

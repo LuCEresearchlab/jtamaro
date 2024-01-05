@@ -2,10 +2,10 @@ package jtamaro.internal.playground;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.ScrollPane;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,9 +25,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import jdk.jshell.JShell;
 import jdk.jshell.Snippet;
 import jdk.jshell.SnippetEvent;
@@ -40,6 +42,9 @@ import jtamaro.internal.playground.executor.StatementResult;
 import jtamaro.internal.playground.renderer.ObjectRenderer;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RectangleImpl;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 public final class PlaygroundFrame extends JFrame {
     private static final Logger LOG = Logger.getLogger(PlaygroundFrame.class.getName());
@@ -75,24 +80,29 @@ public final class PlaygroundFrame extends JFrame {
         final DefaultListModel<SnippetEvent> inputHistoryModel = new DefaultListModel<>();
 
         // Main panel
-        final JTextField inputField = buildInput(tf -> evalCode(tf.getText(), canvas,
-                tf::setText, inputHistoryModel::addElement));
+        final RSyntaxTextArea inputTextArea = buildInput();
+        final RTextScrollPane inputScrollPanel = new RTextScrollPane(inputTextArea);
 
-        final ScrollPane inputHistoryPanel = buildHistoryPanel(canvas, inputHistoryModel, inputField);
+        final ScrollPane inputHistoryPanel = buildHistoryPanel(canvas, inputHistoryModel, inputTextArea::setText);
 
         final JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(canvas, BorderLayout.CENTER);
-        mainPanel.add(inputField, BorderLayout.SOUTH);
+        mainPanel.add(inputScrollPanel, BorderLayout.CENTER);
+        mainPanel.add(canvas, BorderLayout.SOUTH);
         mainPanel.add(inputHistoryPanel, BorderLayout.EAST);
 
         // Menu bar
         final JMenuBar menuBar = new JMenuBar();
 
         final JMenu fileMenu = new JMenu("File");
+        final JMenuItem evalMenuItem = new JMenuItem("Evaluate");
+        evalMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK));
+        evalMenuItem.addActionListener(e -> evalCode(inputTextArea.getText(), canvas, inputTextArea::setText,
+                inputHistoryModel::addElement));
         final JMenuItem exportCodeMenuItem = new JMenuItem("Export session");
         exportCodeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
         exportCodeMenuItem.addActionListener(e -> saveCode(inputHistoryModel));
+        fileMenu.add(evalMenuItem);
         fileMenu.add(exportCodeMenuItem);
 
         final JMenu graphicsMenu = new JMenu("Graphics");
@@ -117,7 +127,7 @@ public final class PlaygroundFrame extends JFrame {
 
     private ScrollPane buildHistoryPanel(GraphicCanvas canvas,
                                          DefaultListModel<SnippetEvent> inputHistoryModel,
-                                         JTextField inputField) {
+                                         Consumer<String> setInputText) {
         final JList<SnippetEvent> inputHistory = new JList<>(inputHistoryModel);
         inputHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         inputHistory.setCellRenderer(new SnippetEventListCellRenderer());
@@ -125,7 +135,7 @@ public final class PlaygroundFrame extends JFrame {
         inputHistory.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 displaySnippetResult(inputHistoryModel.get(inputHistory.getSelectedIndex()), canvas,
-                        inputField::setText, inputHistoryModel::addElement, false);
+                        setInputText, inputHistoryModel::addElement, false);
             }
         });
         final ScrollPane inputHistoryScroll = new ScrollPane();
@@ -133,20 +143,13 @@ public final class PlaygroundFrame extends JFrame {
         return inputHistoryScroll;
     }
 
-    private JTextField buildInput(Consumer<JTextField> submitCode) {
-        final JTextField inputField = new JTextField(DEFAULT_TEXT, 80);
-        inputField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        inputField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    submitCode.accept(inputField);
-                } else {
-                    super.keyPressed(e);
-                }
-            }
-        });
-        return inputField;
+    private static RSyntaxTextArea buildInput() {
+        final RSyntaxTextArea textArea = new RSyntaxTextArea(DEFAULT_TEXT, 8, 120);
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        textArea.setAutoIndentEnabled(true);
+
+        return textArea;
     }
 
     private void evalCode(String code,
@@ -157,6 +160,7 @@ public final class PlaygroundFrame extends JFrame {
         final int size = events.size();
         if (size == 0) {
             LOG.warning("Code evaluation produced no event");
+            return;
         }
 
         final SnippetEvent event = events.get(size - 1);
@@ -236,7 +240,7 @@ public final class PlaygroundFrame extends JFrame {
         frame.setVisible(true);
     }
 
-    private static class SnippetEventListCellRenderer extends DefaultListCellRenderer {
+    private static final class SnippetEventListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -245,6 +249,26 @@ public final class PlaygroundFrame extends JFrame {
             }
             final String textualValue = ((SnippetEvent) value).snippet().source();
             return super.getListCellRendererComponent(list, textualValue, index, isSelected, cellHasFocus);
+        }
+    }
+
+    private static final class PlaygroundDocumentFilter extends DocumentFilter {
+        @Override
+        public void insertString(DocumentFilter.FilterBypass fb,
+                                 int offset,
+                                 String text,
+                                 AttributeSet attr) throws BadLocationException {
+            super.insertString(fb, offset, text.replace("\n", ""), attr);
+        }
+
+        @Override
+        public void replace(DocumentFilter.FilterBypass fb,
+                            int offset,
+                            int length,
+                            String text,
+                            AttributeSet attrs) throws BadLocationException {
+            final int numNL = (int) text.chars().filter(c -> c == '\n').count();
+            super.replace(fb, offset, length - numNL, text.replace("\n", ""), attrs);
         }
     }
 }
