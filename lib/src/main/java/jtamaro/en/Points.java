@@ -5,7 +5,11 @@ package jtamaro.en;
  * 
  * @see jtamaro.en.Point
  */
-public class Points {
+public final class Points {
+
+  // prevent instantiation
+  private Points() {
+  }
 
   public static final Point TOP_LEFT = Point.TOP_LEFT;
   public static final Point TOP_CENTER = Point.TOP_CENTER;

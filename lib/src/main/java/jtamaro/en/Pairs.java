@@ -5,7 +5,11 @@ package jtamaro.en;
  * 
  * @see jtamaro.en.Pair
  */
-public class Pairs {
+public final class Pairs {
+
+  // prevent instantiation
+  private Pairs() {
+  }
 
   /**
    * Construct a new Pair given two elements.

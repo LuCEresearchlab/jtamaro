@@ -44,7 +44,12 @@ import static jtamaro.en.Sequences.map;
 // We could show it using nesting (given the immutable sublanguage we use,
 // there are no cycles and thus nesting works fine; just some duplication in case of dags).
 
-public class IO {
+public final class IO {
+
+
+  // prevent instantiation
+  private IO() {
+  }
 
   /**
    * Print the given sequence, one element right after the next, to standard output.

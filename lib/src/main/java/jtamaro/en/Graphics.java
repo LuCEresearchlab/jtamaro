@@ -3,6 +3,11 @@ package jtamaro.en;
 import jtamaro.en.graphic.*;
 
 
+/**
+ * Static methods for working with graphics.
+ *
+ * @see jtamaro.en.Graphic
+ */
 public final class Graphics {
 
   // prevent instantiation

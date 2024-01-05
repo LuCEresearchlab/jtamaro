@@ -12,7 +12,12 @@ import jtamaro.en.data.LazyCons;
  *
  * @see jtamaro.en.Sequence
  */
-public class Sequences {
+public final class Sequences {
+
+  // prevent instantiation
+  private Sequences() {
+  }
+
 
   //--- queries
 

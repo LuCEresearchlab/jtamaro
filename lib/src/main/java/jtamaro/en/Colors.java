@@ -6,7 +6,11 @@ package jtamaro.en;
  *
  * @see jtamaro.en.Color
  */
-public class Colors {
+public final class Colors {
+
+  // prevent instantiation
+  private Colors() {
+  }
 
   //-- well-known colors
   public static final Color BLACK = rgb(0, 0, 0);
