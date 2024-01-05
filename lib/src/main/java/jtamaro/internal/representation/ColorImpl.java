@@ -14,6 +14,7 @@ public final class ColorImpl {
     this.red = red;
     this.green = green;
     this.blue = blue;
+    //TODO: Conversion between [0.0, 1.0] and [0, 255] is not satisfactory
     this.alpha = (int) Math.floor(opacity * 255);
   }
 
@@ -54,6 +55,41 @@ public final class ColorImpl {
     return new java.awt.Color(red, green, blue, alpha);
   }
 
+  public int getRed() {
+    return red;
+  }
+
+  public int getGreen() {
+    return green;
+  }
+
+  public int getBlue() {
+    return blue;
+  }
+
+  /**
+   * Returns the opacity in the range [0, 255],
+   * like it is stored.
+   * 
+   * @return the opacity as a value in [0, 255].
+   */
+  public int getAlpha() {
+    return alpha;
+  }
+
+  /**
+   * Returns the opacity in the range [0.0, 1.0],
+   * as it is provided when creating a color.
+   * @return the opacity as a value in [0.0, 1.0].
+   */
+  public double getOpacity() {
+    //TODO: Conversion between [0.0, 1.0] and [0, 255] is not satisfactory
+    return alpha / 255.0;
+  }
+  
+  /**
+   * This shows the RGBA components as they are represented internally.
+   */
   @Override
   public String toString() {
     return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";

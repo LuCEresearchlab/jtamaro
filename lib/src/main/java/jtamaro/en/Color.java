@@ -75,4 +75,12 @@ public final class Color {
     return implementation;
   }
 
+  public String toString() {
+    return "rgb(" + implementation.getRed() +
+      ", " + implementation.getGreen() +
+      ", " + implementation.getBlue() +
+      ", " + implementation.getOpacity() +
+      ")";
+  }
+  
 }

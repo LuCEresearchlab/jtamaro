@@ -112,4 +112,30 @@ public class ColorTest {
     assertColor(255, 255, 0, 255, YELLOW);
   }
 
+  //--- Color.toString
+  @Test
+  public void testToStringBlack() {
+    assertEquals("rgb(0, 0, 0, 1.0)", rgb(0, 0, 0, 1.0).toString());
+  }
+
+  @Test
+  public void testToStringBlackTransparent() {
+    assertEquals("rgb(0, 0, 0, 0.0)", rgb(0, 0, 0, 0.0).toString());
+  }
+
+  @Test
+  public void testToStringRed() {
+    assertEquals("rgb(255, 0, 0, 1.0)", rgb(255, 0, 0, 1.0).toString());
+  }
+
+  @Test
+  public void testToStringGreen() {
+    assertEquals("rgb(0, 255, 0, 1.0)", rgb(0, 255, 0, 1.0).toString());
+  }
+
+  @Test
+  public void testToStringBlue() {
+    assertEquals("rgb(0, 0, 255, 1.0)", rgb(0, 0, 255, 1.0).toString());
+  }
+
 }
