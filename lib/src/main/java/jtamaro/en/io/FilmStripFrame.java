@@ -17,12 +17,12 @@ public final class FilmStripFrame extends JFrame {
   private final Sequence<Pair<Graphic, Integer>> indexedGraphics;
   private final DefaultBoundedRangeModel sliderModel;
   private final int frameCount;
-  private final int completeFrameWith;
+  private final int completeFrameWidth;
 
 
   public FilmStripFrame(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
     indexedGraphics = zipWithIndex(graphics);
-    completeFrameWith = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
+    completeFrameWidth = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
     final String titleSuffix = graphics.hasDefiniteSize() ? " (" + length(graphics) + " frames)" : "";
     setTitle("Film Strip" + titleSuffix);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,46 +35,29 @@ public final class FilmStripFrame extends JFrame {
     bar.add(prevButton, BorderLayout.WEST);
     final JButton nextButton = new JButton(">");
     bar.add(nextButton, BorderLayout.EAST);
-    sliderModel = new DefaultBoundedRangeModel(0, 0, 0, 1);
-    final JSlider slider = new JSlider(sliderModel);
+    sliderModel = new DefaultBoundedRangeModel();
+    final JScrollBar slider = new JScrollBar(JScrollBar.HORIZONTAL);
+    slider.setModel(sliderModel);
     if (indexedGraphics.hasDefiniteSize()) {
       frameCount = length(graphics);
-      updateSliderModelMax();
       bar.add(slider, BorderLayout.CENTER);
     } else {
       // sequence may be infinite
       frameCount = -1;
     }
+    updateSliderModelMax();
     add(bar, BorderLayout.SOUTH);
 
     // register listeners
     prevButton.addActionListener((ev) -> {
-      double position = canvas.getPosition();
-      if (position > 1) {
-        position = position - 1;
-      } else {
-        position = 0;
-      }
-      canvas.setPosition(position);
+      sliderModel.setValue(sliderModel.getValue() - completeFrameWidth);
     });
     nextButton.addActionListener((ev) -> {
-      double position = canvas.getPosition();
-      if (frameCount < 0) {
-        // sequence may be infinite
-        position = position + 1;
-      } else {
-        if (position < frameCount - 1) {
-          position = position + 1;
-        } else {
-          position = frameCount;
-        }
-      }
-      canvas.setPosition(position);
+      sliderModel.setValue(sliderModel.getValue() + completeFrameWidth);
     });
     sliderModel.addChangeListener(ev -> {
-      final int value = sliderModel.getValue();
-      final int max = sliderModel.getMaximum();
-      canvas.setPosition(value / (double) max);
+      printSliderModel("change: ");
+      canvas.setPosition(sliderModel.getValue());
     });
 
     addComponentListener(new ComponentAdapter() {
@@ -92,16 +75,22 @@ public final class FilmStripFrame extends JFrame {
   }
 
   private void updateSliderModelMax() {
-    if (frameCount >= 0) {
-      final int width = getWidth();
-      final int filmStripWidth = completeFrameWith * frameCount;
-      final int max = Math.max(0, filmStripWidth - width);
-      sliderModel.setMaximum(max);
-      sliderModel.setValue(Math.min(sliderModel.getValue(), max));
-      // if (max < sliderModel.getValue()) {
-      //   sliderModel.setValue(max);
-      // }
-    }
+    final int min = 0;
+    final int max = frameCount >= 0 ? completeFrameWidth * frameCount : Integer.MAX_VALUE;
+    final int value = sliderModel.getValue();
+    final int extent = getWidth();
+    printSliderModel("updateSliderModelMax:");
+    sliderModel.setRangeProperties(value, extent, min, max, false);
+  }
+
+  private void printSliderModel(String message) {
+      System.out.println(
+        message +
+        sliderModel.getMinimum() + " <= " +
+        sliderModel.getValue() + " <= " +
+        (sliderModel.getValue() + sliderModel.getExtent() + " <= " +
+        sliderModel.getMaximum())
+      );
   }
 
 }

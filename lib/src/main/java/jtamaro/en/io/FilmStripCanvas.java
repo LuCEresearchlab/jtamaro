@@ -9,9 +9,9 @@ import jtamaro.internal.representation.GraphicImpl;
 import javax.swing.*;
 import java.awt.*;
 
-import static jtamaro.en.Graphics.text;
 import static jtamaro.en.Sequences.drop;
 import static jtamaro.en.Sequences.take;
+
 
 public class FilmStripCanvas extends JComponent {
 
@@ -30,7 +30,7 @@ public class FilmStripCanvas extends JComponent {
   private final int framesToShow;
   private final Stroke markStroke;
   private final Font frameNumberFont;
-  private double position;
+  private int position;
 
 
   public FilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
@@ -53,11 +53,7 @@ public class FilmStripCanvas extends JComponent {
     return (int) (frameWidth * (1 + GAP_FRACTION));
   }
 
-  public double getPosition() {
-    return position;
-  }
-
-  public void setPosition(double position) {
+  public void setPosition(int position) {
     this.position = position;
     repaint();
   }
@@ -74,10 +70,10 @@ public class FilmStripCanvas extends JComponent {
     g2.setRenderingHints(new RenderingHints(
         RenderingHints.KEY_ANTIALIASING,
         RenderingHints.VALUE_ANTIALIAS_ON));
-    final int firstFrameIndex = (int) position;
+    final int firstFrameIndex = position / completeFrameWidth;
+    final int positionInFrame = position % completeFrameWidth;
     final int framesVisible = getWidth() / completeFrameWidth + 1;
     final Sequence<Graphic> visibleGraphics = take(framesVisible, drop(firstFrameIndex, graphics));
-    final int positionInFrame = (int) ((position - Math.floor(position)) * completeFrameWidth);
     g2.translate(-positionInFrame, 0);
     int frameIndex = firstFrameIndex;
     for (Graphic graphic : visibleGraphics) {
