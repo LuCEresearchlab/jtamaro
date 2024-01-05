@@ -116,8 +116,8 @@ public class Clock {
     //Graphic uhr = uhr(durchmesser, stunden, minuten, sekunden);
     //show(uhr);
     Sequence<Graphic> animation = map(s -> uhr(durchmesser, (s / 60) / 60, s / 60, s), from(0));
-    showFilmStrip(animation, durchmesser, durchmesser);
-    animate(animation, true, 1000);
+    showFilmStrip(animation);
+    animate(animation, 1000);
 
     interact(0)
         .withCanvasSize(durchmesser, durchmesser)

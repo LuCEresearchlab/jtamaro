@@ -6,7 +6,7 @@ import jtamaro.en.Sequence;
 
 import static jtamaro.en.Colors.*;
 import static jtamaro.en.Graphics.*;
-import static jtamaro.en.IO.animate;
+import static jtamaro.en.IO.*;
 import static jtamaro.en.Points.*;
 import static jtamaro.en.Sequences.map;
 import static jtamaro.en.Sequences.range;
@@ -120,13 +120,15 @@ public class Fireworks {
   }
 
   public static void main(String[] args) {
+    Sequence<Graphic> loop = map(
+      t -> frame(200, t / 20.0),
+      range(20)
+    );
+    showFilmStrip(loop);
     animate(
-        map(
-            t -> frame(200, t / 20.0),
-            range(20)
-        ),
-        true,
-        1
+      loop,
+      true,
+      10
     );
   }
 

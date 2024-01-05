@@ -13,8 +13,8 @@ import static jtamaro.en.Sequences.map;
 public class InfiniteFilm {
 
   private static final int FONT_SIZE = 20;
-  private static final int WIDTH = 100;
-  private static final int HEIGHT = 60;
+  private static final int WIDTH = 200;
+  private static final int HEIGHT = 200;
 
 
   private static Graphic frame(int i) {

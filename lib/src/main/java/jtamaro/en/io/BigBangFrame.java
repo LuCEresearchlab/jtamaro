@@ -49,6 +49,9 @@ public class BigBangFrame<M> extends JFrame {
       Graphic g = bang.getRenderer().apply(state.getModel());
       canvasWidth = (int) g.getWidth();
       canvasHeight = (int) g.getHeight();
+      // TODO: maybe add a warning notice at the top of the window
+      //       stating that the width/height are based on the first frame only
+      //       and asking to use withCanvasSize(int,int) if needed.
     }
 
     RenderOptions renderOptions = new RenderOptions(0, canvasWidth, canvasHeight);

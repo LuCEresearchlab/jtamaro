@@ -1,7 +1,9 @@
 package jtamaro.en.example;
 
+import static jtamaro.en.Sequences.*;
 import static jtamaro.en.Graphics.*;
 
+import jtamaro.en.Sequence;
 import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 
@@ -17,6 +19,10 @@ public final class Toolbelt {
   private Toolbelt() {
   }
 
+  public static <T> int length(Sequence<T> s) {
+    return isEmpty(s) ? 0 : 1 + length(rest(s));
+  }
+  
   public static Graphic square(double side, Color color) {
     return rectangle(side, side, color);
   }

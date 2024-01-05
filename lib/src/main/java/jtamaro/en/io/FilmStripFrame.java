@@ -5,14 +5,11 @@ import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import static jtamaro.en.Sequences.reduce;
-import static jtamaro.en.Sequences.zipWithIndex;
+import static jtamaro.en.Sequences.*;
 
 
 public final class FilmStripFrame extends JFrame {
@@ -26,7 +23,8 @@ public final class FilmStripFrame extends JFrame {
   public FilmStripFrame(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
     indexedGraphics = zipWithIndex(graphics);
     completeFrameWith = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
-    setTitle("Film Strip");
+    final String titleSuffix = graphics.hasDefiniteSize() ? " (" + length(graphics) + " frames)" : "";
+    setTitle("Film Strip" + titleSuffix);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
 
@@ -40,7 +38,7 @@ public final class FilmStripFrame extends JFrame {
     sliderModel = new DefaultBoundedRangeModel(0, 0, 0, 1);
     final JSlider slider = new JSlider(sliderModel);
     if (indexedGraphics.hasDefiniteSize()) {
-      frameCount = reduce((count, pair) -> count + 1, 0, indexedGraphics);
+      frameCount = length(graphics);
       updateSliderModelMax();
       bar.add(slider, BorderLayout.CENTER);
     } else {
@@ -87,6 +85,10 @@ public final class FilmStripFrame extends JFrame {
     });
 
     pack();
+  }
+
+  private static <T> int length(Sequence<T> s) {
+    return isEmpty(s) ? 0 : 1 + length(rest(s));
   }
 
   private void updateSliderModelMax() {

@@ -11,7 +11,10 @@ import jtamaro.internal.io.PngWriter;
 import javax.swing.*;
 import java.io.IOException;
 
-import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Pairs.*;
+import static jtamaro.en.Sequences.*;
+import static jtamaro.en.Graphics.*;
+
 
 /**
  * This class includes methods to perform input and output for JTamaro classes.
@@ -140,6 +143,25 @@ public final class IO {
   // TODO: show(Sequence)
   // show a Sequence, as a list, where each cell renders whatever it contains (incl. a Graphic, Color, Point, Sequence, ...)
 
+  private static Pair<Integer,Integer> determineMaxWidthHeight(Sequence<Graphic> graphics) {
+    int frameWidth;
+    int frameHeight;
+    if (isEmpty(graphics)) {
+      // no frames: use a default
+      frameWidth = 400;
+      frameHeight = 300;
+    } else if (graphics.hasDefiniteSize()) {
+      // known, finite number of frames: determine max
+      frameWidth = reduce((a, e) -> Math.max(a, (int)Math.ceil(width(e))), 0, graphics);
+      frameHeight = reduce((a, e) -> Math.max(a, (int)Math.ceil(height(e))), 0, graphics);
+    } else {
+      // unknown number of frames, potentially infinite: use size of first frame
+      frameWidth = (int)Math.ceil(width(first(graphics)));
+      frameHeight = (int)Math.ceil(height(first(graphics)));
+    }
+    return pair(frameWidth, frameHeight);
+  }
+
   /**
    * Open a window with a looped animation of the given graphics,
    * at 25 frames per second.
@@ -151,7 +173,28 @@ public final class IO {
   }
 
   /**
-   * Open a window with an animation of the given graphics, with the given delay between frames.
+   * Open a window with a looped animation of the given graphics.
+   *
+   * @param graphics sequence of graphics (frames) to animate
+   * @param millisecondsPerFrame delay between frames
+   */
+  public static void animate(Sequence<Graphic> graphics, int millisecondsPerFrame) {
+    animate(graphics, true, millisecondsPerFrame);
+  }
+
+  /**
+   * Open a window with an animation of the given graphics,
+   * at 25 frames per second.
+   *
+   * @param graphics sequence of graphics (frames) to animate
+   * @param loop whether to loop the animation
+   */
+  public static void animate(Sequence<Graphic> graphics, boolean loop) {
+    animate(graphics, loop, 25);
+  }
+
+  /**
+   * Open a window with an animation.
    *
    * @param graphics             sequence of graphics (frames) to animate
    * @param loop                 whether to loop the animation
@@ -160,8 +203,12 @@ public final class IO {
   public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
     assert !graphics.isEmpty() : "Animation must have at least one frame";
     assert millisecondsPerFrame > 0 : "Must wait a positive number of milliseconds between frames";
+    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphics);
+    final String titleFramesSuffix = graphics.hasDefiniteSize() ? " (" + length(graphics) + " frames)" : "";
+    final String titleLoopedSuffix = loop ? ", looped" : "";
     new Interaction<>(graphics)
-        .withName("Animation")
+        .withName("Animation" + titleFramesSuffix + titleLoopedSuffix)
+        .withCanvasSize(firstElement(wh), secondElement(wh))
         .withMsBetweenTicks(millisecondsPerFrame)
         .withTickHandler(model -> {
           Sequence<Graphic> rest = model.rest();
@@ -170,6 +217,25 @@ public final class IO {
         .withRenderer(Sequence::first)
         .withStoppingPredicate(Sequence::isEmpty)
         .run();
+  }
+
+  private static <T> int length(Sequence<T> s) {
+    return isEmpty(s) ? 0 : 1 + length(rest(s));
+  }
+
+  /**
+   * Open a window with a scrollable film strip,
+   * with each from for each of the given graphics.
+   * This method automatically detects the width and height of the frames.
+   * For empty sequences, it uses a default frame size.
+   * For sequences with a definite size, it determines the maximum width and height.
+   * For sequences without a definite size, it uses the width and height of their first frame.
+   *
+   * @param graphics sequence of graphics (frames) to show in the film strip
+   */
+  public static void showFilmStrip(Sequence<Graphic> graphicsSequence) {
+    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphicsSequence);
+    showFilmStrip(graphicsSequence, firstElement(wh), secondElement(wh));
   }
 
   /**
@@ -228,6 +294,7 @@ public final class IO {
     assert graphics.hasDefiniteSize() : "The sequence of graphics must contain a finite number of frames";
     assert millisecondsPerFrame > 0 : "Must wait a positive number of milliseconds between frames";
     assert filename.endsWith(".gif") : "Filename must end with .gif";
+    // TODO: maybe use determineMaxWidthHeight?
     try {
       GifWriter.saveAnimation(map(g -> ((AbstractGraphic) g).getImplementation(), graphics), millisecondsPerFrame, loop, filename);
     } catch (IOException ex) {

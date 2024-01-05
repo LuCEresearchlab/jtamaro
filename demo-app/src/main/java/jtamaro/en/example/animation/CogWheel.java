@@ -8,6 +8,7 @@ import static jtamaro.en.Colors.*;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.animate;
 import static jtamaro.en.IO.saveAnimatedGif;
+import static jtamaro.en.IO.showFilmStrip;
 import static jtamaro.en.Points.BOTTOM_CENTER;
 import static jtamaro.en.Sequences.*;
 import static jtamaro.en.example.Toolbelt.*;
@@ -55,10 +56,12 @@ public class CogWheel {
   }
 
   public static void main(String[] args) {
+    Sequence<Graphic> loop = animation(true);
+    Sequence<Graphic> film = cycle(loop);
+    showFilmStrip(loop);
+    showFilmStrip(film);
+    animate(film);
     //saveAnimatedGif(animation(false), true, 25, "cogwheel.gif");
-    animate(
-        cycle(animation(true))
-    );
   }
 
 }
