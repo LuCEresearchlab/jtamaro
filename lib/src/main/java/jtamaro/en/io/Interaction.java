@@ -2,11 +2,11 @@ package jtamaro.en.io;
 
 import jtamaro.en.Graphic;
 import jtamaro.en.Graphics;
+import jtamaro.en.Function1;
+import jtamaro.en.Function2;
+import jtamaro.en.Function3;
 
 import javax.swing.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 
 /**
@@ -17,16 +17,16 @@ public class Interaction<M> {
 
   // configuration options
   private final M initialModel;
-  private final Function<M, Graphic> renderer;
-  private final Function<M, M> tickHandler;
-  private final BiFunction<M, KeyboardKey, M> keyPressHandler;
-  private final BiFunction<M, KeyboardKey, M> keyReleaseHandler;
-  private final BiFunction<M, KeyboardChar, M> keyTypeHandler;
-  private final TriFunction<M, Coordinate, MouseButton, M> mousePressHandler;
-  private final TriFunction<M, Coordinate, MouseButton, M> mouseReleaseHandler;
-  private final BiFunction<M, Coordinate, M> mouseMoveHandler;
-  private final Predicate<M> stoppingPredicate;
-  private final Function<M, Graphic> finalGraphicRenderer;
+  private final Function1<M, Graphic> renderer;
+  private final Function1<M, M> tickHandler;
+  private final Function2<M, KeyboardKey, M> keyPressHandler;
+  private final Function2<M, KeyboardKey, M> keyReleaseHandler;
+  private final Function2<M, KeyboardChar, M> keyTypeHandler;
+  private final Function3<M, Coordinate, MouseButton, M> mousePressHandler;
+  private final Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler;
+  private final Function2<M, Coordinate, M> mouseMoveHandler;
+  private final Function1<M, Boolean> stoppingPredicate;
+  private final Function1<M, Graphic> finalGraphicRenderer;
   private final boolean closeOnStop;
   private final double closeOnStopDelay;
   private final int canvasWidth;
@@ -40,7 +40,7 @@ public class Interaction<M> {
   private final boolean showState;
   private final boolean recording;
   private final String recordingDirectoryName;
-  private final Predicate<M> wellFormedWorldPredicate;
+  private final Function1<M, Boolean> wellFormedWorldPredicate;
 
 
   public Interaction(M initialModel) {
@@ -73,16 +73,16 @@ public class Interaction<M> {
   // copy constructor
   private Interaction(
       M initialModel,
-      Function<M, Graphic> renderer,
-      Function<M, M> tickHandler,
-      BiFunction<M, KeyboardKey, M> keyPressHandler,
-      BiFunction<M, KeyboardKey, M> keyReleaseHandler,
-      BiFunction<M, KeyboardChar, M> keyTypeHandler,
-      TriFunction<M, Coordinate, MouseButton, M> mousePressHandler,
-      TriFunction<M, Coordinate, MouseButton, M> mouseReleaseHandler,
-      BiFunction<M, Coordinate, M> mouseMoveHandler,
-      Predicate<M> stoppingPredicate,
-      Function<M, Graphic> finalGraphicRenderer,
+      Function1<M, Graphic> renderer,
+      Function1<M, M> tickHandler,
+      Function2<M, KeyboardKey, M> keyPressHandler,
+      Function2<M, KeyboardKey, M> keyReleaseHandler,
+      Function2<M, KeyboardChar, M> keyTypeHandler,
+      Function3<M, Coordinate, MouseButton, M> mousePressHandler,
+      Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler,
+      Function2<M, Coordinate, M> mouseMoveHandler,
+      Function1<M, Boolean> stoppingPredicate,
+      Function1<M, Graphic> finalGraphicRenderer,
       boolean closeOnStop,
       double closeOnStopDelay,
       int canvasWidth,
@@ -96,7 +96,7 @@ public class Interaction<M> {
       boolean showState,
       boolean recording,
       String recordingDirectoryName,
-      Predicate<M> wellFormedWorldPredicate
+      Function1<M, Boolean> wellFormedWorldPredicate
   ) {
     this.initialModel = initialModel;
     this.renderer = renderer;
@@ -128,11 +128,11 @@ public class Interaction<M> {
     return initialModel;
   }
 
-  public Interaction<M> withTickHandler(Function<M, M> tickHandler) {
+  public Interaction<M> withTickHandler(Function1<M, M> tickHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public Function<M, M> getTickHandler() {
+  public Function1<M, M> getTickHandler() {
     return tickHandler;
   }
 
@@ -152,59 +152,59 @@ public class Interaction<M> {
     return tickLimit;
   }
 
-  public Interaction<M> withKeyPressHandler(BiFunction<M, KeyboardKey, M> keyPressHandler) {
+  public Interaction<M> withKeyPressHandler(Function2<M, KeyboardKey, M> keyPressHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public BiFunction<M, KeyboardKey, M> getKeyPressHandler() {
+  public Function2<M, KeyboardKey, M> getKeyPressHandler() {
     return keyPressHandler;
   }
 
-  public Interaction<M> withKeyReleaseHandler(BiFunction<M, KeyboardKey, M> keyReleaseHandler) {
+  public Interaction<M> withKeyReleaseHandler(Function2<M, KeyboardKey, M> keyReleaseHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public BiFunction<M, KeyboardKey, M> getKeyReleaseHandler() {
+  public Function2<M, KeyboardKey, M> getKeyReleaseHandler() {
     return keyReleaseHandler;
   }
 
-  public Interaction<M> withKeyTypeHandler(BiFunction<M, KeyboardChar, M> keyTypeHandler) {
+  public Interaction<M> withKeyTypeHandler(Function2<M, KeyboardChar, M> keyTypeHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public BiFunction<M, KeyboardChar, M> getKeyTypeHandler() {
+  public Function2<M, KeyboardChar, M> getKeyTypeHandler() {
     return keyTypeHandler;
   }
 
-  public Interaction<M> withMousePressHandler(TriFunction<M, Coordinate, MouseButton, M> mousePressHandler) {
+  public Interaction<M> withMousePressHandler(Function3<M, Coordinate, MouseButton, M> mousePressHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public TriFunction<M, Coordinate, MouseButton, M> getMousePressHandler() {
+  public Function3<M, Coordinate, MouseButton, M> getMousePressHandler() {
     return mousePressHandler;
   }
 
-  public Interaction<M> withMouseReleaseHandler(TriFunction<M, Coordinate, MouseButton, M> mouseReleaseHandler) {
+  public Interaction<M> withMouseReleaseHandler(Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public TriFunction<M, Coordinate, MouseButton, M> getMouseReleaseHandler() {
+  public Function3<M, Coordinate, MouseButton, M> getMouseReleaseHandler() {
     return mouseReleaseHandler;
   }
 
-  public Interaction<M> withMouseMoveHandler(BiFunction<M, Coordinate, M> mouseMoveHandler) {
+  public Interaction<M> withMouseMoveHandler(Function2<M, Coordinate, M> mouseMoveHandler) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public BiFunction<M, Coordinate, M> getMouseMoveHandler() {
+  public Function2<M, Coordinate, M> getMouseMoveHandler() {
     return mouseMoveHandler;
   }
 
-  public Interaction<M> withRenderer(Function<M, Graphic> renderer) {
+  public Interaction<M> withRenderer(Function1<M, Graphic> renderer) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public Function<M, Graphic> getRenderer() {
+  public Function1<M, Graphic> getRenderer() {
     return renderWithBg(renderer);
   }
 
@@ -228,19 +228,19 @@ public class Interaction<M> {
     return fullScreen;
   }
 
-  public Interaction<M> withStoppingPredicate(Predicate<M> stoppingPredicate) {
+  public Interaction<M> withStoppingPredicate(Function1<M, Boolean> stoppingPredicate) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public Predicate<M> getStoppingPredicate() {
+  public Function1<M, Boolean> getStoppingPredicate() {
     return stoppingPredicate;
   }
 
-  public Interaction<M> withFinalGraphicRenderer(Function<M, Graphic> finalGraphicRenderer) {
+  public Interaction<M> withFinalGraphicRenderer(Function1<M, Graphic> finalGraphicRenderer) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public Function<M, Graphic> getFinalGraphicRenderer() {
+  public Function1<M, Graphic> getFinalGraphicRenderer() {
     return renderWithBg(finalGraphicRenderer);
   }
 
@@ -256,11 +256,11 @@ public class Interaction<M> {
     return closeOnStopDelay;
   }
 
-  public Interaction<M> withWellFormedPredicate(Predicate<M> wellFormedWorldPredicate) {
+  public Interaction<M> withWellFormedPredicate(Function1<M, Boolean> wellFormedWorldPredicate) {
     return new Interaction<>(initialModel, renderer, tickHandler, keyPressHandler, keyReleaseHandler, keyTypeHandler, mousePressHandler, mouseReleaseHandler, mouseMoveHandler, stoppingPredicate, finalGraphicRenderer, closeOnStop, closeOnStopDelay, canvasWidth, canvasHeight, fullScreen, msBetweenTicks, tickLimit, name, background, showState, recording, recordingDirectoryName, wellFormedWorldPredicate);
   }
 
-  public Predicate<M> getWellFormedWorldPredicate() {
+  public Function1<M, Boolean> getWellFormedWorldPredicate() {
     return wellFormedWorldPredicate;
   }
 
@@ -300,9 +300,10 @@ public class Interaction<M> {
     SwingUtilities.invokeLater(() -> new BigBangFrame<>(this));
   }
 
-  private Function<M, Graphic> renderWithBg(Function<M, Graphic> fgRender) {
+  private Function1<M, Graphic> renderWithBg(Function1<M, Graphic> fgRender) {
     return background == null
         ? fgRender
         : m -> Graphics.overlay(fgRender.apply(m), background);
   }
+  
 }

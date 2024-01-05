@@ -31,7 +31,7 @@ public class BigBangFrame<M> extends JFrame {
     state = new BigBangState<>(bang);
     trace = new Trace();
     timer = new Timer(bang.getMsBetweenTicks(), ev -> {
-      if (state.getTick() >= bang.getTickLimit() || bang.getStoppingPredicate().test(state.getModel())) {
+      if (state.getTick() >= bang.getTickLimit() || bang.getStoppingPredicate().apply(state.getModel())) {
         stop();
       } else {
         handle(TraceEvent.createTick());

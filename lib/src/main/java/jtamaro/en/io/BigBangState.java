@@ -24,7 +24,7 @@ public class BigBangState<M> {
     if (model == null) {
       throw new IllegalStateException(what + " is null");
     }
-    if (!bang.getWellFormedWorldPredicate().test(model)) {
+    if (!bang.getWellFormedWorldPredicate().apply(model)) {
       throw new IllegalStateException(what + " is not well formed");
     }
   }
