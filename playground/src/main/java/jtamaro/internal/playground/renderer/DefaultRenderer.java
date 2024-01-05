@@ -2,8 +2,8 @@ package jtamaro.internal.playground.renderer;
 
 import java.awt.Font;
 import jtamaro.en.Colors;
-import jtamaro.internal.representation.GraphicImpl;
-import jtamaro.internal.representation.TextImpl;
+import jtamaro.en.Graphic;
+import jtamaro.en.Graphics;
 
 final class DefaultRenderer extends BaseObjectRenderer<Object> {
 
@@ -13,7 +13,7 @@ final class DefaultRenderer extends BaseObjectRenderer<Object> {
     }
 
     @Override
-    protected GraphicImpl renderImpl(Object o) {
-        return new TextImpl(o.toString(), Font.MONOSPACED, 12, Colors.BLACK.getImplementation());
+    protected Graphic renderImpl(Object o) {
+        return Graphics.text(o.toString(), Font.MONOSPACED, 16, Colors.BLACK);
     }
 }

@@ -1,7 +1,7 @@
 package jtamaro.internal.playground.renderer;
 
+import jtamaro.en.Graphic;
 import jtamaro.en.graphic.AbstractGraphic;
-import jtamaro.internal.representation.GraphicImpl;
 
 final class AbstractGraphicRenderer extends BaseObjectRenderer<AbstractGraphic> {
 
@@ -11,7 +11,7 @@ final class AbstractGraphicRenderer extends BaseObjectRenderer<AbstractGraphic> 
     }
 
     @Override
-    protected GraphicImpl renderImpl(AbstractGraphic graphic) {
-        return graphic.getImplementation();
+    protected Graphic renderImpl(AbstractGraphic graphic) {
+        return graphic;
     }
 }

@@ -1,6 +1,7 @@
 package jtamaro.internal.playground.renderer;
 
 import java.util.List;
+import jtamaro.en.Graphic;
 import jtamaro.internal.representation.GraphicImpl;
 
 public final class ObjectRenderer {
@@ -11,7 +12,6 @@ public final class ObjectRenderer {
             // Others
             new AbstractGraphicRenderer(),
             new AssertionErrorRenderer(),
-            new GraphicImplRenderer(),
             new StatementResultRenderer(),
             new SequenceRenderer(ObjectRenderer::render),
             // Always last
@@ -22,7 +22,7 @@ public final class ObjectRenderer {
     private ObjectRenderer() {
     }
 
-    public static GraphicImpl render(Object obj) {
+    public static Graphic render(Object obj) {
         return getRenderer(obj).render(obj);
     }
 
@@ -35,5 +35,4 @@ public final class ObjectRenderer {
         }
         throw new IllegalArgumentException("No renderer for class: " + o.getClass().getName());
     }
-
 }

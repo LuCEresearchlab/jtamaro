@@ -34,6 +34,8 @@ import jdk.jshell.JShell;
 import jdk.jshell.Snippet;
 import jdk.jshell.SnippetEvent;
 import jtamaro.en.Colors;
+import jtamaro.en.Graphic;
+import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.gui.GraphicCanvas;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.gui.RenderOptions;
@@ -204,8 +206,12 @@ public final class PlaygroundFrame extends JFrame {
             }
         }
 
-        final GraphicImpl graphic = ObjectRenderer.render(obj);
-        canvas.setGraphic(graphic);
+        final Graphic graphic = ObjectRenderer.render(obj);
+        if (graphic instanceof AbstractGraphic ag) {
+            canvas.setGraphic(ag.getImplementation());
+        } else {
+            LOG.severe("Can't render a " + graphic.getClass().getName() + " representation of " + obj);
+        }
     }
 
     private void saveCode(DefaultListModel<SnippetEvent> historyModel) {

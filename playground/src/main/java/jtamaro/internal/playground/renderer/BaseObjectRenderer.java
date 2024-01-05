@@ -1,15 +1,15 @@
 package jtamaro.internal.playground.renderer;
 
-import jtamaro.internal.representation.GraphicImpl;
+import jtamaro.en.Graphic;
 
 public abstract class BaseObjectRenderer<T> {
 
     public abstract boolean isSupported(Object o);
 
     @SuppressWarnings("unchecked")
-    public final GraphicImpl render(Object o) {
+    public final Graphic render(Object o) {
         return renderImpl((T) o);
     }
 
-    protected abstract GraphicImpl renderImpl(T o);
+    abstract Graphic renderImpl(T o);
 }
