@@ -8,9 +8,9 @@ import jtamaro.en.data.IteratorCell;
 import jtamaro.en.data.LazyCons;
 
 /**
- * A collection of static methods for working with sequences in JTamaro.
+ * Static methods for working with sequences.
  *
- * @author Matthias.Hauswirth@usi.ch
+ * @see jtamaro.en.Sequence
  */
 public class Sequences {
 
@@ -95,19 +95,53 @@ public class Sequences {
     return new Cons<>(first, rest);
   }
 
+  /**
+   * Create a LazyCons cell, which is needed to support infinite sequences.
+   * Instead of providing the rest, we provide a lambda that will produce the rest on-demand.
+   */
   private static <T> Sequence<T> lazyCons(T first, Function0<Sequence<T>> restSupplier, boolean hasDefiniteSize) {
     return new LazyCons<>(first, restSupplier, hasDefiniteSize);
   }
 
   //--- lazy construction sequences
+  /**
+   * Create a Sequence of integers starting from the given integer, counting upwards.
+   * The sequence is infinite;
+   * once Integer.MAX_VALUE is reached, it wraps around to Integer.MIN_VALUE
+   * and continues from there:
+   * 
+   * from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...
+   * 
+   * @param from the value of the first element
+   * @return a new Sequence starting with the given number and counting up.
+   */
   public static Sequence<Integer> from(int from) {
     return lazyCons(from, () -> from(from + 1), false);
   }
 
+  /**
+   * Create a Sequence of integers starting at 0,
+   * with the last element being toExclusive - 1.
+   * 
+   * <code>range(3) === of(0, 1, 2)</code>
+   * 
+   * @param toExclusive the number that would come right after the last value of the sequence
+   * @return a new Sequence of integers starting at 0, and ending just before the given number.
+   */
   public static Sequence<Integer> range(int toExclusive) {
     return range(0, toExclusive);
   }
 
+  /**
+   * Create a Sequence of integers starting at from,
+   * with the last element being toExclusive - 1.
+   * 
+   * <code>range(1, 3) === of(1, 2)</code>
+   * 
+   * @param from the value of the first element
+   * @param toExclusive the number that would come right after the last value of the sequence
+   * @return a new Sequence of integers starting at 0, and ending just before the given number.
+   */
   public static Sequence<Integer> range(int from, int toExclusive) {
     return range(from, toExclusive, 1);
   }
@@ -132,11 +166,11 @@ public class Sequences {
   }
 
   public static Sequence<Integer> rangeClosed(int from, int to) {
-    return null; // TODO
+    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
   }
 
   public static Sequence<Integer> rangeClosed(int from, int to, int step) {
-    return null; // TODO
+    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
   }
 
   public static Sequence<Character> range(char toExclusive) {
@@ -152,11 +186,11 @@ public class Sequences {
   }
 
   public static Sequence<Character> rangeClosed(char from, char to) {
-    return null; // TODO
+    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
   }
 
   public static Sequence<Character> rangeClosed(char from, char to, int step) {
-    return null; // TODO
+    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
   }
 
   public static <T> Sequence<T> repeat(T element) {

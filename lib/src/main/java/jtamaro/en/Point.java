@@ -4,10 +4,12 @@ import jtamaro.internal.representation.PointImpl;
 
 
 /**
- * Represents a Point in a graphic.
+ * A Point in a Graphic.
  * There are some noteworthy points,
  * like the top-left corner of a graphic's bounding box.
- * For those points we provide constants (TOP_LEFT, TOP_MIDDLE, etc.).
+ * For those points class Points provides constants (TOP_LEFT, TOP_MIDDLE, etc.).
+ * 
+ * @see jtamaro.en.Points
  */
 public final class Point {
 

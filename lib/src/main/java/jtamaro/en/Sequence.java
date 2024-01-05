@@ -6,6 +6,10 @@ import java.util.Iterator;
  * A Sequence is a list of elements of type T,
  * it corresponds directly to what you called "List-of-T" in PF1.
  * See: https://htdp.org/2022-8-7/Book/part_two.html
+ * 
+ * To work with a Sequence, you can use the methods in the Sequences class.
+ * 
+ * @see jtamaro.en.Sequences
  */
 public abstract class Sequence<T> implements Iterable<T> {
 
@@ -70,7 +74,8 @@ public abstract class Sequence<T> implements Iterable<T> {
     };
   }
 
-  //--- should we add these?
+  //--- TODO: Should we add get, and indexof, and length, and even set?
+  //--- TODO: If yes, move all that into the Sequences class.
   public T get(int index) {
     if (index < 0) {
       throw new IndexOutOfBoundsException("index must be non-negative");

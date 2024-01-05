@@ -1,5 +1,10 @@
 package jtamaro.en;
 
+/**
+ * Well-known Points.
+ * 
+ * @see jtamaro.en.Point
+ */
 public class Points {
 
   public static final Point TOP_LEFT = Point.TOP_LEFT;
