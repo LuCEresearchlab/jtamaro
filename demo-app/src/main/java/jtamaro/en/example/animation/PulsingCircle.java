@@ -7,6 +7,7 @@ import static jtamaro.en.Colors.BLUE;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.animate;
 import static jtamaro.en.Sequences.*;
+import static jtamaro.en.example.Toolbelt.*;
 
 
 public class PulsingCircle {
@@ -18,7 +19,7 @@ public class PulsingCircle {
 
   private static Graphic frame(int size) {
     return overlay(
-        ellipse(size, size, BLUE),
+        circle(size, BLUE),
         rectangle(MAX_SIZE, MAX_SIZE, BLACK)
     );
   }

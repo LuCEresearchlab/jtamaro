@@ -1,6 +1,5 @@
 package jtamaro.en.example.graphic;
 
-import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 
 import static jtamaro.en.Colors.*;
@@ -9,21 +8,10 @@ import static jtamaro.en.IO.animate;
 import static jtamaro.en.IO.show;
 import static jtamaro.en.Points.BOTTOM_LEFT;
 import static jtamaro.en.Sequences.*;
+import static jtamaro.en.example.Toolbelt.*;
 
 
 public class TriangleDemo {
-
-  private static Graphic equilateralTriangle(double side, Color color) {
-    return triangle(side, side, 60, color);
-  }
-
-  private static Graphic isoscelesTriangle(double side, double angle, Color color) {
-    return triangle(side, side, angle, color);
-  }
-
-  private static Graphic rightTriangle(double side1, double side2, Color color) {
-    return triangle(side1, side2, 90, color);
-  }
 
   private static Graphic kindsOfTriangles() {
     return above(

@@ -8,6 +8,7 @@ import static jtamaro.en.Colors.*;
 import static jtamaro.en.Points.*;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.*;
+import static jtamaro.en.example.Toolbelt.*;
 
 
 public class ChristmasTree {
@@ -17,10 +18,6 @@ public class ChristmasTree {
   private static Color BROWN = rgb(139, 69, 19);
   private static Color TEXT_COLOR = rgb(255, 220, 96);
 
-
-  private static Graphic isoscelesTriangle(double side, double angle, Color color) {
-    return triangle(side, side, angle, color);
-  }
 
   private static Graphic level(int upwardsTriangleCount, double triangleSide) {
     final double angle = 50;

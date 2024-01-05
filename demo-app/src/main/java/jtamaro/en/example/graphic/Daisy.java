@@ -9,7 +9,7 @@ import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.show;
 import static jtamaro.en.Points.CENTER_LEFT;
 import static jtamaro.en.Sequences.range;
-
+import static jtamaro.en.example.Toolbelt.*;
 
 public class Daisy {
 
@@ -25,7 +25,7 @@ public class Daisy {
       flower = compose(flower, rotate(angle, petal(size / 2)));
 
     }
-    return compose(ellipse(size / 4, size / 4, BUD_COLOR), flower);
+    return compose(circle(size / 4, BUD_COLOR), flower);
   }
 
   public static void main(String[] args) {

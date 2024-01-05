@@ -6,7 +6,7 @@ import static jtamaro.en.Colors.BLUE;
 import static jtamaro.en.Colors.RED;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.interact;
-
+import static jtamaro.en.example.Toolbelt.*;
 
 public class ControllableSpinner {
 
@@ -15,7 +15,7 @@ public class ControllableSpinner {
 
   private static Graphic render(Spinner spinner) {
     return overlay(
-        rotate(spinner.angle, rectangle(spinner.size, spinner.size, RED)),
+        rotate(spinner.angle, square(spinner.size, RED)),
         rectangle(600, 400, BLUE)
     );
   }

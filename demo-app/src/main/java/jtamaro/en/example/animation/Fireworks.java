@@ -10,6 +10,8 @@ import static jtamaro.en.IO.animate;
 import static jtamaro.en.Points.*;
 import static jtamaro.en.Sequences.map;
 import static jtamaro.en.Sequences.range;
+import static jtamaro.en.example.Toolbelt.*;
+
 
 public class Fireworks {
 

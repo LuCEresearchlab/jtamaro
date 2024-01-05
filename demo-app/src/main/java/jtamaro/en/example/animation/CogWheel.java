@@ -10,13 +10,9 @@ import static jtamaro.en.IO.animate;
 import static jtamaro.en.IO.saveAnimatedGif;
 import static jtamaro.en.Points.BOTTOM_CENTER;
 import static jtamaro.en.Sequences.*;
-
+import static jtamaro.en.example.Toolbelt.*;
 
 public class CogWheel {
-
-  private static Graphic circle(double diameter, Color color) {
-    return ellipse(diameter, diameter, color);
-  }
 
   private static Graphic tooth(double innerDiameter, double outerDiameter, double angle, Color color) {
     final double diameter = (innerDiameter + outerDiameter) / 2;

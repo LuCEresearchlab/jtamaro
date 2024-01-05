@@ -21,7 +21,7 @@ public final class Graphics {
   }
 
   /**
-   * Create a circular sector with the given radius and angle.
+   * Create a circular sector.
    *
    * @param radius the radius of the circular sector
    * @param angle  the angle of the circular sector in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
@@ -29,25 +29,52 @@ public final class Graphics {
    * @return a circular sector
    */
   public static Graphic circularSector(double radius, double angle, Color color) {
+    assert radius >= 0 : "radius cannot be negative";
     return new CircularSector(radius, angle, color);
   }
 
+  /**
+   * Create an axis-aligned ellipse.
+   * 
+   * @param width the width of the ellipse
+   * @param height the height of the ellipse
+   * @param color the color of the ellipse
+   * @return an ellipse
+   */
   public static Graphic ellipse(double width, double height, Color color) {
+    assert width >= 0 : "width cannot be negative";
+    assert height >= 0 : "height cannot be negative";
     return new Ellipse(width, height, color);
   }
 
+  /**
+   * Create an axis-aligned rectangle.
+   * 
+   * @param width the width of the rectangle
+   * @param height the height of the rectangle
+   * @param color the color of the rectangle
+   * @return a rectangle
+   */
   public static Graphic rectangle(double width, double height, Color color) {
     return new Rectangle(width, height, color);
   }
 
+  /** Create a text.
+   * 
+   * @param content the actual text to render
+   * @param font the name of the font to use to render the text
+   * @param points the font size in points
+   * @param color the color of the text
+   * @return a text
+   */
   public static Graphic text(String content, String font, double points, Color color) {
     return new Text(content, font, points, color);
   }
 
   //OLD
-  public static Graphic equilateralTriangle(double side, Color color) {
-    return new EquilateralTriangle(side, color);
-  }
+  //public static Graphic equilateralTriangle(double side, Color color) {
+  //  return new EquilateralTriangle(side, color);
+  //}
 
   /**
    * Create a triangle specified using two sides and the angle between them.

@@ -1,23 +1,24 @@
 package jtamaro.en.example.graphic;
 
 import jtamaro.en.Color;
+import jtamaro.en.Function2;
 import jtamaro.en.Graphic;
 
 import java.util.HashMap;
-import java.util.function.BiFunction;
 
 import static jtamaro.en.Colors.TRANSPARENT;
 import static jtamaro.en.Colors.hsl;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.save;
 import static jtamaro.en.IO.show;
+import static jtamaro.en.example.Toolbelt.*;
 
 
 public class Alphabet {
 
   // Unicode symbols to encode our glyphs:
   // ■◜◝◞◟
-  private static final String[] GLYPHS = new String[]{
+  private static final String[] GLYPHS = new String[] {
       // a
       "  \n" +
           "◜◝\n" +
@@ -150,11 +151,11 @@ public class Alphabet {
           "  \n",
   };
 
-  private static final HashMap<Character, BiFunction<Double, Color, Graphic>> GLYPH_ELEMENTS = new HashMap<>();
+  private static final HashMap<Character, Function2<Double, Color, Graphic>> GLYPH_ELEMENTS = new HashMap<>();
 
   static {
-    GLYPH_ELEMENTS.put(' ', (size, color) -> rectangle(size, size, TRANSPARENT));
-    GLYPH_ELEMENTS.put('■', (size, color) -> rectangle(size, size, color));
+    GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
+    GLYPH_ELEMENTS.put('■', (size, color) -> square(size, color));
     GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, circularSector(size, 90, color)));
     GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, circularSector(size, 90, color)));
     GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, circularSector(size, 90, color)));
@@ -164,7 +165,7 @@ public class Alphabet {
   private static Graphic renderLetter(char symbol, double size) {
     assert symbol == ' ' || (symbol >= 'a' && symbol <= 'z') : "Symbol '" + symbol + "' not supported.";
     if (symbol == ' ') {
-      return rectangle(size, 1, TRANSPARENT);
+      return rectangle(size, 1, TRANSPARENT); // TODO: height: 0
     }
     int glyphIndex = symbol - 'a';
     String glyph = GLYPHS[glyphIndex];
@@ -179,7 +180,7 @@ public class Alphabet {
         double saturation = (lineIndex + 1) / 5.0;
         double lightness = 0.5 - 0.5 * (elementIndex / 5.0);
         Color color = hsl(hue, saturation, lightness);
-        BiFunction<Double, Color, Graphic> renderer = GLYPH_ELEMENTS.get(element);
+        Function2<Double, Color, Graphic> renderer = GLYPH_ELEMENTS.get(element);
         row = beside(row, renderer.apply(size, color));
       }
       glyphGraphic = above(glyphGraphic, row);
