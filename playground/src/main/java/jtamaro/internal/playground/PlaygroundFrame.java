@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import jdk.jshell.JShell;
 import jdk.jshell.Snippet;
 import jdk.jshell.SnippetEvent;
@@ -235,13 +234,6 @@ public final class PlaygroundFrame extends JFrame {
         frame.setGraphic(graphic);
         frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new PlaygroundFrame();
-            frame.setVisible(true);
-        });
     }
 
     private static class SnippetEventListCellRenderer extends DefaultListCellRenderer {

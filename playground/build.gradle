@@ -1,0 +1,11 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'jtamaro.en.playground.Application'
+}
+
+dependencies {
+    implementation project(':lib')
+}
