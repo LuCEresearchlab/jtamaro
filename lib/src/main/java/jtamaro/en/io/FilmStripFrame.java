@@ -77,8 +77,18 @@ public final class FilmStripFrame extends JFrame {
   private void updateSliderModelMax() {
     final int min = 0;
     final int max = frameCount >= 0 ? completeFrameWidth * frameCount : Integer.MAX_VALUE;
-    final int value = sliderModel.getValue();
+    int value = sliderModel.getValue();
     final int extent = getWidth();
+    // if the window became wider (extent grew)
+    if (value + extent > max) {
+      // keep scrolled to the right edge
+      value = max - extent;
+      // if window is wider than filmstrip
+      if (value < 0) {
+        // keep scrolled to the left
+        value = 0;
+      }
+    }
     printSliderModel("updateSliderModelMax:");
     sliderModel.setRangeProperties(value, extent, min, max, false);
   }
@@ -89,7 +99,8 @@ public final class FilmStripFrame extends JFrame {
         sliderModel.getMinimum() + " <= " +
         sliderModel.getValue() + " <= " +
         (sliderModel.getValue() + sliderModel.getExtent() + " <= " +
-        sliderModel.getMaximum())
+        sliderModel.getMaximum() + " -- extent: " +
+        sliderModel.getExtent() + ", completeFrameWidth: " + completeFrameWidth)
       );
   }
 

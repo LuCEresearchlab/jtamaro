@@ -27,7 +27,7 @@ public class FilmStripCanvas extends JComponent {
   private final int completeFrameHeight;
   private final int trackHeight;
   private final int gapWidth;
-  private final int framesToShow;
+  private final double framesToShow;
   private final Stroke markStroke;
   private final Font frameNumberFont;
   private int position;
@@ -42,7 +42,7 @@ public class FilmStripCanvas extends JComponent {
     completeFrameHeight = (int) (frameHeight * (1 + 2 * TRACK_FRACTION));
     trackHeight = (int) (frameHeight * TRACK_FRACTION);
     position = 0;
-    framesToShow = 2;
+    framesToShow = 2.3;
     final float sepDashLength = (float)completeFrameHeight / MARK_DASH_COUNT * 1 / 10;
     final float sepGapLength = (float)completeFrameHeight / MARK_DASH_COUNT * 9 / 10;
     markStroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] {sepDashLength, sepGapLength}, sepDashLength + sepGapLength / 2);
@@ -60,7 +60,7 @@ public class FilmStripCanvas extends JComponent {
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(framesToShow * completeFrameWidth, completeFrameHeight);
+    return new Dimension((int)(framesToShow * completeFrameWidth), completeFrameHeight);
   }
 
   @Override
@@ -72,7 +72,14 @@ public class FilmStripCanvas extends JComponent {
         RenderingHints.VALUE_ANTIALIAS_ON));
     final int firstFrameIndex = position / completeFrameWidth;
     final int positionInFrame = position % completeFrameWidth;
-    final int framesVisible = getWidth() / completeFrameWidth + 1;
+    final int windowWidth = getWidth();
+    final int framesVisible = windowWidth / completeFrameWidth + 2;
+    System.out.println(
+      "  position: " + position + 
+      ", firstFrameIndex: " + firstFrameIndex +
+      ", positionInFrame: " + positionInFrame +
+      ", framesVisible: " + framesVisible +
+      ", windowWidth: " + windowWidth);
     final Sequence<Graphic> visibleGraphics = take(framesVisible, drop(firstFrameIndex, graphics));
     g2.translate(-positionInFrame, 0);
     int frameIndex = firstFrameIndex;
