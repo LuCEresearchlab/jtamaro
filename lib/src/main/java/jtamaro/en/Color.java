@@ -4,10 +4,11 @@ import jtamaro.internal.representation.ColorImpl;
 
 
 /**
- * Represents a Color.
- * A Color also has a certain transparency,
- * from completely opaque, like the Color RED,
- * to completely transparent, like the Color TRANSPARENT.
+ * A Color in the RGBA color space.
+ * 
+ * To work with a Color, you can use the methods in the Colors class.
+ * 
+ * @see jtamaro.en.Colors
  */
 public final class Color {
 
@@ -17,14 +18,52 @@ public final class Color {
     this.implementation = implementation;
   }
 
-  public Color(int rot, int gruen, int blau, double opacity) {
-    this(new ColorImpl(rot, gruen, blau, opacity));
+  /**
+   * Create a Color with the given components for red (R), green (G), and blue (B),
+   * and a certain degree of opacity (alpha, A).
+   *
+   * @param red     red component [0-255]
+   * @param green   green component [0-255]
+   * @param blue    blue component [0-255]
+   * @param opacity opacity (alpha) of the color, where 0.0 means fully
+   *                transparent and 1.0 fully opaque.
+   * @return a Color with the provided RGBA components
+   */
+  public Color(int red, int green, int blue, double opacity) {
+    this(new ColorImpl(red, green, blue, opacity));
   }
 
+  /**
+   * Create a Color with the provided hue (H), saturation (S), lightness (L),
+   * and a certain degree of opacity (alpha, A).
+   * <p>
+   * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
+   *
+   * @param hue        hue of the color [0-360]
+   * @param saturation saturation of the color [0-1]
+   * @param lightness  the amount of white or black applied [0-1].
+   *                   Fully saturated colors have a lightness value of 1/2.
+   * @param opacity    opacity (alpha) of the color, where 0.0 means fully
+   *                   transparent and 1.0 fully opaque.
+   * @return a Color with the provided HSLA components
+   */
   public Color(double hue, double saturation, double lightness, double opacity) {
     this(ColorImpl.fromHSLA(hue, saturation, lightness, opacity));
   }
 
+  /**
+   * Returns a Color with the provided hue (H), saturation (S), value (V),
+   * and a certain degree of opacity (alpha, A).
+   * <p>
+   * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
+   *
+   * @param hue        hue of the color [0-360]
+   * @param saturation saturation of the color [0-1]
+   * @param value      the amount of light that is applied [0-1]
+   * @param opacity    opacity (alpha) of the color, where 0.0 means fully
+   *                   transparent and 1.0 fully opaque.
+   * @return a Color with the provided HSVA components.
+   */
   public static Color fromHSVA(double hue, double saturation, double value, double opacity) {
     return new Color(ColorImpl.fromHSVA(hue, saturation, value, opacity));
   }
