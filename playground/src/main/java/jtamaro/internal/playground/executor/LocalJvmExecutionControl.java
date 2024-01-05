@@ -63,6 +63,9 @@ public class LocalJvmExecutionControl extends DirectExecutionControl {
                 throw new UserException("null", "Unknown Invocation Exception", e.getStackTrace());
             } else if (cause instanceof SPIResolutionException sre) {
                 throw new ResolutionException(sre.id(), cause.getStackTrace());
+            } else if (cause instanceof AssertionError) {
+                // Surface assertion errors
+                return cause;
             } else {
                 throw new UserException(String.valueOf(cause.getMessage()),
                         cause.getClass().getName(), cause.getStackTrace());

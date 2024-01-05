@@ -6,12 +6,16 @@ import jtamaro.internal.representation.GraphicImpl;
 public final class ObjectRenderer {
 
     private static final List<BaseObjectRenderer<?>> RENDERERS = List.of(
+            // Always first
+            new NullRenderer(),
+            // Others
             new AbstractGraphicRenderer(),
-            new ExceptionRenderer(),
+            new AssertionErrorRenderer(),
             new GraphicImplRenderer(),
             new StatementResultRenderer(),
             new SequenceRenderer(ObjectRenderer::render),
             // Always last
+            new ExceptionRenderer(),
             new DefaultRenderer()
     );
 
@@ -19,17 +23,17 @@ public final class ObjectRenderer {
     }
 
     public static GraphicImpl render(Object obj) {
-        return getRenderer(obj, obj.getClass()).render(obj);
+        return getRenderer(obj).render(obj);
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> BaseObjectRenderer<? extends T> getRenderer(Object o, Class<T> clazz) {
+    private static <T> BaseObjectRenderer<? extends T> getRenderer(Object o) {
         for (BaseObjectRenderer<?> renderer : RENDERERS) {
             if (renderer.isSupported(o)) {
                 return (BaseObjectRenderer<? extends T>) renderer;
             }
         }
-        throw new IllegalArgumentException("No renderer for class: " + clazz.getName());
+        throw new IllegalArgumentException("No renderer for class: " + o.getClass().getName());
     }
 
 }
