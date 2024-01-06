@@ -37,7 +37,7 @@ public class PhoneDial {
     }
 
     public static Sequence<Integer> keyNumbers() {
-      return concat(range(1, 10), of(0));
+      return concat(rangeClosed(1, 9), of(0));
     }
 
     public static Sequence<Pair<Integer,Double>> keyNumbersWithAngles() {
