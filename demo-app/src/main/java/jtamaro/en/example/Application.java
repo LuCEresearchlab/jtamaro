@@ -20,6 +20,9 @@ public class Application {
     // Sequence
     Demo.main(args);
     Digits.main(args);
+    InsertionSort.main(args);
+    QuickSort.main(args);
+    Scan.main(args);
 
     // Colors
     ColorDemo.main(args);
