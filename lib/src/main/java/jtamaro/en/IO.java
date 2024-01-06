@@ -233,9 +233,9 @@ public final class IO {
    *
    * @param graphics sequence of graphics (frames) to show in the film strip
    */
-  public static void showFilmStrip(Sequence<Graphic> graphicsSequence) {
-    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphicsSequence);
-    showFilmStrip(graphicsSequence, firstElement(wh), secondElement(wh));
+  public static void showFilmStrip(Sequence<Graphic> graphics) {
+    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphics);
+    showFilmStrip(graphics, firstElement(wh), secondElement(wh));
   }
 
   /**

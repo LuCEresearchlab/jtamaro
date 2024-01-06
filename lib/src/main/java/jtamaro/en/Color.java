@@ -27,7 +27,6 @@ public final class Color {
    * @param blue    blue component [0-255]
    * @param opacity opacity (alpha) of the color, where 0.0 means fully
    *                transparent and 1.0 fully opaque.
-   * @return a Color with the provided RGBA components
    */
   public Color(int red, int green, int blue, double opacity) {
     this(new ColorImpl(red, green, blue, opacity));
@@ -45,7 +44,6 @@ public final class Color {
    *                   Fully saturated colors have a lightness value of 1/2.
    * @param opacity    opacity (alpha) of the color, where 0.0 means fully
    *                   transparent and 1.0 fully opaque.
-   * @return a Color with the provided HSLA components
    */
   public Color(double hue, double saturation, double lightness, double opacity) {
     this(ColorImpl.fromHSLA(hue, saturation, lightness, opacity));
