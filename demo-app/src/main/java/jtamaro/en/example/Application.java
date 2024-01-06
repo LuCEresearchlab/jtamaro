@@ -21,6 +21,7 @@ public class Application {
     ChessPositions.main(args);
     Demo.main(args);
     Digits.main(args);
+    ForLoops.main(args);
     InsertionSort.main(args);
     QuickSort.main(args);
     GraphicReductions.main(args);

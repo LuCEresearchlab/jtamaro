@@ -8,7 +8,6 @@ import java.util.Arrays;
 import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
 
-import static jtamaro.en.IO.print;
 import static jtamaro.en.IO.println;
 import static jtamaro.en.Pairs.*;
 import static jtamaro.en.Sequences.*;
@@ -151,15 +150,6 @@ public class SequenceTest {
   public static void demo() {
     
     // TODO: Turn these into unit tests
-
-    Sequence<Integer> is = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    println(filter(i -> i % 2 == 0, is));
-
-    println(map(s -> s + "!", of("Hi", "Ho")));
-
-    System.out.println(reduce("", (e, a) -> e + a, of("a", "b", "c", "d")));
-
-    print(concat(range('A', 'F'), range('F', 'A', -1)));
 
     println(zip(of("a", "b", "c"), of(1, 2, 3)));
 
