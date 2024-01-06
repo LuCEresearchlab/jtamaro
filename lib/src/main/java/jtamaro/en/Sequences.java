@@ -170,12 +170,31 @@ public final class Sequences {
     }
   }
 
+  public static Sequence<Integer> rangeClosed(int to) {
+    return rangeClosed(0, to, 1);
+  }
+
   public static Sequence<Integer> rangeClosed(int from, int to) {
-    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
+    return rangeClosed(from, to, 1);
   }
 
   public static Sequence<Integer> rangeClosed(int from, int to, int step) {
-    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
+    assert step != 0 : "step must not be zero";
+    if (from == to) {
+      return cons(from, empty());
+    } else if (step > 0) {
+      if (from > to) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> rangeClosed(from + step, to, step), true);
+      }
+    } else {
+      if (from < to) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> rangeClosed(from + step, to, step), true);
+      }
+    }
   }
 
   public static Sequence<Character> range(char toExclusive) {
@@ -190,12 +209,16 @@ public final class Sequences {
     return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, step));
   }
 
+  public static Sequence<Character> rangeClosed(char to) {
+    return rangeClosed((char) 0, to);
+  }
+
   public static Sequence<Character> rangeClosed(char from, char to) {
-    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
+    return rangeClosed(from, to, 1);
   }
 
   public static Sequence<Character> rangeClosed(char from, char to, int step) {
-    throw new UnsupportedOperationException("Method not yet implemented"); // TODO
+    return map(i -> (char) i.intValue(), rangeClosed((int) from, (int) to, step));
   }
 
   public static <T> Sequence<T> repeat(T element) {

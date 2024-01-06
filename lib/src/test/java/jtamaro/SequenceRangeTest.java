@@ -128,6 +128,11 @@ public class SequenceRangeTest {
 
   //--- range(char, char)
   @Test
+  public void testRangeChar2() {
+    assertSequenceEquals(of((char)0, (char)1), range((char)2));
+  }
+
+  @Test
   public void testRangeA_G() {
     assertSequenceEquals(of('A', 'B', 'C', 'D', 'E', 'F'), range('A', 'G'));
   }
