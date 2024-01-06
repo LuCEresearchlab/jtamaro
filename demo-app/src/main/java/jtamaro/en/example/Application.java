@@ -19,6 +19,7 @@ public class Application {
 
     // Sequence
     Demo.main(args);
+    Digits.main(args);
 
     // Colors
     ColorDemo.main(args);
@@ -36,8 +37,12 @@ public class Application {
     CogWheel.main(args);
     Fireworks.main(args);
     InfiniteFilm.main(args);
+    NestedTriangles.main(args);
+    PhoneDial.main(args);
+    Polygons.main(args);
     PulsingCircle.main(args);
     ThreeTwoOne.main(args);
+    TriangleCircles.main(args);
 
     // Interactions
     ControllableSpinner.main(args);
