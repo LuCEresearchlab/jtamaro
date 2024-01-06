@@ -14,21 +14,21 @@ import static jtamaro.en.Sequences.*;
 
 public final class FilmStripFrame extends JFrame {
 
-  private final Sequence<Pair<Graphic, Integer>> indexedGraphics;
   private final DefaultBoundedRangeModel sliderModel;
   private final int frameCount;
   private final int completeFrameWidth;
 
+  private final FilmStripCanvas canvas;
+
 
   public FilmStripFrame(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
-    indexedGraphics = zipWithIndex(graphics);
     completeFrameWidth = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
     final String titleSuffix = graphics.hasDefiniteSize() ? " (" + length(graphics) + " frames)" : "";
     setTitle("Film Strip" + titleSuffix);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    final FilmStripCanvas canvas = new FilmStripCanvas(graphics, frameWidth, frameHeight);
+    canvas = new FilmStripCanvas(graphics, frameWidth, frameHeight);
     add(canvas, BorderLayout.CENTER);
     final JPanel bar = new JPanel(new BorderLayout());
     final JButton prevButton = new JButton("<");
@@ -38,7 +38,7 @@ public final class FilmStripFrame extends JFrame {
     sliderModel = new DefaultBoundedRangeModel();
     final JScrollBar slider = new JScrollBar(JScrollBar.HORIZONTAL);
     slider.setModel(sliderModel);
-    if (indexedGraphics.hasDefiniteSize()) {
+    if (graphics.hasDefiniteSize()) {
       frameCount = length(graphics);
       bar.add(slider, BorderLayout.CENTER);
     } else {
@@ -56,7 +56,7 @@ public final class FilmStripFrame extends JFrame {
       sliderModel.setValue(sliderModel.getValue() + completeFrameWidth);
     });
     sliderModel.addChangeListener(ev -> {
-      printSliderModel("change: ");
+      //printSliderModel("change: ");
       canvas.setPosition(sliderModel.getValue());
     });
 
@@ -78,7 +78,7 @@ public final class FilmStripFrame extends JFrame {
     final int min = 0;
     final int max = frameCount >= 0 ? completeFrameWidth * frameCount : Integer.MAX_VALUE;
     int value = sliderModel.getValue();
-    final int extent = getWidth();
+    final int extent = canvas.getNetWidth();
     // if the window became wider (extent grew)
     if (value + extent > max) {
       // keep scrolled to the right edge
@@ -89,7 +89,7 @@ public final class FilmStripFrame extends JFrame {
         value = 0;
       }
     }
-    printSliderModel("updateSliderModelMax:");
+    //printSliderModel("updateSliderModelMax:");
     sliderModel.setRangeProperties(value, extent, min, max, false);
   }
 

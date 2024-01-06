@@ -1,6 +1,7 @@
 package jtamaro.en.io;
 
 import jtamaro.en.Graphic;
+import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.gui.RenderOptions;
@@ -9,8 +10,7 @@ import jtamaro.internal.representation.GraphicImpl;
 import javax.swing.*;
 import java.awt.*;
 
-import static jtamaro.en.Sequences.drop;
-import static jtamaro.en.Sequences.take;
+import static jtamaro.en.Sequences.*;
 
 
 public class FilmStripCanvas extends JComponent {
@@ -19,8 +19,10 @@ public class FilmStripCanvas extends JComponent {
   private static final double TRACK_FRACTION = 0.2;
   private static final int MARK_DASH_COUNT = 20;
   private static final int HOLES = 8;
+  private static final int MARGIN = 20;
+  private static final Color BACKGROUND_COLOR = new Color(200, 200, 200);
 
-  private final Sequence<Graphic> graphics;
+  private final Sequence<Pair<Graphic, Integer>> indexedGraphics;
   private final int frameWidth;
   private final int frameHeight;
   private final int completeFrameWidth;
@@ -34,7 +36,7 @@ public class FilmStripCanvas extends JComponent {
 
 
   public FilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
-    this.graphics = graphics;
+    indexedGraphics = zipWithIndex(graphics);
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
     completeFrameWidth = computeCompleteFrameWidth(frameWidth);
@@ -49,6 +51,10 @@ public class FilmStripCanvas extends JComponent {
     frameNumberFont = new Font(Font.MONOSPACED, Font.PLAIN, trackHeight / 5);
   }
 
+  public int getNetWidth() {
+    return getWidth() - 2 * MARGIN;
+  }
+
   public static int computeCompleteFrameWidth(int frameWidth) {
     return (int) (frameWidth * (1 + GAP_FRACTION));
   }
@@ -60,30 +66,36 @@ public class FilmStripCanvas extends JComponent {
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension((int)(framesToShow * completeFrameWidth), completeFrameHeight);
+    return new Dimension(
+      2 * MARGIN + (int)(framesToShow * completeFrameWidth), 
+      2 * MARGIN + completeFrameHeight
+    );
   }
 
   @Override
   protected void paintComponent(Graphics g) {
     final Graphics2D g2 = (Graphics2D) g;
+    g2.setColor(BACKGROUND_COLOR);
+    g2.fillRect(0, 0, getWidth(), getHeight());
     final RenderOptions renderOptions = new RenderOptions(0);
     g2.setRenderingHints(new RenderingHints(
         RenderingHints.KEY_ANTIALIASING,
         RenderingHints.VALUE_ANTIALIAS_ON));
     final int firstFrameIndex = position / completeFrameWidth;
     final int positionInFrame = position % completeFrameWidth;
-    final int windowWidth = getWidth();
+    final int windowWidth = getNetWidth();
     final int framesVisible = windowWidth / completeFrameWidth + 2;
-    System.out.println(
-      "  position: " + position + 
-      ", firstFrameIndex: " + firstFrameIndex +
-      ", positionInFrame: " + positionInFrame +
-      ", framesVisible: " + framesVisible +
-      ", windowWidth: " + windowWidth);
-    final Sequence<Graphic> visibleGraphics = take(framesVisible, drop(firstFrameIndex, graphics));
-    g2.translate(-positionInFrame, 0);
-    int frameIndex = firstFrameIndex;
-    for (Graphic graphic : visibleGraphics) {
+    // System.out.println(
+    //   "  position: " + position + 
+    //   ", firstFrameIndex: " + firstFrameIndex +
+    //   ", positionInFrame: " + positionInFrame +
+    //   ", framesVisible: " + framesVisible +
+    //   ", windowWidth: " + windowWidth);
+    final Sequence<Pair<Graphic,Integer>> visibleGraphics = take(framesVisible, drop(firstFrameIndex, indexedGraphics));
+    g2.translate(MARGIN - positionInFrame, MARGIN);
+    for (Pair<Graphic,Integer> indexedGraphic : visibleGraphics) {
+      final Graphic graphic = indexedGraphic.first();
+      final int frameIndex = indexedGraphic.second();
       drawFrameBackground(g2, graphic, renderOptions, frameIndex);
       final AbstractGraphic abstractGraphic = (AbstractGraphic) graphic;
       final GraphicImpl graphicImpl = abstractGraphic.getImplementation();
@@ -92,7 +104,6 @@ public class FilmStripCanvas extends JComponent {
       graphicImpl.render(g2, renderOptions);
       g2.translate(graphicImpl.getBBox().getMinX() - gapWidth / 2.0, graphicImpl.getBBox().getMinY() - trackHeight);
       g2.translate(completeFrameWidth, 0);
-      frameIndex++;
     }
   }
 
