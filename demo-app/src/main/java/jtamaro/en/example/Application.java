@@ -18,10 +18,12 @@ public class Application {
     System.out.println("JTamaro Demo Application");
 
     // Sequence
+    ChessPositions.main(args);
     Demo.main(args);
     Digits.main(args);
     InsertionSort.main(args);
     QuickSort.main(args);
+    GraphicReductions.main(args);
     Scan.main(args);
 
     // Colors
@@ -31,6 +33,7 @@ public class Application {
     Alphabet.main(args);
     ChristmasTree.main(args);
     Daisy.main(args);
+    GraphicReductions.main(args);
     SwissFlag.main(args);
     TextDemo.main(args);
     TriangleDemo.main(args);

@@ -48,13 +48,11 @@ public class PhoneDial {
     }
 
     public static Graphic keyGraphicComposite(double diameter) {
-      return reduce(
-        (a, e) -> compose(
-          rotate(secondElement(e) - 90, shiftedKeyGraphic(diameter, firstElement(e))), 
-          a
-        ), 
-        emptyGraphic(), 
-        keyNumbersWithAngles()
+      return composes(
+        map(
+          e -> rotate(secondElement(e) - 90, shiftedKeyGraphic(diameter, firstElement(e))), 
+          keyNumbersWithAngles()
+        )
       );
     }
 
@@ -95,14 +93,14 @@ public class PhoneDial {
 
     public static Sequence<Graphic> dialDigitsAnimation(double diameter, Sequence<Integer> digitsSequence) {
       return reduce(
-        (Sequence<Graphic> overall, Integer digit) -> concat(
-          concat(
-            overall,
-            replicate(dialGraphic(diameter, 0), 40)
-          ),
-          dialOneDigitAnimation(diameter, digit)
-        ),
         empty(),
+        (Integer digit, Sequence<Graphic> overall) -> concats(
+          of(
+            dialOneDigitAnimation(diameter, digit),
+            replicate(dialGraphic(diameter, 0), 40),
+            overall
+          )
+        ),
         digitsSequence
       );
     }

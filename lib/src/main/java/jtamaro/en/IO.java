@@ -152,8 +152,8 @@ public final class IO {
       frameHeight = 300;
     } else if (graphics.hasDefiniteSize()) {
       // known, finite number of frames: determine max
-      frameWidth = reduce((a, e) -> Math.max(a, (int)Math.ceil(width(e))), 0, graphics);
-      frameHeight = reduce((a, e) -> Math.max(a, (int)Math.ceil(height(e))), 0, graphics);
+      frameWidth = reduce(0, (e, a) -> Math.max(a, (int)Math.ceil(width(e))), graphics);
+      frameHeight = reduce(0, (e, a) -> Math.max(a, (int)Math.ceil(height(e))), graphics);
     } else {
       // unknown number of frames, potentially infinite: use size of first frame
       frameWidth = (int)Math.ceil(width(first(graphics)));

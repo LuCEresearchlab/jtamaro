@@ -22,6 +22,47 @@ public final class Toolbelt {
   public static <T> int length(Sequence<T> s) {
     return isEmpty(s) ? 0 : 1 + length(rest(s));
   }
+
+  // flatten
+  public static <T> Sequence<T> concats(Sequence<Sequence<T>> nestedSequence) {
+    return reduce(
+      empty(),
+      (e, a) -> concat(e, a),
+      nestedSequence
+    );
+  }
+
+  public static Graphic composes(Sequence<Graphic> graphics) {
+    return reduce(
+      emptyGraphic(),
+      (e, a) -> compose(e, a),
+      graphics
+    );
+  }
+
+  public static Graphic besides(Sequence<Graphic> graphics) {
+    return reduce(
+      emptyGraphic(),
+      (e, a) -> beside(e, a),
+      graphics
+    );
+  }
+
+  public static Graphic aboves(Sequence<Graphic> graphics) {
+    return reduce(
+      emptyGraphic(),
+      (e, a) -> above(e, a),
+      graphics
+    );
+  }
+
+  public static Graphic overlays(Sequence<Graphic> graphics) {
+    return reduce(
+      emptyGraphic(),
+      (e, a) -> overlay(e, a),
+      graphics
+    );
+  }
   
   public static Graphic square(double side, Color color) {
     return rectangle(side, side, color);

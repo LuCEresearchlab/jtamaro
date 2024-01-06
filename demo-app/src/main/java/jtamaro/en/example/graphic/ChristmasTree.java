@@ -23,13 +23,13 @@ public class ChristmasTree {
     final double angle = 50;
     Graphic upwardsTriangle = rotate(-angle/2-90, isoscelesTriangle(triangleSide, angle, LIGHT_GREEN));
     Graphic downwardsTriangle = rotate(-angle/2+90, isoscelesTriangle(triangleSide, angle, DARK_GREEN));
-    Graphic upwardsTriangles = reduce((a, e) -> beside(a, e), emptyGraphic(), replicate(upwardsTriangle, upwardsTriangleCount));
-    Graphic downwardsTriangles = reduce((a, e) -> beside(a, e), emptyGraphic(), replicate(downwardsTriangle, upwardsTriangleCount - 1));
+    Graphic upwardsTriangles = besides(replicate(upwardsTriangle, upwardsTriangleCount));
+    Graphic downwardsTriangles = besides(replicate(downwardsTriangle, upwardsTriangleCount - 1));
     return overlay(upwardsTriangles, downwardsTriangles);
   }
 
   private static Graphic tree(int levels, double triangleSide) {
-    Graphic top = reduce((a, e) -> above(a, e), emptyGraphic(), map(i -> level(i, triangleSide), range(1, levels + 1)));
+    Graphic top = aboves(map(i -> level(i, triangleSide), range(1, levels + 1)));
     Graphic stem = rectangle(triangleSide, triangleSide, BROWN);
     return above(top, stem);
   }
@@ -52,23 +52,15 @@ public class ChristmasTree {
 
   private static Graphic frame(int levels, double triangleSide, double time) {
     return overlay(
-      above(
-        rectangle(0, triangleSide * 2, TRANSPARENT),
-        above(
-          above(
-            above(
-              pytamaroLogo(triangleSide),
-              above(
-                rectangle(1, triangleSide * 0.2, TRANSPARENT),
-                text("Made with PyTamaro", "Din Alternate", triangleSide * 0.25, BLACK)
-              )
-            ),
-            rectangle(0, triangleSide * 2, TRANSPARENT)
-          ),
-          above(
-              text("Merry Christmas!", "Din Alternate", triangleSide * 0.8, TEXT_COLOR),
-              text("Full of Surprising Compositions", "Din Alternate", triangleSide * 0.45, WHITE)
-          )
+      aboves(
+        of(
+          rectangle(0, triangleSide * 2, TRANSPARENT),
+          pytamaroLogo(triangleSide),
+          rectangle(1, triangleSide * 0.2, TRANSPARENT),
+          text("Made with PyTamaro", "Din Alternate", triangleSide * 0.25, BLACK),
+          rectangle(0, triangleSide * 2, TRANSPARENT),
+          text("Merry Christmas!", "Din Alternate", triangleSide * 0.8, TEXT_COLOR),
+          text("Full of Surprising Compositions", "Din Alternate", triangleSide * 0.45, WHITE)
         )
       ),
       tree(levels, triangleSide)

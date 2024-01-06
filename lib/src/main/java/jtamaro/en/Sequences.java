@@ -375,19 +375,27 @@ public final class Sequences {
 
 
   //--- folding
-  public static <R, E> R foldl(R initial, Function2<R, E, R> f, Sequence<E> sequence) {
+  // see: https://wiki.haskell.org/Foldr_Foldl_Foldl'
+
+  public static <R, E> R foldLeft(R initial, Function2<R, E, R> f, Sequence<E> sequence) {
     return isEmpty(sequence) 
       ? initial 
-      : foldl(f.apply(initial, first(sequence)), f, rest(sequence));
+      : foldLeft(f.apply(initial, first(sequence)), f, rest(sequence));
   }
 
-  public static <R, E> R foldr(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
+  public static <R, E> R foldRight(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
     return isEmpty(sequence)
       ? initial
-      : f.apply(first(sequence), foldr(initial, f, rest(sequence)));
+      : f.apply(first(sequence), foldRight(initial, f, rest(sequence)));
   }
 
-  //TODO: make reduce call foldl? Update workbooks wrt f's parameter order?
+  public static <R, E> R reduce(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
+    return foldRight(initial, f, sequence);
+  }
+
+
+  //TODO: Update workbooks wrt f's parameter order?
+  /*
   public static <T, U> U reduce(Function2<U, T, U> f, U initial, Sequence<T> sequence) {
     U result = initial;
     for (T element : sequence) {
@@ -395,6 +403,7 @@ public final class Sequences {
     }
     return result;
   }
+  */
 
   //--- corresponding to PF1 "BSL with List Abbreviations"
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._list%29%29

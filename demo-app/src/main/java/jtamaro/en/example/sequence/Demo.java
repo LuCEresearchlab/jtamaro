@@ -20,13 +20,7 @@ public class Demo {
       System.out.println(i);
     }
 
-    println(filter(i -> i % 2 == 0, is));
-
     print(intersperse(":", mapToString(is)));
-
-    println(of(3, 2, 1));
-
-    println(map(s -> s + "!", of("Hi", "Ho")));
 
     for (String s : take(2, of("A", "B", "C", "D"))) {
       System.out.println(s);
@@ -36,9 +30,7 @@ public class Demo {
       System.out.println(b);
     }
 
-    System.out.println(reduce((a, e) -> a + e, "", of("a", "b", "c", "d")));
-
-    System.out.println(reduce((a, e) -> a + e, "", intersperse("-", of("S", "M", "L", "XL"))));
+    System.out.println(reduce("", (e, a) -> a + e, intersperse("-", of("S", "M", "L", "XL"))));
 
     for (String s : take(4, repeat("-"))) {
       System.out.print(s);
@@ -69,13 +61,6 @@ public class Demo {
       System.out.println(i);
     }
 
-    println(range(10, 0, -1));
-
-    for (char c : range('A', 'F')) {
-      System.out.print(c);
-    }
-    System.out.println();
-
     for (char c : concat(range('A', 'F'), range('a', 'f'))) {
       System.out.print(c);
     }
@@ -94,8 +79,6 @@ public class Demo {
     Pair<Sequence<Integer>, Sequence<Integer>> pair2 = unzip(zip(from(0), from(1)));
     println(take(5, firstElement(pair2)));
     println(take(5, secondElement(pair2)));
-
-    println(crossProduct(range('A', 'D'), range(1, 3)));
 
     println(ofStringCharacters("ABC"));
 

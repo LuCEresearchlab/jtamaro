@@ -160,9 +160,9 @@ public class BigBangFrame<M> extends JFrame {
   public Sequence<M> getSequenceOfModels() {
     //TODO: make lazy
     return reduce(
-        (Sequence<M> models, TraceEvent ev) -> cons(ev.process(bang, models.first()), models),
-        empty(),
-        trace.getEventSequence()
+      empty(),
+      (TraceEvent ev, Sequence<M> models) -> cons(ev.process(bang, models.first()), models),
+      trace.getEventSequence()
     );
   }
 

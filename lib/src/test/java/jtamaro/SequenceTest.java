@@ -157,7 +157,7 @@ public class SequenceTest {
 
     println(map(s -> s + "!", of("Hi", "Ho")));
 
-    System.out.println(reduce((a, e) -> a + e, "", of("a", "b", "c", "d")));
+    System.out.println(reduce("", (e, a) -> e + a, of("a", "b", "c", "d")));
 
     print(concat(range('A', 'F'), range('F', 'A', -1)));
 
