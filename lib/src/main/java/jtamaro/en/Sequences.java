@@ -375,6 +375,19 @@ public final class Sequences {
 
 
   //--- folding
+  public static <R, E> R foldl(R initial, Function2<R, E, R> f, Sequence<E> sequence) {
+    return isEmpty(sequence) 
+      ? initial 
+      : foldl(f.apply(initial, first(sequence)), f, rest(sequence));
+  }
+
+  public static <R, E> R foldr(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
+    return isEmpty(sequence)
+      ? initial
+      : f.apply(first(sequence), foldr(initial, f, rest(sequence)));
+  }
+
+  //TODO: make reduce call foldl? Update workbooks wrt f's parameter order?
   public static <T, U> U reduce(Function2<U, T, U> f, U initial, Sequence<T> sequence) {
     U result = initial;
     for (T element : sequence) {
