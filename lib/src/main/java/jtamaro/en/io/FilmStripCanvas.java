@@ -79,23 +79,35 @@ public class FilmStripCanvas extends JComponent {
     g2.fillRect(0, 0, getWidth(), getHeight());
     final RenderOptions renderOptions = new RenderOptions(0);
     g2.setRenderingHints(new RenderingHints(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON));
-    final int firstFrameIndex = position / completeFrameWidth;
-    final int positionInFrame = position % completeFrameWidth;
-    final int windowWidth = getNetWidth();
-    final int framesVisible = windowWidth / completeFrameWidth + 2;
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON)
+    );
+    final int windowWidth = getWidth();
+    final int positionAtLeftWindowEdge = position - MARGIN;
+    final int positionAtRightWindowEdge = positionAtLeftWindowEdge + windowWidth;
+    final int firstVisibleFrame = Math.max(0, positionAtLeftWindowEdge / completeFrameWidth);
+    final int lastVisibleFrame = Math.max(0, positionAtRightWindowEdge / completeFrameWidth);
+    final int visibleFrameCount = lastVisibleFrame - firstVisibleFrame + 1;
     // System.out.println(
-    //   "  position: " + position + 
-    //   ", firstFrameIndex: " + firstFrameIndex +
-    //   ", positionInFrame: " + positionInFrame +
-    //   ", framesVisible: " + framesVisible +
+    //   "  |<: " + positionAtLeftWindowEdge + 
+    //   "  |: " + position + 
+    //   "  >|: " + positionAtRightWindowEdge + 
+    //   ", #<: " + firstVisibleFrame +
+    //   ", >#: " + lastVisibleFrame +
+    //   ", #count: " + visibleFrameCount +
     //   ", windowWidth: " + windowWidth);
-    final Sequence<Pair<Graphic,Integer>> visibleGraphics = take(framesVisible, drop(firstFrameIndex, indexedGraphics));
-    g2.translate(MARGIN - positionInFrame, MARGIN);
+    final Sequence<Pair<Graphic,Integer>> visibleGraphics = 
+      take(visibleFrameCount, drop(firstVisibleFrame, indexedGraphics));
+    g2.translate(0, MARGIN);
     for (Pair<Graphic,Integer> indexedGraphic : visibleGraphics) {
       final Graphic graphic = indexedGraphic.first();
       final int frameIndex = indexedGraphic.second();
+      final int offset = frameIndex * completeFrameWidth - position + MARGIN;
+      // System.out.println(
+      //   "   frameIndex: " + frameIndex +
+      //   ", offset: " + offset
+      // );
+      g2.translate(offset, 0);
       drawFrameBackground(g2, graphic, renderOptions, frameIndex);
       final AbstractGraphic abstractGraphic = (AbstractGraphic) graphic;
       final GraphicImpl graphicImpl = abstractGraphic.getImplementation();
@@ -103,7 +115,7 @@ public class FilmStripCanvas extends JComponent {
       g2.translate(-graphicImpl.getBBox().getMinX() + gapWidth / 2.0, -graphicImpl.getBBox().getMinY() + trackHeight);
       graphicImpl.render(g2, renderOptions);
       g2.translate(graphicImpl.getBBox().getMinX() - gapWidth / 2.0, graphicImpl.getBBox().getMinY() - trackHeight);
-      g2.translate(completeFrameWidth, 0);
+      g2.translate(-offset, 0);
     }
   }
 
@@ -122,11 +134,13 @@ public class FilmStripCanvas extends JComponent {
       g2.fillRect(stepWidth * i + holeX, holeY, holeWidth, holeHeight);
       g2.fillRect(stepWidth * i + holeX, completeFrameHeight - holeHeight - holeY, holeWidth, holeHeight);
     }
-    g2.setColor(Color.WHITE);
-    final Stroke defaultStroke = g2.getStroke();
-    g2.setStroke(markStroke);
-    g2.drawLine(0, 0, 0, completeFrameHeight);
-    g2.setStroke(defaultStroke);
+    if (frameIndex > 0) {
+      g2.setColor(Color.WHITE);
+      final Stroke defaultStroke = g2.getStroke();
+      g2.setStroke(markStroke);
+      g2.drawLine(0, 0, 0, completeFrameHeight);
+      g2.setStroke(defaultStroke);
+    }
     g2.setColor(Color.YELLOW);
     g2.setFont(frameNumberFont);
     final FontMetrics metrics = g2.getFontMetrics(frameNumberFont);
