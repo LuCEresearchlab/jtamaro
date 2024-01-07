@@ -1,6 +1,7 @@
 package jtamaro.en.example;
 
 import static jtamaro.en.Sequences.*;
+import static jtamaro.en.Colors.TRANSPARENT;
 import static jtamaro.en.Graphics.*;
 
 import jtamaro.en.Sequence;
@@ -83,6 +84,15 @@ public final class Toolbelt {
 
   public static Graphic rightTriangle(double side1, double side2, Color color) {
     return triangle(side1, side2, 90, color);
+  }
+
+
+  public static Graphic hgap(double width) {
+    return rectangle(width, 0, TRANSPARENT);
+  }
+    
+  public static Graphic vgap(double height) {
+    return rectangle(0, height, TRANSPARENT);
   }
 
 }

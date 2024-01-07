@@ -35,6 +35,7 @@ public class Application {
     ChristmasTree.main(args);
     Daisy.main(args);
     GraphicReductions.main(args);
+    PaintBrush.main(args);
     SwissFlag.main(args);
     TextDemo.main(args);
     TriangleDemo.main(args);
