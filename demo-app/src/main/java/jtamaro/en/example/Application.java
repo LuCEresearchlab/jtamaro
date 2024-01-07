@@ -36,6 +36,7 @@ public class Application {
     Daisy.main(args);
     GraphicReductions.main(args);
     PaintBrush.main(args);
+    Rings.main(args);
     SwissFlag.main(args);
     TextDemo.main(args);
     TriangleDemo.main(args);
