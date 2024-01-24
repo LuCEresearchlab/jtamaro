@@ -4,16 +4,23 @@ import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
 import jtamaro.en.io.Interaction;
+import jtamaro.en.music.AbsoluteChord;
+import jtamaro.en.music.Note;
+import jtamaro.en.music.TimedChord;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.io.GifWriter;
 import jtamaro.internal.io.PngWriter;
 
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.swing.*;
 import java.io.IOException;
 
 import static jtamaro.en.Pairs.*;
 import static jtamaro.en.Sequences.*;
 import static jtamaro.en.Graphics.*;
+import static jtamaro.en.Music.*;
 
 
 /**
@@ -300,6 +307,43 @@ public final class IO {
     } catch (IOException ex) {
       System.err.println("Error saving animated GIF to " + filename + ": " + ex.getMessage());
     }
+  }
+
+  //--- Music
+  public static void play(Sequence<TimedChord> song, int bpm) {
+    System.out.println("IO.play:");
+    int msPerBeat = 60 * 1000 / bpm;
+    try {
+      Receiver receiver = MidiSystem.getReceiver();
+      for (TimedChord c :  cons(timed(2, chord(of())), song)) {
+        System.out.println(c);
+        c.play(receiver, msPerBeat);
+      }
+    } catch (MidiUnavailableException ex) {
+      ex.printStackTrace();
+    }
+    try {
+      System.out.println("waiting at end of play.");
+      Thread.sleep(4 * msPerBeat);
+    } catch (InterruptedException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public static void playChords(Sequence<AbsoluteChord> chords) {
+    playChords(chords, 120);
+  }
+
+  public static void playChords(Sequence<AbsoluteChord> chords, int bpm) {
+    play(map(chord->timed(1, chord), chords), bpm);
+  }
+
+  public static void playNotes(Sequence<Note> notes) {
+    playNotes(notes, 120);
+  }
+
+  public static void playNotes(Sequence<Note> notes, int bpm) {
+    play(map(n->timed(1, chord(of(n))), notes), bpm);
   }
 
 }

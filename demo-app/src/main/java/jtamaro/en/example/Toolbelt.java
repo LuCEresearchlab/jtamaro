@@ -8,6 +8,7 @@ import static jtamaro.en.Points.CENTER_LEFT;
 
 import jtamaro.en.Sequence;
 import jtamaro.en.Color;
+import jtamaro.en.Function1;
 import jtamaro.en.Graphic;
 import jtamaro.en.Pair;
 
@@ -65,7 +66,7 @@ public final class Toolbelt {
   //--- special folds
   // https://hackage.haskell.org/package/base-4.14.1.0/docs/Data-List.html#g:4
 
-  // concat (flatten)
+  // concat (flatten) == join
   public static <T> Sequence<T> concats(Sequence<Sequence<T>> nestedSequence) {
     return reduce(
       empty(),
@@ -74,23 +75,93 @@ public final class Toolbelt {
     );
   }
 
-  // concatMap
+  // concatMap == flatMap == bind
+  public static <T,U> Sequence<U> concatMap(Function1<T,Sequence<U>> mapper, Sequence<T> nestedSequence) {
+    return flatMap(mapper, nestedSequence);
+    // return reduce(
+    //   empty(),
+    //   (T e, Sequence<U> a) -> concat(mapper.apply(e), a),
+    //   nestedSequence
+    // );
+    //return concats(map(mapper, nestedSequence));
+    // (more generally, in Haskell) return join(fmap(mapper, nestedSequence));
+  }
 
   // and
+  public static Boolean and(Sequence<Boolean> sequence) {
+    return reduce(true, (e, a) -> e && a, sequence);
+  }
 
   // or
+  public static Boolean or(Sequence<Boolean> sequence) {
+    return reduce(false, (e, a) -> e || a, sequence);
+  }
+  
+  // all
+  public static <T> Boolean all(Function1<T,Boolean> predicate, Sequence<T> sequence) {
+    return reduce(true, (e, a) -> predicate.apply(e) && a, sequence);
+  }
 
   // any
-
-  // all
+  public static <T> Boolean any(Function1<T,Boolean> predicate, Sequence<T> sequence) {
+    return reduce(false, (e, a) -> predicate.apply(e) || a, sequence);
+  }
 
   // sum
+  public static int sumInt(Sequence<Integer> sequence) {
+    return reduce(0, (e, a) -> e + a, sequence);
+  }
+
+  public static double sumDouble(Sequence<Double> sequence) {
+    return reduce(0.0, (e, a) -> e + a, sequence);
+  }
 
   // product
+  public static int productInt(Sequence<Integer> sequence) {
+    return reduce(1, (e, a) -> e * a, sequence);
+  }
+
+  public static double productDouble(Sequence<Double> sequence) {
+    return reduce(0.0, (e, a) -> e * a, sequence);
+  }
 
   // maximum
+  public static int maxInt(Sequence<Integer> sequence) {
+    return reduce(Integer.MIN_VALUE, (e, a) -> Integer.max(e, a), sequence);
+  }
+
+  public static int maxInt1(Sequence<Integer> sequence) {
+    assert !isEmpty(sequence);
+    return reduce(first(sequence), (e, a) -> Integer.max(e, a), rest(sequence));
+  }
+
+  public static double maxDouble(Sequence<Double> sequence) {
+    return reduce(Double.NEGATIVE_INFINITY, (e, a) -> Double.max(e, a), sequence);
+  }
+
+  public static double maxDouble1(Sequence<Double> sequence) {
+    assert !isEmpty(sequence);
+    return reduce(first(sequence), (e, a) -> Double.max(e, a), rest(sequence));
+  }
 
   // minimum
+  public static int minInt(Sequence<Integer> sequence) {
+    return reduce(Integer.MAX_VALUE, (e, a) -> Integer.min(e, a), sequence);
+  }
+
+  public static int minInt1(Sequence<Integer> sequence) {
+    assert !isEmpty(sequence);
+    return reduce(first(sequence), (e, a) -> Integer.min(e, a), rest(sequence));
+  }
+
+  public static double minDouble(Sequence<Double> sequence) {
+    return reduce(Double.POSITIVE_INFINITY, (e, a) -> Double.min(e, a), sequence);
+  }
+
+  public static double minDouble1(Sequence<Double> sequence) {
+    assert !isEmpty(sequence);
+    return reduce(first(sequence), (e, a) -> Double.min(e, a), rest(sequence));
+  }
 
 
   //--- graphic reductions
