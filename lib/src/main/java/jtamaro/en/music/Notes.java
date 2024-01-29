@@ -57,5 +57,18 @@ public class Notes {
   public static final Note CS5 = note(73);
   public static final Note DF5 = CS5;
   public static final Note D5 = note(74);
+  public static final Note DS5 = note(75);
+  public static final Note EF5 = DS5;
+  public static final Note E5 = note(76);
+  public static final Note F5 = note(77);
+  public static final Note FS5 = note(78);
+  public static final Note GF5 = FS5;
+  public static final Note G5 = note(79);
+  public static final Note GS5 = note(80);
+  public static final Note AF5 = GS5;
+  public static final Note A5 = note(81);
+  public static final Note AS5 = note(82);
+  public static final Note BF5 = AS5;
+  public static final Note B5 = note(83);
   
 }

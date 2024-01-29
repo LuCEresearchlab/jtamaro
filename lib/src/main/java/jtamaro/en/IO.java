@@ -5,15 +5,18 @@ import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
 import jtamaro.en.io.Interaction;
 import jtamaro.en.music.AbsoluteChord;
+import jtamaro.en.music.Instrument;
 import jtamaro.en.music.Note;
 import jtamaro.en.music.TimedChord;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.internal.io.GifWriter;
 import jtamaro.internal.io.PngWriter;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.swing.*;
 import java.io.IOException;
 
@@ -311,15 +314,20 @@ public final class IO {
 
   //--- Music
   public static void play(Sequence<TimedChord> song, int bpm) {
+    play(song, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
+  }
+
+  public static void play(Sequence<TimedChord> song, int bpm, int channel, Instrument instrument) {
     System.out.println("IO.play:");
     int msPerBeat = 60 * 1000 / bpm;
     try {
       Receiver receiver = MidiSystem.getReceiver();
+      receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument.internalPcNumber(), 0), -1);
       for (TimedChord c :  cons(timed(2, chord(of())), song)) {
         System.out.println(c);
-        c.play(receiver, msPerBeat);
+        c.play(receiver, channel, msPerBeat);
       }
-    } catch (MidiUnavailableException ex) {
+    } catch (MidiUnavailableException | InvalidMidiDataException ex) {
       ex.printStackTrace();
     }
     try {
@@ -335,7 +343,16 @@ public final class IO {
   }
 
   public static void playChords(Sequence<AbsoluteChord> chords, int bpm) {
-    play(map(chord->timed(1, chord), chords), bpm);
+    playChords(chords, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
+  }
+
+  public static void playDrumChords(Sequence<AbsoluteChord> chords, int bpm) {
+    // MIDI channel 10 (internally channel 9) contains the drums
+    playChords(chords, bpm, 9, Instrument.ACOUSTIC_GRAND_PIANO);
+  }
+
+  public static void playChords(Sequence<AbsoluteChord> chords, int bpm, int channel, Instrument instrument) {
+    play(map(chord->timed(1, chord), chords), bpm, channel, instrument);
   }
 
   public static void playNotes(Sequence<Note> notes) {
@@ -343,7 +360,16 @@ public final class IO {
   }
 
   public static void playNotes(Sequence<Note> notes, int bpm) {
-    play(map(n->timed(1, chord(of(n))), notes), bpm);
+    playNotes(notes, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
+  }
+
+  public static void playDrumNotes(Sequence<Note> notes, int bpm) {
+    // MIDI channel 10 (internally channel 9) contains the drums
+    playNotes(notes, bpm, 9, Instrument.ACOUSTIC_GRAND_PIANO);
+  }
+
+  public static void playNotes(Sequence<Note> notes, int bpm, int channel, Instrument instrument) {
+    play(map(n->timed(1, chord(of(n))), notes), bpm, channel, instrument);
   }
 
 }

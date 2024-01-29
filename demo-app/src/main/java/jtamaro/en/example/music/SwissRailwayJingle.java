@@ -7,6 +7,7 @@ import static jtamaro.en.IO.*;
 import static jtamaro.en.music.Notes.*;
 
 import jtamaro.en.Sequence;
+import jtamaro.en.music.Instrument;
 import jtamaro.en.music.TimedChord;
 
 public class SwissRailwayJingle {
@@ -29,7 +30,7 @@ public class SwissRailwayJingle {
     Sequence<TimedChord> ffsChords = of(
       timed(1, chord(of(F4))),
       timed(1, chord(of(F4))),
-      timed(2, chord(of(EF4, C4)))
+      timed(2, chord(of(EF4, F4)))
     );
     Sequence<TimedChord> sbb_cff_ffsChords = concats(of(
       sbbChords,
@@ -38,10 +39,10 @@ public class SwissRailwayJingle {
       of(pause(1)),
       ffsChords
     ));
-    play(sbb_cff_ffsChords, 240);
-    //play(sbbChords, 180);
-    //play(cffChords, 180);
-    //play(ffsChords, 180);
+    //play(sbb_cff_ffsChords, 240, 0, Instrument.VIBRAPHONE);
+    //play(sbbChords, 240, 0, Instrument.VIBRAPHONE);
+    //play(cffChords, 240, 0, Instrument.VIBRAPHONE);
+    play(ffsChords, 240, 0, Instrument.VIBRAPHONE);
     /*
     Sequence<Note> sbb = of(EF4, BF4, BF4);
     playNotes(sbb, 240);

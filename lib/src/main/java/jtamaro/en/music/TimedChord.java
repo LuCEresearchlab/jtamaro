@@ -7,9 +7,9 @@ import static jtamaro.en.Sequences.*;
 
 public record TimedChord(int beats, AbsoluteChord chord) {
   
-  public void play(Receiver receiver, int msPerBeat) {
+  public void play(Receiver receiver, int channel, int msPerBeat) {
     for (Note note : chord.notes()) {
-      note.on(receiver);
+      note.on(receiver, channel);
     }
     try {
       System.out.println("chord -- " + System.nanoTime() + " (" + beats + ")");
@@ -18,7 +18,7 @@ public record TimedChord(int beats, AbsoluteChord chord) {
       ex.printStackTrace();
     }
     for (Note note : chord.notes()) {
-      note.off(receiver);
+      note.off(receiver, channel);
     }
   }
   public String toString() {

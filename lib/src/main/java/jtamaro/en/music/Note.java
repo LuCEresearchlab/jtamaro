@@ -11,10 +11,10 @@ import javax.sound.midi.ShortMessage;
  */
 public record Note(int noteNumber) {
 
-  public void on(Receiver receiver) {
+  public void on(Receiver receiver, int channel) {
     try {
       ShortMessage message = new ShortMessage();
-      message.setMessage(ShortMessage.NOTE_ON, 0, noteNumber, 127);
+      message.setMessage(ShortMessage.NOTE_ON, channel, noteNumber, 127);
       long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
@@ -22,10 +22,10 @@ public record Note(int noteNumber) {
     }
   }
 
-  public void off(Receiver receiver) {
+  public void off(Receiver receiver, int channel) {
     try {
       ShortMessage message = new ShortMessage();
-      message.setMessage(ShortMessage.NOTE_OFF, 0, noteNumber);
+      message.setMessage(ShortMessage.NOTE_OFF, channel, noteNumber);
       long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
