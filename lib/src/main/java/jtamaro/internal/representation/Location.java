@@ -21,11 +21,13 @@ public class Location {
     return graphic;
   }
 
-  double getX() {
+  //TODO: make package protected again!
+  public double getX() {
     return x;
   }
 
-  double getY() {
+  //TODO: make package protected again!
+  public double getY() {
     return y;
   }
 
