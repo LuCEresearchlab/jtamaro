@@ -1,23 +1,26 @@
-package jtamaro;
+package jtamaro.en;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static jtamaro.en.Sequences.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
+import static jtamaro.en.Sequences.foldLeft;
+import static jtamaro.en.Sequences.foldRight;
+import static jtamaro.en.Sequences.of;
+import static jtamaro.en.Sequences.range;
+import static jtamaro.en.Sequences.rangeClosed;
+import static jtamaro.en.Sequences.reduce;
+import static org.junit.Assert.assertEquals;
 
 public class SequenceReduceTest {
 
   //--- foldLeft
   @Test
   public void testFoldLeftEmpty() {
-    assertEquals(0, foldLeft(0, (a, e) -> a, of()));
+    assertEquals(0L, (long) foldLeft(0, (a, e) -> a, of()));
   }
 
   @Test
   public void testFoldLeftMany() {
-    assertEquals(110, foldLeft(100, (a, e) -> a + 1, range(10)));
+    assertEquals(110L, (long) foldLeft(100, (a, e) -> a + 1, range(10)));
   }
 
   @Test
@@ -33,12 +36,12 @@ public class SequenceReduceTest {
   //--- foldRight
   @Test
   public void testFoldRightEmpty() {
-    assertEquals(0, foldRight(0, (e, a) -> a, of()));
+    assertEquals(0L, (long) foldRight(0, (e, a) -> a, of()));
   }
 
   @Test
   public void testFoldRightMany() {
-    assertEquals(110, foldRight(100, (e, a) -> a + 1, range(10)));
+    assertEquals(110L, (long) foldRight(100, (e, a) -> a + 1, range(10)));
   }
 
   @Test
@@ -54,12 +57,12 @@ public class SequenceReduceTest {
   //--- reduce
   @Test
   public void testReduceEmpty() {
-    assertEquals(0, reduce(0, (e, a) -> a, of()));
+    assertEquals(0L, (long) reduce(0, (e, a) -> a, of()));
   }
 
   @Test
   public void testReduceMany() {
-    assertEquals(110, reduce(100, (e, a) -> a + 1, range(10)));
+    assertEquals(110L, (long) reduce(100, (e, a) -> a + 1, range(10)));
   }
 
   @Test
@@ -71,5 +74,5 @@ public class SequenceReduceTest {
   public void testReduceManyNoncommutativeReverse() {
     assertEquals("DCBA", reduce("", (e, a) -> a + e, rangeClosed('A', 'D')));
   }
-  
+
 }

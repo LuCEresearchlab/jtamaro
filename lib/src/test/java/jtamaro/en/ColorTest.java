@@ -1,20 +1,25 @@
-package jtamaro;
+package jtamaro.en;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
 
-import org.junit.jupiter.api.Test;
-
-import jtamaro.en.Color;
-
-import static jtamaro.en.Colors.*;
+import static jtamaro.en.Colors.BLACK;
+import static jtamaro.en.Colors.BLUE;
+import static jtamaro.en.Colors.CYAN;
+import static jtamaro.en.Colors.GREEN;
+import static jtamaro.en.Colors.MAGENTA;
+import static jtamaro.en.Colors.RED;
+import static jtamaro.en.Colors.TRANSPARENT;
+import static jtamaro.en.Colors.WHITE;
+import static jtamaro.en.Colors.YELLOW;
+import static jtamaro.en.Colors.rgb;
+import static org.junit.Assert.assertEquals;
 
 
 public class ColorTest {
-  
-  private void assertColor(int r, int g, int b, int a, Color actual) {
-    assertEquals("rgba("+r+", "+g+", "+b+", "+a+")", actual.getImplementation().toString());
-  }
 
+  private void assertColor(int r, int g, int b, int a, Color actual) {
+    assertEquals("rgba(" + r + ", " + g + ", " + b + ", " + a + ")", actual.getImplementation().toString());
+  }
 
   @Test
   public void testRgbaTransparentBlack() {

@@ -1,12 +1,12 @@
-package jtamaro;
+package jtamaro.en;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static jtamaro.en.Sequences.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static jtamaro.SequenceTest.*;
-
+import static jtamaro.en.SequenceTest.assertSequenceEquals;
+import static jtamaro.en.Sequences.of;
+import static jtamaro.en.Sequences.repeat;
+import static jtamaro.en.Sequences.take;
+import static org.junit.Assert.assertFalse;
 
 public class SequenceRepeatTest {
 
