@@ -206,7 +206,7 @@ public final class Sequences {
   }
 
   public static Sequence<Character> range(char from, char toExclusive, int step) {
-    return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, step));
+    return map(i -> (char) i.intValue(), range(from, (int) toExclusive, step));
   }
 
   public static Sequence<Character> rangeClosed(char to) {
@@ -218,7 +218,7 @@ public final class Sequences {
   }
 
   public static Sequence<Character> rangeClosed(char from, char to, int step) {
-    return map(i -> (char) i.intValue(), rangeClosed((int) from, (int) to, step));
+    return map(i -> (char) i.intValue(), rangeClosed(from, (int) to, step));
   }
 
   public static <T> Sequence<T> repeat(T element) {
