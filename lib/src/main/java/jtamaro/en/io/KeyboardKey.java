@@ -1,6 +1,5 @@
 package jtamaro.en.io;
 
-import java.awt.Component;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;

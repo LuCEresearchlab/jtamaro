@@ -7,7 +7,6 @@ import jtamaro.en.Sequence;
 import static jtamaro.en.Colors.*;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.animate;
-import static jtamaro.en.IO.saveAnimatedGif;
 import static jtamaro.en.IO.showFilmStrip;
 import static jtamaro.en.Points.BOTTOM_CENTER;
 import static jtamaro.en.Sequences.*;

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import static jtamaro.en.Colors.TRANSPARENT;
 import static jtamaro.en.Colors.hsl;
 import static jtamaro.en.Graphics.*;
-import static jtamaro.en.IO.save;
 import static jtamaro.en.IO.show;
 import static jtamaro.en.example.Toolbelt.*;
 
