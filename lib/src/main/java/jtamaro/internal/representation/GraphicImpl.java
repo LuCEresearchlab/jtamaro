@@ -236,18 +236,18 @@ public abstract class GraphicImpl {
    * @param indent The indent (e.g., one or two spaces) to use for each level of the tree
    */
   public void dump(StringBuilder sb, String indent) {
-    sb.append(indent + getClass().getSimpleName() + "\n");
+    sb.append(indent).append(getClass().getSimpleName()).append("\n");
     appendField(sb, indent, "width", "" + getWidth());
     appendField(sb, indent, "height", "" + getHeight());
     //appendField(sb, indent, "baseY", ""+getBaseY());
   }
 
   protected final void appendField(StringBuilder sb, String indent, String name, String value) {
-    sb.append(indent + "- " + name + ": " + value + "\n");
+    sb.append(indent).append("- ").append(name).append(": ").append(value).append("\n");
   }
 
   protected final void appendChild(StringBuilder sb, String indent, String name, GraphicImpl child) {
-    sb.append(indent + "- " + name + ":\n");
+    sb.append(indent).append("- ").append(name).append(":\n");
     child.dump(sb, indent + "  ");
   }
 
