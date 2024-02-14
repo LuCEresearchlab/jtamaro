@@ -56,8 +56,8 @@ public final class Colors {
 
   /**
    * Returns a fully opaque Color with the provided hue (H), saturation (S), lightness (L).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png" alt="HSL cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
@@ -72,8 +72,8 @@ public final class Colors {
   /**
    * Returns a Color with the provided hue (H), saturation (S), lightness (L),
    * and a certain degree of opacity (alpha, A).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png" alt="HSL cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
@@ -93,8 +93,8 @@ public final class Colors {
 
   /**
    * Returns a fully opaque Color with the provided hue (H), saturation (S), value (V).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png" alt="HSV cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
@@ -108,8 +108,8 @@ public final class Colors {
   /**
    * Returns a Color with the provided hue (H), saturation (S), value (V),
    * and a certain degree of opacity (alpha, A).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png" alt="HSV cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]

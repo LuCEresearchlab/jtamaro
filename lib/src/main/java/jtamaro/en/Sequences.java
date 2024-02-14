@@ -109,13 +109,15 @@ public final class Sequences {
   }
 
   //--- lazy construction sequences
+
   /**
    * Create a Sequence of integers starting from the given integer, counting upwards.
-   * The sequence is infinite;
+   *
+   * <p>The sequence is infinite;
    * once Integer.MAX_VALUE is reached, it wraps around to Integer.MIN_VALUE
    * and continues from there:
-   *
-   * from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...
+   * <br>
+   * <code>from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...</code>
    *
    * @param from the value of the first element
    * @return a new Sequence starting with the given number and counting up.
@@ -128,7 +130,7 @@ public final class Sequences {
    * Create a Sequence of integers starting at 0,
    * with the last element being toExclusive - 1.
    *
-   * <code>range(3) === of(0, 1, 2)</code>
+   * <p><code>range(3) === of(0, 1, 2)</code>
    *
    * @param toExclusive the number that would come right after the last value of the sequence
    * @return a new Sequence of integers starting at 0, and ending just before the given number.
@@ -141,9 +143,9 @@ public final class Sequences {
    * Create a Sequence of integers starting at from,
    * with the last element being toExclusive - 1.
    *
-   * <code>range(1, 3) === of(1, 2)</code>
+   * <p><code>range(1, 3) === of(1, 2)</code>
    *
-   * @param from the value of the first element
+   * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
    * @return a new Sequence of integers starting at 0, and ending just before the given number.
    */

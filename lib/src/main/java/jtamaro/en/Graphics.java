@@ -24,7 +24,8 @@ public final class Graphics {
    * Create a circular sector.
    *
    * @param radius the radius of the circular sector
-   * @param angle  the angle of the circular sector in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
+   * @param angle  the angle of the circular sector in degrees, positive values rotate counter-clockwise,
+   *               negative values rotate clockwise
    * @param color  the color of the circular sector
    * @return a circular sector
    */
@@ -35,10 +36,10 @@ public final class Graphics {
 
   /**
    * Create an axis-aligned ellipse.
-   * 
-   * @param width the width of the ellipse
+   *
+   * @param width  the width of the ellipse
    * @param height the height of the ellipse
-   * @param color the color of the ellipse
+   * @param color  the color of the ellipse
    * @return an ellipse
    */
   public static Graphic ellipse(double width, double height, Color color) {
@@ -49,22 +50,23 @@ public final class Graphics {
 
   /**
    * Create an axis-aligned rectangle.
-   * 
-   * @param width the width of the rectangle
+   *
+   * @param width  the width of the rectangle
    * @param height the height of the rectangle
-   * @param color the color of the rectangle
+   * @param color  the color of the rectangle
    * @return a rectangle
    */
   public static Graphic rectangle(double width, double height, Color color) {
     return new Rectangle(width, height, color);
   }
 
-  /** Create a text.
-   * 
+  /**
+   * Create a text.
+   *
    * @param content the actual text to render
-   * @param font the name of the font to use to render the text
-   * @param points the font size in points
-   * @param color the color of the text
+   * @param font    the name of the font to use to render the text
+   * @param points  the font size in points
+   * @param color   the color of the text
    * @return a text
    */
   public static Graphic text(String content, String font, double points, Color color) {
@@ -84,7 +86,8 @@ public final class Graphics {
    *
    * @param side1 horizontal side
    * @param side2 side opposite to the angle
-   * @param angle angle of rotation in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
+   * @param angle angle of rotation in degrees, positive values rotate counter-clockwise,
+   *              negative values rotate clockwise
    * @param color color of the triangle
    * @return a triangle
    */
@@ -98,7 +101,8 @@ public final class Graphics {
   /**
    * Rotate the given graphic by the given angle.
    *
-   * @param degrees angle or rotation in degrees, positive values rotate counter-clockwise, negative values rotate clockwise
+   * @param degrees angle or rotation in degrees, positive values rotate counter-clockwise,
+   *                negative values rotate clockwise
    * @param graphic the graphic to rotate
    * @return a rotated graphic
    */
