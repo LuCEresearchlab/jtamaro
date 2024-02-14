@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 
 
-public class KeyboardKey {
+public final class KeyboardKey {
 
   public static final int LEFT = KeyEvent.VK_LEFT;
   public static final int RIGHT = KeyEvent.VK_RIGHT;

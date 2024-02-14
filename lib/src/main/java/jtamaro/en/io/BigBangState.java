@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BigBangState<M> {
+final class BigBangState<M> {
 
   private final List<BigBangStateListener<M>> listeners = new ArrayList<>();
   private final Interaction<M> bang;

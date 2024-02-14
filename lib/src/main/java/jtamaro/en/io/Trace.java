@@ -6,7 +6,7 @@ import jtamaro.en.Sequences;
 import java.util.ArrayList;
 
 
-public class Trace {
+final class Trace {
 
   private Sequence<TraceEvent> events;
   private int length; // cache for performance

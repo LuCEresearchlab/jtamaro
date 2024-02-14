@@ -17,7 +17,7 @@ import java.awt.event.WindowEvent;
 import static jtamaro.en.Sequences.*;
 
 
-public class BigBangFrame<M> extends JFrame {
+final class BigBangFrame<M> extends JFrame {
 
   private final Interaction<M> bang;
   private final GraphicCanvas graphicCanvas;

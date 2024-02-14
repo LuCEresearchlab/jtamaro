@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 // based on https://memorynotfound.com/generate-gif-image-java-delay-infinite-loop-example/
-public class GifWriter {
+public final class GifWriter {
 
   public static void saveAnimation(Sequence<GraphicImpl> graphicImpls, int millisecondsPerFrame, boolean loop, String filename) throws IOException {
     // https://docs.oracle.com/javase/8/docs/api/javax/imageio/metadata/doc-files/gif_metadata.html
