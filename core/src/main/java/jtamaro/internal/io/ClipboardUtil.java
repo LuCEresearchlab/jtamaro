@@ -1,7 +1,7 @@
 package jtamaro.internal.io;
 
-import jtamaro.internal.gui.RenderOptions;
 import jtamaro.internal.representation.GraphicImpl;
+import jtamaro.internal.gui.RenderOptions;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

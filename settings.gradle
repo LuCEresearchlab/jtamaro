@@ -1,3 +1,5 @@
 rootProject.name = 'jtamaro'
+include 'core'
 include 'lib'
+include 'lib-de'
 include 'demo-app'

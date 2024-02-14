@@ -1,11 +1,11 @@
 package jtamaro.internal.gui;
 
-import java.awt.Component;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import jtamaro.internal.representation.EllipseImpl;
 import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.internal.representation.RotateImpl;
+import java.awt.Component;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 public class GraphicTreeCellRenderer extends DefaultTreeCellRenderer {

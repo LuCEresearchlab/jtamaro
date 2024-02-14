@@ -1,8 +1,8 @@
-package jtamaro.internal.io;
+package jtamaro.en.io;
 
+import jtamaro.internal.representation.GraphicImpl;
 import jtamaro.en.Sequence;
 import jtamaro.internal.gui.RenderOptions;
-import jtamaro.internal.representation.GraphicImpl;
 
 import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;

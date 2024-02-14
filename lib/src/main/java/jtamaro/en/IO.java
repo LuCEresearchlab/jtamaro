@@ -1,5 +1,7 @@
 package jtamaro.en;
 
+import jtamaro.en.io.GifWriter;
+import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
@@ -8,9 +10,6 @@ import jtamaro.en.music.AbsoluteChord;
 import jtamaro.en.music.Instrument;
 import jtamaro.en.music.Note;
 import jtamaro.en.music.TimedChord;
-import jtamaro.internal.gui.GraphicFrame;
-import jtamaro.internal.io.GifWriter;
-import jtamaro.internal.io.PngWriter;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -19,6 +18,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.swing.*;
 import java.io.IOException;
+import jtamaro.internal.io.PngWriter;
 
 import static jtamaro.en.Pairs.*;
 import static jtamaro.en.Sequences.*;
