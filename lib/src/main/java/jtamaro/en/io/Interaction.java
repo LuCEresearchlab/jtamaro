@@ -13,7 +13,7 @@ import javax.swing.*;
  * An Interaction is the configuration for an interactive application or simulation.
  * It's immutable and provides a fluent API.
  */
-public class Interaction<M> {
+public final class Interaction<M> {
 
   // configuration options
   private final M initialModel;

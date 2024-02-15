@@ -13,7 +13,7 @@ import java.awt.*;
 import static jtamaro.en.Sequences.*;
 
 
-public class FilmStripCanvas extends JComponent {
+final class FilmStripCanvas extends JComponent {
 
   private static final double GAP_FRACTION = 0.05;
   private static final double TRACK_FRACTION = 0.2;
@@ -126,7 +126,7 @@ public class FilmStripCanvas extends JComponent {
     g2.fillRect(gapWidth / 2, trackHeight, frameWidth, frameHeight);
     final int holeHeight = trackHeight * 5 / 10;
     final int holeY = trackHeight * 4 / 10;
-    final int indexMargin = trackHeight * 1 / 10;
+    final int indexMargin = trackHeight / 10; // trackHeight * 1 / 10
     final int stepWidth = completeFrameWidth / HOLES;
     final int holeWidth = stepWidth / 2;
     final int holeX = (stepWidth - holeWidth) / 2;

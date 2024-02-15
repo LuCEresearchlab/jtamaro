@@ -1,6 +1,5 @@
 package jtamaro.en.example.graphic;
 
-import jtamaro.en.Sequence;
 import jtamaro.en.Color;
 import jtamaro.en.Graphic;
 import static jtamaro.en.Sequences.*;

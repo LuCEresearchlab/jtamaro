@@ -5,9 +5,9 @@ import jtamaro.internal.representation.ColorImpl;
 
 /**
  * A Color in the RGBA color space.
- * 
- * To work with a Color, you can use the methods in the Colors class.
- * 
+ *
+ * <p>To work with a Color, you can use the methods in the Colors class.
+ *
  * @see jtamaro.en.Colors
  */
 public final class Color {
@@ -35,8 +35,8 @@ public final class Color {
   /**
    * Create a Color with the provided hue (H), saturation (S), lightness (L),
    * and a certain degree of opacity (alpha, A).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/3/35/HSL_color_solid_cylinder.png" alt="HSV cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
@@ -52,8 +52,8 @@ public final class Color {
   /**
    * Returns a Color with the provided hue (H), saturation (S), value (V),
    * and a certain degree of opacity (alpha, A).
-   * <p>
-   * https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png
+   *
+   * <p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/HSV_color_solid_cylinder.png" alt="HSV cylinder" width="250px">
    *
    * @param hue        hue of the color [0-360]
    * @param saturation saturation of the color [0-1]
@@ -75,10 +75,10 @@ public final class Color {
 
   public String toString() {
     return "rgb(" + implementation.getRed() +
-      ", " + implementation.getGreen() +
-      ", " + implementation.getBlue() +
-      ", " + implementation.getOpacity() +
-      ")";
+        ", " + implementation.getGreen() +
+        ", " + implementation.getBlue() +
+        ", " + implementation.getOpacity() +
+        ")";
   }
-  
+
 }

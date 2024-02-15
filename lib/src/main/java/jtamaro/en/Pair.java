@@ -1,9 +1,9 @@
 package jtamaro.en;
 
 /**
- * A Pair (or two-tuple) contaning two elements.
+ * A Pair (or two-tuple) containing two elements.
  * 
- * To work with a Pair, you can use the methods in the Pairs class.
+ * <p>To work with a Pair, you can use the methods in the Pairs class.
  * 
  * @see jtamaro.en.Pairs
  */

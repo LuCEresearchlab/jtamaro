@@ -1,9 +1,5 @@
 package jtamaro.en.example.coordinate;
 
-import static jtamaro.en.Sequences.map;
-import static jtamaro.en.Sequences.range;
-import static jtamaro.en.Sequences.reduce;
-
 import jtamaro.en.CartesianWorld;
 import jtamaro.en.Function1;
 import jtamaro.en.Color;

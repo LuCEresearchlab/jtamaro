@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 
 
-public class MouseButton {
+public final class MouseButton {
 
   private final MouseEvent event;
 

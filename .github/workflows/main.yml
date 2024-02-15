@@ -1,0 +1,45 @@
+name: JTamaro CI
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Project checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+      - name: Build
+        id: build
+        run: ./gradlew assemble --no-daemon
+      - name: Test
+        id: test
+        if: success()
+        run: |
+          ./gradlew check --no-daemon
+#      - name: Publish Javadoc
+#        id: javadoc
+#        if: success()
+#        uses: JamesIves/github-pages-deploy-action@releases/v3
+#        with:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          BRANCH: docs
+#          FOLDER: lib/build/docs/javadoc
+#          SINGLE_COMMIT: true

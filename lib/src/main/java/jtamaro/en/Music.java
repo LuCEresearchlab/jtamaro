@@ -11,35 +11,39 @@ import jtamaro.en.music.TimedChord;
 
 /**
  * Pitch Classes and Tone Names
- * https://en.wikipedia.org/wiki/Pitch_(music)
- * C-D-E-F-G-A-B (in German: B is written as H)
- * 
- * Octaves
- * middle C: SPN: C4, Helmholz: c'
- * A440: SPN: A4, Helmholz: a'
- * C-1 = C,,, = Double Contra
- * C0 = C,, = Sub Contra
- * C1 = C, = Contra
- * C2 = C, = Great
- * C3 = c, = Small
- * C4 = c' = 1 Line
- * C5 = c'' = 2 Line
- * C6 = c''' = 3 Line
- * C7 = c'''' = 4 Line
- * C8 = c''''' = 5 Line
- * C9 = c'''''' = 6 Line
- * 
- * Scientific Pitch Notation
- * C0, F♯4, D♭6
- * https://en.wikipedia.org/wiki/Scientific_pitch_notation
- * 
- * Helmholtz pitch notation
- * f♯'
- * https://en.wikipedia.org/wiki/Helmholtz_pitch_notation
+ *
+ * <p>C-D-E-F-G-A-B (in German: B is written as H)
+ *
+ * <p>Octaves
+ * <ul>
+ *   <li>middle C: SPN: C4, Helmholz: c'</li>
+ *   <li>A440: SPN: A4, Helmholz: a'</li>
+ *   <li>C-1 = C,,, = Double Contra</li>
+ *   <li>C0 = C,, = Sub Contra</li>
+ *   <li>C1 = C, = Contra</li>
+ *   <li>C2 = C, = Great</li>
+ *   <li>C3 = c, = Small</li>
+ *   <li>C4 = c' = 1 Line</li>
+ *   <li>C5 = c'' = 2 Line</li>
+ *   <li>C6 = c''' = 3 Line</li>
+ *   <li>C7 = c'''' = 4 Line</li>
+ *   <li>C8 = c''''' = 5 Line</li>
+ *   <li>C9 = c'''''' = 6 Line</li>
+ * </ul>
+ *
+ * <p>Scientific Pitch Notation: <code>C0, F♯4, D♭6</code>
+ *
+ * <p>Helmholtz pitch notation: <code>f♯'</code>
+ *
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Pitch_(music)">Pitch</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific notation</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Helmholtz_pitch_notation">Helmholtz notation</a>
  */
 public abstract class Music {
-  
-  private Music() {}
+
+  private Music() {
+  }
 
   public Note note(int midiNoteNumber) {
     return new Note(midiNoteNumber);

@@ -5,7 +5,7 @@ import javax.swing.table.TableModel;
 import java.util.ArrayList;
 
 
-public final class TraceTableModel implements TableModel {
+final class TraceTableModel implements TableModel {
 
   private static final int INDEX_COLUMN = 0;
   private static final int TIME_COLUMN = 1;

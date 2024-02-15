@@ -1,6 +1,6 @@
 package jtamaro.en.io;
 
-public abstract class TraceEvent {
+abstract class TraceEvent {
 
   private final String kind;
   private final long timeStamp;

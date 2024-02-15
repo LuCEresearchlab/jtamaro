@@ -1,0 +1,49 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation project(':core')
+}
+
+archivesBaseName = rootProject.name + "-de"
+group = 'jtamaro'
+version = '1.0.0'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+javadoc {
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.addStringOption 'Xdoclint:all,-missing', '-quiet'
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+jar {
+    dependsOn(':core:jar')
+
+    manifest {
+        attributes(
+                'Implementation-Title': rootProject.name,
+                'Implementation-Version': project.version
+        )
+    }
+    from {
+        configurations.runtimeClasspath
+                .filter { it.exists() }
+                .collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}

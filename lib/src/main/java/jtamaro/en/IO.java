@@ -1,5 +1,7 @@
 package jtamaro.en;
 
+import jtamaro.en.io.GifWriter;
+import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.en.io.ColorFrame;
 import jtamaro.en.io.FilmStripFrame;
@@ -8,9 +10,6 @@ import jtamaro.en.music.AbsoluteChord;
 import jtamaro.en.music.Instrument;
 import jtamaro.en.music.Note;
 import jtamaro.en.music.TimedChord;
-import jtamaro.internal.gui.GraphicFrame;
-import jtamaro.internal.io.GifWriter;
-import jtamaro.internal.io.PngWriter;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -19,6 +18,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.swing.*;
 import java.io.IOException;
+import jtamaro.internal.io.PngWriter;
 
 import static jtamaro.en.Pairs.*;
 import static jtamaro.en.Sequences.*;
@@ -29,15 +29,15 @@ import static jtamaro.en.Music.*;
 /**
  * This class includes methods to perform input and output for JTamaro classes.
  * It allows outputting JTamaro graphics, colors, points, sequences, and pairs.
- * 
- * It provides methods for textual output,
- * specifically, to easily print sequences and pairs to the standard output.
- * 
- * More importantly, it provides methods for graphical IO,
+ *
+ * <p>It provides methods for textual output, specifically, to easily print
+ * sequences and pairs to the standard output.
+ *
+ * <p>More importantly, it provides methods for graphical IO,
  * specifically to: show graphics, to animate sequences of graphics, and
  * to produce interactions.
- * 
- * It also provides methods to save graphics as PNG files and
+ *
+ * <p>It also provides methods to save graphics as PNG files and
  * animations as animated GIF files.
  */
 
@@ -68,8 +68,8 @@ public final class IO {
    * Print the given sequence, one element right after the next, to standard output.
    * Each element is converted into a String to be printed.
    * This does not add any newlines.
-   * 
-   * @param <T> the type of elements
+   *
+   * @param <T>      the type of elements
    * @param sequence the sequence to print
    */
   public static <T> void print(Sequence<T> sequence) {
@@ -81,8 +81,8 @@ public final class IO {
   /**
    * Print the given sequence, one element per line, to standard output.
    * Each element is converted into a String to be printed.
-   * 
-   * @param <T> the type of elements
+   *
+   * @param <T>      the type of elements
    * @param sequence the sequence to print
    */
   public static <T> void println(Sequence<T> sequence) {
@@ -95,9 +95,9 @@ public final class IO {
    * Print the given pair, one element right after the next, to the standard output.
    * Each element is converted into a String to be printed.
    * This does not add any newlines.
-   * 
-   * @param <F> the type of the first element
-   * @param <S> the type of the second element
+   *
+   * @param <F>  the type of the first element
+   * @param <S>  the type of the second element
    * @param pair the pair to print
    */
   public static <F, S> void print(Pair<F, S> pair) {
@@ -108,9 +108,9 @@ public final class IO {
   /**
    * Print the given pair, one element per line, to the standard output.
    * Each element is converted into a String to be printed.
-   * 
-   * @param <F> the type of the first element
-   * @param <S> the type of the second element
+   *
+   * @param <F>  the type of the first element
+   * @param <S>  the type of the second element
    * @param pair the pair to print
    */
   public static <F, S> void println(Pair<F, S> pair) {
@@ -153,7 +153,7 @@ public final class IO {
   // TODO: show(Sequence)
   // show a Sequence, as a list, where each cell renders whatever it contains (incl. a Graphic, Color, Point, Sequence, ...)
 
-  private static Pair<Integer,Integer> determineMaxWidthHeight(Sequence<Graphic> graphics) {
+  private static Pair<Integer, Integer> determineMaxWidthHeight(Sequence<Graphic> graphics) {
     int frameWidth;
     int frameHeight;
     if (isEmpty(graphics)) {
@@ -162,12 +162,12 @@ public final class IO {
       frameHeight = 300;
     } else if (graphics.hasDefiniteSize()) {
       // known, finite number of frames: determine max
-      frameWidth = reduce(0, (e, a) -> Math.max(a, (int)Math.ceil(width(e))), graphics);
-      frameHeight = reduce(0, (e, a) -> Math.max(a, (int)Math.ceil(height(e))), graphics);
+      frameWidth = reduce(0, (e, a) -> Math.max(a, (int) Math.ceil(width(e))), graphics);
+      frameHeight = reduce(0, (e, a) -> Math.max(a, (int) Math.ceil(height(e))), graphics);
     } else {
       // unknown number of frames, potentially infinite: use size of first frame
-      frameWidth = (int)Math.ceil(width(first(graphics)));
-      frameHeight = (int)Math.ceil(height(first(graphics)));
+      frameWidth = (int) Math.ceil(width(first(graphics)));
+      frameHeight = (int) Math.ceil(height(first(graphics)));
     }
     return pair(frameWidth, frameHeight);
   }
@@ -185,7 +185,7 @@ public final class IO {
   /**
    * Open a window with a looped animation of the given graphics.
    *
-   * @param graphics sequence of graphics (frames) to animate
+   * @param graphics             sequence of graphics (frames) to animate
    * @param millisecondsPerFrame delay between frames
    */
   public static void animate(Sequence<Graphic> graphics, int millisecondsPerFrame) {
@@ -197,7 +197,7 @@ public final class IO {
    * at 25 frames per second.
    *
    * @param graphics sequence of graphics (frames) to animate
-   * @param loop whether to loop the animation
+   * @param loop     whether to loop the animation
    */
   public static void animate(Sequence<Graphic> graphics, boolean loop) {
     animate(graphics, loop, 25);
@@ -213,7 +213,7 @@ public final class IO {
   public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
     assert !graphics.isEmpty() : "Animation must have at least one frame";
     assert millisecondsPerFrame > 0 : "Must wait a positive number of milliseconds between frames";
-    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphics);
+    final Pair<Integer, Integer> wh = determineMaxWidthHeight(graphics);
     final String titleFramesSuffix = graphics.hasDefiniteSize() ? " (" + length(graphics) + " frames)" : "";
     final String titleLoopedSuffix = loop ? ", looped" : "";
     new Interaction<>(graphics)
@@ -234,26 +234,26 @@ public final class IO {
   }
 
   /**
-   * Open a window with a scrollable film strip,
+   * Open a window with a scrollable filmstrip,
    * with each from for each of the given graphics.
    * This method automatically detects the width and height of the frames.
    * For empty sequences, it uses a default frame size.
    * For sequences with a definite size, it determines the maximum width and height.
    * For sequences without a definite size, it uses the width and height of their first frame.
    *
-   * @param graphics sequence of graphics (frames) to show in the film strip
+   * @param graphics sequence of graphics (frames) to show in the filmstrip
    */
   public static void showFilmStrip(Sequence<Graphic> graphics) {
-    final Pair<Integer,Integer> wh = determineMaxWidthHeight(graphics);
+    final Pair<Integer, Integer> wh = determineMaxWidthHeight(graphics);
     showFilmStrip(graphics, firstElement(wh), secondElement(wh));
   }
 
   /**
-   * Open a window with a scrollable film strip,
+   * Open a window with a scrollable filmstrip,
    * with each from for each of the given graphics.
    *
-   * @param graphics sequence of graphics (frames) to show in the film strip
-   * @param frameWidth the width of frames (should be at least the maximum of all the graphics' widths)
+   * @param graphics    sequence of graphics (frames) to show in the filmstrip
+   * @param frameWidth  the width of frames (should be at least the maximum of all the graphics' widths)
    * @param frameHeight the height of frames (should be at least the maximum of all the graphics' heights)
    */
   public static void showFilmStrip(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
@@ -278,8 +278,8 @@ public final class IO {
 
   /**
    * Save the given graphic as a PNG file.
-   * 
-   * @param graphic the Graphic to render
+   *
+   * @param graphic  the Graphic to render
    * @param filename the name of the file (including the .png extension)
    */
   public static void save(Graphic graphic, String filename) {
@@ -293,11 +293,11 @@ public final class IO {
 
   /**
    * Save the given sequence of graphics into an animated GIF file.
-   * 
-   * @param graphics the finite sequence of graphics (frames) to save in the GIF
-   * @param loop whether or not to loop the animation when playing
+   *
+   * @param graphics             the finite sequence of graphics (frames) to save in the GIF
+   * @param loop                 whether to loop the animation when playing
    * @param millisecondsPerFrame how many milliseconds to wait between each frame
-   * @param filename the name of the file (including the .gif extension)
+   * @param filename             the name of the file (including the .gif extension)
    */
   public static void saveAnimatedGif(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame, String filename) {
     assert !graphics.isEmpty() : "Animation must have at least one frame";
@@ -323,7 +323,7 @@ public final class IO {
     try {
       Receiver receiver = MidiSystem.getReceiver();
       receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument.internalPcNumber(), 0), -1);
-      for (TimedChord c :  cons(timed(2, chord(of())), song)) {
+      for (TimedChord c : cons(timed(2, chord(of())), song)) {
         System.out.println(c);
         c.play(receiver, channel, msPerBeat);
       }
@@ -352,7 +352,7 @@ public final class IO {
   }
 
   public static void playChords(Sequence<AbsoluteChord> chords, int bpm, int channel, Instrument instrument) {
-    play(map(chord->timed(1, chord), chords), bpm, channel, instrument);
+    play(map(chord -> timed(1, chord), chords), bpm, channel, instrument);
   }
 
   public static void playNotes(Sequence<Note> notes) {
@@ -369,7 +369,7 @@ public final class IO {
   }
 
   public static void playNotes(Sequence<Note> notes, int bpm, int channel, Instrument instrument) {
-    play(map(n->timed(1, chord(of(n))), notes), bpm, channel, instrument);
+    play(map(n -> timed(1, chord(of(n))), notes), bpm, channel, instrument);
   }
 
 }
