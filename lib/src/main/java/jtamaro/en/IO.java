@@ -119,11 +119,41 @@ public final class IO {
   }
 
   /**
+   * To&nbsp;Do placeholder method that shows an error message
+   * in STDERR and returns null;
+   */
+  public static <T> T todo() {
+    return todo("implement");
+  }
+
+
+  /**
+   * To&nbsp;Do placeholder method that shows an error message
+   *    * in STDERR and returns null;
+   */
+  public static <T> T todo(String message) {
+    try {
+      throw new Exception();
+    } catch (Exception e) {
+      final StackTraceElement cause = e.getStackTrace()[1];
+      final String logMessage = String.format("TODO: %1$s in file %2$s at line %3$02d",
+          message, cause.getFileName(), cause.getLineNumber());
+      System.err.println(logMessage);
+    }
+    return null;
+  }
+
+  /**
    * Open a window showing the given color.
    *
    * @param color the color to show
    */
   public static void show(Color color) {
+    if (color == null) {
+      System.err.println("Nothing to show");
+      return;
+    }
+
     SwingUtilities.invokeLater(() -> {
       final ColorFrame frame = new ColorFrame(color.getImplementation());
       frame.setVisible(true);
@@ -136,6 +166,11 @@ public final class IO {
    * @param graphic the graphic to show
    */
   public static void show(Graphic graphic) {
+    if (graphic == null) {
+      System.err.println("Nothing to show");
+      return;
+    }
+
     SwingUtilities.invokeLater(() -> {
       final GraphicFrame frame = new GraphicFrame();
       frame.setGraphic(((AbstractGraphic) graphic).getImplementation());
@@ -211,6 +246,11 @@ public final class IO {
    * @param millisecondsPerFrame delay between frames
    */
   public static void animate(Sequence<Graphic> graphics, boolean loop, int millisecondsPerFrame) {
+    if (graphics == null) {
+      System.err.println("Nothing to animate");
+      return;
+    }
+
     assert !graphics.isEmpty() : "Animation must have at least one frame";
     assert millisecondsPerFrame > 0 : "Must wait a positive number of milliseconds between frames";
     final Pair<Integer, Integer> wh = determineMaxWidthHeight(graphics);
@@ -257,6 +297,11 @@ public final class IO {
    * @param frameHeight the height of frames (should be at least the maximum of all the graphics' heights)
    */
   public static void showFilmStrip(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
+    if (graphics == null) {
+      System.err.println("Nothing to show");
+      return;
+    }
+
     assert frameWidth >= 0 : "Can't have a negative width";
     assert frameHeight >= 0 : "Can't have a negative height";
     SwingUtilities.invokeLater(() -> {
