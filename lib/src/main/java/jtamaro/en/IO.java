@@ -119,6 +119,31 @@ public final class IO {
   }
 
   /**
+   * To&nbsp;Do placeholder method that shows an error message
+   * in STDERR and returns null;
+   */
+  public static <T> T todo() {
+    return todo("implement");
+  }
+
+
+  /**
+   * To&nbsp;Do placeholder method that shows an error message
+   *    * in STDERR and returns null;
+   */
+  public static <T> T todo(String message) {
+    try {
+      throw new Exception();
+    } catch (Exception e) {
+      final StackTraceElement cause = e.getStackTrace()[1];
+      final String logMessage = String.format("TODO: %1$s in file %2$s at line %3$02d",
+          message, cause.getFileName(), cause.getLineNumber());
+      System.err.println(logMessage);
+    }
+    return null;
+  }
+
+  /**
    * Open a window showing the given color.
    *
    * @param color the color to show
