@@ -47,6 +47,7 @@ jar {
         configurations.runtimeClasspath
                 .filter { it.exists() }
                 .collect { it.isDirectory() ? it : zipTree(it) }
+        sourceSets.main.allSource
     }
 }
 
