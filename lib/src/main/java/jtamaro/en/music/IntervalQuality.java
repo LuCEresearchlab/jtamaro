@@ -5,14 +5,15 @@ import java.util.HashMap;
 
 /**
  * https://en.wikipedia.org/wiki/Interval_(music)#Quality
+ * https://www.musictheory.net/lessons/31
  */
 public enum IntervalQuality {
 
-  PERFECT("P", "Perfect"),
-  MAJOR("M", "Major"),
-  MINOR("m", "Minor"),
-  AUGMENTED("A", "Augmented"),
-  DIMINISHED("d", "Diminished");
+  DIMINISHED("d", "Diminished"), // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  MINOR("m", "Minor"),           // Seconds, Thirds, Sixths, Sevenths
+  PERFECT("P", "Perfect"),       // Firsts, Fourths, Fifths, Eights
+  MAJOR("M", "Major"),           // Seconds, Thirds, Sixths, Sevenths
+  AUGMENTED("A", "Augmented");   // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
 
   private final String symbol;
   private final String name;
