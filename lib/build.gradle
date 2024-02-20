@@ -9,7 +9,6 @@ repositories {
 }
 
 dependencies {
-    api project(':core')
     testImplementation 'junit:junit:4.13.2'
 }
 
@@ -28,6 +27,7 @@ java {
 javadoc {
     options.memberLevel = JavadocMemberLevel.PUBLIC
     options.addStringOption 'Xdoclint:all,-missing', '-quiet'
+    options.addBooleanOption('html5', true)
 }
 
 compileJava {
@@ -35,19 +35,11 @@ compileJava {
 }
 
 jar {
-    dependsOn(':core:jar')
-
     manifest {
         attributes(
                 'Implementation-Title': rootProject.name,
                 'Implementation-Version': project.version
         )
-    }
-    from {
-        configurations.runtimeClasspath
-                .filter { it.exists() }
-                .collect { it.isDirectory() ? it : zipTree(it) }
-        sourceSets.main.allSource
     }
 }
 
@@ -83,10 +75,10 @@ publishing {
             from components.java
             versionMapping {
                 usage('java-api') {
-                    fromResolutionOf 'runtimeClasspath'
+                    fromResolutionOf('runtimeClasspath')
                 }
                 usage('java-runtime') {
-                    fromResolutionResult
+                    fromResolutionResult()
                 }
             }
             pom {

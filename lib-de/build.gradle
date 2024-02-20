@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation project(':core')
+    implementation project(':lib')
 }
 
 archivesBaseName = rootProject.name + "-de"
@@ -28,7 +28,7 @@ compileJava {
 }
 
 jar {
-    dependsOn(':core:jar')
+    dependsOn(':lib:jar')
 
     manifest {
         attributes(
