@@ -303,7 +303,7 @@ public final class Interaction<M> {
   private Function1<M, Graphic> renderWithBg(Function1<M, Graphic> fgRender) {
     return background == null
         ? fgRender
-        : m -> Graphics.overlay(fgRender.apply(m), background);
+        : m -> Graphics.compose(fgRender.apply(m), background);
   }
   
 }
