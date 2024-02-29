@@ -4,7 +4,7 @@ import jtamaro.en.Sequence;
 
 import javax.swing.*;
 
-public class ModelFrame<M> extends JFrame {
+final class ModelFrame<M> extends JFrame {
 
   private final Interaction<M> bang;
   private final JTextArea textArea;

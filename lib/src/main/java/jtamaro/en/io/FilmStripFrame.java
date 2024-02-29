@@ -1,7 +1,6 @@
 package jtamaro.en.io;
 
 import jtamaro.en.Graphic;
-import jtamaro.en.Pair;
 import jtamaro.en.Sequence;
 
 import javax.swing.*;

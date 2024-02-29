@@ -1,12 +1,14 @@
-package jtamaro;
+package jtamaro.en;
 
+import org.junit.Test;
 
-import org.junit.jupiter.api.Test;
-
-import static jtamaro.en.Sequences.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static jtamaro.SequenceTest.*;
+import static jtamaro.en.SequenceTest.assertSequenceEquals;
+import static jtamaro.en.Sequences.drop;
+import static jtamaro.en.Sequences.of;
+import static jtamaro.en.Sequences.repeat;
+import static jtamaro.en.Sequences.take;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class SequenceDropTakeTest {
@@ -20,7 +22,7 @@ public class SequenceDropTakeTest {
   @Test
   public void testDropOne() {
     assertSequenceEquals(of(20, 30), drop(1, of(10, 20, 30)));
-  }  
+  }
 
   @Test
   public void testDropAll() {
@@ -47,7 +49,6 @@ public class SequenceDropTakeTest {
     assertFalse(drop(1, repeat(5)).hasDefiniteSize());
   }
 
-
   //--- take
   @Test
   public void testTakeNone() {
@@ -57,7 +58,7 @@ public class SequenceDropTakeTest {
   @Test
   public void testTakeOne() {
     assertSequenceEquals(of(10), take(1, of(10, 20, 30)));
-  }  
+  }
 
   @Test
   public void testTakeAll() {

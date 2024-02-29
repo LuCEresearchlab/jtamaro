@@ -3,7 +3,7 @@ package jtamaro.en.io;
 import javax.swing.*;
 
 
-public class BigBangToolbar<M> extends JPanel {
+final class BigBangToolbar<M> extends JPanel {
 
   private final JLabel tickLabel;
   private final JButton startButton;

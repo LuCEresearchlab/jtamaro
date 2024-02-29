@@ -2,7 +2,7 @@ package jtamaro.en.data;
 
 import jtamaro.en.Sequence;
 
-public class Cons<T> extends Sequence<T> {
+public final class Cons<T> extends Sequence<T> {
 
   private final T head;
   private final Sequence<T> tail;

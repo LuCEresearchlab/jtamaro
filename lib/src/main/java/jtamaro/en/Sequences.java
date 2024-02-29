@@ -109,14 +109,16 @@ public final class Sequences {
   }
 
   //--- lazy construction sequences
+
   /**
    * Create a Sequence of integers starting from the given integer, counting upwards.
-   * The sequence is infinite;
+   *
+   * <p>The sequence is infinite;
    * once Integer.MAX_VALUE is reached, it wraps around to Integer.MIN_VALUE
    * and continues from there:
-   * 
-   * from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...
-   * 
+   * <br>
+   * <code>from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...</code>
+   *
    * @param from the value of the first element
    * @return a new Sequence starting with the given number and counting up.
    */
@@ -127,9 +129,9 @@ public final class Sequences {
   /**
    * Create a Sequence of integers starting at 0,
    * with the last element being toExclusive - 1.
-   * 
-   * <code>range(3) === of(0, 1, 2)</code>
-   * 
+   *
+   * <p><code>range(3) === of(0, 1, 2)</code>
+   *
    * @param toExclusive the number that would come right after the last value of the sequence
    * @return a new Sequence of integers starting at 0, and ending just before the given number.
    */
@@ -140,10 +142,10 @@ public final class Sequences {
   /**
    * Create a Sequence of integers starting at from,
    * with the last element being toExclusive - 1.
-   * 
-   * <code>range(1, 3) === of(1, 2)</code>
-   * 
-   * @param from the value of the first element
+   *
+   * <p><code>range(1, 3) === of(1, 2)</code>
+   *
+   * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
    * @return a new Sequence of integers starting at 0, and ending just before the given number.
    */
@@ -206,7 +208,7 @@ public final class Sequences {
   }
 
   public static Sequence<Character> range(char from, char toExclusive, int step) {
-    return map(i -> (char) i.intValue(), range((int) from, (int) toExclusive, step));
+    return map(i -> (char) i.intValue(), range(from, (int) toExclusive, step));
   }
 
   public static Sequence<Character> rangeClosed(char to) {
@@ -218,7 +220,7 @@ public final class Sequences {
   }
 
   public static Sequence<Character> rangeClosed(char from, char to, int step) {
-    return map(i -> (char) i.intValue(), rangeClosed((int) from, (int) to, step));
+    return map(i -> (char) i.intValue(), rangeClosed(from, (int) to, step));
   }
 
   public static <T> Sequence<T> repeat(T element) {
@@ -378,19 +380,37 @@ public final class Sequences {
   // see: https://wiki.haskell.org/Foldr_Foldl_Foldl'
 
   public static <R, E> R foldLeft(R initial, Function2<R, E, R> f, Sequence<E> sequence) {
-    return isEmpty(sequence) 
-      ? initial 
-      : foldLeft(f.apply(initial, first(sequence)), f, rest(sequence));
+    R result = initial;
+    Sequence<E> itr = sequence;
+    while (!itr.isEmpty()) {
+      result = f.apply(result, itr.first());
+      itr = itr.rest();
+    }
+    return result;
   }
 
   public static <R, E> R foldRight(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
-    return isEmpty(sequence)
-      ? initial
-      : f.apply(first(sequence), foldRight(initial, f, rest(sequence)));
+    R result = initial;
+    Sequence<E> itr = reverse(sequence);
+    while (!itr.isEmpty()) {
+      result = f.apply(itr.first(), result);
+      itr = itr.rest();
+    }
+    return result;
   }
 
   public static <R, E> R reduce(R initial, Function2<E, R, R> f, Sequence<E> sequence) {
     return foldRight(initial, f, sequence);
+  }
+
+  private static <T> Sequence<T> reverse(Sequence<T> sequence) {
+    Sequence<T> result = empty();
+    Sequence<T> itr = sequence;
+    while (!itr.isEmpty()) {
+      result = new Cons<>(itr.first(), result);
+      itr = itr.rest();
+    }
+    return result;
   }
 
 
@@ -446,7 +466,7 @@ public final class Sequences {
    * Returns a sequence of the lines in the given string (eager version).
    * This will eagerly split the string and build the entire sequence,
    * which means that the returned Sequence will have a definite size.
-   * 
+   *
    * @param string the String to split into lines
    * @return a Sequence of the lines in the given string, with a definite size
    */
@@ -463,14 +483,14 @@ public final class Sequences {
    * Returns a sequence of the lines in the given string (lazy version).
    * This will lazily split the string and build sequence cells as needed,
    * which means that the returned Sequence will not have a definite size.
-   * 
+   *
    * @param string the String to split into lines
    * @return a Sequence of the lines in the given string, without a definite size
    */
   public static Sequence<String> ofStringLinesLazy(String string) {
     return IteratorCell.fromIterator(string.lines().iterator());
   }
-  
+
   public static <T> Sequence<T> fromIterable(Iterable<T> iterable) {
     return IteratorCell.fromIterator(iterable.iterator());
   }

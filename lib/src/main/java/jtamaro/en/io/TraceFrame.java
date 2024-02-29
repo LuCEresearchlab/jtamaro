@@ -3,7 +3,7 @@ package jtamaro.en.io;
 import javax.swing.*;
 
 
-public class TraceFrame extends JFrame {
+final class TraceFrame extends JFrame {
 
   public TraceFrame(final Trace trace) {
     setTitle("Event Trace");

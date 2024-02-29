@@ -108,6 +108,35 @@ The output will be in `lib/build/libs/jtamaro-*.jar`
 
 ## Use
 
+### Use in PF2 labs
+
+First, publish the library in your local maven repo using
+
+```bash
+./gradlew :lib:publishMavenJavaPublicationToMavenLocal
+```
+
+Then, from the root of the PF2 project repo, copy the published artifacts from
+your local maven repo (by default it's stored in `$HOME/.m2/repository`)
+
+```bash
+cp $HOME/.m2/repository/jtamaro deps/
+```
+
+And then import the dependency in your build.gradle file:
+
+```groovy
+repositories {
+    // ...
+    maven { url { 'deps' } } // Add local maven repo
+}
+
+dependencies {
+    // ...
+    implementation 'jtamaro:jtamaro:1.0.0' // Add dependency
+}
+```
+
 ### Use in BlueJ
 
 The library can be stored as a JAR file inside the +libs directory of a BlueJ project;

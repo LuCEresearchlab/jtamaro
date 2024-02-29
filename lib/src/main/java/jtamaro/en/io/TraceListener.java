@@ -1,6 +1,6 @@
 package jtamaro.en.io;
 
-public interface TraceListener {
+interface TraceListener {
 
   void eventAppended(TraceEvent event);
 

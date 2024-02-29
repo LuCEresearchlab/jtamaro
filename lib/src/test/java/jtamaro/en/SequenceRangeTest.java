@@ -1,12 +1,10 @@
-package jtamaro;
+package jtamaro.en;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
+import static jtamaro.en.SequenceTest.assertSequenceEquals;
 import static jtamaro.en.Sequences.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static jtamaro.SequenceTest.*;
-
+import static org.junit.Assert.assertTrue;
 
 public class SequenceRangeTest {
 
@@ -20,7 +18,7 @@ public class SequenceRangeTest {
   public void testRange1() {
     assertSequenceEquals(of(0), range(1));
   }
-  
+
   @Test
   public void testRange2() {
     assertSequenceEquals(of(0, 1), range(2));
@@ -31,12 +29,11 @@ public class SequenceRangeTest {
     assertSequenceEquals(of(0, 1, 2), range(3));
   }
 
-    @Test
+  @Test
   public void testRangeIntHasDefiniteSize() {
     assertTrue(range(5).hasDefiniteSize());
   }
 
-  
   //--- range(int, int)
   @Test
   public void testRange0_3() {
@@ -129,7 +126,7 @@ public class SequenceRangeTest {
   //--- range(char, char)
   @Test
   public void testRangeChar2() {
-    assertSequenceEquals(of((char)0, (char)1), range((char)2));
+    assertSequenceEquals(of((char) 0, (char) 1), range((char) 2));
   }
 
   @Test

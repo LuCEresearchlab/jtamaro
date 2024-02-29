@@ -1,13 +1,16 @@
-package jtamaro;
+package jtamaro.en;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
+
 import static jtamaro.en.Colors.BLACK;
-import static jtamaro.en.Graphics.*;
-
-import org.junit.jupiter.api.Test;
+import static jtamaro.en.Graphics.emptyGraphic;
+import static jtamaro.en.Graphics.height;
+import static jtamaro.en.Graphics.rectangle;
+import static jtamaro.en.Graphics.width;
+import static org.junit.Assert.assertEquals;
 
 public class GraphicTest {
-  
+
   private static final double DELTA = 0.0001;
 
 

@@ -2,7 +2,7 @@ package jtamaro.en.data;
 
 import jtamaro.en.Sequence;
 
-public class Empty<T> extends Sequence<T> {
+public final class Empty<T> extends Sequence<T> {
 
   @Override
   public T first() {
