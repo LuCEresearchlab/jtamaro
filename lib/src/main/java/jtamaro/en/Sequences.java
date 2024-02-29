@@ -403,7 +403,7 @@ public final class Sequences {
     return foldRight(initial, f, sequence);
   }
 
-  private static <T> Sequence<T> reverse(Sequence<T> sequence) {
+  public static <T> Sequence<T> reverse(Sequence<T> sequence) {
     Sequence<T> result = empty();
     Sequence<T> itr = sequence;
     while (!itr.isEmpty()) {
