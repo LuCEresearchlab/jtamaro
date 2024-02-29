@@ -404,6 +404,10 @@ public final class IO {
     playNotes(notes, 120);
   }
 
+  public static void playNotes(Sequence<Note> notes, Instrument instrument) {
+    playNotes(notes, 120, 0, instrument);
+  }
+
   public static void playNotes(Sequence<Note> notes, int bpm) {
     playNotes(notes, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
   }
