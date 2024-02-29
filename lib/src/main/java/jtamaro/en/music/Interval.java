@@ -3,6 +3,7 @@ package jtamaro.en.music;
 import static jtamaro.en.Sequences.of;
 import static jtamaro.en.IO.*;
 import static jtamaro.en.music.IntervalQuality.*;
+import static jtamaro.en.music.GenericInterval.*;
 import static jtamaro.en.music.Notes.C4;
 
 import java.util.ArrayList;
@@ -13,57 +14,88 @@ import java.util.ArrayList;
  * 
  * https://en.wikipedia.org/wiki/Pitch_interval#Unordered_Pitch_Interval
  * https://en.wikipedia.org/wiki/Interval_(music)
+ * https://www.musictheory.net/lessons/31
+ * https://viva.pressbooks.pub/openmusictheory/chapter/intervals/
+ * 
+ * Comments:
+ * An octave, like C-C, includes 13 semitones (the distance is 12 semitones).
+ * An octave, like C-C, includes 8 staff positions (the distance is 7 staff positions)
+ * When we talk about semitones, we start at 0 (we exclude the start pitch).
+ * When we talk about staff positions, we start at 1 (we include the start pitch).
+ * So, an octave, a PERFECT_EIGHT, spans 8 staff positions (inclusive) and is 12 semitones wide (exclusive).
  */
-public record Interval(int semitones, IntervalQuality quality, int number) {
+public record Interval(int semitones, IntervalQuality quality, GenericInterval genericInterval) {
   
-  private final static String[] NUMBER_NAMES = {
-    null,
-    "unison",
-    "second",
-    "third",
-    "fourth",
-    "fifth",
-    "sixth",
-    "seventh",
-    "octave"
-  };
+  public static final Interval PERFECT_UNISON = new Interval(0, PERFECT, FIRST);
+  public static final Interval DIMINISHED_SECOND = new Interval(0, DIMINISHED, SECOND);
+  public static final Interval MINOR_SECOND = new Interval(1, MINOR, SECOND);
+  public static final Interval AUGMENTED_UNISON = new Interval(1, AUGMENTED, FIRST);
+  public static final Interval MAJOR_SECOND = new Interval(2, MAJOR, SECOND);
+  public static final Interval DIMINISHED_THIRD = new Interval(2, DIMINISHED, THIRD);
+  public static final Interval MINOR_THIRD = new Interval(3, MINOR, THIRD);
+  public static final Interval AUGMENTED_SECOND = new Interval(3, AUGMENTED, SECOND);
+  public static final Interval MAJOR_THIRD = new Interval(4, MAJOR, THIRD);
+  public static final Interval DIMINISHED_FOURTH = new Interval(4, DIMINISHED, FOURTH);
+  public static final Interval PERFECT_FOURTH = new Interval(5, PERFECT, FOURTH);
+  public static final Interval AUGMENTED_THIRD = new Interval(5, AUGMENTED, THIRD);
+  public static final Interval AUGMENTED_FOURTH = new Interval(6, AUGMENTED, FOURTH);
+  public static final Interval DIMINISHED_FIFTH = new Interval(6, DIMINISHED, FIFTH);
+  public static final Interval PERFECT_FIFTH = new Interval(7, PERFECT, FIFTH);
+  public static final Interval DIMINISHED_SIXTH = new Interval(7, DIMINISHED, SIXTH);
+  public static final Interval MINOR_SIXTH = new Interval(8, MINOR, SIXTH);
+  public static final Interval AUGMENTED_FIFTH = new Interval(8, AUGMENTED, FIFTH);
+  public static final Interval MAJOR_SIXTH = new Interval(9, MAJOR, SIXTH);
+  public static final Interval DIMINISHED_SEVENTH = new Interval(9, DIMINISHED, SEVENTH);
+  public static final Interval MINOR_SEVENTH = new Interval(10, MINOR, SEVENTH);
+  public static final Interval AUGMENTED_SIXTH = new Interval(10, AUGMENTED, SIXTH);
+  public static final Interval MAJOR_SEVENTH = new Interval(11, MAJOR, SEVENTH);
+  public static final Interval DIMINISHED_OCTAVE = new Interval(11, DIMINISHED, EIGHTH);
+  public static final Interval PERFECT_OCTAVE = new Interval(12, PERFECT, EIGHTH);
+  public static final Interval AUGMENTED_SEVENTH = new Interval(12, AUGMENTED, SEVENTH);
+  public static final Interval AUGMENTED_OCTAVE = new Interval(13, AUGMENTED, EIGHTH);
+  
 
-  
-  public static final Interval PERFECT_UNISON = new Interval(0, PERFECT, 1);
-  public static final Interval DIMINISHED_SECOND = new Interval(0, DIMINISHED, 2);
-  public static final Interval MINOR_SECOND = new Interval(1, MINOR, 2);
-  public static final Interval AUGMENTED_UNISON = new Interval(1, AUGMENTED, 1);
-  public static final Interval MAJOR_SECOND = new Interval(2, MAJOR, 2);
-  public static final Interval DIMINISHED_THIRD = new Interval(2, DIMINISHED, 3);
-  public static final Interval MINOR_THIRD = new Interval(3, MINOR, 3);
-  public static final Interval AUGMENTED_SECOND = new Interval(3, AUGMENTED, 2);
-  public static final Interval MAJOR_THIRD = new Interval(4, MAJOR, 3);
-  public static final Interval DIMINISHED_FOURTH = new Interval(4, DIMINISHED, 4);
-  public static final Interval PERFECT_FOURTH = new Interval(5, PERFECT, 4);
-  public static final Interval AUGMENTED_THIRD = new Interval(5, AUGMENTED, 3);
-  public static final Interval AUGMENTED_FOURTH = new Interval(6, AUGMENTED, 4);
-  public static final Interval DIMINISHED_FIFTH = new Interval(6, DIMINISHED, 5);
-  public static final Interval PERFECT_FIFTH = new Interval(7, PERFECT, 5);
-  public static final Interval DIMINISHED_SIXTH = new Interval(7, DIMINISHED, 6);
-  public static final Interval MINOR_SIXTH = new Interval(8, MINOR, 6);
-  public static final Interval AUGMENTED_FIFTH = new Interval(8, AUGMENTED, 5);
-  public static final Interval MAJOR_SIXTH = new Interval(9, MAJOR, 6);
-  public static final Interval DIMINISHED_SEVENTH = new Interval(9, DIMINISHED, 7);
-  public static final Interval MINOR_SEVENTH = new Interval(10, MINOR, 7);
-  public static final Interval AUGMENTED_SIXTH = new Interval(10, AUGMENTED, 6);
-  public static final Interval MAJOR_SEVENTH = new Interval(11, MAJOR, 7);
-  public static final Interval DIMINISHED_OCTAVE = new Interval(11, DIMINISHED, 8);
-  public static final Interval PERFECT_OCTAVE = new Interval(12, PERFECT, 8);
-  public static final Interval AUGMENTED_SEVENTH = new Interval(12, AUGMENTED, 7);
-  
-  public static final Interval AUGMENTED_OCTAVE = new Interval(13, AUGMENTED, 8);
-  
   public final static ArrayList<Interval> INTERVALS = new ArrayList<>();
   static {
     INTERVALS.add(PERFECT_UNISON);
     INTERVALS.add(DIMINISHED_SECOND);
     INTERVALS.add(MINOR_SECOND);
-    //...
+    INTERVALS.add(AUGMENTED_UNISON);
+    INTERVALS.add(MAJOR_SECOND);
+    INTERVALS.add(DIMINISHED_THIRD);
+    INTERVALS.add(MINOR_THIRD);
+    INTERVALS.add(AUGMENTED_SECOND);
+    INTERVALS.add(MAJOR_THIRD);
+    INTERVALS.add(DIMINISHED_FOURTH);
+    INTERVALS.add(PERFECT_FOURTH);
+    INTERVALS.add(AUGMENTED_THIRD);
+    INTERVALS.add(AUGMENTED_FOURTH);
+    INTERVALS.add(DIMINISHED_FIFTH);
+    INTERVALS.add(PERFECT_FIFTH);
+    INTERVALS.add(DIMINISHED_SIXTH);
+    INTERVALS.add(MINOR_SIXTH);
+    INTERVALS.add(AUGMENTED_FIFTH);
+    INTERVALS.add(MAJOR_SIXTH);
+    INTERVALS.add(DIMINISHED_SEVENTH);
+    INTERVALS.add(MINOR_SEVENTH);
+    INTERVALS.add(AUGMENTED_SIXTH);
+    INTERVALS.add(MAJOR_SEVENTH);
+    INTERVALS.add(DIMINISHED_OCTAVE);
+    INTERVALS.add(PERFECT_OCTAVE);
+    INTERVALS.add(AUGMENTED_SEVENTH);
+    INTERVALS.add(AUGMENTED_OCTAVE);
+  }
+
+  public String toString() {
+    return getShortName() + " (" + getLongName() + ")";
+  }
+
+  public String getShortName() {
+    return quality.getSymbol() + genericInterval.getStaffPositions();
+  }
+
+  public String getLongName() {
+    return quality.getName() + " " + genericInterval().getName();
   }
 
   /**
@@ -108,20 +140,8 @@ public record Interval(int semitones, IntervalQuality quality, int number) {
     Interval simple = getSimple(); // Get simple interval from which this is compounded
     int s = 12 - simple.semitones;
     IntervalQuality q = simple.quality.invert();
-    int n = 9 - simple.number;
-    return new Interval(s, q, n);
-  }
-
-  public String toString() {
-    return getShortName() + " (" + getLongName() + ")";
-  }
-
-  public String getShortName() {
-    return quality.getSymbol() + number;
-  }
-
-  public String getLongName() {
-    return quality.getName() + " " + NUMBER_NAMES[number];
+    GenericInterval gi = simple.genericInterval.invert();
+    return new Interval(s, q, gi);
   }
 
   public boolean isSimple() {
@@ -134,18 +154,60 @@ public record Interval(int semitones, IntervalQuality quality, int number) {
 
   public Interval getSimple() {
     // TODO: Check that this is correct!
-    return isSimple() ? this : new Interval(semitones % 12, quality, number);
+    return isSimple() ? this : new Interval(semitones % 12, quality, genericInterval.getSimple());
   }
 
-  public static void main(String[] args) {
-    Note root = C4;
+  public static Interval get(GenericInterval genericInterval, IntervalQuality quality) {
+    for (Interval i : INTERVALS) {
+      if (i.quality() == quality && i.genericInterval() == genericInterval) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  // Table shown in the last step of this page:
+  // https://www.musictheory.net/lessons/31
+  private static void printIntervalTable() {
+    System.out.print('\t');
+    for (IntervalQuality q : IntervalQuality.values()) {
+      System.out.print(q.getName() + '\t');
+    }
+    System.out.println();
+    for (GenericInterval gi : GenericInterval.values()) {
+      System.out.print(gi.getName() + '\t');
+      for (IntervalQuality q : IntervalQuality.values()) {
+        Interval i = get(gi, q);
+        //String cell = i==null ? "" : i.getShortName();
+        String cell = i == null ? "" : "" + i.semitones();
+        System.out.print(cell + '\t');
+      }
+      System.out.println();
+    }
+  }
+
+  private static void printInversionTable() {
+    System.out.println("Interval\tInversion\t");
     for (Interval interval : INTERVALS) {
-      System.out.println(interval + " Inverse: " + interval.invert());
+      System.out.println(interval + "\t" + interval.invert());
+    }
+  }
+
+  private static void playIntervals() {
+    final Note root = C4;
+    for (Interval interval : INTERVALS) {
       playChords(of(
         interval.dyad(root),
         interval.invert().dyad(root)
       ));
     }
+  }
+
+  public static void main(String[] args) {
+    System.out.println("Number of semitones for the different specific intervals:");
+    printIntervalTable();
+    System.out.println("All intervals with their intervallic inversions:");
+    printInversionTable();
   }
 
 }
