@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.IteratorCell;
+import jtamaro.en.data.Lazy;
 import jtamaro.en.data.LazyCons;
 
 /**
@@ -304,12 +305,20 @@ public final class Sequences {
     return sequence;
   }
 
+  // public static <T, U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
+  //   if (sequence.isEmpty()) {
+  //     return empty();
+  //   } else {
+  //     return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()), sequence.rest().hasDefiniteSize());
+  //   }
+  // }
   public static <T, U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
-    if (sequence.isEmpty()) {
-      return empty();
-    } else {
-      return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()), sequence.rest().hasDefiniteSize());
-    }
+    Function0<Sequence<U>> resolver = () -> (
+      sequence.isEmpty()
+      ? empty()
+      : cons(f.apply(sequence.first()), map(f, sequence.rest()))
+    );
+    return new Lazy<U>(resolver, sequence.hasDefiniteSize());
   }
 
   public static <T> Sequence<String> mapToString(Sequence<T> sequence) {
@@ -324,18 +333,28 @@ public final class Sequences {
     }
   }
 
+  // public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> sequence) {
+  //   if (sequence.isEmpty()) {
+  //     return sequence;
+  //   } else {
+  //     Sequence<T> current = sequence;
+  //     while (!current.isEmpty() && !predicate.apply(current.first())) {
+  //       current = current.rest();
+  //     }
+  //     final Sequence<T> finalCurrent = current;
+  //     return current.isEmpty() ? empty()
+  //         : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
+  //   }
+  // }
   public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> sequence) {
-    if (sequence.isEmpty()) {
-      return sequence;
-    } else {
-      Sequence<T> current = sequence;
-      while (!current.isEmpty() && !predicate.apply(current.first())) {
-        current = current.rest();
-      }
-      final Sequence<T> finalCurrent = current;
-      return current.isEmpty() ? empty()
-          : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
-    }
+    Function0<Sequence<T>> resolver = () -> (
+      sequence.isEmpty()
+      ? sequence
+      : predicate.apply(sequence.first())
+        ? cons(sequence.first(), filter(predicate, sequence.rest()))
+        : filter(predicate, sequence.rest())
+    );
+    return new Lazy<T>(resolver, sequence.hasDefiniteSize());
   }
 
   // Naming inspired by:

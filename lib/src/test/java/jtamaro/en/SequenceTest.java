@@ -34,6 +34,13 @@ import static org.junit.Assert.assertTrue;
 
 public class SequenceTest {
 
+  // consume the given sequence (if it is lazy, resolve all of it)
+  // (we simply compute the length to do that)
+  public static <T> int consume(Sequence<T> s) {
+    return isEmpty(s) ? 0 : 1 + consume(s.rest());
+  }
+
+
   public static <T> String toString(Sequence<T> sequence) {
     return foldRight("]", (e, r) -> e+r, cons("[", intersperse(", ", mapToString(sequence))));
   }
