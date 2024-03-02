@@ -10,11 +10,14 @@ import static jtamaro.en.Sequences.crossProduct;
 import static jtamaro.en.Sequences.empty;
 import static jtamaro.en.Sequences.first;
 import static jtamaro.en.Sequences.flatMap;
+import static jtamaro.en.Sequences.foldRight;
 import static jtamaro.en.Sequences.from;
 import static jtamaro.en.Sequences.fromIterable;
 import static jtamaro.en.Sequences.fromStream;
+import static jtamaro.en.Sequences.intersperse;
 import static jtamaro.en.Sequences.isEmpty;
 import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Sequences.mapToString;
 import static jtamaro.en.Sequences.of;
 import static jtamaro.en.Sequences.ofStringCharacters;
 import static jtamaro.en.Sequences.ofStringLines;
@@ -31,6 +34,10 @@ import static org.junit.Assert.assertTrue;
 
 public class SequenceTest {
 
+  public static <T> String toString(Sequence<T> sequence) {
+    return foldRight("]", (e, r) -> e+r, cons("[", intersperse(", ", mapToString(sequence))));
+  }
+
   public static <T> void assertSequenceEquals(Sequence<T> expected, Sequence<T> actual) {
     Sequence<T> e = expected;
     Sequence<T> a = actual;
@@ -39,8 +46,8 @@ public class SequenceTest {
       e = rest(e);
       a = rest(a);
     }
-    assertTrue("There are unmatched elements in expected", isEmpty(e));
-    assertTrue("There are unmatched elements in actual", isEmpty(a));
+    assertTrue("There are more elements in expected: " + toString(e), isEmpty(e));
+    assertTrue("There are more elements in actual: " + toString(a), isEmpty(a));
   }
 
 
