@@ -16,6 +16,9 @@ import java.util.ArrayList;
  * https://en.wikipedia.org/wiki/Interval_(music)
  * https://www.musictheory.net/lessons/31
  * https://viva.pressbooks.pub/openmusictheory/chapter/intervals/
+ * https://www.omnicalculator.com/other/music-interval
+ * https://www.earmaster.com/music-theory-online/ch04/chapter-4-1.html
+ * https://muted.io/circle-of-fifths/
  * 
  * Comments:
  * An octave, like C-C, includes 13 semitones (the distance is 12 semitones).

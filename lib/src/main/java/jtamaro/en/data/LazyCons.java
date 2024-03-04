@@ -3,6 +3,13 @@ package jtamaro.en.data;
 import jtamaro.en.Function0;
 import jtamaro.en.Sequence;
 
+
+/**
+ * NOTE:
+ * We should probably deprecate LazyCons in favor of Lazy.
+ * Why?
+ * Lazy does memoization, and it is fully lazy (not just for queries of the rest).
+ */
 public class LazyCons<T> extends Sequence<T> {
 
   private final T head;

@@ -3,12 +3,17 @@ package jtamaro.en;
 import org.junit.Test;
 
 import static jtamaro.en.SequenceTest.assertSequenceEquals;
+import static jtamaro.en.SequenceTest.consume;
 import static jtamaro.en.Sequences.filter;
 import static jtamaro.en.Sequences.from;
 import static jtamaro.en.Sequences.of;
 import static jtamaro.en.Sequences.range;
+import static jtamaro.en.Sequences.isEmpty;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
 
 public class SequenceFilterTest {
 
@@ -48,6 +53,50 @@ public class SequenceFilterTest {
     assertSequenceEquals(of(0, 2, 4, 6, 8), filter(s -> s % 2 == 0, range(10)));
   }
 
+
+  //--- test lazy behavior
+  @Test
+  public void testFilterInfiniteNotConsumed() {
+    filter(s -> false, from(0));
+    // should be lazy and not consume anything, and thus not search through the infinitely long sequence
+    assertTrue(true);
+  }
+
+  @Test
+  public void testFilterInfiniteConsumed() {
+    assertThrows(StackOverflowError.class, () -> {
+      // filter through the infinitely long sequence to find an element to ask whether it's empty
+      isEmpty(filter(s -> false, from(0)));
+    });
+  }
+
+
+  //--- count number of filter predicate applications
+  @Test
+  public void testFilterPredicateApplicationCountNotConsumed() {
+    int[] count = new int[] { 0 };
+    filter(s -> { count[0]++; return true;}, range(10));
+    assertEquals(0, count[0]);
+  }
+
+  @Test
+  public void testFilterPredicateApplicationCountConsumed() {
+    int[] count = new int[] { 0 };
+    consume(filter(s -> { count[0]++; return true;}, range(10)));
+    assertEquals(10, count[0]);
+  }
+
+  @Test
+  public void testFilterFilterPredicateApplicationCountConsumed() {
+    int[] innerCount = new int[] { 0 };
+    int[] outerCount = new int[] { 0 };
+    consume(filter(s1 -> { outerCount[0]++; return true;}, filter(s -> { innerCount[0]++; return true;}, range(10))));
+    assertEquals(10, innerCount[0]);
+    assertEquals(10, outerCount[0]);
+  }
+
+
+  //--- check definite/indefinite
   @Test
   public void testFilterDefiniteHasDefiniteSize() {
     assertTrue(filter(s -> true, range(10)).hasDefiniteSize());

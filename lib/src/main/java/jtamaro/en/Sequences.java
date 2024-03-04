@@ -5,10 +5,15 @@ import java.util.stream.Stream;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.IteratorCell;
+import jtamaro.en.data.Lazy;
 import jtamaro.en.data.LazyCons;
 
 /**
  * Static methods for working with sequences.
+ * <p>
+ * Deconstruct a sequence with <code>isEmpty</code>, <code>first</code>, and <code>rest</code>.
+ * <p>
+ * Construct a sequence with <code>empty</code>, and <code>cons</code>, or with <code>of</code>.
  *
  * @see jtamaro.en.Sequence
  */
@@ -42,7 +47,9 @@ public final class Sequences {
    * Determines whether this is an empty sequence
    * (i.e., it has no elements).
    *
-   * @return true of the sequence is empty, false otherwise.
+   * @param <T>      the type of the elements in the sequence
+   * @param sequence the sequence to deconstruct
+   * @return         true if the sequence is empty, false otherwise
    */
   public static <T> boolean isEmpty(Sequence<T> sequence) {
     return sequence.isEmpty();
@@ -53,7 +60,9 @@ public final class Sequences {
   /**
    * Returns the first element of a non-empty sequence.
    *
-   * @return The first element of the given sequence.
+   * @param <T>      the type of the elements in the sequence
+   * @param sequence the sequence to deconstruct
+   * @return         the first element of the given sequence
    */
   public static <T> T first(Sequence<T> sequence) {
     assert !sequence.isEmpty() : "Cannot get the first element of an empty sequence";
@@ -65,7 +74,9 @@ public final class Sequences {
   /**
    * Returns the rest of a non-empty sequence.
    *
-   * @return The rest of the given sequence.
+   * @param <T>      the type of the elements in the sequence
+   * @param sequence the sequence to deconstruct
+   * @return         the rest of the given sequence
    */
   public static <T> Sequence<T> rest(Sequence<T> sequence) {
     assert !sequence.isEmpty() : "Cannot get the rest of an empty sequence";
@@ -76,10 +87,10 @@ public final class Sequences {
   //--- construction
 
   /**
-   * Create an empty Sequence.
+   * Constructs an empty sequence.
    *
-   * @param <T> The type of the elements in the Sequence
-   * @return A new empty Sequence.
+   * @param <T> the type of the elements in the sequence
+   * @return    a new empty sequence
    */
   public static <T> Sequence<T> empty() {
     return new Empty<>();
@@ -88,13 +99,13 @@ public final class Sequences {
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._cons%29%29
 
   /**
-   * Constructs a new Sequence that consists of the given first element in front of the given rest
+   * Constructs a sequence that consists of the given first element in front of the given rest
    * (prepends an element to the given rest).
    *
-   * @param <T>   The type of the elements in the Sequence
-   * @param first The first element in the new Sequence
-   * @param rest  The rest of the elements in the new Sequence
-   * @return A new Sequence that consists of the given first in front of the given rest.
+   * @param <T>   the type of the elements in the sequence
+   * @param first the first element in the new sequence
+   * @param rest  the rest of the elements in the new sequence
+   * @return      a new Sequence that consists of the given first in front of the given rest
    */
   public static <T> Sequence<T> cons(T first, Sequence<T> rest) {
     return new Cons<>(first, rest);
@@ -111,43 +122,43 @@ public final class Sequences {
   //--- lazy construction sequences
 
   /**
-   * Create a Sequence of integers starting from the given integer, counting upwards.
-   *
-   * <p>The sequence is infinite;
+   * Constructs a sequence of integers starting from the given integer, counting upwards.
+   * <p>
+   * The sequence is infinite;
    * once Integer.MAX_VALUE is reached, it wraps around to Integer.MIN_VALUE
    * and continues from there:
-   * <br>
+   * <p>
    * <code>from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...</code>
    *
    * @param from the value of the first element
-   * @return a new Sequence starting with the given number and counting up.
+   * @return     a new sequence starting with the given number and counting up
    */
   public static Sequence<Integer> from(int from) {
     return lazyCons(from, () -> from(from + 1), false);
   }
 
   /**
-   * Create a Sequence of integers starting at 0,
+   * Constructs a sequence of integers starting at 0,
    * with the last element being toExclusive - 1.
-   *
-   * <p><code>range(3) === of(0, 1, 2)</code>
+   * <p>
+   * <code>range(3) === of(0, 1, 2)</code>
    *
    * @param toExclusive the number that would come right after the last value of the sequence
-   * @return a new Sequence of integers starting at 0, and ending just before the given number.
+   * @return            a new sequence of integers starting at 0, and ending just before the given number
    */
   public static Sequence<Integer> range(int toExclusive) {
     return range(0, toExclusive);
   }
 
   /**
-   * Create a Sequence of integers starting at from,
+   * Constructs a sequence of integers starting at from,
    * with the last element being toExclusive - 1.
-   *
-   * <p><code>range(1, 3) === of(1, 2)</code>
+   * <p>
+   * <code>range(1, 3) === of(1, 2)</code>
    *
    * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
-   * @return a new Sequence of integers starting at 0, and ending just before the given number.
+   * @return            a new sequence of integers starting at 0, and ending just before the given number
    */
   public static Sequence<Integer> range(int from, int toExclusive) {
     return range(from, toExclusive, 1);
@@ -223,10 +234,25 @@ public final class Sequences {
     return map(i -> (char) i.intValue(), rangeClosed(from, (int) to, step));
   }
 
+  /**
+   * Constructs a sequence with the given <code>element</code> repeated an infinite number of times.
+   * 
+   * @param <T>     the type of the elements in the sequence
+   * @param element the element to repeat
+   * @return        an infinite sequence consisting of the given element repeated infinitely many times
+   */
   public static <T> Sequence<T> repeat(T element) {
     return lazyCons(element, () -> repeat(element), false);
   }
 
+  /**
+   * Constructs a sequence with the given <code>element</code> repeated <code>count</code> times.
+   * 
+   * @param <T>     the type of the elements in the sequence
+   * @param element the element to repeat
+   * @param count   the number of times to repeat the element (the length of the resulting sequence)
+   * @return        a sequence consisting of the given element repeated count times
+   */
   public static <T> Sequence<T> replicate(T element, int count) {
     assert count >= 0 : "n must be non-negative";
     if (count == 0) {
@@ -279,12 +305,20 @@ public final class Sequences {
     return sequence;
   }
 
+  // public static <T, U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
+  //   if (sequence.isEmpty()) {
+  //     return empty();
+  //   } else {
+  //     return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()), sequence.rest().hasDefiniteSize());
+  //   }
+  // }
   public static <T, U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
-    if (sequence.isEmpty()) {
-      return empty();
-    } else {
-      return lazyCons(f.apply(sequence.first()), () -> map(f, sequence.rest()), sequence.rest().hasDefiniteSize());
-    }
+    Function0<Sequence<U>> resolver = () -> (
+      sequence.isEmpty()
+      ? empty()
+      : cons(f.apply(sequence.first()), map(f, sequence.rest()))
+    );
+    return new Lazy<U>(resolver, sequence.hasDefiniteSize());
   }
 
   public static <T> Sequence<String> mapToString(Sequence<T> sequence) {
@@ -299,18 +333,28 @@ public final class Sequences {
     }
   }
 
+  // public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> sequence) {
+  //   if (sequence.isEmpty()) {
+  //     return sequence;
+  //   } else {
+  //     Sequence<T> current = sequence;
+  //     while (!current.isEmpty() && !predicate.apply(current.first())) {
+  //       current = current.rest();
+  //     }
+  //     final Sequence<T> finalCurrent = current;
+  //     return current.isEmpty() ? empty()
+  //         : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
+  //   }
+  // }
   public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> sequence) {
-    if (sequence.isEmpty()) {
-      return sequence;
-    } else {
-      Sequence<T> current = sequence;
-      while (!current.isEmpty() && !predicate.apply(current.first())) {
-        current = current.rest();
-      }
-      final Sequence<T> finalCurrent = current;
-      return current.isEmpty() ? empty()
-          : lazyCons(current.first(), () -> filter(predicate, finalCurrent.rest()), finalCurrent.rest().hasDefiniteSize());
-    }
+    Function0<Sequence<T>> resolver = () -> (
+      sequence.isEmpty()
+      ? sequence
+      : predicate.apply(sequence.first())
+        ? cons(sequence.first(), filter(predicate, sequence.rest()))
+        : filter(predicate, sequence.rest())
+    );
+    return new Lazy<T>(resolver, sequence.hasDefiniteSize());
   }
 
   // Naming inspired by:
@@ -429,11 +473,11 @@ public final class Sequences {
   // https://docs.racket-lang.org/htdp-langs/beginner.html#%28def._htdp-beginner._%28%28lib._lang%2Fhtdp-beginner..rkt%29._list%29%29
 
   /**
-   * Constructs a new Sequence that consists of the given elements.
+   * Constructs a sequence that consists of the given elements.
    *
-   * @param <T>      The type of the elements in the Sequence
-   * @param elements The elements in the new Sequence
-   * @return A new Sequence that consists of the given elements.
+   * @param <T>      the type of the elements in the sequence
+   * @param elements the elements in the new sequence
+   * @return         a new sequence that consists of the given elements
    */
   @SafeVarargs
   public static <T> Sequence<T> of(T... elements) {
@@ -463,12 +507,12 @@ public final class Sequences {
   }
 
   /**
-   * Returns a sequence of the lines in the given string (eager version).
+   * Constructs a sequence of the lines in the given string (eager version).
    * This will eagerly split the string and build the entire sequence,
-   * which means that the returned Sequence will have a definite size.
+   * which means that the returned sequence will have a definite size.
    *
-   * @param string the String to split into lines
-   * @return a Sequence of the lines in the given string, with a definite size
+   * @param string the string to split into lines
+   * @return       a sequence of the lines in the given string, with a definite size
    */
   public static Sequence<String> ofStringLines(String string) {
     final String[] lines = string.lines().toArray(String[]::new);
@@ -480,12 +524,12 @@ public final class Sequences {
   }
 
   /**
-   * Returns a sequence of the lines in the given string (lazy version).
+   * Constructs a sequence of the lines in the given string (lazy version).
    * This will lazily split the string and build sequence cells as needed,
    * which means that the returned Sequence will not have a definite size.
    *
-   * @param string the String to split into lines
-   * @return a Sequence of the lines in the given string, without a definite size
+   * @param string the string to split into lines
+   * @return       a sequence of the lines in the given string, without a definite size
    */
   public static Sequence<String> ofStringLinesLazy(String string) {
     return IteratorCell.fromIterator(string.lines().iterator());
