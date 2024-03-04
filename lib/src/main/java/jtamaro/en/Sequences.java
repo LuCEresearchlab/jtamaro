@@ -6,7 +6,6 @@ import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.IteratorCell;
 import jtamaro.en.data.Lazy;
-import jtamaro.en.data.LazyCons;
 
 /**
  * Static methods for working with sequences.
@@ -116,7 +115,7 @@ public final class Sequences {
    * Instead of providing the rest, we provide a lambda that will produce the rest on-demand.
    */
   private static <T> Sequence<T> lazyCons(T first, Function0<Sequence<T>> restSupplier, boolean hasDefiniteSize) {
-    return new LazyCons<>(first, restSupplier, hasDefiniteSize);
+    return new Lazy<>(() -> new Cons<>(first, restSupplier.apply()), hasDefiniteSize);
   }
 
   //--- lazy construction sequences
