@@ -36,27 +36,27 @@ public class Lazy<T> extends Sequence<T> {
     return resolvedCell == null;
   }
 
-  @Override
-  public T first() {
+  private void resolveCell() {
     if (isUnresolved()) {
       resolvedCell = resolver.apply();
     }
+  }
+
+  @Override
+  public T first() {
+    resolveCell();
     return resolvedCell.first();
   }
 
   @Override
   public Sequence<T> rest() {
-    if (isUnresolved()) {
-      resolvedCell = resolver.apply();
-    }
+    resolveCell();
     return resolvedCell.rest();
   }
 
   @Override
   public boolean isEmpty() {
-    if (isUnresolved()) {
-      resolvedCell = resolver.apply();
-    }
+    resolveCell();
     return resolvedCell.isEmpty();
   }
 
