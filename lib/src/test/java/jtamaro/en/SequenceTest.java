@@ -223,13 +223,13 @@ public class SequenceTest {
         map(s -> "(" + s + ")", fromStream("a\nb\nc".lines())));
   }
 
-  @Test(expected = RuntimeException.class)
+  @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoFirst() {
     Sequences.empty().first();
   }
 
 
-  @Test(expected = RuntimeException.class)
+  @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoRest() {
     Sequences.empty().rest();
   }

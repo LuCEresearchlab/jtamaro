@@ -6,12 +6,12 @@ public final class Empty<T> extends Sequence<T> {
 
   @Override
   public T first() {
-    throw new RuntimeException("Empty sequence has no first element");
+    throw new UnsupportedOperationException("Empty sequence has no first element");
   }
 
   @Override
   public Sequence<T> rest() {
-    throw new RuntimeException("Empty sequence has no rest");
+    throw new UnsupportedOperationException("Empty sequence has no rest");
   }
 
   @Override
