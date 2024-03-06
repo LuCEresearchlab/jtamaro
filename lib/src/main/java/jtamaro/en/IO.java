@@ -1,5 +1,7 @@
 package jtamaro.en;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import jtamaro.en.io.GifWriter;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.en.graphic.AbstractGraphic;
@@ -141,6 +143,14 @@ public final class IO {
       System.err.println(logMessage);
     }
     return null;
+  }
+
+  public static String readFile(Path path) {
+    try {
+      return Files.readString(path);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
