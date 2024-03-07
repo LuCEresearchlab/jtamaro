@@ -233,6 +233,44 @@ public final class Sequences {
     return map(i -> (char) i.intValue(), rangeClosed(from, (int) to, step));
   }
 
+  public static Sequence<Double> range(double from, double toExclusive, double step) {
+    assert step != 0.0 : "step must not be zero";
+    if (from == toExclusive) {
+      return empty();
+    } else if (step > 0.0) {
+      if (from > toExclusive) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> range(from + step, toExclusive, step), true);
+      }
+    } else {
+      if (from < toExclusive) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> range(from + step, toExclusive, step), true);
+      }
+    }
+  }
+
+  public static Sequence<Double> rangeClosed(double from, double to, double step) {
+    assert step != 0.0 : "step must not be zero";
+    if (from == to) {
+      return cons(from, empty());
+    } else if (step > 0.0) {
+      if (from > to) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> rangeClosed(from + step, to, step), true);
+      }
+    } else {
+      if (from < to) {
+        return empty();
+      } else {
+        return lazyCons(from, () -> rangeClosed(from + step, to, step), true);
+      }
+    }
+  }
+
   /**
    * Constructs a sequence with the given <code>element</code> repeated an infinite number of times.
    * 
