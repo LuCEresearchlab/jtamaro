@@ -74,6 +74,14 @@ public abstract class Sequence<T> implements Iterable<T> {
     };
   }
 
+  @Override
+  public boolean equals(Object other) {
+    return other == this
+        || (other instanceof Sequence<?> that
+        && isEmpty() == that.isEmpty()
+        && (isEmpty() || first().equals(that.first()) && rest().equals(that.rest())));
+  }
+
   //--- TODO: Should we add get, and indexof, and length, and even set?
   //--- TODO: If yes, move all that into the Sequences class.
   public T get(int index) {

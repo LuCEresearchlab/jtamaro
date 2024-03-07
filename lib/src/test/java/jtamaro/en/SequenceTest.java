@@ -2,6 +2,9 @@ package jtamaro.en;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import jtamaro.en.data.Cons;
+import jtamaro.en.data.Empty;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static jtamaro.en.Pairs.pair;
@@ -42,7 +45,7 @@ public class SequenceTest {
 
 
   public static <T> String toString(Sequence<T> sequence) {
-    return foldRight("]", (e, r) -> e+r, cons("[", intersperse(", ", mapToString(sequence))));
+    return foldRight("]", (e, r) -> e + r, cons("[", intersperse(", ", mapToString(sequence))));
   }
 
   public static <T> void assertSequenceEquals(Sequence<T> expected, Sequence<T> actual) {
@@ -232,5 +235,45 @@ public class SequenceTest {
   @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoRest() {
     Sequences.empty().rest();
+  }
+
+  @Test
+  public void testEqualsBothEmpty() {
+    Assert.assertEquals(empty(), new Empty<>());
+  }
+
+  @Test
+  public void testNotEqualsEmptySingleCons() {
+    Assert.assertNotEquals(empty(), of(1));
+  }
+
+  @Test
+  public void testNotEqualsSingleCons() {
+    Assert.assertNotEquals(of(1), of(2));
+  }
+
+  @Test
+  public void testEqualsTwoCons() {
+    Assert.assertEquals(of("1", "2"), new Cons<>("1", new Cons<>("2", new Empty<>())));
+  }
+
+  @Test
+  public void testEqualsConsMap() {
+    Assert.assertEquals(of("1", "2"), map(String::valueOf, of(1, 2)));
+  }
+
+  @Test
+  public void testNotEqualsSecondElem() {
+    Assert.assertNotEquals(of("1", "2"), map(String::valueOf, of(1, 3)));
+  }
+
+  @Test
+  public void testNotEqualsMoreElems() {
+    Assert.assertNotEquals(of(1, 2), of(1, 2, 3));
+  }
+
+  @Test
+  public void testNotEqualsLessElems() {
+    Assert.assertNotEquals(of(1, 2, 3), of(1, 2));
   }
 }
