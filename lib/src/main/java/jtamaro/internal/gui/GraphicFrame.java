@@ -1,5 +1,6 @@
 package jtamaro.internal.gui;
 
+import jtamaro.en.Graphic;
 import jtamaro.internal.io.ClipboardUtil;
 import jtamaro.internal.io.PngWriter;
 import jtamaro.internal.representation.GraphicImpl;
@@ -92,6 +93,11 @@ public class GraphicFrame extends JFrame {
       }
     });
     pack();
+  }
+
+  public GraphicFrame(GraphicImpl graphic) {
+    this();
+    setGraphic(graphic);
   }
 
   /**

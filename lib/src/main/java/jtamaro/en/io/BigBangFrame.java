@@ -1,20 +1,24 @@
 package jtamaro.en.io;
 
+import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import jtamaro.en.Graphic;
 import jtamaro.en.Sequence;
 import jtamaro.en.graphic.AbstractGraphic;
 import jtamaro.internal.gui.GraphicCanvas;
 import jtamaro.internal.gui.RenderOptions;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-
-import static jtamaro.en.Sequences.*;
+import static jtamaro.en.Sequences.cons;
+import static jtamaro.en.Sequences.empty;
+import static jtamaro.en.Sequences.map;
+import static jtamaro.en.Sequences.reduce;
 
 
 final class BigBangFrame<M> extends JFrame {
