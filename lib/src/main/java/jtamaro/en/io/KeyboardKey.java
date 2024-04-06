@@ -1,7 +1,6 @@
 package jtamaro.en.io;
 
 import java.awt.event.KeyEvent;
-
 import javax.swing.JComponent;
 
 
@@ -28,11 +27,31 @@ public final class KeyboardKey {
   }
 
   public KeyboardKey(final int keyCode) {
-    this.event = new KeyEvent(new JComponent() {}, 0, 0, 0, keyCode, KeyEvent.CHAR_UNDEFINED);
+    this.event = new KeyEvent(new JComponent() {
+    }, 0, 0, 0, keyCode, KeyEvent.CHAR_UNDEFINED);
   }
 
   public int getCode() {
     return event.getKeyCode();
   }
 
+  @Override
+  public String toString() {
+    return switch (event.getKeyCode()) {
+      case LEFT -> "KeyboardKey.LEFT";
+      case RIGHT -> "KeyboardKey.RIGHT";
+      case UP -> "KeyboardKey.UP";
+      case DOWN -> "KeyboardKey.DOWN";
+      case DELETE -> "KeyboardKey.DELETE";
+      case BACK_SPACE -> "KeyboardKey.BACK_SPACE";
+      case SHIFT -> "KeyboardKey.SHIFT";
+      case CONTROL -> "KeyboardKey.CONTROL";
+      case ALT -> "KeyboardKey.ALT";
+      case META -> "KeyboardKey.META";
+      case ENTER -> "KeyboardKey.ENTER";
+      case ESCAPE -> "KeyboardKey.ESCAPE";
+      case TAB -> "KeyboardKey.TAB";
+      default -> "KeyboardKey[char=" + event.getKeyChar() + ", code=" + event.getKeyCode() + "]";
+    };
+  }
 }
