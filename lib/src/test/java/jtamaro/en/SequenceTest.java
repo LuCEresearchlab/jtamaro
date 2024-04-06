@@ -2,6 +2,7 @@ package jtamaro.en;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import org.junit.Assert;
@@ -26,6 +27,7 @@ import static jtamaro.en.Sequences.ofStringCharacters;
 import static jtamaro.en.Sequences.ofStringLines;
 import static jtamaro.en.Sequences.range;
 import static jtamaro.en.Sequences.rest;
+import static jtamaro.en.Sequences.stream;
 import static jtamaro.en.Sequences.take;
 import static jtamaro.en.Sequences.unzip;
 import static jtamaro.en.Sequences.zip;
@@ -275,5 +277,13 @@ public class SequenceTest {
   @Test
   public void testNotEqualsLessElems() {
     Assert.assertNotEquals(of(1, 2, 3), of(1, 2));
+  }
+
+  @Test
+  public void testStream() {
+    Assert.assertArrayEquals(
+        IntStream.range(1, 5).map(x -> x + 1).toArray(),
+        stream(range(1, 5)).mapToInt(x -> x + 1).toArray()
+    );
   }
 }

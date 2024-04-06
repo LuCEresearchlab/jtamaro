@@ -2,6 +2,7 @@ package jtamaro.en;
 
 import java.util.stream.Stream;
 
+import java.util.stream.StreamSupport;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
 import jtamaro.en.data.IteratorCell;
@@ -580,4 +581,7 @@ public final class Sequences {
     return IteratorCell.fromIterator(stream.iterator());
   }
 
+  public static <T> Stream<T> stream(Sequence<T> sequence) {
+    return StreamSupport.stream(sequence.spliterator(), false);
+  }
 }
