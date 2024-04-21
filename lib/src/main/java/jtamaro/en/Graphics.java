@@ -99,6 +99,18 @@ public final class Graphics {
   //-- unary graphic operations
 
   /**
+   * Name the given graphic.
+   * Naming a subgraphic allows us to identify it by name within the overall graphic.
+   * 
+   * @param name a name
+   * @param graphic the graphic
+   * @return a named graphic, which just wraps around the given graphic
+   */
+  public static Graphic name(String name, Graphic graphic) {
+    return new Name(name, graphic);
+  }
+
+  /**
    * Rotate the given graphic by the given angle.
    *
    * @param degrees angle or rotation in degrees, positive values rotate counter-clockwise,
