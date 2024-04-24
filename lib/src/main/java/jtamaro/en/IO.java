@@ -2,6 +2,8 @@ package jtamaro.en;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
 import jtamaro.en.io.GifWriter;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.en.graphic.AbstractGraphic;
@@ -131,7 +133,7 @@ public final class IO {
 
   /**
    * To&nbsp;Do placeholder method that shows an error message
-   *    * in STDERR and returns null;
+   * in STDERR and returns null;
    */
   public static <T> T todo(String message) {
     try {
@@ -145,6 +147,9 @@ public final class IO {
     return null;
   }
 
+  /**
+   * Read the contents of a file as a string.
+   */
   public static String readFile(Path path) {
     try {
       return Files.readString(path);
@@ -152,6 +157,29 @@ public final class IO {
       throw new RuntimeException(e);
     }
   }
+
+  /**
+   * Writes the contents of a given string to a file.
+   */
+  public static void writeFile(Path path, String content) {
+    try {
+      Files.writeString(path, content, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Writes the contents of a given byte array to a file.
+   */
+  public static void writeFile(Path path, byte[] content) {
+    try {
+      Files.write(path, content, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 
   /**
    * Open a window showing the given color.
