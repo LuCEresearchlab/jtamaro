@@ -12,7 +12,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
-archivesBaseName = rootProject.name
+base.archivesName = rootProject.name
 group = 'jtamaro'
 version = '24.0.1'
 

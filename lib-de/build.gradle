@@ -6,7 +6,7 @@ dependencies {
     implementation project(':lib')
 }
 
-archivesBaseName = rootProject.name + "-de"
+base.archivesName = rootProject.name + "-de"
 group = 'jtamaro'
 version = '1.0.0'
 
