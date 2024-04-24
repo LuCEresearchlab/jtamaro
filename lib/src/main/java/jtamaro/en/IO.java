@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
+import java.util.Scanner;
 import jtamaro.en.io.GifWriter;
 import jtamaro.internal.gui.GraphicFrame;
 import jtamaro.en.graphic.AbstractGraphic;
@@ -123,13 +124,19 @@ public final class IO {
   }
 
   /**
+   * Read a line from standard input.
+   */
+  public static String readLine() {
+    return new Scanner(System.in).nextLine();
+  }
+
+  /**
    * To&nbsp;Do placeholder method that shows an error message
    * in STDERR and returns null;
    */
   public static <T> T todo() {
     return todo("implement");
   }
-
 
   /**
    * To&nbsp;Do placeholder method that shows an error message
@@ -179,7 +186,6 @@ public final class IO {
       throw new RuntimeException(e);
     }
   }
-
 
   /**
    * Open a window showing the given color.
