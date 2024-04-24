@@ -19,23 +19,22 @@ public final class MouseButton {
    */
   public static final int SECONDARY = MouseEvent.BUTTON3;
 
-  private final MouseEvent event;
+  private final int button;
 
   public MouseButton(final MouseEvent event) {
-    this.event = event;
+    this(event.getButton());
   }
 
   public MouseButton(final int button) {
-    this.event = new MouseEvent(new JComponent() {}, 0, 0, 0, 0, 0, 0, false, button);
+    this.button = button;
   }
 
   public int getButton() {
-    return event.getButton();
+    return button;
   }
 
   @Override
   public String toString() {
-    final int button = event.getButton();
     return switch (button) {
       case PRIMARY -> "MouseButton.PRIMARY";
       case AUXILIARY -> "MouseButton.AUXILIARY";
