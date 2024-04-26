@@ -1,7 +1,6 @@
 package jtamaro.en;
 
 import java.util.stream.Stream;
-
 import java.util.stream.StreamSupport;
 import jtamaro.en.data.Cons;
 import jtamaro.en.data.Empty;
@@ -49,7 +48,7 @@ public final class Sequences {
    *
    * @param <T>      the type of the elements in the sequence
    * @param sequence the sequence to deconstruct
-   * @return         true if the sequence is empty, false otherwise
+   * @return true if the sequence is empty, false otherwise
    */
   public static <T> boolean isEmpty(Sequence<T> sequence) {
     return sequence.isEmpty();
@@ -62,7 +61,7 @@ public final class Sequences {
    *
    * @param <T>      the type of the elements in the sequence
    * @param sequence the sequence to deconstruct
-   * @return         the first element of the given sequence
+   * @return the first element of the given sequence
    */
   public static <T> T first(Sequence<T> sequence) {
     assert !sequence.isEmpty() : "Cannot get the first element of an empty sequence";
@@ -76,7 +75,7 @@ public final class Sequences {
    *
    * @param <T>      the type of the elements in the sequence
    * @param sequence the sequence to deconstruct
-   * @return         the rest of the given sequence
+   * @return the rest of the given sequence
    */
   public static <T> Sequence<T> rest(Sequence<T> sequence) {
     assert !sequence.isEmpty() : "Cannot get the rest of an empty sequence";
@@ -90,7 +89,7 @@ public final class Sequences {
    * Constructs an empty sequence.
    *
    * @param <T> the type of the elements in the sequence
-   * @return    a new empty sequence
+   * @return a new empty sequence
    */
   public static <T> Sequence<T> empty() {
     return new Empty<>();
@@ -105,7 +104,7 @@ public final class Sequences {
    * @param <T>   the type of the elements in the sequence
    * @param first the first element in the new sequence
    * @param rest  the rest of the elements in the new sequence
-   * @return      a new Sequence that consists of the given first in front of the given rest
+   * @return a new Sequence that consists of the given first in front of the given rest
    */
   public static <T> Sequence<T> cons(T first, Sequence<T> rest) {
     return new Cons<>(first, rest);
@@ -131,7 +130,7 @@ public final class Sequences {
    * <code>from, from+1, ..., Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE+1, ...</code>
    *
    * @param from the value of the first element
-   * @return     a new sequence starting with the given number and counting up
+   * @return a new sequence starting with the given number and counting up
    */
   public static Sequence<Integer> from(int from) {
     return lazyCons(from, () -> from(from + 1), false);
@@ -144,7 +143,7 @@ public final class Sequences {
    * <code>range(3) === of(0, 1, 2)</code>
    *
    * @param toExclusive the number that would come right after the last value of the sequence
-   * @return            a new sequence of integers starting at 0, and ending just before the given number
+   * @return a new sequence of integers starting at 0, and ending just before the given number
    */
   public static Sequence<Integer> range(int toExclusive) {
     return range(0, toExclusive);
@@ -158,7 +157,7 @@ public final class Sequences {
    *
    * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
-   * @return            a new sequence of integers starting at 0, and ending just before the given number
+   * @return a new sequence of integers starting at 0, and ending just before the given number
    */
   public static Sequence<Integer> range(int from, int toExclusive) {
     return range(from, toExclusive, 1);
@@ -274,10 +273,10 @@ public final class Sequences {
 
   /**
    * Constructs a sequence with the given <code>element</code> repeated an infinite number of times.
-   * 
+   *
    * @param <T>     the type of the elements in the sequence
    * @param element the element to repeat
-   * @return        an infinite sequence consisting of the given element repeated infinitely many times
+   * @return an infinite sequence consisting of the given element repeated infinitely many times
    */
   public static <T> Sequence<T> repeat(T element) {
     return lazyCons(element, () -> repeat(element), false);
@@ -285,11 +284,11 @@ public final class Sequences {
 
   /**
    * Constructs a sequence with the given <code>element</code> repeated <code>count</code> times.
-   * 
+   *
    * @param <T>     the type of the elements in the sequence
    * @param element the element to repeat
    * @param count   the number of times to repeat the element (the length of the resulting sequence)
-   * @return        a sequence consisting of the given element repeated count times
+   * @return a sequence consisting of the given element repeated count times
    */
   public static <T> Sequence<T> replicate(T element, int count) {
     assert count >= 0 : "n must be non-negative";
@@ -352,9 +351,9 @@ public final class Sequences {
   // }
   public static <T, U> Sequence<U> map(Function1<T, U> f, Sequence<T> sequence) {
     Function0<Sequence<U>> resolver = () -> (
-      sequence.isEmpty()
-      ? empty()
-      : cons(f.apply(sequence.first()), map(f, sequence.rest()))
+        sequence.isEmpty()
+            ? empty()
+            : cons(f.apply(sequence.first()), map(f, sequence.rest()))
     );
     return new Lazy<U>(resolver, sequence.hasDefiniteSize());
   }
@@ -386,11 +385,11 @@ public final class Sequences {
   // }
   public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> sequence) {
     Function0<Sequence<T>> resolver = () -> (
-      sequence.isEmpty()
-      ? sequence
-      : predicate.apply(sequence.first())
-        ? cons(sequence.first(), filter(predicate, sequence.rest()))
-        : filter(predicate, sequence.rest())
+        sequence.isEmpty()
+            ? sequence
+            : predicate.apply(sequence.first())
+            ? cons(sequence.first(), filter(predicate, sequence.rest()))
+            : filter(predicate, sequence.rest())
     );
     return new Lazy<T>(resolver, sequence.hasDefiniteSize());
   }
@@ -515,7 +514,7 @@ public final class Sequences {
    *
    * @param <T>      the type of the elements in the sequence
    * @param elements the elements in the new sequence
-   * @return         a new sequence that consists of the given elements
+   * @return a new sequence that consists of the given elements
    */
   @SafeVarargs
   public static <T> Sequence<T> of(T... elements) {
@@ -550,7 +549,7 @@ public final class Sequences {
    * which means that the returned sequence will have a definite size.
    *
    * @param string the string to split into lines
-   * @return       a sequence of the lines in the given string, with a definite size
+   * @return a sequence of the lines in the given string, with a definite size
    */
   public static Sequence<String> ofStringLines(String string) {
     final String[] lines = string.lines().toArray(String[]::new);
@@ -567,7 +566,7 @@ public final class Sequences {
    * which means that the returned Sequence will not have a definite size.
    *
    * @param string the string to split into lines
-   * @return       a sequence of the lines in the given string, without a definite size
+   * @return a sequence of the lines in the given string, without a definite size
    */
   public static Sequence<String> ofStringLinesLazy(String string) {
     return IteratorCell.fromIterator(string.lines().iterator());
@@ -583,5 +582,21 @@ public final class Sequences {
 
   public static <T> Stream<T> stream(Sequence<T> sequence) {
     return StreamSupport.stream(sequence.spliterator(), false);
+  }
+
+  /**
+   * Compare two sequences. Returns true if all elements are
+   */
+  public static <T> boolean equalTo(Sequence<T> a, Sequence<T> b) {
+    Sequence<T> itrA = a;
+    Sequence<T> itrB = b;
+    while (!itrA.isEmpty() && !itrB.isEmpty()) {
+      if (!itrA.equals(itrB)) {
+        return false;
+      }
+      itrA = itrA.rest();
+      itrB = itrB.rest();
+    }
+    return itrA.isEmpty() && itrB.isEmpty();
   }
 }

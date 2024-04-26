@@ -60,6 +60,8 @@ public class SequenceTest {
     }
     assertTrue("There are more elements in expected: " + toString(e), isEmpty(e));
     assertTrue("There are more elements in actual: " + toString(a), isEmpty(a));
+    // For convenience, we also test here the Sequences.equalTo method
+    assertTrue("Sequences.equalTo fail", Sequences.equalTo(expected, actual));
   }
 
 
