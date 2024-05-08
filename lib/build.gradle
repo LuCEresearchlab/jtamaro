@@ -14,7 +14,7 @@ dependencies {
 
 base.archivesName = rootProject.name
 group = 'jtamaro'
-version = '24.0.2'
+version = '24.0.3'
 
 java {
     withJavadocJar()
