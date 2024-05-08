@@ -20,24 +20,26 @@ public final class KeyboardKey {
   public static final int ESCAPE = KeyEvent.VK_ESCAPE;
   public static final int TAB = KeyEvent.VK_TAB;
 
-  private final KeyEvent event;
+  private final int keyCode;
+  private final char keyChar;
 
   public KeyboardKey(final KeyEvent event) {
-    this.event = event;
+    this.keyCode = event.getKeyCode();
+    this.keyChar = event.getKeyChar();
   }
 
   public KeyboardKey(final int keyCode) {
-    this.event = new KeyEvent(new JComponent() {
-    }, 0, 0, 0, keyCode, KeyEvent.CHAR_UNDEFINED);
+    this.keyCode = keyCode;
+    this.keyChar = KeyEvent.CHAR_UNDEFINED;
   }
 
   public int getCode() {
-    return event.getKeyCode();
+    return keyCode;
   }
 
   @Override
   public String toString() {
-    return switch (event.getKeyCode()) {
+    return switch (keyCode) {
       case LEFT -> "KeyboardKey.LEFT";
       case RIGHT -> "KeyboardKey.RIGHT";
       case UP -> "KeyboardKey.UP";
@@ -51,7 +53,7 @@ public final class KeyboardKey {
       case ENTER -> "KeyboardKey.ENTER";
       case ESCAPE -> "KeyboardKey.ESCAPE";
       case TAB -> "KeyboardKey.TAB";
-      default -> "KeyboardKey[char=" + event.getKeyChar() + ", code=" + event.getKeyCode() + "]";
+      default -> "KeyboardKey[char=" + keyChar + ", code=" + keyCode + "]";
     };
   }
 }
