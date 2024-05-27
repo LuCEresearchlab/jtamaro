@@ -129,6 +129,9 @@ final class BigBangFrame<M> extends JFrame {
   }
 
   private void handle(final TraceEvent event) {
+    if (!timer.isRunning()) {
+      return;
+    }
     trace.append(event);
     M before = state.getModel();
     M after = event.process(bang, before);
