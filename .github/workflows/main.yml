@@ -1,4 +1,4 @@
-name: JTamaro CI
+qname: JTamaro CI
 
 on:
   push:
