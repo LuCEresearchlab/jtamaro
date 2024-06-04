@@ -2,5 +2,4 @@ rootProject.name = 'jtamaro'
 
 include 'example'
 include 'lib'
-include 'lib-de'
 include 'music'
