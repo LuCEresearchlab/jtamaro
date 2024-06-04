@@ -1,91 +1,103 @@
 # JTamaro
 
-JTamaro is a Java educational library designed for teaching problem decomposition using graphics.
+JTamaro is a Java educational library designed for teaching problem
+decomposition using graphics.
 
-It follows the same philosphy as its sister project, PyTamaro for Python.
+It follows the same philosophy as its sister project,
+[PyTamaro](https://github.com/LuceResearchLab/pytamaro) for Python.
 
-## Usage
+## Components
+
+### `data`
+
+Provides implementation for the following types:
+
+- `Function{0-4}`: interfaces for function objects with up to 4 arguments
+- `Option`: the Option(al) / Maybe monad. Used to handle errors
+- `Pair`: tuple of two elements
+- `Sequence`: ordered list of elements of a certain type
+
+### `graphic`
 
 There are two different ways to use JTamaro:
 
-* The "functional" way, which does not require an understanding of inheritance
-* The "object-oriented" way, which can be used to discuss inheritance
+- The "functional" way, which does not require an understanding of inheritance
+- The "object-oriented" way, which can be used to discuss inheritance
 
-Both ways use the type `Graphic` (or `Grafik` in the German localization).
-The functional way (class `jtamaro.en.Graphics`) provides static methods to construct and compose graphics.
-The object-oriented way (package `jtamaro.en.graphic`) uses a class hierarchy for the different kinds of graphics
+Both ways use the type `Graphic`.
+The functional way (class `jtamaro.graphic.Graphics`) provides static methods to
+construct and compose graphics.
+The object-oriented way (package `jtamaro.graphic`) uses a class hierarchy
+for the different kinds of graphics
 and operators on graphics.
 
-### Functional (requires static methods)
+#### Functional (requires static methods)
 
 ```java
-import jtamaro.en.Graphic;
-import jtamaro.en.Colors;
-import jtamaro.en.Graphics;
+import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Colors;
+import jtamaro.graphic.Graphics;
 
 Graphic h = Graphics.rectangle(200, 60, Colors.WHITE);
+
 Graphic v = Graphics.rectangle(60, 200, Colors.WHITE);
+
 Graphic cross = Graphics.overlay(h, v);
 ```
 
-Using static imports, we can eliminate the need for mentioning class Graphics in each call:
+Using static imports, we can eliminate the need for mentioning class Graphics in
+each call:
 
 ```java
-import jtamaro.en.Graphic;
-import static jtamaro.en.Colors.*;
-import static jtamaro.en.Graphics.*;
+import jtamaro.graphic.Graphic;
+
+import static jtamaro.graphic.Colors.*;
+import static jtamaro.graphic.Graphics.*;
 
 Graphic h = rectangle(200, 60, WHITE);
+
 Graphic v = rectangle(60, 200, WHITE);
+
 Graphic cross = overlay(h, v);
 ```
 
-### Object-Oriented (requires subtyping)
+#### Object-Oriented (requires subtyping)
 
 ```java
-import jtamaro.en.Graphic;
-import jtamaro.en.Colors;
-import jtamaro.en.graphics.Rectangle;
-import jtamaro.en.graphics.Overlay;
+import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Colors;
+import jtamaro.graphic.Rectangle;
+import jtamaro.graphic.Overlay;
 
 Graphic h = new Rectangle(200, 60, Colors.WHITE);
+
 Graphic v = new Rectangle(60, 200, Colors.WHITE);
+
 Graphic cross = new Overlay(h, v);
 ```
 
-## IO
+### `io`
 
 The colors and graphics are pure.
 Code that performs side-effects (e.g., showing a graphic on the screen)
 is accessible through methods of class `IO`:
 
 ```java
-import static jtamaro.en.Colors.*;
-import static jtamaro.en.Graphics.*;
-import static jtamaro.en.IO.*;
+import static jtamaro.graphic.Colors.*;
+import static jtamaro.graphic.Graphics.*;
+import static jtamaro.IO.*;
 
-show(rectangle(200, 100, RED))
+show(rectangle(200, 100,RED))
 ```
-
-## Implementation
-
-The implementation is "hidden away" in packages `jtamaro.internal.**`.
-Students are only confronted with the localized API in packages `jtamaro.LOCALE.**`.
-
-The localized APIs delegate to the internal implementation.
-The APIs provide classes (and methods) that have localized names,
-and those classes delegate all work to the corresponding implementation classes.
-
-Color functionality is delegated to class `ColorImpl`.
-Graphic functionality is delegated to class `GraphicImpl` and its subclasses.
 
 ## Build
 
 This project uses Gradle.
-It contains two subprojects:
+It contains multiple subprojects:
 
-* `lib` - the JTamaro library
-* `demo-app` - an application that contains some demos that use the library
+* `lib` - the main jtamaro module. Includes the data structure, graphics and I/O
+* `music` - midi-based music library that allows to play notes and chords
+* `demo-app` - an application that contains some demos that use of the library
 
 To build everything and run the demo app:
 
@@ -98,22 +110,22 @@ with `main` methods in the `demo-app` directory
 from within an IDE that understands gradle (e.g., VS Code)
 and thus will find (and if needed build) the library.
 
-To just build the library's jar file for usage in other projects:
+To just build a library's jar file for usage in other projects:
 
 ```bash
 ./gradlew :lib:jar
 ```
 
-The output will be in `lib/build/libs/jtamaro-*.jar`
+The output will be in `lib/build/libs/lib-*.jar`
 
 ## Use
 
-### Use in PF2 labs
+### Use in gradle projects
 
 First, publish the library in your local maven repo using
 
 ```bash
-./gradlew :lib:publishMavenJavaPublicationToMavenLocal
+./gradlew publishMavenJavaPublicationToMavenLocal
 ```
 
 Then, from the root of the PF2 project repo, copy the published artifacts from
@@ -127,55 +139,14 @@ And then import the dependency in your build.gradle file:
 
 ```groovy
 repositories {
-    // ...
-    maven { url { 'deps' } } // Add local maven repo
+  // ...
+  maven { url { 'deps' } } // Add local maven repo
 }
 
 dependencies {
-    // ...
-    implementation 'jtamaro:jtamaro:1.0.0' // Add dependency
+  jtamaroVersion = "25.0.0"
+  // Import the libs that you need
+  implementation "jtamaro:lib:${jtamaroVersion}"
+  implementation "jtamaro:music:${jtamaroVersion}"
 }
-```
-
-### Use in BlueJ
-
-The library can be stored as a JAR file inside the +libs directory of a BlueJ project;
-this way BlueJ will pick it up and one can import names using normal import statements.
-
-In the BlueJ Code Pad, one can enter the necessary import statements
-(which is a bit painful),
-and then enter any JTamaro expressions.
-
-### Use in JShell
-
-To use the library in JShell, using a startup script that configures the class path
-(in the following example, referring to a JAR in the +libs directory)
-and then imports all the necessary classes could be useful:
-
-```jsh
-/env -class-path +libs/jtamaro-1.0.0.jar
-import static jtamaro.en.IO.*;
-import static jtamaro.en.Color.*;
-import static jtamaro.en.Colors.*;
-import static jtamaro.en.Graphics.*;
-import static jtamaro.en.Sequences.*;
-import static jtamaro.en.Pairs.*;
-import static jtamaro.en.Points.*;
-import jtamaro.en.Graphic;
-import jtamaro.en.Color;
-import jtamaro.en.Pair;
-import jtamaro.en.Sequence;
-import jtamaro.en.Point;
-```
-
-Then one can launch JShell as follows, and all the names will be imported already:
-
-```sh
-jshell startup.jsh
-```
-
-This way, one can immediately entire expressions like the following:
-
-```java
-showFilmStrip(map(i->rectangle(i % 10 * 10, 100, RED), range(10)), 100, 100)
 ```
