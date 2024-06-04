@@ -53,6 +53,10 @@ public class TextFieldDemo {
       }
       return this;
     }
+
+    TextField clear() {
+      return new TextField("", 0, cursorVisible);
+    }
   }
 
 
@@ -66,7 +70,9 @@ public class TextFieldDemo {
     return switch (key.keyCode()) {
       case KeyboardKey.LEFT -> textField.cursorLeft();
       case KeyboardKey.RIGHT -> textField.cursorRight();
-      case KeyboardKey.BACK_SPACE -> textField.backspace();
+      case KeyboardKey.BACK_SPACE -> key.hasShiftModifier()
+          ? textField.clear()
+          : textField.backspace();
       default -> textField;
     };
   }

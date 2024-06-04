@@ -1,6 +1,8 @@
 package jtamaro.io.graphic;
 
 import java.awt.event.KeyEvent;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import jtamaro.data.Function2;
 
 /**
@@ -9,7 +11,7 @@ import jtamaro.data.Function2;
  * @see Interaction#withKeyPressHandler(Function2)
  * @see Interaction#withKeyReleaseHandler(Function2)
  */
-public record KeyboardKey(int keyCode, char keyChar) {
+public record KeyboardKey(int keyCode, char keyChar, int modifiers) {
 
   public static final int LEFT = KeyEvent.VK_LEFT;
 
@@ -37,18 +39,49 @@ public record KeyboardKey(int keyCode, char keyChar) {
 
   public static final int TAB = KeyEvent.VK_TAB;
 
-
   public KeyboardKey(KeyEvent event) {
-    this(event.getKeyCode(), event.getKeyChar());
+    this(event.getKeyCode(), event.getKeyChar(), event.getModifiersEx());
   }
 
   public KeyboardKey(int keyCode) {
-    this(keyCode, KeyEvent.CHAR_UNDEFINED);
+    this(keyCode, KeyEvent.CHAR_UNDEFINED, 0);
+  }
+
+  public KeyboardKey(int keyCode, int modifiers) {
+    this(keyCode, KeyEvent.CHAR_UNDEFINED, modifiers);
+  }
+
+  public boolean hasAltModifier() {
+    return (modifiers & KeyEvent.ALT_DOWN_MASK) != 0;
+  }
+
+  public boolean hasAltGrModifier() {
+    return (modifiers & KeyEvent.ALT_GRAPH_DOWN_MASK) != 0;
+  }
+
+  public boolean hasCtrlModifier() {
+    return (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0;
+  }
+
+  public boolean hasMetaModifier() {
+    return (modifiers & KeyEvent.META_DOWN_MASK) != 0;
+  }
+
+  public boolean hasShiftModifier() {
+    return (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0;
   }
 
   @Override
   public String toString() {
-    return switch (keyCode) {
+    final String modifiers = Stream.of(
+        hasAltModifier() ? "ALT" : "",
+        hasAltGrModifier() ? "ALT_GR" : "",
+        hasCtrlModifier() ? "CTRL" : "",
+        hasMetaModifier() ? "META" : "",
+        hasShiftModifier() ? "SHIFT" : ""
+    ).filter(s -> !s.isEmpty()).collect(Collectors.joining("+"));
+
+    final String knownChar = switch (keyCode) {
       case LEFT -> "KeyboardKey.LEFT";
       case RIGHT -> "KeyboardKey.RIGHT";
       case UP -> "KeyboardKey.UP";
@@ -62,7 +95,13 @@ public record KeyboardKey(int keyCode, char keyChar) {
       case ENTER -> "KeyboardKey.ENTER";
       case ESCAPE -> "KeyboardKey.ESCAPE";
       case TAB -> "KeyboardKey.TAB";
-      default -> "KeyboardKey[char=" + keyChar + ", code=" + keyCode + "]";
+      default -> "";
     };
+
+    if (knownChar.isEmpty()) {
+      return "KeyboardKey[char=" + keyChar + ", code=" + keyCode + ", modifiers=" + modifiers + "]";
+    } else {
+      return knownChar + modifiers;
+    }
   }
 }
