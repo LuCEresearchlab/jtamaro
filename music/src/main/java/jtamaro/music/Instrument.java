@@ -1,12 +1,8 @@
-package jtamaro.en.music;
-
-import static jtamaro.en.IO.playChords;
-import static jtamaro.en.Music.chord;
-import static jtamaro.en.Sequences.*;
+package jtamaro.music;
 
 import java.util.Arrays;
-import jtamaro.en.Sequence;
-
+import jtamaro.data.Sequence;
+import jtamaro.data.Sequences;
 
 /**
  * A MIDI Instrument.
@@ -144,6 +140,7 @@ public enum Instrument {
 
 
   private final int pcNumber;
+
   private final InstrumentFamily family;
 
 
@@ -154,7 +151,7 @@ public enum Instrument {
 
   /**
    * Get the "program change" number, in the form shown to users (1-based).
-   * 
+   *
    * @return program change number (1-based)
    */
   public int pcNumber() {
@@ -163,7 +160,7 @@ public enum Instrument {
 
   /**
    * Get the "program change" number, in the form used inside the system (0-based).
-   * 
+   *
    * @return program change number (0-based)
    */
   public int internalPcNumber() {
@@ -185,11 +182,11 @@ public enum Instrument {
 
   /**
    * Get a sequence of all available instruments.
-   * 
+   *
    * @return a sequence of the available instruments.
    */
   public static Sequence<Instrument> instruments() {
-    return fromStream(Arrays.stream(values()));
+    return Sequences.fromStream(Arrays.stream(values()));
   }
 
 
@@ -197,16 +194,15 @@ public enum Instrument {
     for (Instrument instrument : values()) {
       System.out.println(instrument);
       Note root = Notes.C4;
-      playChords(
-        of(
-          chord(of(root)),
-          Chord.MAJOR_TRIAD.on(root)
-        ), 
-        80,
-        0,
-        instrument
+      MusicIO.playChords(
+          Sequences.of(
+              Music.chord(Sequences.of(root)),
+              Chord.MAJOR_TRIAD.on(root)
+          ),
+          80,
+          0,
+          instrument
       );
     }
   }
-
 }

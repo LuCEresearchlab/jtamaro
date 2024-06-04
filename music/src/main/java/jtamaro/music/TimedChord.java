@@ -1,19 +1,17 @@
-package jtamaro.en.music;
+package jtamaro.music;
 
 import javax.sound.midi.Receiver;
-
-import static jtamaro.en.Sequences.*;
-
+import jtamaro.data.Sequences;
 
 public record TimedChord(int beats, AbsoluteChord chord) {
-  
+
   public void play(Receiver receiver, int channel, int msPerBeat) {
     for (Note note : chord.notes()) {
       note.on(receiver, channel);
     }
     try {
       System.out.println("chord -- " + System.nanoTime() + " (" + beats + ")");
-      Thread.sleep(beats * msPerBeat);
+      Thread.sleep((long) beats * msPerBeat);
     } catch (InterruptedException ex) {
       ex.printStackTrace();
     }
@@ -21,8 +19,11 @@ public record TimedChord(int beats, AbsoluteChord chord) {
       note.off(receiver, channel);
     }
   }
+
   public String toString() {
-    return reduce("", (a,e)->a+e, intersperse("-", map(n->n.toString(), chord.notes())));
+    return Sequences.reduce("",
+        (a, e) -> a + e,
+        Sequences.intersperse("-", Sequences.map(Note::toString, chord.notes())));
   }
 
 }

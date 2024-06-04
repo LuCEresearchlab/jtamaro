@@ -1,13 +1,8 @@
-package jtamaro.en;
+package jtamaro.music;
 
-import static jtamaro.en.Sequences.of;
+import jtamaro.data.Sequence;
 
-import jtamaro.en.music.AbsoluteChord;
-import jtamaro.en.music.Note;
-import jtamaro.en.music.Octave;
-import jtamaro.en.music.PitchClass;
-import jtamaro.en.music.TimedChord;
-
+import static jtamaro.data.Sequences.of;
 
 /**
  * Pitch Classes and Tone Names
@@ -34,7 +29,6 @@ import jtamaro.en.music.TimedChord;
  * <p>Scientific Pitch Notation: <code>C0, F♯4, D♭6</code>
  *
  * <p>Helmholtz pitch notation: <code>f♯'</code>
- *
  *
  * @see <a href="https://en.wikipedia.org/wiki/Pitch_(music)">Pitch</a>
  * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific notation</a>

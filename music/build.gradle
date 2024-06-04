@@ -1,0 +1,7 @@
+plugins {
+  id 'jvm-lib-conventions'
+}
+
+dependencies {
+  api project(":lib")
+}

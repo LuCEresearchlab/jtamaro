@@ -1,18 +1,13 @@
-package jtamaro.en.music;
-
-import static jtamaro.en.IO.*;
-import static jtamaro.en.Music.*;
-import static jtamaro.en.Sequences.*;
+package jtamaro.music;
 
 import java.util.Arrays;
-import jtamaro.en.Sequence;
-
+import jtamaro.data.Sequence;
+import jtamaro.data.Sequences;
 
 /**
- * In MIDI, percussion instruments corresponds to notes.
- * If those note numbers are played on channel 10,
- * then the sounds produced is that of the percussion instrument.
- * 
+ * In MIDI, percussion instruments corresponds to notes. If those note numbers are played on channel
+ * 10, then the sounds produced is that of the percussion instrument.
+ *
  * This quirky design makes it somewhat difficult to cleanly model things.
  * TODO: Improve the design of Note/Percussion/AbsoluteChord/TimedChord.
  */
@@ -69,7 +64,7 @@ public enum Percussion {
 
   private final int midiNoteNumber;
 
-  private Percussion(int midiNoteNumber) {
+  Percussion(int midiNoteNumber) {
     this.midiNoteNumber = midiNoteNumber;
   }
 
@@ -88,11 +83,11 @@ public enum Percussion {
 
   /**
    * Get a sequence of all available percussion instruments.
-   * 
+   *
    * @return a sequence of the available percussion instruments.
    */
   public static Sequence<Percussion> percussions() {
-    return fromStream(Arrays.stream(values()));
+    return Sequences.fromStream(Arrays.stream(values()));
   }
 
   public static void main(String[] args) {
@@ -104,32 +99,32 @@ public enum Percussion {
     //playDrumNotes(map(pe->pe.asNote(), percussions()), 80);
 
     System.out.println("Play a piece:");
-    playDrumChords(
-      of(
-        chord(of(ACOUSTIC_BASS_DRUM.asNote())),
-        chord(of(ACOUSTIC_SNARE.asNote())),
-        chord(of(ACOUSTIC_BASS_DRUM.asNote())),
-        chord(of(ACOUSTIC_SNARE.asNote())),
-        chord(of(CLOSED_HI_HAT.asNote())),
-        chord(of(OPEN_HI_HAT.asNote())),
-        chord(of(LOW_FLOOR_TOM.asNote())),
-        chord(of(HIGH_FLOOR_TOM.asNote())),
-        chord(of(LOW_TOM.asNote())),
-        chord(of(LOW_MID_TOM.asNote())),
-        chord(of(HI_MID_TOM.asNote())),
-        chord(of(HIGH_TOM.asNote())),
-        chord(of(CRASH_CYMBAL_1.asNote())),
-        chord(of(LOW_FLOOR_TOM.asNote(), HIGH_TOM.asNote()))
-      ),
-      80
+    MusicIO.playDrumChords(
+        Sequences.of(
+            Music.chord(Sequences.of(ACOUSTIC_BASS_DRUM.asNote())),
+            Music.chord(Sequences.of(ACOUSTIC_SNARE.asNote())),
+            Music.chord(Sequences.of(ACOUSTIC_BASS_DRUM.asNote())),
+            Music.chord(Sequences.of(ACOUSTIC_SNARE.asNote())),
+            Music.chord(Sequences.of(CLOSED_HI_HAT.asNote())),
+            Music.chord(Sequences.of(OPEN_HI_HAT.asNote())),
+            Music.chord(Sequences.of(LOW_FLOOR_TOM.asNote())),
+            Music.chord(Sequences.of(HIGH_FLOOR_TOM.asNote())),
+            Music.chord(Sequences.of(LOW_TOM.asNote())),
+            Music.chord(Sequences.of(LOW_MID_TOM.asNote())),
+            Music.chord(Sequences.of(HI_MID_TOM.asNote())),
+            Music.chord(Sequences.of(HIGH_TOM.asNote())),
+            Music.chord(Sequences.of(CRASH_CYMBAL_1.asNote())),
+            Music.chord(Sequences.of(LOW_FLOOR_TOM.asNote(), HIGH_TOM.asNote()))
+        ),
+        80
     );
 
     System.out.println("Play each percussion instrument individually:");
     for (Percussion percussion : values()) {
       System.out.println(percussion);
-      playDrumNotes(
-        of(percussion.asNote()),
-        80
+      MusicIO.playDrumNotes(
+          Sequences.of(percussion.asNote()),
+          80
       );
     }
   }
