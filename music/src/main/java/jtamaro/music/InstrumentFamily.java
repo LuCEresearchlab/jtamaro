@@ -1,8 +1,7 @@
-package jtamaro.en.music;
+package jtamaro.music;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
 
 public enum InstrumentFamily {
 
@@ -24,9 +23,10 @@ public enum InstrumentFamily {
   SOUND_EFFECTS(121, 128);
 
   private final int minPcNumber;
+
   private final int maxPcNumber;
 
-  private InstrumentFamily(int minPcNumber, int maxPcNumber) {
+  InstrumentFamily(int minPcNumber, int maxPcNumber) {
     this.minPcNumber = minPcNumber;
     this.maxPcNumber = maxPcNumber;
   }
@@ -47,13 +47,13 @@ public enum InstrumentFamily {
   // convert XXX_XXX_XXX into Xxx Xxx Xxx
   public static String capitalizedName(String name) {
     return Arrays
-      .stream(name.split("_"))
-      .map(word -> word.isEmpty()
-        ? word
-        : Character.toTitleCase(word.charAt(0)) + word
-          .substring(1)
-          .toLowerCase())
-      .collect(Collectors.joining(" "));
+        .stream(name.split("_"))
+        .map(word -> word.isEmpty()
+            ? word
+            : Character.toTitleCase(word.charAt(0)) + word
+                .substring(1)
+                .toLowerCase())
+        .collect(Collectors.joining(" "));
   }
 
 }

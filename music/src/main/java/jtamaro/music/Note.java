@@ -1,12 +1,12 @@
-package jtamaro.en.music;
+package jtamaro.music;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
-
 /**
- * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Wikipedia: Scientific pitch notation</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Wikipedia: Scientific
+ * pitch notation</a>
  * @see <a href="https://en.wikipedia.org/wiki/Pitch_class">Wikipedia: Pitch class</a>
  */
 public record Note(int noteNumber) {
@@ -38,7 +38,7 @@ public record Note(int noteNumber) {
   }
 
   public String toString() {
-    return ""+noteNumber;
+    return "" + noteNumber;
   }
 
 }

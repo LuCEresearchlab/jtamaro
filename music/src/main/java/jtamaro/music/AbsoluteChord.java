@@ -1,7 +1,6 @@
-package jtamaro.en.music;
+package jtamaro.music;
 
-import jtamaro.en.Sequence;
-
+import jtamaro.data.Sequence;
 
 public record AbsoluteChord(Sequence<Note> notes) {
 

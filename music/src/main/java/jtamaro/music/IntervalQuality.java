@@ -1,21 +1,22 @@
-package jtamaro.en.music;
+package jtamaro.music;
 
 import java.util.HashMap;
 
-
 /**
- * https://en.wikipedia.org/wiki/Interval_(music)#Quality
- * https://www.musictheory.net/lessons/31
+ * https://en.wikipedia.org/wiki/Interval_(music)#Quality https://www.musictheory.net/lessons/31
  */
 public enum IntervalQuality {
 
-  DIMINISHED("d", "Diminished"), // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  DIMINISHED("d",
+      "Diminished"), // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
   MINOR("m", "Minor"),           // Seconds, Thirds, Sixths, Sevenths
   PERFECT("P", "Perfect"),       // Firsts, Fourths, Fifths, Eights
   MAJOR("M", "Major"),           // Seconds, Thirds, Sixths, Sevenths
-  AUGMENTED("A", "Augmented");   // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  AUGMENTED("A",
+      "Augmented");   // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
 
   private final String symbol;
+
   private final String name;
 
   private IntervalQuality(String symbol, String name) {
@@ -32,7 +33,7 @@ public enum IntervalQuality {
   }
 
   // https://en.wikipedia.org/wiki/Inversion_(music)#Intervals
-  private static final HashMap<IntervalQuality,IntervalQuality> INVERSES;
+  private static final HashMap<IntervalQuality, IntervalQuality> INVERSES;
 
   static {
     INVERSES = new HashMap<>();
