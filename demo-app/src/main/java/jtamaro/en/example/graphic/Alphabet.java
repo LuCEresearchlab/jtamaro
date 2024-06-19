@@ -6,10 +6,10 @@ import jtamaro.en.Graphic;
 
 import java.util.HashMap;
 
-import static jtamaro.en.Colors.TRANSPARENT;
-import static jtamaro.en.Colors.hsl;
+import static jtamaro.en.Colors.*;
 import static jtamaro.en.Graphics.*;
 import static jtamaro.en.IO.show;
+import static jtamaro.en.Points.BOTTOM_LEFT;
 import static jtamaro.en.example.Toolbelt.*;
 
 
@@ -151,6 +151,30 @@ public class Alphabet {
   };
 
   private static final HashMap<Character, Function2<Double, Color, Graphic>> GLYPH_ELEMENTS = new HashMap<>();
+  private static final HashMap<Character, Function2<Double, Color, Graphic>> OUTLINE_GLYPH_ELEMENTS = new HashMap<>();
+  
+  private static final Color OUTLINE_COLOR = BLACK;
+  private static final double OUTLINE_FRACTION = 0.1;
+
+  private final static Graphic outlinedSquare(double size, Color color) {
+    return overlay(
+        square(size * (1 - 2 * OUTLINE_FRACTION), color), 
+        square(size, OUTLINE_COLOR)
+    );
+  }
+
+  private final static Graphic outlinedSector(double size, Color color) {
+    return compose(
+        compose(
+            pin(BOTTOM_LEFT, rectangle(size * (1 - OUTLINE_FRACTION), size * OUTLINE_FRACTION, BLACK)),
+            pin(BOTTOM_LEFT, rectangle(size * OUTLINE_FRACTION, size * (1 - OUTLINE_FRACTION), BLACK))
+        ),
+        compose(
+            pin(BOTTOM_LEFT, circularSector(size * (1 - OUTLINE_FRACTION), 90, color)),
+            pin(BOTTOM_LEFT, circularSector(size, 90, OUTLINE_COLOR))
+        )
+    );
+  }
 
   static {
     GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
@@ -159,9 +183,15 @@ public class Alphabet {
     GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, circularSector(size, 90, color)));
     GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, circularSector(size, 90, color)));
     GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, circularSector(size, 90, color)));
+    OUTLINE_GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
+    OUTLINE_GLYPH_ELEMENTS.put('■', (size, color) -> outlinedSquare(size, color));
+    OUTLINE_GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, outlinedSector(size, color)));
   }
 
-  private static Graphic renderLetter(char symbol, double size) {
+  public static Graphic renderLetter(char symbol, double size, boolean outlined) {
     assert symbol == ' ' || (symbol >= 'a' && symbol <= 'z') : "Symbol '" + symbol + "' not supported.";
     if (symbol == ' ') {
       return rectangle(size, 1, TRANSPARENT); // TODO: height: 0
@@ -178,8 +208,8 @@ public class Alphabet {
         double hue = glyphIndex * 360.0 / GLYPHS.length;
         double saturation = (lineIndex + 1) / 5.0;
         double lightness = 0.5 - 0.5 * (elementIndex / 5.0);
-        Color color = hsl(hue, saturation, lightness);
-        Function2<Double, Color, Graphic> renderer = GLYPH_ELEMENTS.get(element);
+        Color color = outlined ? WHITE : hsl(hue, saturation, lightness);
+        Function2<Double, Color, Graphic> renderer = outlined ? OUTLINE_GLYPH_ELEMENTS.get(element) : GLYPH_ELEMENTS.get(element);
         row = beside(row, renderer.apply(size, color));
       }
       glyphGraphic = above(glyphGraphic, row);
@@ -187,17 +217,17 @@ public class Alphabet {
     return glyphGraphic;
   }
 
-  private static Graphic renderString(String text, double size) {
+  public static Graphic renderString(String text, double size, boolean outlined) {
     Graphic gap = rectangle(size / 10, 1, TRANSPARENT);
     Graphic result = gap;
     for (char symbol : text.toCharArray()) {
-      result = beside(result, beside(renderLetter(symbol, size), gap));
+      result = beside(result, beside(renderLetter(symbol, size, outlined), gap));
     }
     return result;
   }
 
   public static void main(String[] args) {
-    Graphic rendering = renderString("pf", 200);
+    Graphic rendering = renderString("pf", 200, true);
     show(rendering);
     //save(overlay(rendering, rectangle(rendering.getWidth() + 50, rendering.getHeight() + 50, TRANSPARENT)), "pf2.png");
   }
