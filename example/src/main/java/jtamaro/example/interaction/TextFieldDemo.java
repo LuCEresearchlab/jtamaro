@@ -3,8 +3,8 @@ package jtamaro.example.interaction;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
-import jtamaro.io.graphic.KeyboardChar;
-import jtamaro.io.graphic.KeyboardKey;
+import jtamaro.interaction.KeyboardChar;
+import jtamaro.interaction.KeyboardKey;
 
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.BLUE;

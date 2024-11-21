@@ -27,6 +27,14 @@ javadoc {
   options.memberLevel = JavadocMemberLevel.PUBLIC
   options.addStringOption "Xdoclint:all,-missing", "-quiet"
   options.addBooleanOption "html5", true
+
+  configure(options) {
+    tags(
+        "apiNote:a:API Note:",
+        "implSpec:a:Implementation Requirements:",
+        "implNote:a:Implementation Note:",
+    )
+  }
 }
 
 compileJava {

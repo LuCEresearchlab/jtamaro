@@ -1,4 +1,4 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 interface TraceListener {
 

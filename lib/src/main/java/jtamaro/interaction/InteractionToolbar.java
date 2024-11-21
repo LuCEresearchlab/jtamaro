@@ -1,11 +1,12 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import jtamaro.io.IO;
 
-final class BigBangToolbar<M> extends JPanel {
+final class InteractionToolbar<M> extends JPanel {
 
   private final JLabel tickLabel;
 
@@ -17,10 +18,10 @@ final class BigBangToolbar<M> extends JPanel {
 
   private final Timer timer;
 
-  public BigBangToolbar(Interaction<M> bang,
-      BigBangState<M> state,
-      Timer timer,
-      Trace trace) {
+  public InteractionToolbar(Interaction<M> bang,
+                            InteractionState<M> state,
+                            Timer timer,
+                            Trace trace) {
     this.timer = timer;
 
     tickLabel = new JLabel(String.valueOf(state.getTick()));
@@ -42,8 +43,7 @@ final class BigBangToolbar<M> extends JPanel {
     // listeners
     startButton.addActionListener(ev -> start());
     stopButton.addActionListener(ev -> stop());
-    showGraphicButton.addActionListener(ev -> new GuiGraphicFrame(bang.getRenderer()
-        .apply(state.getModel())).setVisible(true));
+    showGraphicButton.addActionListener(ev -> IO.show(bang.getRenderer().apply(state.getModel())));
     showTraceTableButton.addActionListener(ev -> new TraceFrame(trace).setVisible(true));
     showModelButton.addActionListener(ev -> new ModelFrame<>(bang, trace).setVisible(true));
     state.addBigBangStateListener(s -> tickLabel.setText(String.valueOf(s.getTick())));

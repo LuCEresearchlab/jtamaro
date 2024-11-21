@@ -1,6 +1,7 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -13,45 +14,43 @@ import javax.swing.Timer;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.GuiGraphicCanvas;
 
-final class BigBangFrame<M> extends JFrame {
+/**
+ * GUI that allows the user to interact with an {@link Interaction}.
+ */
+final class InteractionFrame<M> extends JFrame {
 
-  private final Interaction<M> bang;
+  private final Interaction<M> interaction;
 
-  private final GuiGraphicCanvas graphicCanvas;
+  private final InteractionState<M> state;
+
+  private final Trace eventsTrace;
 
   private final Timer timer;
 
-  private final BigBangState<M> state;
+  private final GuiGraphicCanvas graphicCanvas;
 
-  private final Trace trace;
+  public InteractionFrame(Interaction<M> interaction) {
+    this.interaction = interaction;
+    this.state = new InteractionState<>(interaction);
+    this.eventsTrace = new Trace();
+    this.timer = new Timer(interaction.getMsBetweenTicks(), this::onTick);
 
-  public BigBangFrame(Interaction<M> bang) {
-    this.bang = bang;
-    this.state = new BigBangState<>(bang);
-    this.trace = new Trace();
-    this.timer = new Timer(bang.getMsBetweenTicks(), ev -> {
-      if (state.getTick() >= bang.getTickLimit()
-          || bang.getStoppingPredicate().apply(state.getModel())) {
-        stop();
-      } else {
-        handle(TraceEvent.createTick());
-        state.tick();
-      }
-    });
+    setTitle(interaction.getName());
 
-    setTitle(bang.getName());
-    final BigBangToolbar<M> toolbar = new BigBangToolbar<>(bang, state, timer, trace);
+    // Toolbar
+    final InteractionToolbar<M> toolbar = new InteractionToolbar<>(interaction,
+        state,
+        timer,
+        eventsTrace);
     add(toolbar, BorderLayout.NORTH);
 
-    int canvasWidth = bang.getCanvasWidth();
-    int canvasHeight = bang.getCanvasHeight();
+    // Canvas component
+    int canvasWidth = interaction.getCanvasWidth();
+    int canvasHeight = interaction.getCanvasHeight();
     if (canvasWidth <= 0 || canvasHeight <= 0) {
-      final Graphic g = bang.getRenderer().apply(state.getModel());
+      final Graphic g = interaction.getRenderer().apply(state.getModel());
       canvasWidth = (int) g.getWidth();
       canvasHeight = (int) g.getHeight();
-      // TODO: maybe add a warning notice at the top of the window
-      //       stating that the width/height are based on the first frame only
-      //       and asking to use withCanvasSize(int,int) if needed.
     }
 
     graphicCanvas = new GuiGraphicCanvas(canvasWidth, canvasHeight);
@@ -59,19 +58,19 @@ final class BigBangFrame<M> extends JFrame {
       @Override
       public void keyPressed(KeyEvent ev) {
         final KeyboardKey key = new KeyboardKey(ev);
-        handle(TraceEvent.createKeyPress(key));
+        traceEvent(new TraceEvent.KeyPressed(key));
       }
 
       @Override
       public void keyReleased(KeyEvent ev) {
         final KeyboardKey key = new KeyboardKey(ev);
-        handle(TraceEvent.createKeyRelease(key));
+        traceEvent(new TraceEvent.KeyReleased(key));
       }
 
       @Override
       public void keyTyped(KeyEvent ev) {
         final KeyboardChar ch = new KeyboardChar(ev);
-        handle(TraceEvent.createKeyType(ch));
+        traceEvent(new TraceEvent.KeyTyped(ch));
       }
     });
 
@@ -81,7 +80,7 @@ final class BigBangFrame<M> extends JFrame {
         graphicCanvas.requestFocus();
         final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
         final MouseButton button = new MouseButton(ev);
-        handle(TraceEvent.createMousePress(coordinate, button));
+        traceEvent(new TraceEvent.MousePressed(coordinate, button));
       }
 
       @Override
@@ -89,69 +88,71 @@ final class BigBangFrame<M> extends JFrame {
         graphicCanvas.requestFocus();
         final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
         final MouseButton button = new MouseButton(ev);
-        handle(TraceEvent.createMouseRelease(coordinate, button));
+        traceEvent(new TraceEvent.MouseReleased(coordinate, button));
       }
     });
-
     graphicCanvas.addMouseMotionListener(new MouseAdapter() {
       @Override
       public void mouseMoved(MouseEvent ev) {
         final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        handle(TraceEvent.createMouseMove(coordinate));
+        traceEvent(new TraceEvent.MouseMoved(coordinate));
       }
 
       @Override
       public void mouseDragged(MouseEvent ev) {
         final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        handle(TraceEvent.createMouseMove(coordinate));
+        traceEvent(new TraceEvent.MouseMoved(coordinate));
       }
     });
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
+      @Override
       public void windowClosing(WindowEvent winEvt) {
         timer.stop();
       }
     });
     add(graphicCanvas, BorderLayout.CENTER);
+
+    // Show
     pack();
     setVisible(true);
 
     SwingUtilities.invokeLater(() -> {
       renderAndShowGraphic();
+      // Request focus to capture keyboard and mouse events.
       graphicCanvas.requestFocus();
-    });
 
-    timer.start();
-    toolbar.configureButtons(); // because timer is now running
+      // Start the timer
+      timer.start();
+      // The timer is now running, configure the toolbar buttons
+      toolbar.configureButtons();
+    });
   }
 
-  private void handle(final TraceEvent event) {
+  private void onTick(ActionEvent ev) {
+    if (interaction.getStoppingPredicate().apply(state.getModel())) {
+      timer.stop();
+    } else {
+      traceEvent(new TraceEvent.Tick());
+      state.tick();
+    }
+  }
+
+  private void traceEvent(TraceEvent event) {
     if (!timer.isRunning()) {
       return;
     }
 
-    trace.append(event);
+    eventsTrace.append(event);
     final M before = state.getModel();
-    final M after = event.process(bang, before);
-    state.update("model after " + event.getKind(), after);
+    final M after = event.process(interaction, before);
+    state.update("Model after " + event.getKind(), after);
     renderAndShowGraphic();
   }
 
   private void renderAndShowGraphic() {
-    final Graphic graphic = bang.getRenderer().apply(state.getModel());
-    setGraphic(graphic);
-  }
-
-  private void stop() {
-    // called through the timer
-    timer.stop();
-    final Graphic finalGraphic = bang.getFinalGraphicRenderer()
-        .apply(state.getModel());
-    setGraphic(finalGraphic);
-  }
-
-  private void setGraphic(Graphic graphic) {
+    final Graphic graphic = interaction.getRenderer().apply(state.getModel());
     graphicCanvas.setGraphic(graphic);
   }
 }

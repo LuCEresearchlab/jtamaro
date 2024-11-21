@@ -1,6 +1,7 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -16,20 +17,24 @@ final class TraceTableModel implements TableModel {
   private static final int COLUMN_COUNT = 3;
 
   private static final String[] COLUMN_NAMES = {
-      "Index", "Time", "Event"
+      "Index",
+      "Time",
+      "Event",
   };
 
   private static final Class<?>[] COLUMN_CLASSES = {
-      Integer.class, Long.class, String.class
+      Integer.class,
+      Long.class,
+      String.class,
   };
 
-  private final ArrayList<TableModelListener> listeners;
+  private final List<TableModelListener> listeners;
 
   private final Trace trace;
 
   public TraceTableModel(Trace trace) {
+    this.listeners = new ArrayList<>();
     this.trace = trace;
-    listeners = new ArrayList<>();
     trace.addTraceListener(event -> fireTableDataChanged());
   }
 
@@ -65,11 +70,10 @@ final class TraceTableModel implements TableModel {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    TraceEvent event = trace.get(getRowCount() - 1 - rowIndex);
-    switch (columnIndex) {
-      case INDEX_COLUMN:
-        return rowIndex;
-      case TIME_COLUMN:
+    final TraceEvent event = trace.get(getRowCount() - 1 - rowIndex);
+    return switch (columnIndex) {
+      case INDEX_COLUMN -> rowIndex;
+      case TIME_COLUMN -> {
         final TraceEvent first = trace.get(getRowCount() - 1);
         final long startTime = first.getTimeStamp();
         final long eventTime = event.getTimeStamp();
@@ -77,12 +81,11 @@ final class TraceTableModel implements TableModel {
         final int minutes = (int) (delta / 60000);
         final int seconds = (int) ((delta % 60000) / 1000);
         final int millis = (int) (delta % 1000);
-        return String.format("%02d:%02d.%03d", minutes, seconds, millis);
-      case EVENT_COLUMN:
-        return event.getKind();
-      default:
-        throw new IllegalArgumentException("Invalid column index: " + columnIndex);
-    }
+        yield String.format("%02d:%02d.%03d", minutes, seconds, millis);
+      }
+      case EVENT_COLUMN -> event.getKind();
+      default -> throw new IllegalArgumentException("Invalid column index: " + columnIndex);
+    };
   }
 
   @Override

@@ -1,6 +1,7 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import java.util.ArrayList;
+import java.util.List;
 import jtamaro.data.Sequence;
 import jtamaro.data.Sequences;
 
@@ -11,7 +12,7 @@ final class Trace {
   // Cache for performance
   private int length;
 
-  private final ArrayList<TraceListener> listeners;
+  private final List<TraceListener> listeners;
 
   public Trace() {
     events = Sequences.empty();

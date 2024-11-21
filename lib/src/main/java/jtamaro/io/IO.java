@@ -1,6 +1,7 @@
 package jtamaro.io;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -11,10 +12,7 @@ import jtamaro.data.Sequence;
 import jtamaro.data.Sequences;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
-import jtamaro.io.graphic.ColorFrame;
-import jtamaro.io.graphic.FilmStripFrame;
-import jtamaro.io.graphic.GuiGraphicFrame;
-import jtamaro.io.graphic.Interaction;
+import jtamaro.interaction.Interaction;
 
 /**
  * This class includes methods to perform input and output for JTamaro classes. It allows outputting
@@ -43,7 +41,7 @@ import jtamaro.io.graphic.Interaction;
 // This reminds me of Erich Gamma's Eclipse Spider plugin,
 // that allowed incrementally unfolding a data structure shown as a graph
 // (I think the Eclipse plugins or something).
-// We could show it using nesting (given the immutable sublanguage we use,
+// We could show it using nesting (given the immutable sub-language we use,
 // there are no cycles and thus nesting works fine; just some duplication in case of dags).
 public final class IO {
 
@@ -166,11 +164,11 @@ public final class IO {
   /* **** Files **** */
 
   /**
-   * Read the contents of a file as a string.
+   * Read the contents of a file as a UTF-8 string.
    */
   public static String readFile(Path path) {
     try {
-      return Files.readString(path);
+      return Files.readString(path, StandardCharsets.UTF_8);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -181,7 +179,11 @@ public final class IO {
    */
   public static void writeFile(Path path, String content) {
     try {
-      Files.writeString(path, content, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+      Files.writeString(path,
+          content,
+          StandardCharsets.UTF_8,
+          StandardOpenOption.WRITE,
+          StandardOpenOption.CREATE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

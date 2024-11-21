@@ -1,4 +1,4 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import jtamaro.data.Function2;
 
