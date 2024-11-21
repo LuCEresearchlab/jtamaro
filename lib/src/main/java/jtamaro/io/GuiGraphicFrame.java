@@ -1,25 +1,20 @@
-package jtamaro.io.graphic;
+package jtamaro.io;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.io.File;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.GuiGraphicCanvas;
 import jtamaro.graphic.GuiGraphicPropertiesPanel;
 import jtamaro.graphic.GuiGraphicTreePanel;
 import jtamaro.graphic.RenderOptions;
 
-public class GuiGraphicFrame extends JFrame {
-
-  private static JFileChooser FILE_CHOOSER;
+final class GuiGraphicFrame extends JFrame {
 
   private final RenderOptions renderOptions;
 
@@ -87,22 +82,6 @@ public class GuiGraphicFrame extends JFrame {
   public GuiGraphicFrame(Graphic graphic) {
     this();
     setGraphic(graphic);
-  }
-
-  /**
-   * We want one JFileChooser per running application. This way we don't have to navigate to the
-   * desired directory each time we save.
-   */
-  private static JFileChooser getOrCreateFileChooser() {
-    if (FILE_CHOOSER == null) {
-      FILE_CHOOSER = new JFileChooser();
-      FILE_CHOOSER.setDialogTitle("Save Graphic as PNG");
-      FILE_CHOOSER.setSelectedFile(new File("jtamaro.png"));
-      FILE_CHOOSER.addChoosableFileFilter(new FileNameExtensionFilter("PNG Images", "png"));
-      FILE_CHOOSER.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      FILE_CHOOSER.setAcceptAllFileFilterUsed(false);
-    }
-    return FILE_CHOOSER;
   }
 
   public void setGraphic(Graphic graphic) {

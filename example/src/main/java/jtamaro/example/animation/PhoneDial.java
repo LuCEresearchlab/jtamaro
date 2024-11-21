@@ -69,8 +69,8 @@ public class PhoneDial {
 
   public static Sequence<Pair<Integer, Double>> keyNumbersWithAngles() {
     return map(
-        (Pair<Integer, Integer> p) -> new Pair<>(p.first(),
-            60 + p.second() * 30.0), zipWithIndex(keyNumbers())
+        p -> p.withSecond(60 + p.second() * 30.0),
+        zipWithIndex(keyNumbers())
     );
   }
 

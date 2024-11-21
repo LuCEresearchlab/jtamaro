@@ -1,4 +1,4 @@
-package jtamaro.io.graphic;
+package jtamaro.io;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
-public final class ColorFrame extends JFrame {
+final class ColorFrame extends JFrame {
 
   public ColorFrame(Color color) {
     setTitle("Color");

@@ -1,4 +1,4 @@
-package jtamaro.io.graphic;
+package jtamaro.io;
 
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
@@ -12,7 +12,7 @@ import jtamaro.data.Sequence;
 import jtamaro.graphic.FilmStripCanvas;
 import jtamaro.graphic.Graphic;
 
-public final class FilmStripFrame extends JFrame {
+final class FilmStripFrame extends JFrame {
 
   private final DefaultBoundedRangeModel sliderModel;
 

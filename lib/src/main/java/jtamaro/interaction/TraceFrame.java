@@ -1,12 +1,15 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+/**
+ * GUI frame that shows a trace of the events that evolved the model.
+ */
 final class TraceFrame extends JFrame {
 
-  public TraceFrame(final Trace trace) {
+  public TraceFrame(Trace trace) {
     setTitle("Event Trace");
     final TraceTableModel traceTableModel = new TraceTableModel(trace);
     final JTable table = new JTable(traceTableModel);

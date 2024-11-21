@@ -1,4 +1,4 @@
-package jtamaro.io.graphic;
+package jtamaro.interaction;
 
 import java.awt.event.MouseEvent;
 import jtamaro.data.Function3;
