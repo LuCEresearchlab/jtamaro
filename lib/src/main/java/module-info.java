@@ -1,5 +1,5 @@
 module jtamaro {
-  requires java.desktop;
+  requires transitive java.desktop;
 
   exports jtamaro.data;
   exports jtamaro.graphic;
