@@ -132,13 +132,7 @@ final class TightBoundingBox {
               }
 
               final double t = -c / b;
-              if (0 < t && t < 1) {
-                if (i == 0) {
-                  includePoint(f(t, p0[i], p1[i], p2[i], p3[i]), maxY);
-                } else {
-                  includePoint(maxX, f(t, p0[i], p1[i], p2[i], p3[i]));
-                }
-              }
+              computeIncludePoint(p0, p1, p2, p3, i, t);
 
               continue;
             }
@@ -149,22 +143,10 @@ final class TightBoundingBox {
             }
 
             final double t1 = (-b + Math.sqrt(b2ac)) / (2 * a);
-            if (0 < t1 && t1 < 1) {
-              if (i == 0) {
-                includePoint(f(t1, p0[i], p1[i], p2[i], p3[i]), maxY);
-              } else {
-                includePoint(maxX, f(t1, p0[i], p1[i], p2[i], p3[i]));
-              }
-            }
+            computeIncludePoint(p0, p1, p2, p3, i, t1);
 
             final double t2 = (-b - Math.sqrt(b2ac)) / (2 * a);
-            if (0 < t2 && t2 < 1) {
-              if (i == 0) {
-                includePoint(f(t2, p0[i], p1[i], p2[i], p3[i]), maxY);
-              } else {
-                includePoint(maxX, f(t2, p0[i], p1[i], p2[i], p3[i]));
-              }
-            }
+            computeIncludePoint(p0, p1, p2, p3, i, t2);
           }
 
           cx = p3x;
@@ -172,6 +154,21 @@ final class TightBoundingBox {
           break;
       }
       it.next();
+    }
+  }
+
+  private void computeIncludePoint(double[] p0,
+      double[] p1,
+      double[] p2,
+      double[] p3,
+      int i,
+      double t) {
+    if (0 < t && t < 1) {
+      if (i == 0) {
+        includePoint(f(t, p0[i], p1[i], p2[i], p3[i]), maxY);
+      } else {
+        includePoint(maxX, f(t, p0[i], p1[i], p2[i], p3[i]));
+      }
     }
   }
 
