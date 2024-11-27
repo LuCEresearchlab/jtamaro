@@ -44,7 +44,7 @@ public final class Sequences {
    * @return true if the sequence is empty, false otherwise
    */
   public static <T> boolean isEmpty(Sequence<T> seq) {
-    return seq.isEmpty();
+    return seq instanceof Empty<T>;
   }
 
   /**
@@ -283,9 +283,9 @@ public final class Sequences {
   public static <T> Sequence<T> reverse(Sequence<T> seq) {
     Sequence<T> result = new Empty<>();
     Sequence<T> itr = seq;
-    while (!itr.isEmpty()) {
-      result = new Cons<>(itr.first(), result);
-      itr = itr.rest();
+    while (itr instanceof Cons(T first, Sequence<T> rest)) {
+      result = new Cons<>(first, result);
+      itr = rest;
     }
     return result;
   }
@@ -346,10 +346,10 @@ public final class Sequences {
    */
   public static <T, U> U foldRight(U initial, Function2<T, U, U> reducer, Sequence<T> seq) {
     U acc = initial;
-    for (Sequence<T> itr = reverse(seq);
-         !itr.isEmpty();
-         itr = itr.rest()) {
-      acc = reducer.apply(itr.first(), acc);
+    Sequence<T> itr = reverse(seq);
+    while (itr instanceof Cons(T first, Sequence<T> rest)) {
+      acc = reducer.apply(first, acc);
+      itr = rest;
     }
     return acc;
   }
@@ -367,10 +367,10 @@ public final class Sequences {
    */
   public static <T, U> U foldLeft(U initial, Function2<U, T, U> reducer, Sequence<T> seq) {
     U acc = initial;
-    for (Sequence<T> itr = seq;
-         !itr.isEmpty();
-         itr = itr.rest()) {
-      acc = reducer.apply(acc, itr.first());
+    Sequence<T> itr = seq;
+    while (itr instanceof Cons(T first, Sequence<T> rest)) {
+      acc = reducer.apply(acc, first);
+      itr = rest;
     }
     return acc;
   }
@@ -405,9 +405,9 @@ public final class Sequences {
     Sequence<T> result = new Empty<>();
     Sequence<T> itr = seq;
     int i = 0;
-    while (!itr.isEmpty() && i++ < count) {
-      result = new Cons<>(itr.first(), result);
-      itr = itr.rest();
+    while (itr instanceof Cons(T first, Sequence<T> rest) && i++ < count) {
+      result = new Cons<>(first, result);
+      itr = rest;
     }
     return reverse(result);
   }
@@ -423,8 +423,8 @@ public final class Sequences {
   public static <T> Sequence<T> drop(int count, Sequence<T> seq) {
     Sequence<T> result = seq;
     int i = 0;
-    while (!result.isEmpty() && i++ < count) {
-      result = result.rest();
+    while (result instanceof Cons(T ignored, Sequence<T> rest) && i++ < count) {
+      result = rest;
     }
     return result;
   }
@@ -432,20 +432,20 @@ public final class Sequences {
   /**
    * Concatenate two sequences.
    *
-   * @param first  The first sequence (prepended)
-   * @param second The second sequence (appended)
-   * @param <T>    The type of the elements of the produced sequence
+   * @param a   The first sequence (prepended)
+   * @param b   The second sequence (appended)
+   * @param <T> The type of the elements of the produced sequence
    */
-  public static <T> Sequence<T> concat(Sequence<T> first, Sequence<T> second) {
-    if (second.isEmpty()) {
+  public static <T> Sequence<T> concat(Sequence<T> a, Sequence<T> b) {
+    if (b instanceof Empty()) {
       // Not necessary, but avoid double reversing a
-      return first;
+      return a;
     } else {
-      Sequence<T> itr = reverse(first);
-      Sequence<T> result = second;
-      while (!itr.isEmpty()) {
-        result = new Cons<>(itr.first(), result);
-        itr = itr.rest();
+      Sequence<T> itr = reverse(a);
+      Sequence<T> result = b;
+      while (itr instanceof Cons(T first, Sequence<T> rest)) {
+        result = new Cons<>(first, result);
+        itr = rest;
       }
       return result;
     }
@@ -463,12 +463,9 @@ public final class Sequences {
    * <code>element</code>
    */
   public static <T> Sequence<T> intersperse(T element, Sequence<T> seq) {
-    if (seq.isEmpty()) {
-      return seq;
-    } else {
-      return new Cons<>(seq.first(),
-          fromStream(seq.rest().stream().flatMap(it -> Stream.of(element, it))));
-    }
+    return seq instanceof Cons(T first, Sequence<T> rest)
+        ? new Cons<>(first, fromStream(rest.stream().flatMap(it -> Stream.of(element, it))))
+        : seq;
   }
 
   /**
@@ -489,10 +486,11 @@ public final class Sequences {
     Sequence<Pair<A, B>> result = new Empty<>();
     Sequence<A> itrFirst = first;
     Sequence<B> itrSecond = second;
-    while (!(itrFirst.isEmpty() || itrSecond.isEmpty())) {
-      result = new Cons<>(new Pair<>(itrFirst.first(), itrSecond.first()), result);
-      itrFirst = itrFirst.rest();
-      itrSecond = itrSecond.rest();
+    while (itrFirst instanceof Cons(A first1, Sequence<A> rest1) &&
+        itrSecond instanceof Cons(B first2, Sequence<B> rest2)) {
+      result = new Cons<>(new Pair<>(first1, first2), result);
+      itrFirst = rest1;
+      itrSecond = rest2;
     }
     return reverse(result);
   }
@@ -507,16 +505,16 @@ public final class Sequences {
     Sequence<T> itr = seq;
     Sequence<T> queue = new Empty<>();
     int count = 0;
-    while (!itr.isEmpty()) {
-      queue = new Cons<>(itr.first(), queue);
-      itr = itr.rest();
+    while (itr instanceof Cons(T first, Sequence<T> rest)) {
+      queue = new Cons<>(first, queue);
+      itr = rest;
       count++;
     }
 
     Sequence<Pair<T, Integer>> result = new Empty<>();
-    while (!queue.isEmpty()) {
-      result = new Cons<>(new Pair<>(queue.first(), --count), result);
-      queue = queue.rest();
+    while (queue instanceof Cons(T first, Sequence<T> rest)) {
+      result = new Cons<>(new Pair<>(first, --count), result);
+      queue = rest;
     }
 
     return result;
@@ -535,10 +533,10 @@ public final class Sequences {
     Sequence<A> a = new Empty<>();
     Sequence<B> b = new Empty<>();
     Sequence<Pair<A, B>> itr = reverse(seq);
-    while (!itr.isEmpty()) {
-      a = new Cons<>(itr.first().first(), a);
-      b = new Cons<>(itr.first().second(), b);
-      itr = itr.rest();
+    while (itr instanceof Cons(Pair(A p1, B p2), Sequence<Pair<A, B>> rest)) {
+      a = new Cons<>(p1, a);
+      b = new Cons<>(p2, b);
+      itr = rest;
     }
     return new Pair<>(a, b);
   }

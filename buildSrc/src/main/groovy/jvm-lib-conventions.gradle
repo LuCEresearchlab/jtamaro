@@ -19,8 +19,7 @@ java {
   withJavadocJar()
   withSourcesJar()
 
-  sourceCompatibility = 17
-  targetCompatibility = 17
+  toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 javadoc {
