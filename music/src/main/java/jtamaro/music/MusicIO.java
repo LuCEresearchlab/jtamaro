@@ -80,4 +80,7 @@ public class MusicIO {
   public static void playNotes(Sequence<Note> notes, int bpm, int channel, Instrument instrument) {
     play(map(n -> timed(1, chord(of(n))), notes), bpm, channel, instrument);
   }
+
+  private MusicIO() {
+  }
 }
