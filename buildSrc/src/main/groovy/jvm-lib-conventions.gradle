@@ -1,7 +1,7 @@
 plugins {
-  id "java-library"
-  id "maven-publish"
-  id "signing"
+  id("java-library")
+  id("maven-publish")
+  id("signing")
 }
 
 group = 'jtamaro'
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-  testImplementation libs.junit
+  testImplementation(libs.junit)
 }
 
 java {
@@ -25,8 +25,8 @@ java {
 
 javadoc {
   options.memberLevel = JavadocMemberLevel.PUBLIC
-  options.addStringOption "Xdoclint:all,-missing", "-quiet"
-  options.addBooleanOption "html5", true
+  options.addStringOption("Xdoclint:all,-missing", "-quiet")
+  options.addBooleanOption("html5", true)
 
   configure(options) {
     tags(
@@ -46,20 +46,10 @@ tasks.withType(AbstractArchiveTask).configureEach {
   reproducibleFileOrder = true
 }
 
-def localProps = new Properties()
-def localPropsFile = project.rootProject.file "local.properties"
+final Properties localProps = new Properties()
+final File localPropsFile = project.rootProject.file("local.properties")
 if (localPropsFile.exists()) {
   localProps.load localPropsFile.newDataInputStream()
-}
-
-String getArtifactName() {
-  def result = "${project.name}"
-  def itr = project.parent
-  while (itr != null && itr != rootProject) {
-    result = "${itr.name}-${result}"
-    itr = itr.parent
-  }
-  return result
 }
 
 publishing {
@@ -68,19 +58,19 @@ publishing {
       name = "Central"
       url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
       credentials {
-        username = localProps.getProperty "repo.central.username", ""
-        password = localProps.getProperty "repo.central.password", ""
+        username = localProps.getProperty("repo.central.username", "")
+        password = localProps.getProperty("repo.central.password", "")
       }
     }
   }
 
   publications {
     mavenJava(MavenPublication) {
-      artifactId = artifactName
+      artifactId = project.name
       groupId = "jtamaro"
-      setVersion project.version
+      setVersion(project.version)
 
-      from components.java
+      from(components.java)
       versionMapping {
         usage("java-api") {
           fromResolutionOf "runtimeClasspath"
@@ -90,7 +80,7 @@ publishing {
         }
       }
       pom {
-        name = "Jtamaro - " + artifactName
+        name = "Jtamaro - ${project.name}"
         description = ""
         url = "https://github.com/LuCEresearchlab/jtamaro"
         developers {
@@ -118,19 +108,18 @@ publishing {
 }
 
 signing {
-  def signingKeyPath = localProps.getProperty "signing.secretKeyFile", ""
+  final String signingKeyPath = localProps.getProperty("signing.secretKeyFile", "")
   if (signingKeyPath == "") {
-    required { false }
+    required = false
   } else {
-    required { true }
+    required = true
 
-    def signingPassword = localProps.getProperty "signing.password", ""
-    def signingKeyFile = file(rootProject.rootDir.absolutePath + "/" + signingKeyPath)
+    final String signingPassword = localProps.getProperty("signing.password", "")
+    final File signingKeyFile = file("${rootProject.rootDir.absolutePath}/${signingKeyPath}")
 
     if (signingKeyFile.exists()) {
-      useInMemoryPgpKeys signingKeyFile.text, signingPassword
+      useInMemoryPgpKeys(signingKeyFile.text, signingPassword)
     }
   }
-  sign publishing.publications.mavenJava
+  sign(publishing.publications.mavenJava)
 }
-
