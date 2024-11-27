@@ -1,5 +1,5 @@
-rootProject.name = 'jtamaro'
+rootProject.name = "jtamaro"
 
-include 'example'
-include 'lib'
-include 'music'
+include("example")
+include("lib")
+include("music")
