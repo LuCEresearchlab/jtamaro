@@ -38,7 +38,7 @@ javadoc {
 }
 
 compileJava {
-  options.compilerArgs << "-Xlint:unchecked"
+  options.compilerArgs << "-Xlint:all,-serial"
 }
 
 tasks.withType(AbstractArchiveTask).configureEach {

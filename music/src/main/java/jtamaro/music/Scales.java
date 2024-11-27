@@ -30,4 +30,6 @@ public class Scales {
 
   public static Scale A_MAJOR_PENTATONIC = new Scale(A4, MAJOR_PENTATONIC);
 
+  private Scales() {
+  }
 }

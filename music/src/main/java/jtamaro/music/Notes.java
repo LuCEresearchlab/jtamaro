@@ -319,4 +319,6 @@ public class Notes {
 
   public static final Note B8 = note(119); // highest note on 108-key piano
 
+  private Notes() {
+  }
 }
