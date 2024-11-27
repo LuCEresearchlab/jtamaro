@@ -43,6 +43,10 @@ public final class Ellipse extends Graphic {
     return height;
   }
 
+  public Color getColor() {
+    return color;
+  }
+
   @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
     g2d.setPaint(Graphic.renderableColor(color));
