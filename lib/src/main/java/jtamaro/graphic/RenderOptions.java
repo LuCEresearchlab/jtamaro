@@ -24,7 +24,7 @@ public final class RenderOptions {
 
   private Graphic leadSelection;
 
-  private final List<RenderOptionsListener> listeners;
+  private final List<Listener> listeners;
 
   public RenderOptions(int padding) {
     this(padding, -1, -1);
@@ -91,13 +91,25 @@ public final class RenderOptions {
     return selection.contains(g);
   }
 
-  public void addRenderOptionsListener(RenderOptionsListener li) {
+  public void addRenderOptionsListener(Listener li) {
     listeners.add(li);
   }
 
   private void fireRenderOptionsChanged() {
-    for (final RenderOptionsListener listener : listeners) {
+    for (final Listener listener : listeners) {
       listener.renderOptionsChanged();
     }
+  }
+
+  /**
+   * Graphic render configuration listener.
+   *
+   * <p>For internal usage only!
+   *
+   * @hidden
+   */
+  public interface Listener {
+
+    void renderOptionsChanged();
   }
 }

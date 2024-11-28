@@ -15,35 +15,27 @@ import jtamaro.graphic.Graphic;
 import jtamaro.interaction.Interaction;
 
 /**
- * This class includes methods to perform input and output for JTamaro classes. It allows outputting
- * JTamaro graphics, colors, points, sequences, and pairs.
+ * This class provides procedures to visualize graphics and perform I/O operations such as reading
+ * and writing files, interacting with the STDOUT and STDIN and more.
  *
- * <p>It provides methods for textual output, specifically, to easily print
- * sequences and pairs to the standard output.
- *
- * <p>More importantly, it provides methods for graphical IO,
- * specifically to: show graphics, to animate sequences of graphics, and to produce interactions.
- *
- * <p>It also provides methods to save graphics as PNG files and
- * animations as animated GIF files.
+ * <p>Note: all methods in this class are <b>impure</b>!
  */
-
-// The show methods open an entire world of visualization of program state.
-// There are a lot of open questions.
-// Right now there are just a couple of special-purpose methods,
-// to show a color or a graphic.
-// But we could create a general show method, that could show anything,
-// including a Pair (containing two values that themselves can be shown),
-// or a Sequence (containing many values that themselves can be shown).
-// How to show such data structures is an open question.
-// We could show it as a stack-and-heap diagram,
-// with arrows between cells.
-// This reminds me of Erich Gamma's Eclipse Spider plugin,
-// that allowed incrementally unfolding a data structure shown as a graph
-// (I think the Eclipse plugins or something).
-// We could show it using nesting (given the immutable sub-language we use,
-// there are no cycles and thus nesting works fine; just some duplication in case of dags).
 public final class IO {
+  // The show methods open an entire world of visualization of program state.
+  // There are a lot of open questions.
+  // Right now there are just a couple of special-purpose methods,
+  // to show a color or a graphic.
+  // But we could create a general show method, that could show anything,
+  // including a Pair (containing two values that themselves can be shown),
+  // or a Sequence (containing many values that themselves can be shown).
+  // How to show such data structures is an open question.
+  // We could show it as a stack-and-heap diagram,
+  // with arrows between cells.
+  // This reminds me of Erich Gamma's Eclipse Spider plugin,
+  // that allowed incrementally unfolding a data structure shown as a graph
+  // (I think the Eclipse plugins or something).
+  // We could show it using nesting (given the immutable sub-language we use,
+  // there are no cycles and thus nesting works fine; just some duplication in case of dags).
 
   private IO() {
   }
