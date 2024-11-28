@@ -264,21 +264,21 @@ public final class Sequences {
   }
 
   /**
-   * Construct a sequence from an iterable instance.
+   * Construct a sequence from an {@link Iterable}.
    */
   public static <T> Sequence<T> fromIterable(Iterable<T> iterable) {
     return fromIterator(iterable.iterator());
   }
 
   /**
-   * Collect a Stream into a Sequence.
+   * Collect a {@link Stream} into a Sequence.
    */
   public static <T> Sequence<T> fromStream(Stream<T> stream) {
     return fromIterator(stream.iterator());
   }
 
   /**
-   * Reverse a Stream.
+   * Reverse a Sequence.
    */
   public static <T> Sequence<T> reverse(Sequence<T> seq) {
     Sequence<T> result = new Empty<>();
