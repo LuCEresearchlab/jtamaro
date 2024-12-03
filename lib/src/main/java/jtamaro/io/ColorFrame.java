@@ -35,6 +35,5 @@ final class ColorFrame extends JFrame {
     };
     add(colorComponent, BorderLayout.CENTER);
     pack();
-    setVisible(true);
   }
 }

@@ -114,9 +114,7 @@ final class InteractionFrame<M> extends JFrame {
     });
     add(graphicCanvas, BorderLayout.CENTER);
 
-    // Show
     pack();
-    setVisible(true);
 
     SwingUtilities.invokeLater(() -> {
       renderAndShowGraphic();
