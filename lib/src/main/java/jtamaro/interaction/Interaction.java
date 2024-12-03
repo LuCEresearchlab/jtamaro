@@ -501,7 +501,8 @@ public final class Interaction<M> {
    * Execute this interaction.
    */
   public void run() {
-    SwingUtilities.invokeLater(() -> new InteractionFrame<>(this));
+    SwingUtilities.invokeLater(() ->
+        new InteractionFrame<>(this).setVisible(true));
   }
 
   @Override

@@ -223,10 +223,9 @@ public final class IO {
   public static void show(Color color) {
     if (color == null) {
       System.err.println("Nothing to show");
-      return;
+    } else {
+      SwingUtilities.invokeLater(() -> new ColorFrame(color).setVisible(true));
     }
-
-    SwingUtilities.invokeLater(() -> new ColorFrame(color).setVisible(true));
   }
 
   /**
