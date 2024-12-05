@@ -4,8 +4,8 @@ plugins {
   id("signing")
 }
 
-group = 'jtamaro'
-version = '25.0.0'
+group = "jtamaro"
+version = "25.0.0"
 
 repositories {
   mavenCentral()
@@ -65,14 +65,14 @@ publishing {
 
   publications {
     mavenJava(MavenPublication) {
-      artifactId = project.name
-      groupId = "jtamaro"
+      artifactId = localProps.getProperty("artifact.${project.name}.id", project.name)
+      groupId = localProps.getProperty("artifact.${project.name}.group", "jtamaro")
       setVersion(project.version)
 
       from(components.java)
       versionMapping {
         usage("java-api") {
-          fromResolutionOf "runtimeClasspath"
+          fromResolutionOf("runtimeClasspath")
         }
         usage("java-runtime") {
           fromResolutionResult()
@@ -80,7 +80,7 @@ publishing {
       }
       pom {
         name = "Jtamaro - ${project.name}"
-        description = ""
+        description = localProps.getProperty("artifact.${project.name}.description", "")
         url = "https://github.com/LuCEresearchlab/jtamaro"
         developers {
           developer {
