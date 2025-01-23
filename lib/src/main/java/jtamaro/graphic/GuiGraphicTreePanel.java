@@ -1,6 +1,8 @@
 package jtamaro.graphic;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -25,6 +27,14 @@ public final class GuiGraphicTreePanel extends JPanel {
     ToolTipManager.sharedInstance().registerComponent(tree);
     add(new JScrollPane(tree), BorderLayout.CENTER);
 
+    tree.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          tree.clearSelection();
+        }
+      }
+    });
     tree.getSelectionModel().addTreeSelectionListener(ev -> {
       renderOptions.clearSelection();
       final TreePath[] paths = tree.getSelectionPaths();
