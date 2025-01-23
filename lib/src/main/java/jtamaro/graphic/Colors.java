@@ -3,8 +3,7 @@ package jtamaro.graphic;
 import java.util.function.IntFunction;
 
 /**
- * Static methods for working with Colors,
- * and static fields for well-known Colors.
+ * Static methods for working with Colors, and static fields for well-known Colors.
  *
  * @see jtamaro.graphic.Color
  */
@@ -164,5 +163,21 @@ public final class Colors {
     final int green = (int) Math.floor(f.apply(3) * 0xFF);
     final int blue = (int) Math.floor(f.apply(1) * 0xFF);
     return new Color(red, green, blue, opacity);
+  }
+
+  /**
+   * Return an HTML string of a span with text color that of the given color and for content its
+   * <pre>#RRGGBB</pre> representation.
+   */
+  static String htmlString(Color color) {
+    final double luminance = 0.2126 * color.red() / 255.0
+        + 0.7152 * color.green() / 255.0
+        + 0.0722 * color.blue() / 255.0;
+    final String foregroundColor = luminance > 0.5
+        ? "#000000"
+        : "#ffffff";
+    return String.format(
+        "<font bgcolor=\"rgba(%1$d,%2$d,%3$d,%4$.2f)\" color=\"%5$s\">&nbsp;#%1$02x%2$02x%3$02x&nbsp;</font>",
+        color.red(), color.green(), color.blue(), color.opacity(), foregroundColor);
   }
 }

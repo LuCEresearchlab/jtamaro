@@ -1,6 +1,8 @@
 package jtamaro.graphic;
 
 import java.awt.Component;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -32,10 +34,17 @@ public class GuiGraphicTreeCellRenderer extends DefaultTreeCellRenderer {
     if (value instanceof Graphic.InspectTreeNode node) {
       final Graphic graphic = node.getGraphic();
       setText(graphic.getInspectLabel());
+      final Map<String, String> props = graphic.getProps(false);
       final String toolTipText = "<html><b>" + graphic.getInspectLabel() + "</b>"
-          + "<br>width: " + graphic.getWidth()
-          + "<br>height: " + graphic.getHeight()
-          + "</html>";
+          + "<table>"
+          + props.entrySet().stream()
+          .map(e -> "<tr><td><b>"
+              + e.getKey()
+              + "</b></td><td>"
+              + e.getValue()
+              + "</td></tr>")
+          .collect(Collectors.joining())
+          + "</table></html>";
       setToolTipText(toolTipText);
     }
     return this;

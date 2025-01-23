@@ -78,6 +78,17 @@ public final class IO {
   }
 
   /**
+   * Print a tree-like visualization of the given graphic and terminate the line.
+   *
+   * @param graphic the graphic to print
+   * @see java.io.PrintStream#println(Object)
+   * @see Graphic#dump()
+   */
+  public static void println(Graphic graphic) {
+    System.out.println(graphic.dump());
+  }
+
+  /**
    * Prints an object and terminate the line.
    *
    * @see java.io.PrintStream#println(Object)

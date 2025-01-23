@@ -11,6 +11,8 @@ import static jtamaro.data.Sequences.reduce;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Graphics.ellipse;
+import static jtamaro.io.IO.print;
+import static jtamaro.io.IO.println;
 import static jtamaro.io.IO.show;
 
 public class PointSequenceDemo {

@@ -2,6 +2,7 @@ package jtamaro.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,6 +59,15 @@ public final class Rectangle extends Graphic {
   @Override
   protected String getInspectLabel() {
     return "rectangle";
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("color", plainText
+        ? color.toString()
+        : Colors.htmlString(color));
+    return props;
   }
 
   @Override

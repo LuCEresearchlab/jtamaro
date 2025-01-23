@@ -18,10 +18,6 @@ final class GuiGraphicFrame extends JFrame {
 
   private final RenderOptions renderOptions;
 
-  private final JLabel widthLabel;
-
-  private final JLabel heightLabel;
-
   private final GuiGraphicCanvas canvas;
 
   private final GuiGraphicTreePanel treePanel;
@@ -46,15 +42,6 @@ final class GuiGraphicFrame extends JFrame {
     panel.setLayout(new BorderLayout());
     panel.add(canvas, BorderLayout.CENTER);
 
-    final JPanel statusBar = new JPanel(new FlowLayout());
-    statusBar.add(new JLabel("Width:"));
-    widthLabel = new JLabel();
-    statusBar.add(widthLabel);
-    statusBar.add(new JLabel("Height:"));
-    heightLabel = new JLabel();
-    statusBar.add(heightLabel);
-    add(statusBar, BorderLayout.SOUTH);
-
     // tree
     treePanel = new GuiGraphicTreePanel(renderOptions);
     final GuiGraphicPropertiesPanel propertiesPanel = new GuiGraphicPropertiesPanel(renderOptions);
@@ -70,7 +57,7 @@ final class GuiGraphicFrame extends JFrame {
     //--- listeners
     paddingField.addActionListener(e -> {
       try {
-        int padding = Integer.parseInt(paddingField.getText());
+        final int padding = Integer.parseInt(paddingField.getText());
         renderOptions.setPadding(padding);
       } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(GuiGraphicFrame.this, "Padding must be an integer");
@@ -87,8 +74,6 @@ final class GuiGraphicFrame extends JFrame {
   public void setGraphic(Graphic graphic) {
     canvas.setGraphic(graphic);
     treePanel.setGraphic(graphic);
-    widthLabel.setText(String.valueOf(graphic.getWidth()));
-    heightLabel.setText(String.valueOf(graphic.getHeight()));
     pack();
   }
 }

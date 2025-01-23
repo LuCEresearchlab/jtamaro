@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -56,12 +57,20 @@ public final class Ellipse extends Graphic {
   @Override
   protected void dump(StringBuilder sb, String indent) {
     super.dump(sb, indent);
-    dumpField(sb, indent, "color", color);
   }
 
   @Override
   protected String getInspectLabel() {
     return "ellipse";
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("color", plainText
+        ? color.toString()
+        : Colors.htmlString(color));
+    return props;
   }
 
   @Override
