@@ -6,6 +6,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -78,6 +79,18 @@ public final class Text extends Graphic {
   @Override
   protected String getInspectLabel() {
     return "text";
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("content", content);
+    props.put("font", font);
+    props.put("size", String.format("%.2f", size));
+    props.put("color", plainText
+        ? color.toString()
+        : Colors.htmlString(color));
+    return props;
   }
 
   @Override

@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -75,6 +76,18 @@ public final class Triangle extends Graphic {
   @Override
   protected String getInspectLabel() {
     return "triangle";
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("side1", String.format("%.2f", side1));
+    props.put("side2", String.format("%.2f", side2));
+    props.put("angle", String.format("%.2f", angle));
+    props.put("color", plainText
+        ? color.toString()
+        : Colors.htmlString(color));
+    return props;
   }
 
   @Override

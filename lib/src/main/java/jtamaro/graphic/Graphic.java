@@ -3,7 +3,10 @@ package jtamaro.graphic;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
@@ -154,22 +157,30 @@ public abstract sealed class Graphic
   /* **** Info **** */
 
   /**
+   * Creates a string visualization of this graphic and its components.
+   */
+  public String dump() {
+    final StringBuilder sb = new StringBuilder();
+    dump(sb, "");
+    return sb.toString();
+  }
+
+  /**
    * Dump method used by {@link #toString()} to provide a string representation of the graphic.
    *
    * <p>The output resembles a tree where the leaves are graphics, their attributes and children
    * graphics.
    *
-   * @implSpec Remember to invoke <code>super.dump(sb, indent)</code> first. Then dump additional
-   * fields using {@link #dumpField(StringBuilder, String, String, Object)} (width and height are
-   * already printed by the super invocation), and finally dump all children using
-   * {@link #dumpChild(StringBuilder, String, String, Graphic)}.
+   * @implSpec Remember to invoke <code>super.dump(sb, indent)</code> first, then add all children
+   * using {@link #dumpChild(StringBuilder, String, String, Graphic)}.
+   * @implNote All the props from {@link #getProps(boolean)} are automatically added by invoking the
+   * super method.
    */
   protected void dump(StringBuilder sb, String indent) {
     sb.append(indent)
         .append(getClass().getSimpleName())
         .append("\n");
-    dumpField(sb, indent, "width", String.format("%1$.02f", getWidth()));
-    dumpField(sb, indent, "height", String.format("%1$.02f", getHeight()));
+    getProps(true).forEach((k, v) -> dumpField(sb, indent, k, v));
   }
 
   protected final void dumpField(StringBuilder sb, String indent, String name, Object value) {
@@ -204,6 +215,31 @@ public abstract sealed class Graphic
     return "graphic";
   }
 
+  /**
+   * Properties of the graphic.
+   *
+   * <p>These are used to produce various representations of the graphic.
+   *
+   * @param plainText Whether the value strings be in plain text (<code>true</code>) or formatted in
+   *                  HTML markup (<code>false</code>).
+   * @implSpec The returned map is supposed to be mutable in non final-classes that override this
+   * method so that it's easier for subclasses to add more entries to it.
+   * @see #dump(StringBuilder, String)
+   * @see #toString()
+   * @see GuiGraphicPropertiesPanel
+   * @see GuiGraphicTreeCellRenderer
+   */
+  protected Map<String, String> getProps(boolean plainText) {
+    // We use LinkedHashMap as the implementation class because:
+    //   1. We care about insertion order
+    //   2. We never perform random reads on the map, just forEach iterations
+    final Map<String, String> props = new LinkedHashMap<>();
+    props.put("width", String.format("%.2f", getWidth()));
+    props.put("height", String.format("%.2f", getHeight()));
+    props.put("pinPoint", Points.format(pinPoint));
+    return props;
+  }
+
   void drawDebugInfo(Graphics2D g2d, RenderOptions options) {
     if (options.isSelected(this)) {
       GraphicsDebugInfo.render(g2d, getPath(), getBBox());
@@ -227,9 +263,12 @@ public abstract sealed class Graphic
 
   @Override
   public final String toString() {
-    final StringBuilder sb = new StringBuilder();
-    dump(sb, "");
-    return sb.toString();
+    return getClass().getSimpleName()
+        + "["
+        + getProps(true).entrySet().stream()
+        .map(e -> e.getKey() + "=" + e.getValue())
+        .collect(Collectors.joining(", "))
+        + "]";
   }
 
   /* **** Internal util classes **** */

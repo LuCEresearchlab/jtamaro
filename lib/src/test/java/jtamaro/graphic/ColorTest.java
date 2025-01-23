@@ -108,26 +108,26 @@ public class ColorTest {
   //--- Color.toString
   @Test
   public void testToStringBlack() {
-    Assert.assertEquals("Color[rgb=000000, opacity=1.00]", Colors.rgba(0, 0, 0, 1.0).toString());
+    Assert.assertEquals("Color[rgb=#000000, opacity=1.00]", Colors.rgba(0, 0, 0, 1.0).toString());
   }
 
   @Test
   public void testToStringBlackTransparent() {
-    Assert.assertEquals("Color[rgb=000000, opacity=0.00]", Colors.rgba(0, 0, 0, 0.0).toString());
+    Assert.assertEquals("Color[rgb=#000000, opacity=0.00]", Colors.rgba(0, 0, 0, 0.0).toString());
   }
 
   @Test
   public void testToStringRed() {
-    Assert.assertEquals("Color[rgb=FF0000, opacity=1.00]", Colors.rgba(255, 0, 0, 1.0).toString());
+    Assert.assertEquals("Color[rgb=#FF0000, opacity=1.00]", Colors.rgba(255, 0, 0, 1.0).toString());
   }
 
   @Test
   public void testToStringGreen() {
-    Assert.assertEquals("Color[rgb=00FF00, opacity=1.00]", Colors.rgba(0, 255, 0, 1.0).toString());
+    Assert.assertEquals("Color[rgb=#00FF00, opacity=1.00]", Colors.rgba(0, 255, 0, 1.0).toString());
   }
 
   @Test
   public void testToStringBlue() {
-    Assert.assertEquals("Color[rgb=0000FF, opacity=1.00]", Colors.rgba(0, 0, 255, 1.0).toString());
+    Assert.assertEquals("Color[rgb=#0000FF, opacity=1.00]", Colors.rgba(0, 0, 255, 1.0).toString());
   }
 }

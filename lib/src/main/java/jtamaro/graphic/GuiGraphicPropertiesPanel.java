@@ -1,6 +1,7 @@
 package jtamaro.graphic;
 
 import java.awt.BorderLayout;
+import java.util.stream.Collectors;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,13 +36,20 @@ public final class GuiGraphicPropertiesPanel extends JPanel {
   public void setGraphic(Graphic graphic) {
     if (graphic == null) {
       // use content to have a reasonable initial size of this component
-      label.setText("<html>Select a node above to show it here</i><br><br><br><br><br><br><br>");
+      label.setText("<html>Select a node above to show it here<br><br></html>");
       canvas.setGraphic(new Rectangle(300, 200, new Color(0, 0, 0, 0)));
       canvasRenderOptions.clearSelection();
     } else {
-      label.setText("<html><b>" + graphic.getInspectLabel() + "</b>" +
-          "<br>width: " + graphic.getWidth() +
-          "<br>height: " + graphic.getHeight());
+      label.setText("<html><b>" + graphic.getInspectLabel() + "</b>"
+          + "<table>"
+          + graphic.getProps(false).entrySet().stream()
+          .map(e -> "<tr><td><b>"
+              + e.getKey()
+              + "</b></td><td>"
+              + e.getValue()
+              + "</td></tr>")
+          .collect(Collectors.joining())
+          + "</table></html>");
       canvas.setGraphic(graphic);
       canvasRenderOptions.clearSelection();
       canvasRenderOptions.select(graphic);

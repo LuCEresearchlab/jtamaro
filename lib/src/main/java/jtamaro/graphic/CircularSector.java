@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -57,16 +58,19 @@ public final class CircularSector extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpField(sb, indent, "radius", radius);
-    dumpField(sb, indent, "angle", angle);
-    dumpField(sb, indent, "color", color);
+  protected String getInspectLabel() {
+    return "circularSector";
   }
 
   @Override
-  protected String getInspectLabel() {
-    return "circularSector";
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("radius", String.format("%.2f", radius));
+    props.put("angle", String.format("%.2f", radius));
+    props.put("color", plainText
+        ? color.toString()
+        : Colors.htmlString(color));
+    return props;
   }
 
   @Override

@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.tree.MutableTreeNode;
 
@@ -84,6 +85,13 @@ public final class Rotate extends Graphic {
   @Override
   public MutableTreeNode createInspectTree() {
     return new InspectTreeNode(graphic);
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("angle", String.format("%.2f", angle));
+    return props;
   }
 
   @Override

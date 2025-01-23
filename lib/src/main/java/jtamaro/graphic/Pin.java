@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.tree.MutableTreeNode;
 
@@ -97,6 +98,13 @@ public final class Pin extends Graphic {
   @Override
   protected String getInspectLabel() {
     return "pin";
+  }
+
+  @Override
+  protected Map<String, String> getProps(boolean plainText) {
+    final Map<String, String> props = super.getProps(plainText);
+    props.put("pinPoint", Points.format(pinPoint));
+    return props;
   }
 
   @Override

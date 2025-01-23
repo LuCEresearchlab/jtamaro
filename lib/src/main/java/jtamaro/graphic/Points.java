@@ -1,5 +1,7 @@
 package jtamaro.graphic;
 
+import java.util.Map;
+
 /**
  * Names of notable points, that can be used as pinning positions for a graphic.
  *
@@ -51,6 +53,27 @@ public class Points {
    * The bottom right corner of the bounding box.
    */
   public static final Point BOTTOM_RIGHT = new Point(1, 1);
+
+  private static final Map<Point, String> KNOWN_POINT_NAMES = Map.of(
+      TOP_LEFT, "TOP_LEFT",
+      TOP_CENTER, "TOP_CENTER",
+      TOP_RIGHT, "TOP_RIGHT",
+      CENTER_LEFT, "CENTER_LEFT",
+      CENTER, "CENTER",
+      CENTER_RIGHT, "CENTER_RIGHT",
+      BOTTOM_LEFT, "BOTTOM_LEFT",
+      BOTTOM_CENTER, "BOTTOM_CENTER",
+      BOTTOM_RIGHT, "BOTTOM_RIGHT"
+  );
+
+  /**
+   * Format point as a string using known point names, if possible.
+   */
+  static String format(Point point) {
+    return KNOWN_POINT_NAMES.containsKey(point)
+        ? KNOWN_POINT_NAMES.get(point)
+        : point.toString();
+  }
 
   private Points() {
   }
