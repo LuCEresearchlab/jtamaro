@@ -3,6 +3,14 @@ package jtamaro.graphic;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static jtamaro.graphic.Colors.BLACK;
+import static jtamaro.graphic.Colors.WHITE;
+import static jtamaro.graphic.Graphics.compose;
+import static jtamaro.graphic.Graphics.ellipse;
+import static jtamaro.graphic.Graphics.pin;
+import static jtamaro.graphic.Graphics.rotate;
+import static jtamaro.graphic.Points.BOTTOM_CENTER;
+
 public final class GraphicTest {
 
   private static final double TEST_DELTA = 0.0001;
@@ -211,5 +219,21 @@ public final class GraphicTest {
         TEST_DELTA);
 
     Assert.assertEquals(triangle, Graphics.triangle(20.0, 32.0, 71.0, Colors.YELLOW));
+  }
+
+  @Test
+  public void testComposeRotationSize() {
+    // Test for: https://github.com/LuCEresearchlab/jtamaro/issues/1
+    final double outer = 200.0 / 3.0;
+    final double inner = outer / 2.0;
+    final Graphic g = rotate(
+        9 * 5,
+        compose(
+            pin(BOTTOM_CENTER, ellipse(inner, inner, BLACK)),
+            pin(BOTTOM_CENTER, ellipse(outer, outer, WHITE)))
+    );
+
+    Assert.assertEquals(outer, g.getWidth(), 0.0001);
+    Assert.assertEquals(outer, g.getHeight(), 0.0001);
   }
 }

@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Utility class that contains utilities to draw debug information about a given {@link Graphic}.
@@ -51,7 +52,7 @@ final class GraphicsDebugInfo {
    * @param path The path of the graphic of which we're rendering the debug information
    * @param bbox The bounding box of the graphic of which we're rendering the debug information
    */
-  static void render(Graphics2D g2d, Path2D.Double path, TightBoundingBox bbox) {
+  static void render(Graphics2D g2d, Path2D.Double path, Rectangle2D bbox) {
     renderOutline(g2d, path);
     renderBounds(g2d, bbox);
     renderBoundingBoxPoints(g2d, bbox);
@@ -66,7 +67,7 @@ final class GraphicsDebugInfo {
   /**
    * Render a rectangle of the bounding box of this graphic.
    */
-  private static void renderBounds(Graphics2D g2d, TightBoundingBox bbox) {
+  private static void renderBounds(Graphics2D g2d, Rectangle2D bbox) {
     g2d.setColor(BOUNDING_BOX_COLOR);
     g2d.drawRect(
         (int) bbox.getMinX(),
@@ -78,7 +79,7 @@ final class GraphicsDebugInfo {
   /**
    * Render the points of the bounding box of this graphic.
    */
-  private static void renderBoundingBoxPoints(Graphics2D g2d, TightBoundingBox bbox) {
+  private static void renderBoundingBoxPoints(Graphics2D g2d, Rectangle2D bbox) {
     final double tY = bbox.getMinY();
     final double bY = bbox.getMaxY();
     final double mY = (bY + tY) / 2;

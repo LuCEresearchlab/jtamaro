@@ -2,6 +2,7 @@ package jtamaro.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import javax.swing.tree.MutableTreeNode;
 
 /**
@@ -25,7 +26,7 @@ abstract sealed class DelegatingGraphic
   }
 
   @Override
-  TightBoundingBox getBBox() {
+  Rectangle2D getBBox() {
     return delegate.getBBox();
   }
 

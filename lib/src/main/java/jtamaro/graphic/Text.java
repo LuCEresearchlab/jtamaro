@@ -6,6 +6,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Map;
 import java.util.Objects;
 
@@ -114,7 +115,7 @@ public final class Text extends Graphic {
     final GlyphVector glyphVector = font.createGlyphVector(frc, content);
     final Path2D.Double path = new Path2D.Double(glyphVector.getOutline());
 
-    final TightBoundingBox tmpBbox = new TightBoundingBox(path);
+    final Rectangle2D tmpBbox = path.getBounds2D();
     path.transform(AffineTransform.getTranslateInstance(-tmpBbox.getMinX(), 0.0));
     return path;
   }
