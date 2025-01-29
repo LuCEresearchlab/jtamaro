@@ -15,6 +15,7 @@ import jtamaro.example.graphic.Daisy;
 import jtamaro.example.graphic.GraphicReductions;
 import jtamaro.example.graphic.PaintBrush;
 import jtamaro.example.graphic.Rings;
+import jtamaro.example.graphic.RotationPin;
 import jtamaro.example.graphic.SwissFlag;
 import jtamaro.example.graphic.TextDemo;
 import jtamaro.example.graphic.TriangleDemo;
@@ -62,6 +63,7 @@ public class Application {
     SwissFlag.main(args);
     TextDemo.main(args);
     TriangleDemo.main(args);
+    RotationPin.main(args);
 
     // Animations
     Clock.main(args);

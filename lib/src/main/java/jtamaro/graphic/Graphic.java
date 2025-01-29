@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,7 +30,7 @@ public abstract sealed class Graphic
 
   private final Path2D.Double path;
 
-  private final TightBoundingBox bbox;
+  private final Rectangle2D bbox;
 
   /**
    * Produces a graphic with an empty path.
@@ -43,7 +44,7 @@ public abstract sealed class Graphic
     this.pinPoint = Points.CENTER;
     this.path = new Path2D.Double();
     this.path.moveTo(0, 0);
-    this.bbox = new TightBoundingBox(this.path);
+    this.bbox = new Rectangle2D.Double();
   }
 
   /**
@@ -59,7 +60,7 @@ public abstract sealed class Graphic
   protected Graphic(Path2D.Double path, Point pinPoint) {
     this.path = path;
     this.pinPoint = pinPoint;
-    this.bbox = new TightBoundingBox(path);
+    this.bbox = path.getBounds2D();
   }
 
   /* **** Location **** */
@@ -68,7 +69,7 @@ public abstract sealed class Graphic
     return pinPoint;
   }
 
-  TightBoundingBox getBBox() {
+  Rectangle2D getBBox() {
     return bbox;
   }
 
@@ -245,8 +246,6 @@ public abstract sealed class Graphic
       GraphicsDebugInfo.render(g2d, getPath(), getBBox());
     }
   }
-
-  /* **** Object **** */
 
   @Override
   public boolean equals(Object other) {
