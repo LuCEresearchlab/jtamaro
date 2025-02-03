@@ -4,7 +4,6 @@ import jtamaro.data.Sequence;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.example.Toolbelt.circle;
 import static jtamaro.graphic.Colors.TRANSPARENT;
@@ -60,7 +59,7 @@ public class CogWheel {
     final Graphic background = transparentBackground
         ? emptyGraphic()
         : rectangle(outerDiameter, outerDiameter, WHITE);
-    return map(angle -> compose(rotate(angle, wheel), background), angles);
+    return angles.map(angle -> compose(rotate(angle, wheel), background));
   }
 
   public static void main(String[] args) {

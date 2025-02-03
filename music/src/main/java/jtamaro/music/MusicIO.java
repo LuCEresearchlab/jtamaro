@@ -8,7 +8,6 @@ import javax.sound.midi.ShortMessage;
 import jtamaro.data.Sequence;
 
 import static jtamaro.data.Sequences.cons;
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.music.Music.chord;
 import static jtamaro.music.Music.timed;
@@ -57,7 +56,7 @@ public class MusicIO {
   }
 
   public static void playChords(Sequence<AbsoluteChord> chords, int bpm, int channel, Instrument instrument) {
-    play(map(chord -> timed(1, chord), chords), bpm, channel, instrument);
+    play(chords.map(chord -> timed(1, chord)), bpm, channel, instrument);
   }
 
   public static void playNotes(Sequence<Note> notes) {
@@ -78,7 +77,7 @@ public class MusicIO {
   }
 
   public static void playNotes(Sequence<Note> notes, int bpm, int channel, Instrument instrument) {
-    play(map(n -> timed(1, chord(of(n))), notes), bpm, channel, instrument);
+    play(notes.map(n -> timed(1, chord(of(n)))), bpm, channel, instrument);
   }
 
   private MusicIO() {

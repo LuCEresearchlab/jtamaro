@@ -20,7 +20,7 @@ import static jtamaro.music.Notes.C4;
 public record Chord(Sequence<Interval> intervals, String name, String symbol) {
 
   public AbsoluteChord on(Note root) {
-    return new AbsoluteChord(Sequences.map(i->i.transpose(root), intervals));
+    return new AbsoluteChord(intervals.map(i -> i.transpose(root)));
   }
 
   // https://en.wikipedia.org/wiki/Chord_(music)#Notation_in_popular_music
@@ -90,7 +90,7 @@ public record Chord(Sequence<Interval> intervals, String name, String symbol) {
     for (Chord ch : CHORDS) {
       System.out.println(ch);
       AbsoluteChord absoluteChord = ch.on(root);
-      Sequence<AbsoluteChord> seq = Sequences.map(n -> Music.chord(Sequences.of(n)), absoluteChord.notes());
+      Sequence<AbsoluteChord> seq = absoluteChord.notes().map(n -> Music.chord(Sequences.of(n)));
       MusicIO.playChords(Sequences.cons(absoluteChord, seq), 80);
     }
   }

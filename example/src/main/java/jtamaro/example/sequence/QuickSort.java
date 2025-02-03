@@ -3,45 +3,32 @@ package jtamaro.example.sequence;
 import jtamaro.data.Function2;
 import jtamaro.data.Sequence;
 
-import static jtamaro.data.Sequences.concat;
 import static jtamaro.data.Sequences.cons;
 import static jtamaro.data.Sequences.empty;
-import static jtamaro.data.Sequences.filter;
-import static jtamaro.data.Sequences.first;
-import static jtamaro.data.Sequences.isEmpty;
 import static jtamaro.data.Sequences.of;
-import static jtamaro.data.Sequences.rest;
 import static jtamaro.io.IO.println;
 
 public class QuickSort {
 
   public static <T> Sequence<T> quickSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
-    return isEmpty(sequence)
+    return sequence.isEmpty()
         ? empty()
-        : concat(
-            quickSort(lessEqual, filter(x -> lessEqual.apply(x, first(sequence)), rest(sequence))),
-            cons(
-                first(sequence),
+        : quickSort(lessEqual, sequence.rest().filter(x -> lessEqual.apply(x, sequence.first())))
+            .concat(cons(
+                sequence.first(),
                 quickSort(lessEqual,
-                    filter(x -> !lessEqual.apply(x, first(sequence)), rest(sequence)))
-            )
-        );
+                    sequence.rest().filter(x -> !lessEqual.apply(x, sequence.first())))));
   }
 
   public static <T> Sequence<T> quickSortNice(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
-    if (isEmpty(sequence)) {
+    if (sequence.isEmpty()) {
       return empty();
     } else {
-      final T pivot = first(sequence);
-      final Sequence<T> smaller = filter(x -> lessEqual.apply(x, pivot), rest(sequence));
-      final Sequence<T> larger = filter(x -> !lessEqual.apply(x, pivot), rest(sequence));
-      return concat(
-          quickSortNice(lessEqual, smaller),
-          cons(
-              pivot,
-              quickSortNice(lessEqual, larger)
-          )
-      );
+      final T pivot = sequence.first();
+      final Sequence<T> smaller = sequence.rest().filter(x -> lessEqual.apply(x, pivot));
+      final Sequence<T> larger = sequence.rest().filter(x -> !lessEqual.apply(x, pivot));
+      return quickSortNice(lessEqual, smaller)
+          .concat(cons(pivot, quickSortNice(lessEqual, larger)));
     }
   }
 

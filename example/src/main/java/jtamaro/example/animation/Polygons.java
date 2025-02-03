@@ -3,7 +3,6 @@ package jtamaro.example.animation;
 import jtamaro.data.Sequence;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.example.Toolbelt.composes;
 import static jtamaro.example.Toolbelt.isoscelesTriangle;
@@ -22,33 +21,25 @@ public class Polygons {
 
   private static Graphic polygonFacet(double radius, int number, int sides) {
     return rotate(number * 360.0 / sides,
-      pin(CENTER_LEFT,
-        rotate(-360.0 / sides / 2,
-          isoscelesTriangle(radius, 360.0 / sides, hsv(number * 360.0 / sides, 1, 1))
+        pin(CENTER_LEFT,
+            rotate(-360.0 / sides / 2,
+                isoscelesTriangle(radius, 360.0 / sides, hsv(number * 360.0 / sides, 1, 1))
+            )
         )
-      )
     );
   }
 
   private static Graphic regularPolygon(double radius, int sides) {
     assert radius >= 0;
     assert sides >= 3;
-    return composes(
-        map(
-            i -> polygonFacet(radius, i, sides),
-            range(sides)
-        )
-    );
+    return composes(range(sides).map(i -> polygonFacet(radius, i, sides)));
   }
 
   private static Sequence<Graphic> polygonAnimation() {
-    return map(
-      sides -> overlay(
+    return range(3, 24).map(sides -> overlay(
         regularPolygon(250, sides),
         rectangle(500, 500, TRANSPARENT)
-      ),
-      range(3, 24)
-    );
+    ));
   }
 
   public static void main(String[] args) {

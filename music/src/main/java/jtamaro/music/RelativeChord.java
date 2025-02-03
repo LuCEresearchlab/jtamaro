@@ -114,7 +114,7 @@ public record RelativeChord(int scaleStep, Chord chord, String symbol) {
   }
 
   private static void play(Scale scale, Sequence<RelativeChord> cs) {
-    Sequence<AbsoluteChord> acs = Sequences.map(scale::in, cs);
+    Sequence<AbsoluteChord> acs = cs.map(scale::in);
     MusicIO.playChords(acs, 60);
   }
 

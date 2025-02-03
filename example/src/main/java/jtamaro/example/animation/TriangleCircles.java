@@ -3,7 +3,6 @@ package jtamaro.example.animation;
 import jtamaro.data.Sequence;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.example.Toolbelt.equilateralTriangle;
 import static jtamaro.graphic.Colors.BLACK;
@@ -31,10 +30,8 @@ public class TriangleCircles {
 
   private static Sequence<Graphic> triangleCircleAnimation() {
     double side = 400;
-    return map(
-        (Integer a) -> rotate(a, equilateralTriangleWithInCircleAndCircumCircle(side)),
-        range(0, 360, 3)
-    );
+    return range(0, 360, 3)
+        .map((Integer a) -> rotate(a, equilateralTriangleWithInCircleAndCircumCircle(side)));
   }
 
 

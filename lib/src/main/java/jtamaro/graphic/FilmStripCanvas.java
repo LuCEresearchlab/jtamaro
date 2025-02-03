@@ -57,7 +57,7 @@ public final class FilmStripCanvas extends JComponent {
   private int position;
 
   public FilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
-    this.indexedGraphics = Sequences.zipWithIndex(graphics);
+    this.indexedGraphics = graphics.zipWithIndex();
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
     this.completeFrameWidth = computeCompleteFrameWidth(frameWidth);
@@ -116,7 +116,7 @@ public final class FilmStripCanvas extends JComponent {
     final int lastVisibleFrame = Math.max(0, positionAtRightWindowEdge / completeFrameWidth);
     final int visibleFrameCount = lastVisibleFrame - firstVisibleFrame + 1;
     final Sequence<Pair<Graphic, Integer>> visibleGraphics =
-        Sequences.take(visibleFrameCount, Sequences.drop(firstVisibleFrame, indexedGraphics));
+        indexedGraphics.drop(firstVisibleFrame).take(visibleFrameCount);
     g2.translate(0, MARGIN);
 
     for (final Pair<Graphic, Integer> indexedGraphic : visibleGraphics) {

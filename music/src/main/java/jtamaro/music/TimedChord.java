@@ -20,10 +20,11 @@ public record TimedChord(int beats, AbsoluteChord chord) {
     }
   }
 
+  @Override
   public String toString() {
-    return Sequences.reduce("",
-        (a, e) -> a + e,
-        Sequences.intersperse("-", Sequences.map(Note::toString, chord.notes())));
+    return chord.notes()
+        .map(Note::toString)
+        .intersperse("-")
+        .reduce("", String::concat);
   }
-
 }

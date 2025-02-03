@@ -5,120 +5,88 @@ import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static jtamaro.data.Sequences.concat;
-import static jtamaro.data.Sequences.cons;
-import static jtamaro.data.Sequences.crossProduct;
-import static jtamaro.data.Sequences.drop;
-import static jtamaro.data.Sequences.empty;
-import static jtamaro.data.Sequences.filter;
-import static jtamaro.data.Sequences.first;
-import static jtamaro.data.Sequences.flatMap;
-import static jtamaro.data.Sequences.foldLeft;
-import static jtamaro.data.Sequences.foldRight;
-import static jtamaro.data.Sequences.fromIterable;
-import static jtamaro.data.Sequences.fromStream;
-import static jtamaro.data.Sequences.intersperse;
-import static jtamaro.data.Sequences.isEmpty;
-import static jtamaro.data.Sequences.map;
-import static jtamaro.data.Sequences.of;
-import static jtamaro.data.Sequences.ofStringCharacters;
-import static jtamaro.data.Sequences.ofStringLines;
-import static jtamaro.data.Sequences.range;
-import static jtamaro.data.Sequences.rangeClosed;
-import static jtamaro.data.Sequences.reduce;
-import static jtamaro.data.Sequences.replicate;
-import static jtamaro.data.Sequences.rest;
-import static jtamaro.data.Sequences.reverse;
-import static jtamaro.data.Sequences.take;
-import static jtamaro.data.Sequences.unzip;
-import static jtamaro.data.Sequences.zip;
-import static jtamaro.data.Sequences.zipWithIndex;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public final class SequencesTest {
 
   @Test
   public void testEmptyIsEmpty() {
-    Assert.assertTrue(Sequences.isEmpty(Sequences.empty()));
+    Assert.assertTrue(Sequences.empty().isEmpty());
   }
 
   @Test
   public void testConsIsNotEmpty() {
-    Assert.assertFalse(Sequences.isEmpty(Sequences.cons(1, Sequences.empty())));
+    Assert.assertFalse(Sequences.cons(1, Sequences.empty()).isEmpty());
   }
 
   @Test
   public void testConsFirst() {
-    Assert.assertEquals(1L, (long) Sequences.first(Sequences.cons(1, Sequences.empty())));
+    Assert.assertEquals(1L, (long) Sequences.cons(1, Sequences.empty()).first());
   }
 
   @Test
   public void testConsRest() {
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(Sequences.cons(1, Sequences.empty()))));
+    Assert.assertTrue(Sequences.cons(1, Sequences.empty()).rest().isEmpty());
   }
 
   @Test
   public void testOfEmpty() {
-    Assert.assertTrue(Sequences.isEmpty(Sequences.of()));
+    Assert.assertTrue(Sequences.of().isEmpty());
   }
 
   @Test
   public void testOfOne() {
     final Sequence<Long> seq = Sequences.of(1L);
-    Assert.assertEquals(1L, (long) Sequences.first(seq));
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(seq)));
+    Assert.assertEquals(1L, (long) seq.first());
+    Assert.assertTrue(seq.rest().isEmpty());
   }
 
   @Test
   public void testOfThree() {
     final Sequence<Integer> seq = Sequences.of(1, 2, 3);
-    Assert.assertEquals(1L, (long) Sequences.first(seq));
-    Assert.assertEquals(2L, (long) Sequences.first(Sequences.rest(seq)));
-    Assert.assertEquals(3L, (long) Sequences.first(Sequences.rest(Sequences.rest(seq))));
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(Sequences.rest(Sequences.rest(seq)))));
+    Assert.assertEquals(1L, (long) seq.first());
+    Assert.assertEquals(2L, (long) seq.rest().first());
+    Assert.assertEquals(3L, (long) seq.rest().rest().first());
+    Assert.assertTrue(seq.rest().rest().rest().isEmpty());
   }
 
   @Test
   public void testOfEmptyStringCharacters() {
-    Assert.assertTrue(Sequences.isEmpty(Sequences.ofStringCharacters("")));
+    Assert.assertTrue(Sequences.ofStringCharacters("").isEmpty());
   }
 
   @Test
   public void testOfOneStringCharacters() {
     final Sequence<Character> seq = Sequences.ofStringCharacters("a");
-    Assert.assertEquals('a', (char) Sequences.first(seq));
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(seq)));
+    Assert.assertEquals('a', (char) seq.first());
+    Assert.assertTrue(seq.rest().isEmpty());
   }
 
   @Test
   public void testOfThreeStringCharacters() {
     final Sequence<Character> seq = Sequences.ofStringCharacters("abc");
-    Assert.assertEquals('a', (char) Sequences.first(seq));
-    Assert.assertEquals('b', (char) Sequences.first(Sequences.rest(seq)));
-    Assert.assertEquals('c', (char) Sequences.first(Sequences.rest(Sequences.rest(seq))));
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(Sequences.rest(Sequences.rest(seq)))));
+    Assert.assertEquals('a', (char) seq.first());
+    Assert.assertEquals('b', (char) seq.rest().first());
+    Assert.assertEquals('c', (char) seq.rest().rest().first());
+    Assert.assertTrue(seq.rest().rest().rest().isEmpty());
   }
 
   @Test
   public void testOfEmptyStringLines() {
-    Assert.assertTrue(Sequences.isEmpty(Sequences.ofStringLines("")));
+    Assert.assertTrue(Sequences.ofStringLines("").isEmpty());
   }
 
   @Test
   public void testOfOneStringLines() {
     final Sequence<String> seq = Sequences.ofStringLines("line1");
-    Assert.assertEquals("line1", Sequences.first(seq));
+    Assert.assertEquals("line1", seq.first());
   }
 
   @Test
   public void testOfThreeStringLines() {
     final Sequence<String> seq = Sequences.ofStringLines("line1\nline2\nline3");
-    Assert.assertEquals("line1", Sequences.first(seq));
-    Assert.assertEquals("line2", Sequences.first(Sequences.rest(seq)));
-    Assert.assertEquals("line3", Sequences.first(Sequences.rest(Sequences.rest(seq))));
-    Assert.assertTrue(Sequences.isEmpty(Sequences.rest(Sequences.rest(Sequences.rest(seq)))));
+    Assert.assertEquals("line1", seq.first());
+    Assert.assertEquals("line2", seq.rest().first());
+    Assert.assertEquals("line3", seq.rest().rest().first());
+    Assert.assertTrue(seq.rest().rest().rest().isEmpty());
   }
 
   @Test
@@ -294,280 +262,308 @@ public final class SequencesTest {
 
   @Test
   public void testReverseEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.reverse(Sequences.empty()));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().reversed());
   }
 
   @Test
   public void testReverseOne() {
-    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.reverse(Sequences.of(1)));
+    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).reversed());
   }
 
   @Test
   public void testReverseTwo() {
-    TestUtil.assertSequenceEquals(Sequences.of(1, 0), Sequences.reverse(Sequences.range(2)));
+    TestUtil.assertSequenceEquals(Sequences.of(1, 0), Sequences.range(2).reversed());
   }
 
   @Test
   public void testReverseFive() {
-    TestUtil.assertSequenceEquals(Sequences.rangeClosed(4, 0, -1), Sequences.reverse(Sequences.rangeClosed(0, 4)));
+    TestUtil.assertSequenceEquals(Sequences.rangeClosed(4, 0, -1),
+        Sequences.rangeClosed(0, 4).reversed());
   }
 
   @Test
   public void testMapEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.map(x -> x, Sequences.empty()));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().map(x -> x));
   }
 
   @Test
   public void testMapOneElem() {
-    TestUtil.assertSequenceEquals(Sequences.of(3), Sequences.map(String::length, Sequences.of("ABC")));
+    TestUtil.assertSequenceEquals(Sequences.of(3),
+        Sequences.of("ABC").map(String::length));
   }
 
   @Test
   public void testMapTwoElems() {
-    TestUtil.assertSequenceEquals(Sequences.of(3, 2), Sequences.map(String::length, Sequences.of("ABC", "12")));
+    TestUtil.assertSequenceEquals(Sequences.of(3, 2),
+        Sequences.of("ABC", "12").map(String::length));
   }
 
   @Test
   public void testMapThreeElems() {
-    TestUtil.assertSequenceEquals(Sequences.of(3, 2, 4), Sequences.map(String::length, Sequences.of("ABC", "12", "....")));
+    TestUtil.assertSequenceEquals(Sequences.of(3, 2, 4),
+        Sequences.of("ABC", "12", "....").map(String::length));
   }
 
   @Test
   public void testMapApplicationCountConsumed() {
     final int[] count = new int[]{0};
-    Sequences.map(e -> {
+    Sequences.range(10).map(e -> {
       count[0]++;
       return e;
-    }, Sequences.range(10));
+    });
     Assert.assertEquals(10, count[0]);
   }
 
   @Test
   public void testMapMapApplicationCountConsumed() {
-    final int[] innerCount = new int[]{0};
-    final int[] outerCount = new int[]{0};
-    Sequences.map(e -> {
-      innerCount[0]++;
+    final int[] firstCount = new int[]{0};
+    final int[] secondCount = new int[]{0};
+    Sequences.range(10).map(e -> {
+      firstCount[0]++;
       return e;
-    }, Sequences.map(e -> {
-      outerCount[0]++;
+    }).map(e -> {
+      secondCount[0]++;
       return e;
-    }, Sequences.range(10)));
-    Assert.assertEquals(10, innerCount[0]);
-    Assert.assertEquals(10, outerCount[0]);
+    });
+    Assert.assertEquals(10, firstCount[0]);
+    Assert.assertEquals(10, secondCount[0]);
   }
 
   @Test
   public void testFilterEmptyTrue() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.filter(x -> true, Sequences.empty()));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(x -> true));
   }
 
   @Test
   public void testFilterEmptyFalse() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.filter(x -> false, Sequences.empty()));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(x -> false));
   }
 
   @Test
   public void testFilter1True() {
-    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.filter(s -> true, Sequences.of(1)));
+    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).filter(s -> true));
   }
 
   @Test
   public void testFilter1False() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.filter(s -> false, Sequences.of(1)));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(1).filter(s -> false));
   }
 
   @Test
   public void testFilter1TrueTest() {
-    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.filter(s -> s == 1, Sequences.of(1)));
+    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).filter(s -> s == 1));
   }
 
   @Test
   public void testFilter1FalseTest() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.filter(s -> s != 1, Sequences.of(1)));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(1).filter(s -> s != 1));
   }
 
   @Test
   public void testFilterMany() {
-    TestUtil.assertSequenceEquals(Sequences.of(0, 2, 4, 6, 8), Sequences.filter(i -> i % 2 == 0, Sequences.range(10)));
+    TestUtil.assertSequenceEquals(Sequences.of(0, 2, 4, 6, 8),
+        Sequences.range(10).filter(i -> i % 2 == 0));
   }
 
   @Test
   public void testFilterPredicateApplicationCountConsumed() {
     final int[] count = new int[]{0};
-    Sequences.filter(s -> {
+    Sequences.range(10).filter(s -> {
       count[0]++;
       return true;
-    }, Sequences.range(10));
+    });
     Assert.assertEquals(10, count[0]);
   }
 
   @Test
   public void testFilterFilterPredicateApplicationCountConsumed() {
-    int[] innerCount = new int[]{0};
-    int[] outerCount = new int[]{0};
-    Sequences.filter(s -> {
-      outerCount[0]++;
-      return false;
-    }, Sequences.filter(s -> {
-      innerCount[0]++;
+    int[] firstCount = new int[]{0};
+    int[] secondCount = new int[]{0};
+    Sequences.range(10).filter(s -> {
+      firstCount[0]++;
       return true;
-    }, Sequences.range(10)));
-    Assert.assertEquals(10, innerCount[0]);
-    Assert.assertEquals(10, outerCount[0]);
+    }).filter(s -> {
+      secondCount[0]++;
+      return false;
+    });
+    Assert.assertEquals(10, firstCount[0]);
+    Assert.assertEquals(10, secondCount[0]);
   }
 
   @Test
   public void testReduceEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.reduce(0, (e, a) -> a, Sequences.empty()));
+    Assert.assertEquals(0L, (long) Sequences.empty().reduce(0, (e, a) -> a));
   }
 
   @Test
   public void testReduceMany() {
-    Assert.assertEquals(110L, (long) Sequences.reduce(100, (e, a) -> a + 1, Sequences.range(10)));
+    Assert.assertEquals(110L, (long) Sequences.range(10).reduce(100, (e, a) -> a + 1));
   }
 
   @Test
   public void testReduceManyNonCommutative() {
-    Assert.assertEquals("ABCD", Sequences.reduce("", (e, a) -> e + a, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("ABCD", Sequences.rangeClosed('A', 'D').reduce("", (e, a) -> e + a));
   }
 
   @Test
   public void testReduceManyNonCommutativeReverse() {
-    Assert.assertEquals("DCBA", Sequences.reduce("", (e, a) -> a + e, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("DCBA", Sequences.rangeClosed('A', 'D').reduce("", (e, a) -> a + e));
   }
 
   @Test
   public void testFoldRightEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.foldRight(0, (e, a) -> a, Sequences.empty()));
+    Assert.assertEquals(0L, (long) Sequences.empty().foldRight(0, (e, a) -> a));
   }
 
   @Test
   public void testFoldRightMany() {
-    Assert.assertEquals(110L, (long) Sequences.foldRight(100, (e, a) -> a + 1, Sequences.range(10)));
+    Assert.assertEquals(110L,
+        (long) Sequences.range(10).foldRight(100, (e, a) -> a + 1));
   }
 
   @Test
   public void testFoldRightManyNonCommutative() {
-    Assert.assertEquals("ABCD", Sequences.foldRight("", (e, a) -> e + a, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("ABCD", Sequences.rangeClosed('A', 'D').foldRight("", (e, a) -> e + a));
   }
 
   @Test
   public void testFoldRightManyNonCommutativeReverse() {
-    Assert.assertEquals("DCBA", Sequences.foldRight("", (e, a) -> a + e, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("DCBA", Sequences.rangeClosed('A', 'D').foldRight("", (e, a) -> a + e));
   }
 
   @Test
   public void testFoldLeftEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.foldLeft(0, (a, e) -> a, Sequences.empty()));
+    Assert.assertEquals(0L, (long) Sequences.empty().foldLeft(0, (a, e) -> a));
   }
 
   @Test
   public void testFoldLeftMany() {
-    Assert.assertEquals(110L, (long) Sequences.foldLeft(100, (a, e) -> a + 1, Sequences.range(10)));
+    Assert.assertEquals(110L, (long) Sequences.range(10).foldLeft(100, (a, e) -> a + 1));
   }
 
   @Test
   public void testFoldLeftManyNonCommutative() {
-    Assert.assertEquals("ABCD", Sequences.foldLeft("", (a, e) -> a + e, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("ABCD", Sequences.rangeClosed('A', 'D').foldLeft("", (a, e) -> a + e));
   }
 
   @Test
   public void testFoldLeftManyNonCommutativeReverse() {
-    Assert.assertEquals("DCBA", Sequences.foldLeft("", (a, e) -> e + a, Sequences.rangeClosed('A', 'D')));
+    Assert.assertEquals("DCBA", Sequences.rangeClosed('A', 'D').foldLeft("", (a, e) -> e + a));
   }
 
   @Test
   public void testFlatMap() {
     TestUtil.assertSequenceEquals(Sequences.of('A', 'B', 'C', 'C', 'D', 'E', 'E', 'F', 'G'),
-        Sequences.flatMap(Sequences::ofStringCharacters, Sequences.ofStringLines("ABC\nCDE\nEFG")));
+        Sequences.ofStringLines("ABC\nCDE\nEFG").flatMap(Sequences::ofStringCharacters));
+  }
+
+  @Test
+  public void testEmptyFlatMap() {
+    TestUtil.assertSequenceEquals(Sequences.of(),
+        Sequences.<String>of().flatMap(Sequences::ofStringCharacters));
+  }
+
+  @Test
+  public void testDropEmptyNone() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().drop(0));
+  }
+
+  @Test
+  public void testDropEmptyOne() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().drop(1));
   }
 
   @Test
   public void testDropNone() {
-    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30), Sequences.drop(0, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30),
+        Sequences.of(10, 20, 30).drop(0));
   }
 
   @Test
   public void testDropOne() {
-    TestUtil.assertSequenceEquals(Sequences.of(20, 30), Sequences.drop(1, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.of(20, 30),
+        Sequences.of(10, 20, 30).drop(1));
   }
 
   @Test
   public void testDropAll() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.drop(3, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(10, 20, 30).drop(3));
   }
 
   @Test
   public void testDropMore() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.drop(4, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(10, 20, 30).drop(4));
   }
 
   @Test
   public void testDropString() {
-    TestUtil.assertSequenceEquals(Sequences.of("Ho"), Sequences.drop(1, Sequences.of("Hi", "Ho")));
+    TestUtil.assertSequenceEquals(Sequences.of("Ho"), Sequences.of("Hi", "Ho").drop(1));
+  }
+
+  @Test
+  public void takeEmptyNone() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().take(0));
+  }
+
+  @Test
+  public void takeEmptyOne() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().take(1));
   }
 
   @Test
   public void testTakeNone() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.take(0, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(10, 20, 30).take(0));
   }
 
   @Test
   public void testTakeOne() {
-    TestUtil.assertSequenceEquals(Sequences.of(10), Sequences.take(1, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.of(10), Sequences.of(10, 20, 30).take(1));
   }
 
   @Test
   public void testTakeAll() {
-    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30), Sequences.take(3, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30), Sequences.of(10, 20, 30).take(3));
   }
 
   @Test
   public void testTakeMore() {
-    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30), Sequences.take(4, Sequences.of(10, 20, 30)));
+    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30), Sequences.of(10, 20, 30).take(4));
   }
 
   @Test
   public void testTakeString() {
-    TestUtil.assertSequenceEquals(Sequences.of("Hi"), Sequences.take(1, Sequences.of("Hi", "Ho")));
+    TestUtil.assertSequenceEquals(Sequences.of("Hi"), Sequences.of("Hi", "Ho").take(1));
   }
 
   @Test
   public void testConcat() {
-    TestUtil.assertSequenceEquals(
-        Sequences.range(1, 10),
-        Sequences.concat(Sequences.of(1, 2, 3, 4), Sequences.of(5, 6, 7, 8, 9))
-    );
+    TestUtil.assertSequenceEquals(Sequences.range(1, 10),
+        Sequences.of(1, 2, 3, 4).concat(Sequences.of(5, 6, 7, 8, 9)));
   }
 
   @Test
-  public void testConcatSubTypes() {
+  public void testConcatAssociativity() {
     TestUtil.assertSequenceEquals(
-        Sequences.of(1, 2f, 3L, 4.0),
-        Sequences.concat(Sequences.of(1), Sequences.concat(Sequences.of(2f), Sequences.concat(
-            Sequences.of(3L), Sequences.of(4.0))))
-    );
+        Sequences.of(1).concat(Sequences.of(2)).concat(Sequences.of(3)),
+        Sequences.of(1).concat(Sequences.of(2).concat(Sequences.of(3))));
   }
 
   @Test
   public void testConcatEmpty() {
-    TestUtil.assertSequenceEquals(
-        Sequences.range(1, 5),
-        Sequences.concat(Sequences.of(1, 2, 3, 4), Sequences.empty())
-    );
+    TestUtil.assertSequenceEquals(Sequences.range(1, 5),
+        Sequences.of(1, 2, 3, 4).concat(Sequences.empty()));
   }
 
   @Test
   public void testIntersperseZero() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.intersperse("A", Sequences.empty()));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().intersperse("A"));
   }
 
   @Test
   public void testIntersperseOne() {
     TestUtil.assertSequenceEquals(
         Sequences.of("1", "A", "2", "A", "3"),
-        Sequences.intersperse("A", Sequences.of("1", "2", "3"))
+        Sequences.of("1", "2", "3").intersperse("A")
     );
   }
 
@@ -575,7 +571,7 @@ public final class SequencesTest {
   public void testIntersperseTwo() {
     TestUtil.assertSequenceEquals(
         Sequences.of("X", "A", "Y"),
-        Sequences.intersperse("A", Sequences.of("X", "Y"))
+        Sequences.of("X", "Y").intersperse("A")
     );
   }
 
@@ -583,7 +579,7 @@ public final class SequencesTest {
   public void testIntersperseThree() {
     TestUtil.assertSequenceEquals(
         Sequences.of("X", "A", "Y", "A", "Z"),
-        Sequences.intersperse("A", Sequences.of("X", "Y", "Z"))
+        Sequences.of("X", "Y", "Z").intersperse("A")
     );
   }
 
@@ -591,7 +587,7 @@ public final class SequencesTest {
   public void testZip() {
     TestUtil.assertSequenceEquals(
         Sequences.of(new Pair<>("a", 1), new Pair<>("b", 2), new Pair<>("c", 3)),
-        Sequences.zip(Sequences.of("a", "b", "c"), Sequences.of(1, 2, 3))
+        Sequences.of("a", "b", "c").zipWith(Sequences.of(1, 2, 3))
     );
   }
 
@@ -599,7 +595,7 @@ public final class SequencesTest {
   public void testZipLeftLonger() {
     TestUtil.assertSequenceEquals(
         Sequences.of(new Pair<>("a", 1), new Pair<>("b", 2), new Pair<>("c", 3)),
-        Sequences.zip(Sequences.of("a", "b", "c", "d"), Sequences.of(1, 2, 3))
+        Sequences.of("a", "b", "c", "d").zipWith(Sequences.of(1, 2, 3))
     );
   }
 
@@ -608,7 +604,23 @@ public final class SequencesTest {
   public void testZipRightLonger() {
     TestUtil.assertSequenceEquals(
         Sequences.of(new Pair<>("a", 1), new Pair<>("b", 2)),
-        Sequences.zip(Sequences.of("a", "b"), Sequences.of(1, 2, 3))
+        Sequences.of("a", "b").zipWith(Sequences.of(1, 2, 3))
+    );
+  }
+
+  @Test
+  public void testZipLeftEmpty() {
+    TestUtil.assertSequenceEquals(
+        Sequences.empty(),
+        Sequences.empty().zipWith(Sequences.of(1, 2, 3))
+    );
+  }
+
+  @Test
+  public void testZipRightEmpty() {
+    TestUtil.assertSequenceEquals(
+        Sequences.empty(),
+        Sequences.of(1, 2, 3).zipWith(Sequences.empty())
     );
   }
 
@@ -616,13 +628,31 @@ public final class SequencesTest {
   public void testZipWithIndex() {
     TestUtil.assertSequenceEquals(
         Sequences.of(new Pair<>('A', 0), new Pair<>('B', 1), new Pair<>('C', 2)),
-        Sequences.zipWithIndex(Sequences.rangeClosed('A', 'C'))
+        Sequences.rangeClosed('A', 'C').zipWithIndex()
+    );
+  }
+
+  @Test
+  public void testZipWithIndexEmpty() {
+    TestUtil.assertSequenceEquals(
+        Sequences.empty(),
+        Sequences.empty().zipWithIndex()
+    );
+  }
+
+  @Test
+  public void testZipWithIndexSemanticallyEqualToZipWith() {
+    final Sequence<Character> seq = Sequences.rangeClosed('A', 'Z');
+    final Sequence<Integer> indices = Sequences.range(seq.foldLeft(0, (acc, c) -> acc + 1));
+    TestUtil.assertSequenceEquals(
+        seq.zipWith(indices),
+        seq.zipWithIndex()
     );
   }
 
   @Test
   public void testUnzip() {
-    Pair<Sequence<Character>, Sequence<Integer>> pair = Sequences.unzip(Sequences.of(
+    final Pair<Sequence<Character>, Sequence<Integer>> pair = Sequences.unzip(Sequences.of(
         new Pair<>('A', 1),
         new Pair<>('B', 2),
         new Pair<>('C', 3))
@@ -639,17 +669,29 @@ public final class SequencesTest {
             new Pair<>('B', 1),
             new Pair<>('B', 2),
             new Pair<>('B', 3)),
-        Sequences.crossProduct(Sequences.of('A', 'B'), Sequences.range(1, 4)));
+        Sequences.of('A', 'B').crossProduct(Sequences.range(1, 4)));
+  }
+
+  @Test
+  public void testCrossProdLeftEmpty() {
+    TestUtil.assertSequenceEquals(Sequences.empty(),
+        Sequences.empty().crossProduct(Sequences.range(1, 10)));
+  }
+
+  @Test
+  public void testCrossProdRightEmpty() {
+    TestUtil.assertSequenceEquals(Sequences.empty(),
+        Sequences.of('A', 'a').crossProduct(Sequences.empty()));
   }
 
   @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoFirst() {
-    Sequences.first(Sequences.empty());
+    Sequences.empty().first();
   }
 
   @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoRest() {
-    Sequences.rest(Sequences.empty());
+    Sequences.empty().rest();
   }
 
   @Test(expected = IllegalArgumentException.class)

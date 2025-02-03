@@ -345,10 +345,10 @@ public final class IO {
       return new Pair<>(400.0, 300.0);
     } else {
       // known, finite number of frames: determine max
-      return Sequences.reduce(new Pair<>(0.0, 0.0), (g, acc) -> new Pair<>(
+      return graphics.reduce(new Pair<>(0.0, 0.0), (g, acc) -> new Pair<>(
           Math.max(acc.first(), g.getWidth()),
           Math.max(acc.second(), g.getHeight())
-      ), graphics);
+      ));
     }
   }
 

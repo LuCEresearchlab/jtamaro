@@ -2,7 +2,6 @@ package jtamaro.example.sequence;
 
 import jtamaro.data.Sequence;
 
-import static jtamaro.data.Sequences.concat;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.rangeClosed;
 import static jtamaro.io.IO.println;
@@ -22,17 +21,13 @@ public class Digits {
     println(decimalDigits);
     println();
 
-    final Sequence<Character> hexadecimalDigits = concat(
-        rangeClosed('0', '9'),
-        rangeClosed('A', 'F')
-    );
+    final Sequence<Character> hexadecimalDigits = rangeClosed('0', '9')
+        .concat(rangeClosed('A', 'F'));
     println(hexadecimalDigits);
     println();
 
-    final Sequence<Character> rotaryPhoneDigits = concat(
-        rangeClosed('1', '9'),
-        of('0')
-    );
+    final Sequence<Character> rotaryPhoneDigits = rangeClosed('1', '9')
+        .concat(of('0'));
     println(rotaryPhoneDigits);
     println();
   }

@@ -10,7 +10,7 @@ public record Scale(Note rootNote, Sequence<Integer> transpositions) {
   }
 
   public Sequence<Note> notes() {
-    return Sequences.map(rootNote::transpose, transpositions);
+    return transpositions.map(rootNote::transpose);
   }
 
   public AbsoluteChord in(RelativeChord chord) {

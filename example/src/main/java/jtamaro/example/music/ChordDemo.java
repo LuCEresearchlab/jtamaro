@@ -9,7 +9,6 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.io.IO.println;
 import static jtamaro.music.Music.chord;
@@ -22,7 +21,7 @@ import static jtamaro.music.Scales.scale;
 public class ChordDemo {
 
   public static void main(String[] args) {
-    playChords(map(n -> chord(of(n)), scale(D4, MINOR).notes()), 120);
+    playChords(scale(D4, MINOR).notes().map(n -> chord(of(n))), 120);
     /*
     play(of(C_MAJOR.triad()), 400);
     play(of(C_MAJOR.triad(1)), 400);

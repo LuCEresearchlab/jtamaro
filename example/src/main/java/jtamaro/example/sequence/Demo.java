@@ -6,24 +6,15 @@ import jtamaro.data.Pair;
 import jtamaro.data.Sequence;
 import jtamaro.data.Sequences;
 
-import static jtamaro.data.Sequences.concat;
-import static jtamaro.data.Sequences.drop;
-import static jtamaro.data.Sequences.flatMap;
 import static jtamaro.data.Sequences.fromIterable;
 import static jtamaro.data.Sequences.fromStream;
-import static jtamaro.data.Sequences.intersperse;
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.ofStringCharacters;
 import static jtamaro.data.Sequences.ofStringLines;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.data.Sequences.rangeClosed;
-import static jtamaro.data.Sequences.reduce;
 import static jtamaro.data.Sequences.replicate;
-import static jtamaro.data.Sequences.take;
 import static jtamaro.data.Sequences.unzip;
-import static jtamaro.data.Sequences.zip;
-import static jtamaro.data.Sequences.zipWithIndex;
 import static jtamaro.io.IO.print;
 import static jtamaro.io.IO.println;
 
@@ -35,17 +26,20 @@ public class Demo {
       println(i);
     }
 
-    println(intersperse(":", map(Object::toString, is)));
+    println(is.map(Object::toString)
+        .intersperse(":"));
 
-    for (String s : take(2, of("A", "B", "C", "D"))) {
+    for (String s : of("A", "B", "C", "D").take(2)) {
       println(s);
     }
 
-    for (boolean b : drop(2, of(true, false, false, true))) {
+    for (boolean b : of(true, false, false, true).drop(2)) {
       println(b);
     }
 
-    println(reduce("", (e, a) -> a + e, intersperse("-", of("S", "M", "L", "XL"))));
+    println(of("S", "M", "L", "XL")
+        .intersperse("-")
+        .reduce("", (e, a) -> a + e));
 
     for (String s : replicate("$", 4)) {
       println(s);
@@ -63,16 +57,16 @@ public class Demo {
       println(i);
     }
 
-    for (char c : concat(rangeClosed('A', 'F'), rangeClosed('a', 'f'))) {
+    for (char c : rangeClosed('A', 'F').concat(rangeClosed('a', 'f'))) {
       print(c);
     }
     println();
 
-    println(concat(range('A', 'F'), range('F', 'A', -1)));
+    println(range('A', 'F').concat(range('F', 'A', -1)));
 
-    println(zip(of("a", "b", "c"), of(1, 2, 3)));
+    println(of("a", "b", "c").zipWith(of(1, 2, 3)));
 
-    println(zipWithIndex(range('A', (char) ('Z' + 1))));
+    println(range('A', (char) ('Z' + 1)).zipWithIndex());
 
     Pair<Sequence<Character>, Sequence<Integer>> pair = unzip(of(
         new Pair<>('A', 1),
@@ -81,21 +75,22 @@ public class Demo {
     println(pair.first());
     println(pair.second());
 
-    Pair<Sequence<Integer>, Sequence<Integer>> pair2 = unzip(zip(range(0, 10), range(1, 11)));
-    println(take(5, pair2.first()));
-    println(take(5, pair2.second()));
+    Pair<Sequence<Integer>, Sequence<Integer>> pair2 = unzip(range(0, 10).zipWith(range(1, 11)));
+    println(pair2.first().take(5));
+    println(pair2.second().take(5));
 
     println(ofStringCharacters("ABC"));
 
     println(ofStringLines("Hello\nWorld!\nHow are you?"));
 
-    println(flatMap(Sequences::ofStringCharacters, ofStringLines("ABC\nCDE\nEFG")));
+    println(ofStringLines("ABC\nCDE\nEFG").flatMap(Sequences::ofStringCharacters));
 
-    println(map(s -> "(" + s + ")", ofStringLines("1\n2\n3\n4\n5\n6")));
+    println(ofStringLines("1\n2\n3\n4\n5\n6").map(s -> "(" + s + ")"));
 
-    println(map(s -> "(" + s + ")",
-        fromIterable(new ArrayList<>(Arrays.asList("one", "two", "three")))));
+    println(fromIterable(new ArrayList<>(Arrays.asList("one", "two", "three")))
+        .map(s -> "(" + s + ")"));
 
-    println(map(s -> "(" + s + ")", fromStream("a\nb\nc".lines())));
+    println(fromStream("a\nb\nc".lines())
+        .map(s -> "(" + s + ")"));
   }
 }

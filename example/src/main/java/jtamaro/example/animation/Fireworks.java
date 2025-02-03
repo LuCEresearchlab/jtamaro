@@ -5,7 +5,6 @@ import jtamaro.graphic.Color;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.example.Toolbelt.equilateralTriangle;
 import static jtamaro.example.Toolbelt.get;
@@ -66,7 +65,7 @@ public class Fireworks {
 
   private static Graphic streakPrecomputeColors(double angle, double hue, double time_offset, double size, double time) {
     final int BANDS = 20;
-    final Sequence<Color> COLORS = map(v -> hsv(hue, 1, v / (double) BANDS), range(BANDS));
+    final Sequence<Color> COLORS = range(BANDS).map(v -> hsv(hue, 1, v / (double) BANDS));
     Graphic result = emptyGraphic();
     for (int band : range(BANDS)) {
       final int c = (int) (band + 2 * BANDS - BANDS * (time + time_offset)) % BANDS;
@@ -145,10 +144,8 @@ public class Fireworks {
   }
 
   public static void main(String[] args) {
-    Sequence<Graphic> loop = map(
-        t -> frame(200, t / 20.0),
-        range(20)
-    );
+    Sequence<Graphic> loop = range(20)
+        .map(t -> frame(200, t / 20.0));
     showFilmStrip(loop);
     animate(
         loop,

@@ -36,6 +36,137 @@ public sealed interface Sequence<T> extends Iterable<T> permits Cons, Empty {
   Sequence<T> rest();
 
   /**
+   * Perform a mapping operation on each element of this sequence to produce another sequence.
+   *
+   * @param mapper The function applied to each element
+   * @param <U>    Type of the new sequence
+   * @return The mapped sequence
+   */
+  <U> Sequence<U> map(Function1<T, U> mapper);
+
+  /**
+   * Filter the elements of this sequence by testing a given predicate.
+   *
+   * @param predicate The test predicate. If this produces a <code>true</code> the tested element is
+   *                  kept in the newly produced Sequence, otherwise it is discarded.
+   * @return The filtered sequence
+   */
+  Sequence<T> filter(Function1<T, Boolean> predicate);
+
+  default <U> U reduce(U initial, Function2<T, U, U> reducer) {
+    return foldRight(initial, reducer);
+  }
+
+  /**
+   * Fold this sequence on the right.
+   *
+   * @param initial The neutral element of the reduction (initial folding value)
+   * @param reducer The function that takes an element of the sequence and an accumulator and
+   *                produces a folded value
+   * @param <U>     Type of the reduced value
+   * @return The accumulated result of the fold
+   */
+  <U> U foldRight(U initial, Function2<T, U, U> reducer);
+
+  /**
+   * Fold this sequence on the left.
+   *
+   * @param initial The neutral element of the reduction (initial folding value)
+   * @param reducer The function that takes the accumulator and an element of the sequence and
+   *                produces a folded value
+   * @param <U>     Type of the reduced value
+   * @return The accumulated result of the fold
+   */
+  <U> U foldLeft(U initial, Function2<U, T, U> reducer);
+
+  /**
+   * Perform a flat-mapping operation on each element of this sequence to produce another sequence.
+   *
+   * @param mapper The function applied to each element. It produces a sequence that is concatenated
+   *               with the results of the mapping of other elements
+   * @param <U>    Type of the new sequence
+   * @return The flat-mapped sequence
+   */
+  <U> Sequence<U> flatMap(Function1<T, Sequence<U>> mapper);
+
+  /**
+   * Returns a sequence that is the reverse of this one.
+   *
+   * <p>Invoking this method twice should return a Sequence that is equal to
+   * this sequence: <code>s.equals(s.reversed().reversed())</code>.
+   *
+   * @return A reversed sequence
+   */
+  Sequence<T> reversed();
+
+  /**
+   * Take up to the first n elements of this sequence.
+   *
+   * @param count The number of elements to take from the given sequence.
+   * @return A sequence of length <code>min(length(seq), n)</code> containing up to the first n
+   * elements of seq
+   */
+  Sequence<T> take(int count);
+
+  /**
+   * Drop up to the first n elements of this sequence.
+   *
+   * @param count The number of elements to drop from the given sequence.
+   * @return A sequence of length <code>min(length(seq) - n, 0)</code> containing up to the
+   * remaining <code>length(seq) - n</code> elements of seq
+   */
+  Sequence<T> drop(int count);
+
+  /**
+   * Concatenate this sequence with another one.
+   *
+   * @param other The other sequence (appended)
+   * @return A sequence that contains first all the elements of this sequence and then all the
+   * elements of the other sequence
+   */
+  Sequence<T> concat(Sequence<T> other);
+
+  /**
+   * Inserts an element between all elements of this sequence.
+   *
+   * <p><code>intersperse("-", of("1", "2", "3")) === of("1", "-", "2", "-", "3")</code>
+   *
+   * @param element The element to insert
+   * @return A sequence with the elements of the original sequence internally separated by
+   * <code>element</code>
+   */
+  Sequence<T> intersperse(T element);
+
+  /**
+   * Returns a Sequence formed by combining corresponding elements in pairs from this sequence and
+   * another given sequence.
+   *
+   * <p>If one of the two sequences is longer than the other, its remaining elements are ignored.
+   * The length of the returned sequence is the minimum of the lengths of the two sequences.
+   *
+   * @param that The other sequence of this operation. Its element will appear in the
+   *             {@link Pair#second()} of the produced sequence
+   * @param <U>  The type of the elements of the other sequence
+   */
+  <U> Sequence<Pair<T, U>> zipWith(Sequence<U> that);
+
+  /**
+   * Zips the elements of this sequence with their indices (starting from 0).
+   */
+  Sequence<Pair<T, Integer>> zipWithIndex();
+
+  /**
+   * Perform a cross-product between this and another sequence.
+   *
+   * <p><code>of(1, 2) × of("a", "b") === of((1, "a"), (1, "b"), (2, "a"), (2, "b"))</code>
+   *
+   * @param that The second sequence of this operation. Its element will appear in the
+   *             {@link Pair#second()} of the produced sequence
+   * @param <U>  The type of the elements of the other sequence
+   */
+  <U> Sequence<Pair<T, U>> crossProduct(Sequence<U> that);
+
+  /**
    * Returns a sequential {@link Stream} with this sequence as its source.
    *
    * @return a {@link Stream}.

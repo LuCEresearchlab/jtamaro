@@ -37,39 +37,6 @@ public final class Sequences {
   }
 
   /**
-   * Determines whether this is an empty sequence (i.e., it has no elements).
-   *
-   * @param <T> the type of the elements in the sequence
-   * @param seq the sequence to deconstruct
-   * @return true if the sequence is empty, false otherwise
-   */
-  public static <T> boolean isEmpty(Sequence<T> seq) {
-    return seq instanceof Empty<T>;
-  }
-
-  /**
-   * Returns the first element of a non-empty sequence.
-   *
-   * @param <T> the type of the elements in the sequence
-   * @param seq the sequence to deconstruct
-   * @return the first element of the given sequence
-   */
-  public static <T> T first(Sequence<T> seq) {
-    return seq.first();
-  }
-
-  /**
-   * Returns the rest of a non-empty sequence.
-   *
-   * @param <T> the type of the elements in the sequence
-   * @param seq the sequence to deconstruct
-   * @return the rest of the given sequence
-   */
-  public static <T> Sequence<T> rest(Sequence<T> seq) {
-    return seq.rest();
-  }
-
-  /**
    * Constructs a sequence that consists of one given element.
    *
    * @param <T>     the type of the elements in the sequence
@@ -243,7 +210,8 @@ public final class Sequences {
    * @param to   the value of the last element
    */
   public static Sequence<Character> rangeClosed(char from, char to) {
-    return map(x -> (char) x.shortValue(), rangeClosed((short) from, (short) to));
+    return rangeClosed((short) from, (short) to)
+        .map(x -> (char) x.shortValue());
   }
 
   /**
@@ -278,249 +246,6 @@ public final class Sequences {
   }
 
   /**
-   * Reverse a Sequence.
-   */
-  public static <T> Sequence<T> reverse(Sequence<T> seq) {
-    Sequence<T> result = new Empty<>();
-    Sequence<T> itr = seq;
-    while (itr instanceof Cons(T first, Sequence<T> rest)) {
-      result = new Cons<>(first, result);
-      itr = rest;
-    }
-    return result;
-  }
-
-  /**
-   * Perform a mapping operation on each element of the sequence to produce another sequence.
-   *
-   * @param mapper The function applied to each element
-   * @param seq    The sequence that is being mapped
-   * @param <T>    Type of the original sequence
-   * @param <U>    Type of the new sequence
-   * @return The mapped sequence
-   */
-  public static <T, U> Sequence<U> map(Function1<T, U> mapper, Sequence<T> seq) {
-    return foldRight(Sequences.empty(), (it, acc) -> new Cons<>(mapper.apply(it), acc), seq);
-  }
-
-  /**
-   * Filter the elements of a sequence by testing a given predicate.
-   *
-   * @param predicate The test predicate. If this produces a <code>true</code> the tested element is
-   *                  kept in the newly produced Sequence, otherwise it is discarded.
-   * @param seq       The sequence that is being filtered
-   * @param <T>       Type of the original sequence
-   * @return The filtered sequence
-   */
-  public static <T> Sequence<T> filter(Function1<T, Boolean> predicate, Sequence<T> seq) {
-    return foldRight(Sequences.empty(), (it, acc) -> predicate.apply(it)
-        ? new Cons<>(it, acc)
-        : acc, seq);
-  }
-
-  /**
-   * Perform a reduction on a given sequence.
-   *
-   * @param initial The neutral element of the reduction (initial reduction value)
-   * @param reducer The function that takes an element of the sequence and an accumulator and
-   *                produces a reduced value
-   * @param seq     The sequence that is being reduced
-   * @param <T>     Type of the original sequence
-   * @param <U>     Type of the reduced value
-   * @return The accumulated result of the reduction
-   */
-  public static <T, U> U reduce(U initial, Function2<T, U, U> reducer, Sequence<T> seq) {
-    return foldRight(initial, reducer, seq);
-  }
-
-  /**
-   * Fold a sequence on the right.
-   *
-   * @param initial The neutral element of the reduction (initial folding value)
-   * @param reducer The function that takes an element of the sequence and an accumulator and
-   *                produces a folded value
-   * @param seq     The sequence that is being folded
-   * @param <T>     Type of the original sequence
-   * @param <U>     Type of the reduced value
-   * @return The accumulated result of the fold
-   */
-  public static <T, U> U foldRight(U initial, Function2<T, U, U> reducer, Sequence<T> seq) {
-    U acc = initial;
-    Sequence<T> itr = reverse(seq);
-    while (itr instanceof Cons(T first, Sequence<T> rest)) {
-      acc = reducer.apply(first, acc);
-      itr = rest;
-    }
-    return acc;
-  }
-
-  /**
-   * Fold a sequence on the left.
-   *
-   * @param initial The neutral element of the reduction (initial folding value)
-   * @param reducer The function that takes the accumulator and an element of the sequence and
-   *                produces a folded value
-   * @param seq     The sequence that is being folded
-   * @param <T>     Type of the original sequence
-   * @param <U>     Type of the reduced value
-   * @return The accumulated result of the fold
-   */
-  public static <T, U> U foldLeft(U initial, Function2<U, T, U> reducer, Sequence<T> seq) {
-    U acc = initial;
-    Sequence<T> itr = seq;
-    while (itr instanceof Cons(T first, Sequence<T> rest)) {
-      acc = reducer.apply(acc, first);
-      itr = rest;
-    }
-    return acc;
-  }
-
-  /**
-   * Perform a flat-mapping operation on each element of the sequence to produce another sequence.
-   *
-   * @param mapper The function applied to each element. It produces a sequence that is concatenated
-   *               with the results of the mapping of other elements
-   * @param seq    The sequence that is being flat-mapped
-   * @param <T>    Type of the original sequence
-   * @param <U>    Type of the new sequence
-   * @return The flat-mapped sequence
-   */
-  public static <T, U> Sequence<U> flatMap(Function1<T, Sequence<U>> mapper, Sequence<T> seq) {
-    return foldLeft(
-        empty(),
-        (acc, it) -> concat(acc, mapper.apply(it)),
-        seq
-    );
-  }
-
-  /**
-   * Take up to the first n elements of a sequence.
-   *
-   * @param count The number of elements to take from the given sequence.
-   * @param seq   The given sequence
-   * @return A sequence of length <code>min(length(seq), n)</code> containing up to the first n
-   * elements of seq
-   */
-  public static <T> Sequence<T> take(int count, Sequence<T> seq) {
-    Sequence<T> result = new Empty<>();
-    Sequence<T> itr = seq;
-    int i = 0;
-    while (itr instanceof Cons(T first, Sequence<T> rest) && i++ < count) {
-      result = new Cons<>(first, result);
-      itr = rest;
-    }
-    return reverse(result);
-  }
-
-  /**
-   * Drop up to the first n elements of a sequence.
-   *
-   * @param count The number of elements to drop from the given sequence.
-   * @param seq   The given sequence
-   * @return A sequence of length <code>min(length(seq) - n, 0)</code> containing up to the
-   * remaining <code>length(seq) - n</code> elements of seq
-   */
-  public static <T> Sequence<T> drop(int count, Sequence<T> seq) {
-    Sequence<T> result = seq;
-    int i = 0;
-    while (result instanceof Cons(T ignored, Sequence<T> rest) && i++ < count) {
-      result = rest;
-    }
-    return result;
-  }
-
-  /**
-   * Concatenate two sequences.
-   *
-   * @param a   The first sequence (prepended)
-   * @param b   The second sequence (appended)
-   * @param <T> The type of the elements of the produced sequence
-   */
-  public static <T> Sequence<T> concat(Sequence<T> a, Sequence<T> b) {
-    if (b instanceof Empty()) {
-      // Not necessary, but avoid double reversing a
-      return a;
-    } else {
-      Sequence<T> itr = reverse(a);
-      Sequence<T> result = b;
-      while (itr instanceof Cons(T first, Sequence<T> rest)) {
-        result = new Cons<>(first, result);
-        itr = rest;
-      }
-      return result;
-    }
-  }
-
-  /**
-   * Inserts an element between all elements of this Sequence.
-   *
-   * <p><code>intersperse("-", of("1", "2", "3")) === of("1", "-", "2", "-", "3")</code>
-   *
-   * @param element The element to insert
-   * @param seq     The original sequence
-   * @param <T>     The type of the elements of the produced sequence
-   * @return A sequence with the elements of the original sequence internally separated by
-   * <code>element</code>
-   */
-  public static <T> Sequence<T> intersperse(T element, Sequence<T> seq) {
-    return seq instanceof Cons(T first, Sequence<T> rest)
-        ? new Cons<>(first, fromStream(rest.stream().flatMap(it -> Stream.of(element, it))))
-        : seq;
-  }
-
-  /**
-   * Returns a Sequence formed by combining corresponding elements in pairs from two given
-   * sequences.
-   *
-   * <p>If one of the two sequences is longer than the other, its remaining elements are ignored.
-   * The length of the returned sequence is the minimum of the lengths of the two sequences.
-   *
-   * @param first  The first sequence of this operation. Its element will appear in the
-   *               {@link Pair#first()} of the produced sequence
-   * @param second The second sequence of this operation. Its element will appear in the
-   *               {@link Pair#second()} of the produced sequence
-   * @param <A>    The type of the elements of the first sequence
-   * @param <B>    The type of the elements of the second sequence
-   */
-  public static <A, B> Sequence<Pair<A, B>> zip(Sequence<A> first, Sequence<B> second) {
-    Sequence<Pair<A, B>> result = new Empty<>();
-    Sequence<A> itrFirst = first;
-    Sequence<B> itrSecond = second;
-    while (itrFirst instanceof Cons(A first1, Sequence<A> rest1) &&
-        itrSecond instanceof Cons(B first2, Sequence<B> rest2)) {
-      result = new Cons<>(new Pair<>(first1, first2), result);
-      itrFirst = rest1;
-      itrSecond = rest2;
-    }
-    return reverse(result);
-  }
-
-  /**
-   * Zips a sequence with its indices (starting from 0).
-   *
-   * @param seq The sequence to zip with indices.
-   * @param <T> The type of the elements of the given sequence
-   */
-  public static <T> Sequence<Pair<T, Integer>> zipWithIndex(Sequence<T> seq) {
-    Sequence<T> itr = seq;
-    Sequence<T> queue = new Empty<>();
-    int count = 0;
-    while (itr instanceof Cons(T first, Sequence<T> rest)) {
-      queue = new Cons<>(first, queue);
-      itr = rest;
-      count++;
-    }
-
-    Sequence<Pair<T, Integer>> result = new Empty<>();
-    while (queue instanceof Cons(T first, Sequence<T> rest)) {
-      result = new Cons<>(new Pair<>(first, --count), result);
-      queue = rest;
-    }
-
-    return result;
-  }
-
-  /**
    * Unzips the element of a given sequence by mapping them to a pair of distinct sequences.
    *
    * @param seq The sequence to unzip
@@ -532,7 +257,7 @@ public final class Sequences {
   public static <A, B> Pair<Sequence<A>, Sequence<B>> unzip(Sequence<Pair<A, B>> seq) {
     Sequence<A> a = new Empty<>();
     Sequence<B> b = new Empty<>();
-    Sequence<Pair<A, B>> itr = reverse(seq);
+    Sequence<Pair<A, B>> itr = seq.reversed();
     while (itr instanceof Cons(Pair(A p1, B p2), Sequence<Pair<A, B>> rest)) {
       a = new Cons<>(p1, a);
       b = new Cons<>(p2, b);
@@ -541,35 +266,12 @@ public final class Sequences {
     return new Pair<>(a, b);
   }
 
-  /**
-   * Perform a cross-product between two sequences.
-   *
-   * <p><code>of(1, 2) × of("a", "b") === of((1, "a"), (1, "b"), (2, "a"), (2, "b"))</code>
-   *
-   * @param first  The first sequence of this operation. Its element will appear in the
-   *               {@link Pair#first()} of the produced sequence
-   * @param second The second sequence of this operation. Its element will appear in the
-   *               {@link Pair#second()} of the produced sequence
-   * @param <A>    The type of the elements of the first sequence
-   * @param <B>    The type of the elements of the second sequence
-   */
-  public static <A, B> Sequence<Pair<A, B>> crossProduct(Sequence<A> first, Sequence<B> second) {
-    return foldLeft(
-        empty(),
-        (acc, a) -> concat(
-            acc,
-            map(b -> new Pair<>(a, b), second)
-        ),
-        first
-    );
-  }
-
   private static <T> Sequence<T> fromIterator(Iterator<T> iterator) {
     Sequence<T> result = new Empty<>();
     while (iterator.hasNext()) {
       result = new Cons<>(iterator.next(), result);
     }
-    return reverse(result);
+    return result.reversed();
   }
 
   private static int getLastElementClosed(int start, int end, int step) {

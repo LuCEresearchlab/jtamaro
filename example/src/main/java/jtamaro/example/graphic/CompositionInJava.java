@@ -6,7 +6,6 @@ import jtamaro.graphic.Graphic;
 
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
-import static jtamaro.data.Sequences.reduce;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.TRANSPARENT;
 import static jtamaro.graphic.Colors.WHITE;
@@ -88,7 +87,7 @@ public class CompositionInJava {
   }
 
   private static <T> int length(Sequence<T> sequence) {
-    return reduce(0, (e, r) -> r + 1, sequence);
+    return sequence.reduce(0, (e, r) -> r + 1);
   }
 
   public static Graphic colorRing(double offsetAngle, double lineWidth, double radius, Sequence<Color> palette) {
