@@ -3,7 +3,6 @@ package jtamaro.example.animation;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Colors.YELLOW;
@@ -30,10 +29,7 @@ public class ThreeTwoOne {
 
   public static void main(String[] args) {
     showFilmStrip(
-        map(
-            ThreeTwoOne::frame,
-            of("One", "Two", "Three")
-        ),
+        of("One", "Two", "Three").map(ThreeTwoOne::frame),
         WIDTH,
         HEIGHT
     );

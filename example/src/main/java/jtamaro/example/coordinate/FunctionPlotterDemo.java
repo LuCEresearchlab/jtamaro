@@ -7,10 +7,7 @@ import jtamaro.graphic.CartesianWorld;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.range;
-import static jtamaro.data.Sequences.reduce;
-import static jtamaro.data.Sequences.zip;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Colors.WHITE;
@@ -28,15 +25,13 @@ public class FunctionPlotterDemo {
   public static Graphic plot(Function1<Double, Double> f, double xMin, double xMax, int width, double yScale, Color color) {
     Graphic dot = ellipse(5, 5, color);
     Sequence<Integer> viewXs = range(width);
-    Sequence<Double> xs = map(i -> i / (double) width * (xMax - xMin), viewXs);
-    Sequence<Double> ys = map(f, xs);
-    Sequence<Double> viewYs = map(y -> y * yScale, ys);
-    Sequence<Pair<Integer, Double>> points = zip(viewXs, viewYs);
-    CartesianWorld cs = reduce(
+    Sequence<Double> xs = viewXs.map(i -> i / (double) width * (xMax - xMin));
+    Sequence<Double> ys = xs.map(f);
+    Sequence<Double> viewYs = ys.map(y -> y * yScale);
+    Sequence<Pair<Integer, Double>> points = viewXs.zipWith(viewYs);
+    CartesianWorld cs = points.reduce(
         new CartesianWorld(),
-        (point, world) -> world.place(point.first(), point.second(), dot),
-        points
-    );
+        (point, world) -> world.place(point.first(), point.second(), dot));
     return cs.withAxes(BLACK)
         .withBackground(WHITE)
         .withPadding(20)

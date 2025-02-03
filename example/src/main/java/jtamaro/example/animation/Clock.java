@@ -4,7 +4,6 @@ import jtamaro.data.Sequence;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.graphic.Colors.BLACK;
@@ -101,9 +100,8 @@ public class Clock {
             pin(TOP_CENTER, luecke)
         )
     );
-    return ueberlagere_mehrere(
-        map(w -> rotate(w, positionierter_strich), range(0, 360, zwischen_winkel))
-    );
+    return ueberlagere_mehrere(range(0, 360, zwischen_winkel)
+        .map(w -> rotate(w, positionierter_strich)));
   }
 
   private static Graphic minuten_striche(double durchmesser) {
@@ -132,7 +130,8 @@ public class Clock {
     // int sekunden = 10;
     //Graphic uhr = uhr(durchmesser, stunden, minuten, sekunden);
     //show(uhr);
-    Sequence<Graphic> animation = map(s -> uhr(durchmesser, (s / 60) / 60, s / 60, s), range(2400));
+    Sequence<Graphic> animation = range(2400)
+        .map(s -> uhr(durchmesser, (s / 60) / 60, s / 60, s));
     showFilmStrip(animation);
     animate(animation, 1000);
 

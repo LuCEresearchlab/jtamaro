@@ -3,7 +3,6 @@ package jtamaro.example.graphic;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.data.Sequences.replicate;
@@ -50,7 +49,7 @@ public class ChristmasTree {
   }
 
   private static Graphic tree(int levels, double triangleSide) {
-    Graphic top = aboves(map(i -> level(i, triangleSide), range(1, levels + 1)));
+    Graphic top = aboves(range(1, levels + 1).map(i -> level(i, triangleSide)));
     Graphic stem = rectangle(triangleSide, triangleSide, BROWN);
     return above(top, stem);
   }

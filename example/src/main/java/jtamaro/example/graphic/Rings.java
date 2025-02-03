@@ -2,7 +2,6 @@ package jtamaro.example.graphic;
 
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.example.Toolbelt.JT_BLUE;
@@ -51,29 +50,23 @@ public class Rings {
 
     Graphic colorDots = ringList(
         400,
-        map(
-            h -> circle(20, hsv(h, 1, 1)),
-            range(0, 360, 10)
-        )
+        range(0, 360, 10).map(h -> circle(20, hsv(h, 1, 1)))
     );
     show(colorDots);
 
     Graphic colorDotsHighlighted = composes(of(
         ringList(
             400,
-            map(
-                h -> circle(20, hsv(h, 1, 1)),
-                range(0, 360, 10)
-            )
+            range(0, 360, 10).map(h -> circle(20, hsv(h, 1, 1)))
         ),
         ring(
-            400 - (40 / 2),
+            400 - (40.0 / 2),
             circle(40, BLACK),
             3
         ),
         rotate(60,
             ring(
-                400 - (40 / 2),
+                400 - (40.0 / 2),
                 circle(40, WHITE),
                 3
             )
@@ -84,14 +77,9 @@ public class Rings {
     final int count = 12;
     Graphic colorWheel = ringList(
         0,
-        map(
-            i -> rotate(
-                -(360.0 / count / 2.0),
-                circularSector(200, 360.0 / count, hsv(i * 360.0 / count, 1, 1))
-            ),
-            range(count)
-        )
-    );
+        range(count).map(i -> rotate(
+            -(360.0 / count / 2.0),
+            circularSector(200, 360.0 / count, hsv(i * 360.0 / count, 1, 1)))));
     show(colorWheel);
 
     Graphic nested2 = ring(400, ring(40, circle(10, JT_RED), 12), 24);

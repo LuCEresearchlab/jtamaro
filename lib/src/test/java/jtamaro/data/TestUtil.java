@@ -3,12 +3,6 @@ package jtamaro.data;
 import java.util.Objects;
 import org.junit.Assert;
 
-import static jtamaro.data.Sequences.foldRight;
-import static jtamaro.data.Sequences.intersperse;
-import static jtamaro.data.Sequences.map;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 final class TestUtil {
 
   public static <T> void assertSequenceEquals(Sequence<T> expected, Sequence<T> actual) {
@@ -26,10 +20,8 @@ final class TestUtil {
   }
 
   private static <T> String toString(Sequence<T> seq) {
-    return Sequences.foldRight(
-        "]",
-        String::concat,
-        new Cons<>("[", Sequences.intersperse(", ", Sequences.map(Objects::toString, seq)))
-    );
+    return new Cons<>("[", seq.map(Objects::toString)
+        .intersperse(", "))
+        .foldRight("]", String::concat);
   }
 }

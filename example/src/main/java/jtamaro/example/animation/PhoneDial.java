@@ -5,18 +5,11 @@ import jtamaro.data.Sequence;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
 
-import static jtamaro.data.Sequences.concat;
 import static jtamaro.data.Sequences.empty;
-import static jtamaro.data.Sequences.first;
-import static jtamaro.data.Sequences.isEmpty;
-import static jtamaro.data.Sequences.map;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
 import static jtamaro.data.Sequences.rangeClosed;
-import static jtamaro.data.Sequences.reduce;
 import static jtamaro.data.Sequences.replicate;
-import static jtamaro.data.Sequences.rest;
-import static jtamaro.data.Sequences.zipWithIndex;
 import static jtamaro.example.Toolbelt.circle;
 import static jtamaro.example.Toolbelt.composes;
 import static jtamaro.example.Toolbelt.concats;
@@ -64,23 +57,17 @@ public class PhoneDial {
   }
 
   public static Sequence<Integer> keyNumbers() {
-    return concat(rangeClosed(1, 9), of(0));
+    return rangeClosed(1, 9).concat(of(0));
   }
 
   public static Sequence<Pair<Integer, Double>> keyNumbersWithAngles() {
-    return map(
-        p -> p.withSecond(60 + p.second() * 30.0),
-        zipWithIndex(keyNumbers())
-    );
+    return keyNumbers().zipWithIndex()
+        .map(p -> p.withSecond(60 + p.second() * 30.0));
   }
 
   public static Graphic keyGraphicComposite(double diameter) {
-    return composes(
-        map(
-            e -> rotate(e.second() - 90, shiftedKeyGraphic(diameter, e.first())),
-            keyNumbersWithAngles()
-        )
-    );
+    return composes(keyNumbersWithAngles()
+        .map(e -> rotate(e.second() - 90, shiftedKeyGraphic(diameter, e.first()))));
   }
 
   public static Graphic indicator(double diameter) {
@@ -103,33 +90,17 @@ public class PhoneDial {
   public static Sequence<Graphic> dialOneDigitAnimation(double diameter, int digit) {
     final Graphic ov = text("" + digit, Fonts.SANS_SERIF, diameter / 2, BLACK);
     final int digitAngle = angleForNumber(digit);
-    return map(
-        angle -> overlay(
-            ov,
-            dialGraphic(diameter, angle)
-        ),
-        concat(
-            range(0, -digitAngle, -5),
-            concat(
-                replicate(-digitAngle, 20),
-                range(-digitAngle, 0, 1)
-            )
-        )
-    );
+    return range(0, -digitAngle, -5)
+        .concat(replicate(-digitAngle, 20))
+        .concat(range(-digitAngle, 0, 1))
+        .map(angle -> overlay(ov, dialGraphic(diameter, angle)));
   }
 
   public static Sequence<Graphic> dialDigitsAnimation(double diameter, Sequence<Integer> digitsSequence) {
-    return reduce(
-        empty(),
-        (Integer digit, Sequence<Graphic> overall) -> concats(
-            of(
-                dialOneDigitAnimation(diameter, digit),
-                replicate(dialGraphic(diameter, 0), 40),
-                overall
-            )
-        ),
-        digitsSequence
-    );
+    return digitsSequence.reduce(empty(), (Integer digit, Sequence<Graphic> overall) -> concats(
+        of(dialOneDigitAnimation(diameter, digit),
+            replicate(dialGraphic(diameter, 0), 40),
+            overall)));
   }
 
   public static int angleForNumber(int number) {
@@ -137,11 +108,11 @@ public class PhoneDial {
   }
 
   public static int angleForNumber(int number, Sequence<Pair<Integer, Double>> remainingPairs) {
-    return isEmpty(remainingPairs)
+    return remainingPairs.isEmpty()
         ? 0
-        : first(remainingPairs).first() == number
-            ? (int) (double) first(remainingPairs).second()
-            : angleForNumber(number, rest(remainingPairs));
+        : remainingPairs.first().first() == number
+            ? (int) (double) remainingPairs.first().second()
+            : angleForNumber(number, remainingPairs.rest());
   }
 
   public static void main(String[] args) {
@@ -151,5 +122,4 @@ public class PhoneDial {
     showFilmStrip(dialOneDigitAnimation(300, 5));
     animate(dialDigitsAnimation(300, of(0, 5, 8, 6, 6, 4, 0, 0, 0)), 10);
   }
-
 }
