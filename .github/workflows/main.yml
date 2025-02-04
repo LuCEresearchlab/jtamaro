@@ -1,4 +1,4 @@
-qname: JTamaro CI
+name: Main CI
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Project checkout
         uses: actions/checkout@v4
@@ -32,14 +32,4 @@ jobs:
       - name: Test
         id: test
         if: success()
-        run: |
-          ./gradlew check --no-daemon
-#      - name: Publish Javadoc
-#        id: javadoc
-#        if: success()
-#        uses: JamesIves/github-pages-deploy-action@releases/v3
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          BRANCH: docs
-#          FOLDER: lib/build/docs/javadoc
-#          SINGLE_COMMIT: true
+        run: ./gradlew check --no-daemon

@@ -1,0 +1,48 @@
+name: Release CI
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Project checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+      - name: Build
+        id: build
+        run: ./gradlew assemble --no-daemon
+      - name: Test
+        id: test
+        if: success()
+        run: ./gradlew check --no-daemon
+      - name: Javadoc
+        id: javadoc
+        if: success()
+        run: ./gradlew javadoc --no-daemon
+      - name: Publish Javadoc
+        id: pages
+        if: success()
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          branch: docs
+          folder: lib/build/docs/javadoc
+          single-commit: true
+      - name: Publish to Maven
+        id: pages
+        if: success()
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          branch: docs
+          folder: lib/build/docs/javadoc
+          single-commit: true
