@@ -8,7 +8,7 @@ It follows the same philosophy as its sister project,
 
 ## Components
 
-### `data`
+### `lib/data`
 
 Provides implementation for the following types:
 
@@ -17,7 +17,7 @@ Provides implementation for the following types:
 - `Pair`: tuple of two elements
 - `Sequence`: ordered list of elements of a certain type
 
-### `graphic`
+### `lib/graphic`
 
 There are two different ways to use JTamaro:
 
@@ -39,9 +39,7 @@ import jtamaro.graphic.Colors;
 import jtamaro.graphic.Graphics;
 
 Graphic h = Graphics.rectangle(200, 60, Colors.WHITE);
-
 Graphic v = Graphics.rectangle(60, 200, Colors.WHITE);
-
 Graphic cross = Graphics.overlay(h, v);
 ```
 
@@ -55,9 +53,7 @@ import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Graphics.*;
 
 Graphic h = rectangle(200, 60, WHITE);
-
 Graphic v = rectangle(60, 200, WHITE);
-
 Graphic cross = overlay(h, v);
 ```
 
@@ -70,24 +66,26 @@ import jtamaro.graphic.Rectangle;
 import jtamaro.graphic.Overlay;
 
 Graphic h = new Rectangle(200, 60, Colors.WHITE);
-
 Graphic v = new Rectangle(60, 200, Colors.WHITE);
-
 Graphic cross = new Overlay(h, v);
 ```
 
-### `io`
+### `lib/interaction`
+
+Interaction allows to develop an interactive application.
+
+### `lib/io`
 
 The colors and graphics are pure.
-Code that performs side-effects (e.g., showing a graphic on the screen)
+Code that performs side effects (e.g., showing a graphic on the screen)
 is accessible through methods of class `IO`:
 
 ```java
 import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Graphics.*;
-import static jtamaro.IO.*;
+import static jtamaro.io.IO.*;
 
-show(rectangle(200, 100,RED))
+show(rectangle(200, 100, RED))
 ```
 
 ## Build
@@ -97,16 +95,16 @@ It contains multiple subprojects:
 
 * `lib` - the main jtamaro module. Includes the data structure, graphics and I/O
 * `music` - midi-based music library that allows to play notes and chords
-* `demo-app` - an application that contains some demos that use of the library
+* `example` - an application that contains some demos that use of the library
 
 To build everything and run the demo app:
 
 ```bash
-./gradlew :demo-app:run
+./gradlew :example:run
 ```
 
 To run individual demos in the demo app, run the corresponding classes
-with `main` methods in the `demo-app` directory
+with `main` methods in the `example` directory
 from within an IDE that understands gradle (e.g., VS Code)
 and thus will find (and if needed build) the library.
 
@@ -117,36 +115,3 @@ To just build a library's jar file for usage in other projects:
 ```
 
 The output will be in `lib/build/libs/lib-*.jar`
-
-## Use
-
-### Use in gradle projects
-
-First, publish the library in your local maven repo using
-
-```bash
-./gradlew publishMavenJavaPublicationToMavenLocal
-```
-
-Then, from the root of the PF2 project repo, copy the published artifacts from
-your local maven repo (by default it's stored in `$HOME/.m2/repository`)
-
-```bash
-cp $HOME/.m2/repository/jtamaro deps/
-```
-
-And then import the dependency in your build.gradle file:
-
-```groovy
-repositories {
-  // ...
-  maven { url { 'deps' } } // Add local maven repo
-}
-
-dependencies {
-  jtamaroVersion = "25.0.0"
-  // Import the libs that you need
-  implementation "jtamaro:lib:${jtamaroVersion}"
-  implementation "jtamaro:music:${jtamaroVersion}"
-}
-```
