@@ -38,11 +38,3 @@ jobs:
           branch: docs
           folder: lib/build/docs/javadoc
           single-commit: true
-      - name: Publish to Maven
-        id: pages
-        if: success()
-        uses: JamesIves/github-pages-deploy-action@releases/v4
-        with:
-          branch: docs
-          folder: lib/build/docs/javadoc
-          single-commit: true
