@@ -3,7 +3,7 @@ plugins {
 }
 
 application {
-    mainClass = 'jtamaro.en.example.Application'
+    mainClass = 'jtamaro.example.Application'
 }
 
 dependencies {
