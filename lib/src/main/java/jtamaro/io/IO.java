@@ -9,7 +9,6 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 import jtamaro.data.Pair;
 import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 import jtamaro.interaction.Interaction;

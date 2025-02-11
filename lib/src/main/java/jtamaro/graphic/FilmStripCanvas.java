@@ -12,7 +12,6 @@ import java.awt.Stroke;
 import javax.swing.JComponent;
 import jtamaro.data.Pair;
 import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
 
 /**
  * Swing Film Strip canvas to render sequences of graphics.
