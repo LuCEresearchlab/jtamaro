@@ -5,6 +5,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 /**
@@ -14,6 +24,8 @@ import javax.swing.JComponent;
  * @hidden
  */
 public final class GuiGraphicCanvas extends JComponent {
+
+  private static final Logger LOGGER = Logger.getLogger(GuiGraphicCanvas.class.getSimpleName());
 
   private static final Color BRIGHT = new Color(250, 250, 250);
 
@@ -38,6 +50,35 @@ public final class GuiGraphicCanvas extends JComponent {
     this.graphic = graphic;
     revalidate();
     repaint();
+  }
+
+  public boolean saveGraphic(Path path) {
+    final Rectangle2D bBox = graphic.getBBox();
+    final BufferedImage bufImg = new BufferedImage((int) Math.ceil(bBox.getWidth()),
+        (int) Math.ceil(bBox.getHeight()),
+        BufferedImage.TYPE_INT_ARGB);
+
+    // According to the documentation, the concrete type is always Graphics2D
+    final Graphics2D g2d = (Graphics2D) bufImg.getGraphics();
+    try {
+      g2d.setRenderingHints(new RenderingHints(
+          RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON));
+      g2d.translate(-bBox.getMinX(), -bBox.getMinY());
+      graphic.render(g2d, renderOptions);
+    } finally {
+      g2d.dispose();
+    }
+
+    try (final OutputStream oStream = Files.newOutputStream(path,
+        StandardOpenOption.CREATE,
+        StandardOpenOption.WRITE)) {
+      ImageIO.write(bufImg, "png", oStream);
+      return true;
+    } catch (IOException e) {
+      LOGGER.log(Level.SEVERE, "Failed to write graphics to " + path, e);
+      return false;
+    }
   }
 
   @Override

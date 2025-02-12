@@ -1,13 +1,19 @@
 package jtamaro.io;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
+import java.io.IOException;
+import java.nio.file.Path;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.GuiGraphicCanvas;
 import jtamaro.graphic.GuiGraphicPropertiesPanel;
@@ -34,6 +40,8 @@ final class GuiGraphicFrame extends JFrame {
     final JTextField paddingField = new JTextField(3);
     paddingField.setText("" + renderOptions.getPadding());
     toolbar.add(paddingField);
+    final JButton saveButton = new JButton("Save");
+    toolbar.add(saveButton);
     add(toolbar, BorderLayout.NORTH);
 
     // canvas
@@ -63,6 +71,9 @@ final class GuiGraphicFrame extends JFrame {
         JOptionPane.showMessageDialog(GuiGraphicFrame.this, "Padding must be an integer");
       }
     });
+
+    saveButton.addActionListener(e -> saveGraphic());
+
     pack();
   }
 
@@ -75,5 +86,49 @@ final class GuiGraphicFrame extends JFrame {
     canvas.setGraphic(graphic);
     treePanel.setGraphic(graphic);
     pack();
+  }
+
+  private void saveGraphic() {
+    final JFileChooser fileChooser = new JFileChooser();
+    // PNG files
+    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    fileChooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
+    // Set default file ($CWD/graphic.png)
+    final Path cwd = Path.of(System.getProperty("user.dir"));
+    final Path defaultFile = cwd.resolve("graphic.png");
+    fileChooser.setCurrentDirectory(cwd.toFile());
+    fileChooser.setSelectedFile(defaultFile.toFile());
+
+    final int fileChooserResult = fileChooser.showSaveDialog(this);
+    if (fileChooserResult != JFileChooser.APPROVE_OPTION) {
+      return;
+    }
+
+    // Write the file
+    final Path selectedFile = fileChooser.getSelectedFile().toPath();
+    final boolean writeResult = canvas.saveGraphic(selectedFile);
+
+    if (writeResult) {
+      final int result = JOptionPane.showOptionDialog(this,
+          "Saved graphic to " + selectedFile.toAbsolutePath(),
+          "Save graphic",
+          JOptionPane.YES_NO_OPTION,
+          JOptionPane.PLAIN_MESSAGE,
+          null,
+          new Object[]{"Ok", "Show in files"},
+          null);
+      if (result == 1) {
+        try {
+          Desktop.getDesktop().open(selectedFile.getParent().toFile());
+        } catch (IOException ignored) {
+        }
+      }
+
+    } else {
+      JOptionPane.showMessageDialog(this,
+          "Failed to save graphic to " + selectedFile.toAbsolutePath(),
+          "Save graphic",
+          JOptionPane.ERROR_MESSAGE);
+    }
   }
 }
