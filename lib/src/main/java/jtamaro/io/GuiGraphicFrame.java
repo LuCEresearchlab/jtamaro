@@ -2,17 +2,19 @@ package jtamaro.io;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;
-import java.awt.FlowLayout;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.file.Path;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.GuiGraphicCanvas;
@@ -21,6 +23,11 @@ import jtamaro.graphic.GuiGraphicTreePanel;
 import jtamaro.graphic.RenderOptions;
 
 final class GuiGraphicFrame extends JFrame {
+
+  static {
+    // Use system menu bar on macOS
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+  }
 
   private final RenderOptions renderOptions;
 
@@ -34,15 +41,27 @@ final class GuiGraphicFrame extends JFrame {
 
     renderOptions = new RenderOptions(10);
 
-    // toolbar
-    final JPanel toolbar = new JPanel(new FlowLayout());
-    toolbar.add(new JLabel("Padding:"));
-    final JTextField paddingField = new JTextField(3);
-    paddingField.setText("" + renderOptions.getPadding());
-    toolbar.add(paddingField);
-    final JButton saveButton = new JButton("Save");
-    toolbar.add(saveButton);
-    add(toolbar, BorderLayout.NORTH);
+    // menu bar
+    final JMenuBar menuBar = new JMenuBar();
+    setJMenuBar(menuBar);
+
+    final JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
+    menuBar.add(fileMenu);
+
+    final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
+    saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+    saveItem.addActionListener(e -> saveGraphic());
+    fileMenu.add(saveItem);
+
+    final JMenu viewMenu = new JMenu("View");
+    fileMenu.setMnemonic(KeyEvent.VK_V);
+    menuBar.add(viewMenu);
+
+    final JMenuItem paddingItem = new JMenuItem("Padding", KeyEvent.VK_P);
+    paddingItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
+    paddingItem.addActionListener(e -> setPadding());
+    viewMenu.add(paddingItem);
 
     // canvas
     canvas = new GuiGraphicCanvas(renderOptions);
@@ -62,18 +81,6 @@ final class GuiGraphicFrame extends JFrame {
     topSplitPane.setRightComponent(rightSplitPane);
     add(topSplitPane, BorderLayout.CENTER);
 
-    //--- listeners
-    paddingField.addActionListener(e -> {
-      try {
-        final int padding = Integer.parseInt(paddingField.getText());
-        renderOptions.setPadding(padding);
-      } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(GuiGraphicFrame.this, "Padding must be an integer");
-      }
-    });
-
-    saveButton.addActionListener(e -> saveGraphic());
-
     pack();
   }
 
@@ -86,6 +93,26 @@ final class GuiGraphicFrame extends JFrame {
     canvas.setGraphic(graphic);
     treePanel.setGraphic(graphic);
     pack();
+  }
+
+  private void setPadding() {
+    final String valueStr = (String) JOptionPane.showInputDialog(this,
+        "Set the padding for the graphic",
+        "Padding",
+        JOptionPane.PLAIN_MESSAGE,
+        null,
+        null,
+        String.valueOf(renderOptions.getPadding()));
+
+    try {
+      final int padding = Integer.parseInt(valueStr);
+      renderOptions.setPadding(padding);
+    } catch (NumberFormatException ex) {
+      JOptionPane.showMessageDialog(this,
+          "Padding must be an integer",
+          "Padding",
+          JOptionPane.ERROR_MESSAGE);
+    }
   }
 
   private void saveGraphic() {
@@ -118,12 +145,12 @@ final class GuiGraphicFrame extends JFrame {
           new Object[]{"Ok", "Show in files"},
           null);
       if (result == 1) {
+        // Show in files option
         try {
           Desktop.getDesktop().open(selectedFile.getParent().toFile());
         } catch (IOException ignored) {
         }
       }
-
     } else {
       JOptionPane.showMessageDialog(this,
           "Failed to save graphic to " + selectedFile.toAbsolutePath(),
