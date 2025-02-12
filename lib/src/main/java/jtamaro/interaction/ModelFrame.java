@@ -15,14 +15,17 @@ final class ModelFrame<M> extends JFrame {
 
   public ModelFrame(Interaction<M> bang, Trace trace) {
     setTitle("Model");
-    this.bang = bang;
     textArea = new JTextArea(3, 40);
     add(new JScrollPane(textArea));
 
+    this.bang = bang;
     final TraceListener tl = ev -> {
       final M model = getLastModel(trace.getEventSequence(), bang.getInitialModel());
       textArea.setText(model.toString());
     };
+    // Load current model
+    tl.eventAppended(null);
+    // Register listener
     trace.addTraceListener(tl);
     addWindowListener(new WindowAdapter() {
       @Override
@@ -35,10 +38,8 @@ final class ModelFrame<M> extends JFrame {
   }
 
   private M getLastModel(Sequence<TraceEvent> events, M model) {
-    if (events.isEmpty()) {
-      return model;
-    } else {
-      return events.first().process(bang, getLastModel(events.rest(), model));
-    }
+    return events.isEmpty()
+        ? model
+        : events.first().process(bang, getLastModel(events.rest(), model));
   }
 }
