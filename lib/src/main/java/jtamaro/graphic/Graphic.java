@@ -237,7 +237,6 @@ public abstract sealed class Graphic
     final Map<String, String> props = new LinkedHashMap<>();
     props.put("width", String.format("%.2f", getWidth()));
     props.put("height", String.format("%.2f", getHeight()));
-    props.put("pinPoint", Points.format(pinPoint));
     return props;
   }
 
