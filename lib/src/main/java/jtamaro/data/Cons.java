@@ -151,12 +151,6 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
   }
 
   @Override
-  public <U> Sequence<Pair<T, U>> crossProduct(Sequence<U> that) {
-    return foldLeft((Sequence<Pair<T, U>>) new Empty<Pair<T, U>>(),
-        (acc, a) -> acc.concat(that.map(b -> new Pair<>(a, b))));
-  }
-
-  @Override
   public Stream<T> stream() {
     final Spliterator<T> spliterator = Spliterators.spliteratorUnknownSize(
         iterator(), Spliterator.IMMUTABLE);

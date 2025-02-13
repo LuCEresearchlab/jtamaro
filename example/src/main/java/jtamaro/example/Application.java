@@ -20,7 +20,6 @@ import jtamaro.example.graphic.SwissFlag;
 import jtamaro.example.graphic.TextDemo;
 import jtamaro.example.graphic.TriangleDemo;
 import jtamaro.example.interaction.ControllableSpinner;
-import jtamaro.example.sequence.ChessPositions;
 import jtamaro.example.sequence.Demo;
 import jtamaro.example.sequence.Digits;
 import jtamaro.example.sequence.ForLoops;
@@ -41,7 +40,6 @@ public class Application {
     println("JTamaro Demo Application");
 
     // Sequence
-    ChessPositions.main(args);
     Demo.main(args);
     Digits.main(args);
     ForLoops.main(args);

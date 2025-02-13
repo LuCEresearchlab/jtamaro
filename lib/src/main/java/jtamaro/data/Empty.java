@@ -80,11 +80,6 @@ record Empty<T>() implements Sequence<T> {
   }
 
   @Override
-  public <U> Sequence<Pair<T, U>> crossProduct(Sequence<U> that) {
-    return new Empty<>();
-  }
-
-  @Override
   public Stream<T> stream() {
     return Stream.empty();
   }

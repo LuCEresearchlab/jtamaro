@@ -2,6 +2,7 @@ package jtamaro.data;
 
 import java.util.Iterator;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * A Sequence is an ordered list of elements of type <code>T</code>, it corresponds directly to what
@@ -12,12 +13,12 @@ import java.util.stream.Stream;
  * @see <a href="https://htdp.org/2022-8-7/Book/part_two.html">HTDP</a>
  * @see Sequences
  */
-public sealed interface Sequence<T> extends Iterable<T> permits Cons, Empty {
+public interface Sequence<T> extends Iterable<T> {
 
   /**
    * Determines whether this is an empty sequence (i.e., it has no elements).
    *
-   * @return true of the sequence is empty, false otherwise.
+   * @return true if the sequence is empty, false otherwise.
    */
   boolean isEmpty();
 
@@ -154,17 +155,6 @@ public sealed interface Sequence<T> extends Iterable<T> permits Cons, Empty {
    * Zips the elements of this sequence with their indices (starting from 0).
    */
   Sequence<Pair<T, Integer>> zipWithIndex();
-
-  /**
-   * Perform a cross-product between this and another sequence.
-   *
-   * <p><code>of(1, 2) × of("a", "b") === of((1, "a"), (1, "b"), (2, "a"), (2, "b"))</code>
-   *
-   * @param that The second sequence of this operation. Its element will appear in the
-   *             {@link Pair#second()} of the produced sequence
-   * @param <U>  The type of the elements of the other sequence
-   */
-  <U> Sequence<Pair<T, U>> crossProduct(Sequence<U> that);
 
   /**
    * Returns a sequential {@link Stream} with this sequence as its source.

@@ -661,29 +661,6 @@ public final class SequencesTest {
     TestUtil.assertSequenceEquals(Sequences.of(1, 2, 3), pair.second());
   }
 
-  @Test
-  public void testCrossProd() {
-    TestUtil.assertSequenceEquals(Sequences.of(new Pair<>('A', 1),
-            new Pair<>('A', 2),
-            new Pair<>('A', 3),
-            new Pair<>('B', 1),
-            new Pair<>('B', 2),
-            new Pair<>('B', 3)),
-        Sequences.of('A', 'B').crossProduct(Sequences.range(1, 4)));
-  }
-
-  @Test
-  public void testCrossProdLeftEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.empty(),
-        Sequences.empty().crossProduct(Sequences.range(1, 10)));
-  }
-
-  @Test
-  public void testCrossProdRightEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.empty(),
-        Sequences.of('A', 'a').crossProduct(Sequences.empty()));
-  }
-
   @Test(expected = UnsupportedOperationException.class)
   public void testEmptyNoFirst() {
     Sequences.empty().first();
