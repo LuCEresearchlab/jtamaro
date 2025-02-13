@@ -3,8 +3,24 @@
 JTamaro is a Java educational library designed for teaching problem
 decomposition using graphics.
 
-It follows the same philosophy as its sister project,
-[PyTamaro](https://github.com/LuceResearchLab/pytamaro) for Python.
+JTamaro is a close cousin to
+the [PyTamaro](https://github.com/LuceResearchLab/pytamaro) compositional
+graphics library for Python.
+Unlike PyTamaro, JTamaro also includes simple purely functional data
+structures (with types like `Sequence`, `Option`, and `Pair`), and functionality
+for developing purely-functional interactive applications (with a fluent API to
+configure and run an Interaction).
+JTamaro provides a minimal API, much smaller than the Java API surface covered
+in standard Java programming courses.
+
+The library promotes purity, immutability, parametric polymorphism, subtyping
+polymorphism, and higher-order functions. It does this by focusing on
+interfaces, generics and modern features of the Java programming languages such
+as records, and by a design that encourages immutability and the composition of
+independent components.
+
+It is featured in our
+textbook, [Composition in Java](https://luce.si.usi.ch/composition-in-java/).
 
 ## Components
 
@@ -24,9 +40,14 @@ import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Colors;
 import jtamaro.graphic.Graphics;
 
-Graphic h = Graphics.rectangle(200, 60, Colors.WHITE);
-Graphic v = Graphics.rectangle(60, 200, Colors.WHITE);
-Graphic cross = Graphics.overlay(h, v);
+public class Example {
+
+  public static void example() {
+    Graphic h = Graphics.rectangle(200, 60, Colors.WHITE);
+    Graphic v = Graphics.rectangle(60, 200, Colors.WHITE);
+    Graphic cross = Graphics.overlay(h, v);
+  }
+}
 ```
 
 Using static imports, we can eliminate the need for mentioning class Graphics in
@@ -38,14 +59,45 @@ import jtamaro.graphic.Graphic;
 import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Graphics.*;
 
-Graphic h = rectangle(200, 60, WHITE);
-Graphic v = rectangle(60, 200, WHITE);
-Graphic cross = overlay(h, v);
+public class Example {
+
+  public static void example() {
+    Graphic h = rectangle(200, 60, WHITE);
+    Graphic v = rectangle(60, 200, WHITE);
+    Graphic cross = overlay(h, v);
+  }
+}
 ```
 
 ### `lib/interaction`
 
-Interaction allows to develop an interactive application.
+Interaction allows to develop an interactive application:
+
+```java
+import jtamaro.data.Pair;
+import jtamaro.graphic.Graphic;
+
+import static jtamaro.graphic.Colors.*;
+import static jtamaro.graphic.Fonts.*;
+import static jtamaro.graphic.Graphics.*;
+import static jtamaro.interaction.KeyboardKey.*;
+import static jtamaro.io.IO.*;
+
+public class Example {
+
+  public static void example() {
+    interact(0)
+        .withKeyReleaseHandler((model, key) -> model + switch (key.keyCode()) {
+          case UP -> 1;
+          case DOWN -> -1;
+          default -> 0;
+        })
+        .withRenderer(model -> text(String.valueOf(model),
+            MONOSPACED, 100, BLACK))
+        .run();
+  }
+}
+```
 
 ### `lib/io`
 
@@ -58,7 +110,12 @@ import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Graphics.*;
 import static jtamaro.io.IO.*;
 
-show(rectangle(200, 100, RED))
+public class Example {
+
+  public static void example() {
+    show(rectangle(200, 100, RED));
+  }
+}
 ```
 
 ## Build
@@ -66,25 +123,42 @@ show(rectangle(200, 100, RED))
 This project uses Gradle.
 It contains multiple subprojects:
 
-* `lib` - the main jtamaro module. Includes the data structure, graphics and I/O
-* `music` - midi-based music library that allows to play notes and chords
-* `example` - an application that contains some demos that use of the library
+- `example` - An application that shows how to use the features of the library.
+- `lib` - Main jTamaro module. It includes the data structures, graphics,
+  interaction and I/O.
+- `music` - A midi-based music library that allows to play notes and chords.
 
-To build everything and run the demo app:
-
-```bash
-./gradlew :example:run
-```
-
-To run individual demos in the demo app, run the corresponding classes
-with `main` methods in the `example` directory
-from within an IDE that understands gradle (e.g., VS Code)
-and thus will find (and if needed build) the library.
-
-To just build a library's jar file for usage in other projects:
+To just the build library's jar file for usage in other projects:
 
 ```bash
 ./gradlew :lib:jar
 ```
 
+To build everything and run the example app:
+
+```bash
+./gradlew :example:run
+```
+
+To run individual demos in the example app, run the corresponding classes
+with `main` methods in the `example` directory from within an IDE that
+understands gradle (e.g., VS Code) and thus will find (and if needed build) the
+library.
+
+### Requirements
+
 The output will be in `lib/build/libs/lib-*.jar`
+
+**Note**: The library is targeting Java 21, and it makes extensive use of the
+latest additions to the language (records, sealed classes, pattern matching...).
+Older Java versions are not supported.
+
+## Documentation
+
+The documentation is published
+at [this link](https://luceresearchlab.github.io/jtamaro), or it can be
+generated by running the following command (output at `lib/build/docs/javadoc`):
+
+```bash
+./gradlew :lib:javadoc
+```

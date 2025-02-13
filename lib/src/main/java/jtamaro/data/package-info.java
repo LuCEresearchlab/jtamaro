@@ -1,5 +1,5 @@
 /**
- * JTamaro data structures.
+ * Purely functional data structures for Java.
  *
  * <ul>
  *   <li><code>Function*</code> interfaces: object functions</li>
