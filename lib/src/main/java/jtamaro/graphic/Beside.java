@@ -9,7 +9,7 @@ import javax.swing.tree.MutableTreeNode;
  *
  * <p>The pinning position of the new graphic is at its center.
  */
-public final class Beside extends DelegatingGraphic {
+final class Beside extends DelegatingGraphic {
 
   private final Graphic left;
 

@@ -16,7 +16,7 @@ import java.util.Objects;
  *
  * <p>The pinning position is the centroid of the triangle.
  */
-public final class Triangle extends Graphic {
+final class Triangle extends Graphic {
 
   private final double side1;
 

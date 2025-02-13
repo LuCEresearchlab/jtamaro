@@ -11,7 +11,7 @@ import javax.swing.tree.MutableTreeNode;
  * A new graphic that rotates counterclockwise a provided graphic around its pinning position by the
  * given angle. A negative angle corresponds to a clockwise rotation.
  */
-public final class Rotate extends Graphic {
+final class Rotate extends Graphic {
 
   private final double angle;
 

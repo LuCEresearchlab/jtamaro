@@ -17,7 +17,7 @@ import javax.swing.tree.MutableTreeNode;
  * {@link Points#CENTER_LEFT}, {@link Points#CENTER}, {@link Points#CENTER_LEFT},
  * {@link Points#BOTTOM_LEFT}, {@link Points#BOTTOM_CENTER} and {@link Points#BOTTOM_RIGHT}.
  */
-public final class Pin extends Graphic {
+final class Pin extends Graphic {
 
   private final Point pinPoint;
 

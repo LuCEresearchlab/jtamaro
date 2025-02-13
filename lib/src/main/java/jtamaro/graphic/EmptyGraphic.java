@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
  * An empty graphic. When an empty graphic is composed with any other graphic, it behaves as a
  * neutral element: the result is always identical to the other graphic.
  */
-public final class EmptyGraphic extends Graphic {
+final class EmptyGraphic extends Graphic {
 
   public EmptyGraphic() {
     super();

@@ -12,7 +12,7 @@ import java.util.Objects;
  * <p>When width and height are the same, the ellipse becomes a circle with a diameter equal to
  * the provided size.
  */
-public final class Ellipse extends Graphic {
+final class Ellipse extends Graphic {
 
   private final double width;
 

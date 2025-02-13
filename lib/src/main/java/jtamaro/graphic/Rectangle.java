@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A rectangle of the given size, filled with a color.
  */
-public final class Rectangle extends Graphic {
+final class Rectangle extends Graphic {
 
   private final double width;
 

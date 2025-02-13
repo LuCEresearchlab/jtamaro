@@ -12,7 +12,7 @@ import javax.swing.tree.MutableTreeNode;
  *
  * <p>The pinning position used to compose becomes the pinning position of the resulting graphic.
  */
-public final class Compose extends Graphic {
+final class Compose extends Graphic {
 
   private final Graphic foreground;
 

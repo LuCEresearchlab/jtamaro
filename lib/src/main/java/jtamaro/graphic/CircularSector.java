@@ -17,7 +17,7 @@ import java.util.Objects;
  * <p>The pinning position is at the center of the circle from which the circular sector is
  * taken.
  */
-public final class CircularSector extends Graphic {
+final class CircularSector extends Graphic {
 
   private final double radius;
 

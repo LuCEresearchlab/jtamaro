@@ -20,7 +20,7 @@ import java.util.Objects;
  * <p>The pinning position is horizontally aligned on the left and vertically on the baseline of
  * the text.
  */
-public final class Text extends Graphic {
+final class Text extends Graphic {
 
   private final String content;
 

@@ -19,20 +19,6 @@ Provides implementation for the following types:
 
 ### `lib/graphic`
 
-There are two different ways to use JTamaro:
-
-- The "functional" way, which does not require an understanding of inheritance
-- The "object-oriented" way, which can be used to discuss inheritance
-
-Both ways use the type `Graphic`.
-The functional way (class `jtamaro.graphic.Graphics`) provides static methods to
-construct and compose graphics.
-The object-oriented way (package `jtamaro.graphic`) uses a class hierarchy
-for the different kinds of graphics
-and operators on graphics.
-
-#### Functional (requires static methods)
-
 ```java
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Colors;
@@ -55,19 +41,6 @@ import static jtamaro.graphic.Graphics.*;
 Graphic h = rectangle(200, 60, WHITE);
 Graphic v = rectangle(60, 200, WHITE);
 Graphic cross = overlay(h, v);
-```
-
-#### Object-Oriented (requires subtyping)
-
-```java
-import jtamaro.graphic.Graphic;
-import jtamaro.graphic.Colors;
-import jtamaro.graphic.Rectangle;
-import jtamaro.graphic.Overlay;
-
-Graphic h = new Rectangle(200, 60, Colors.WHITE);
-Graphic v = new Rectangle(60, 200, Colors.WHITE);
-Graphic cross = new Overlay(h, v);
 ```
 
 ### `lib/interaction`

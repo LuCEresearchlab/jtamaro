@@ -9,7 +9,7 @@ import javax.swing.tree.MutableTreeNode;
  *
  * <p>The pinning position of the new graphic is at its center.
  */
-public final class Overlay extends DelegatingGraphic {
+final class Overlay extends DelegatingGraphic {
 
   private final Graphic foreground;
 
