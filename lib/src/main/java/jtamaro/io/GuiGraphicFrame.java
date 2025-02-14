@@ -112,6 +112,11 @@ final class GuiGraphicFrame extends JFrame {
         null,
         String.valueOf(renderOptions.getPadding()));
 
+    if (valueStr == null) {
+      // User clicked on cancel
+      return;
+    }
+
     try {
       final int padding = Integer.parseInt(valueStr);
       renderOptions.setPadding(padding);
