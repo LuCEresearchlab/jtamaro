@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -53,30 +57,28 @@ public final class GuiGraphicCanvas extends JComponent {
   }
 
   public boolean saveGraphic(Path path) {
-    final Rectangle2D bBox = graphic.getBBox();
-    final BufferedImage bufImg = new BufferedImage((int) Math.ceil(bBox.getWidth()),
-        (int) Math.ceil(bBox.getHeight()),
-        BufferedImage.TYPE_INT_ARGB);
-
-    // According to the documentation, the concrete type is always Graphics2D
-    final Graphics2D g2d = (Graphics2D) bufImg.getGraphics();
-    try {
-      g2d.setRenderingHints(new RenderingHints(
-          RenderingHints.KEY_ANTIALIASING,
-          RenderingHints.VALUE_ANTIALIAS_ON));
-      g2d.translate(-bBox.getMinX(), -bBox.getMinY());
-      graphic.render(g2d, renderOptions);
-    } finally {
-      g2d.dispose();
-    }
+    final BufferedImage image = getBufImage();
 
     try (final OutputStream oStream = Files.newOutputStream(path,
         StandardOpenOption.CREATE,
         StandardOpenOption.WRITE)) {
-      ImageIO.write(bufImg, "png", oStream);
+      ImageIO.write(image, "png", oStream);
       return true;
     } catch (IOException e) {
       LOGGER.log(Level.SEVERE, "Failed to write graphics to " + path, e);
+      return false;
+    }
+  }
+
+  public boolean copyGraphicToClipboard() {
+    final Transferable transferable = new TransferableBufferedImage(getBufImage());
+    try {
+      Toolkit.getDefaultToolkit()
+          .getSystemClipboard()
+          .setContents(transferable, null);
+      return true;
+    } catch (Exception e) {
+      // Unsupported operation...
       return false;
     }
   }
@@ -125,6 +127,50 @@ public final class GuiGraphicCanvas extends JComponent {
         int tileWidth = Math.min(width - col * tileSize, tileSize);
         int tileHeight = Math.min(height - row * tileSize, tileSize);
         g.fillRect(col * tileSize, row * tileSize, tileWidth, tileHeight);
+      }
+    }
+  }
+
+  private BufferedImage getBufImage() {
+    final int padding = renderOptions.getPadding();
+    final Rectangle2D bBox = graphic.getBBox();
+    final int width = (int) Math.ceil(bBox.getWidth()) + 2 * padding;
+    final int height = (int) Math.ceil(bBox.getHeight()) + 2 * padding;
+
+    final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    // According to the documentation, the concrete type is always Graphics2D
+    final Graphics2D g2d = (Graphics2D) image.getGraphics();
+    try {
+      g2d.setRenderingHints(new RenderingHints(
+          RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON));
+      g2d.translate(padding, padding);
+      g2d.translate(-bBox.getMinX(), -bBox.getMinY());
+      graphic.render(g2d, renderOptions);
+      return image;
+    } finally {
+      g2d.dispose();
+    }
+  }
+
+  private record TransferableBufferedImage(BufferedImage bufferedImage) implements Transferable {
+
+    @Override
+    public DataFlavor[] getTransferDataFlavors() {
+      return new DataFlavor[]{DataFlavor.imageFlavor};
+    }
+
+    @Override
+    public boolean isDataFlavorSupported(DataFlavor flavor) {
+      return flavor.isMimeTypeEqual(DataFlavor.imageFlavor);
+    }
+
+    @Override
+    public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+      if (isDataFlavorSupported(flavor)) {
+        return bufferedImage;
+      } else {
+        throw new UnsupportedFlavorException(flavor);
       }
     }
   }

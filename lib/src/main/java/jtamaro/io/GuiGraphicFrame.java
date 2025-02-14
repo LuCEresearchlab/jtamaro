@@ -52,6 +52,11 @@ final class GuiGraphicFrame extends JFrame {
     fileMenu.setMnemonic(KeyEvent.VK_F);
     menuBar.add(fileMenu);
 
+    final JMenuItem copyItem = new JMenuItem("Copy", KeyEvent.VK_C);
+    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, acceleratorModifierKey));
+    copyItem.addActionListener(e -> copyGraphicToClipboard());
+    fileMenu.add(copyItem);
+
     final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
     saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, acceleratorModifierKey));
     saveItem.addActionListener(e -> saveGraphic());
@@ -158,6 +163,16 @@ final class GuiGraphicFrame extends JFrame {
       JOptionPane.showMessageDialog(this,
           "Failed to save graphic to " + selectedFile.toAbsolutePath(),
           "Save graphic",
+          JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private void copyGraphicToClipboard() {
+    final boolean copyResult = canvas.copyGraphicToClipboard();
+    if (!copyResult) {
+      JOptionPane.showMessageDialog(this,
+          "Failed to copy graphic to clipboard",
+          "Copy graphic",
           JOptionPane.ERROR_MESSAGE);
     }
   }
