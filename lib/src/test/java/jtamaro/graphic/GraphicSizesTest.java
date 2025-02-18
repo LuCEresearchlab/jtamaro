@@ -11,7 +11,7 @@ import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Points.BOTTOM_CENTER;
 
-public final class GraphicTest {
+public final class GraphicSizesTest {
 
   private static final double TEST_DELTA = 0.0001;
 
