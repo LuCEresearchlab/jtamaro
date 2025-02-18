@@ -1,12 +1,10 @@
 package jtamaro.io;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Locale;
 import java.util.Scanner;
 import javax.swing.SwingUtilities;
 import jtamaro.data.Pair;
@@ -338,29 +336,6 @@ public final class IO {
    */
   public static <M> Interaction<M> interact(M initialModel) {
     return new Interaction<>(initialModel);
-  }
-
-  /**
-   * Get the main accelerator key for the current OS.
-   *
-   * @return {@link KeyEvent#META_DOWN_MASK} (CMD key down) on macOS, or
-   * {@link KeyEvent#CTRL_DOWN_MASK} on any other OS.
-   * @apiNote Not for public usage
-   * @hidden
-   */
-  static int getAcceleratorModifierKey() {
-    return isMacOS()
-        ? KeyEvent.META_DOWN_MASK
-        : KeyEvent.CTRL_DOWN_MASK;
-  }
-
-  /**
-   * Check if we are running on macOS.
-   */
-  private static boolean isMacOS() {
-    return System.getProperty("os.name")
-        .toLowerCase(Locale.ROOT)
-        .startsWith("mac");
   }
 
   private static Pair<Double, Double> determineMaxWidthHeight(Sequence<Graphic> graphics) {

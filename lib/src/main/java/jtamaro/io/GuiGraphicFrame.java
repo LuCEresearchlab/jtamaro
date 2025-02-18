@@ -2,7 +2,7 @@ package jtamaro.io;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;
-import java.awt.event.InputEvent;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,7 +35,6 @@ final class GuiGraphicFrame extends JFrame {
 
   private final GuiGraphicTreePanel treePanel;
 
-  @SuppressWarnings("MagicConstant")
   public GuiGraphicFrame() {
     setTitle("JTamaro");
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -46,19 +45,19 @@ final class GuiGraphicFrame extends JFrame {
     final JMenuBar menuBar = new JMenuBar();
     setJMenuBar(menuBar);
 
-    final int acceleratorModifierKey = IO.getAcceleratorModifierKey();
+    final int menuShortcutKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
     final JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
     menuBar.add(fileMenu);
 
     final JMenuItem copyItem = new JMenuItem("Copy", KeyEvent.VK_C);
-    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, acceleratorModifierKey));
+    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, menuShortcutKey));
     copyItem.addActionListener(e -> copyGraphicToClipboard());
     fileMenu.add(copyItem);
 
     final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
-    saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, acceleratorModifierKey));
+    saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, menuShortcutKey));
     saveItem.addActionListener(e -> saveGraphic());
     fileMenu.add(saveItem);
 
@@ -67,7 +66,7 @@ final class GuiGraphicFrame extends JFrame {
     menuBar.add(viewMenu);
 
     final JMenuItem paddingItem = new JMenuItem("Padding", KeyEvent.VK_P);
-    paddingItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, acceleratorModifierKey));
+    paddingItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, menuShortcutKey));
     paddingItem.addActionListener(e -> setPadding());
     viewMenu.add(paddingItem);
 
