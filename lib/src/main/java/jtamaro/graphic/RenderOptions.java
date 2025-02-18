@@ -71,14 +71,6 @@ public final class RenderOptions {
     fireRenderOptionsChanged();
   }
 
-  void deselect(Graphic g) {
-    if (g == leadSelection) {
-      leadSelection = null;
-    }
-    selection.remove(g);
-    fireRenderOptionsChanged();
-  }
-
   boolean isSelected(Graphic g) {
     return selection.contains(g);
   }

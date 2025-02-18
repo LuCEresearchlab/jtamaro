@@ -3,8 +3,8 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
-import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 
 /**
  * A circular sector belonging to a circle of the given radius, filled with a color.
@@ -63,8 +63,8 @@ final class CircularSector extends Graphic {
   }
 
   @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("radius", String.format("%.2f", radius));
     props.put("angle", String.format("%.2f", radius));
     props.put("color", plainText

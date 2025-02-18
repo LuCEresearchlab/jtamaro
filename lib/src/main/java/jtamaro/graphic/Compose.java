@@ -2,8 +2,9 @@ package jtamaro.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.util.LinkedHashMap;
 import java.util.Objects;
-import javax.swing.tree.MutableTreeNode;
+import java.util.SequencedMap;
 
 /**
  * A graphic that composes the two provided graphics. The first graphic is kept in the foreground,
@@ -87,15 +88,11 @@ final class Compose extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpChild(sb, indent, "foreground", foreground);
-    dumpChild(sb, indent, "background", background);
-  }
-
-  @Override
-  public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(foreground, background);
+  SequencedMap<String, Graphic> getChildren() {
+    final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
+    children.put("foreground", foreground);
+    children.put("background", background);
+    return children;
   }
 
   @Override

@@ -1,7 +1,12 @@
 package jtamaro.graphic;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 import javax.swing.tree.MutableTreeNode;
+import jtamaro.data.Pair;
 
 /**
  * A graphic composed by placing the two graphics one above the other. The two graphics are
@@ -41,15 +46,11 @@ final class Above extends DelegatingGraphic {
   }
 
   @Override
-  public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(top, bottom);
-  }
-
-  @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpChild(sb, indent, "top", top);
-    dumpChild(sb, indent, "bottom", bottom);
+  SequencedMap<String, Graphic> getChildren() {
+    final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
+    children.put("top", top);
+    children.put("bottom", bottom);
+    return children;
   }
 
   @Override

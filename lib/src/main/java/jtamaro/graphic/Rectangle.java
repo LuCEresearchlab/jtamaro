@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 
 /**
  * A rectangle of the given size, filled with a color.
@@ -51,19 +52,13 @@ final class Rectangle extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpField(sb, indent, "color", color);
-  }
-
-  @Override
   protected String getInspectLabel() {
     return "rectangle";
   }
 
   @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("color", plainText
         ? color.toString()
         : Colors.htmlString(color));

@@ -5,6 +5,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 
 /**
  * An ellipse with the given width and height, filled with a color.
@@ -55,18 +56,13 @@ final class Ellipse extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-  }
-
-  @Override
   protected String getInspectLabel() {
     return "ellipse";
   }
 
   @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("color", plainText
         ? color.toString()
         : Colors.htmlString(color));

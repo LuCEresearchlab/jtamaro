@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 
 /**
  * A triangle with two sides and the angle between them, filled with a color. The first side extends
@@ -65,22 +66,13 @@ final class Triangle extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpField(sb, indent, "side1", side1);
-    dumpField(sb, indent, "side2", side2);
-    dumpField(sb, indent, "angle", angle);
-    dumpField(sb, indent, "color", color);
-  }
-
-  @Override
   protected String getInspectLabel() {
     return "triangle";
   }
 
   @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("side1", String.format("%.2f", side1));
     props.put("side2", String.format("%.2f", side2));
     props.put("angle", String.format("%.2f", angle));

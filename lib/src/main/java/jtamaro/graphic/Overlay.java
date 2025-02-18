@@ -1,7 +1,8 @@
 package jtamaro.graphic;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
-import javax.swing.tree.MutableTreeNode;
+import java.util.SequencedMap;
 
 /**
  * A graphic composed by overlaying the two provided graphics, keeping the first one in the
@@ -39,15 +40,11 @@ final class Overlay extends DelegatingGraphic {
   }
 
   @Override
-  public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(foreground, background);
-  }
-
-  @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpChild(sb, indent, "foreground", foreground);
-    dumpChild(sb, indent, "background", background);
+  SequencedMap<String, Graphic> getChildren() {
+    final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
+    children.put("foreground", foreground);
+    children.put("background", background);
+    return children;
   }
 
   @Override

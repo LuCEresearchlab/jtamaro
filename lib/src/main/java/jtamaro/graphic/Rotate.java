@@ -3,9 +3,9 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Objects;
-import javax.swing.tree.MutableTreeNode;
+import java.util.SequencedMap;
 
 /**
  * A new graphic that rotates counterclockwise a provided graphic around its pinning position by the
@@ -76,20 +76,15 @@ final class Rotate extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpField(sb, indent, "angle", angle);
-    dumpChild(sb, indent, "graphic", graphic);
+  SequencedMap<String, Graphic> getChildren() {
+    final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
+    children.put("graphic", graphic);
+    return children;
   }
 
   @Override
-  public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(graphic);
-  }
-
-  @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("angle", String.format("%.2f", angle));
     return props;
   }

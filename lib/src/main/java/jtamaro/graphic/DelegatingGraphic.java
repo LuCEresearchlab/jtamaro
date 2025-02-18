@@ -67,6 +67,6 @@ abstract sealed class DelegatingGraphic
 
   @Override
   public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(delegate);
+    return delegate.createInspectTree();
   }
 }

@@ -3,9 +3,9 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Objects;
-import javax.swing.tree.MutableTreeNode;
+import java.util.SequencedMap;
 
 /**
  * A graphic that corresponds to a provided graphic, with a new pinning position.
@@ -84,15 +84,10 @@ final class Pin extends Graphic {
   }
 
   @Override
-  protected void dump(StringBuilder sb, String indent) {
-    super.dump(sb, indent);
-    dumpField(sb, indent, "pinPoint", pinPoint);
-    dumpChild(sb, indent, "graphic", graphic);
-  }
-
-  @Override
-  public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode(graphic);
+  SequencedMap<String, Graphic> getChildren() {
+    final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
+    children.put("graphic", graphic);
+    return children;
   }
 
   @Override
@@ -101,8 +96,8 @@ final class Pin extends Graphic {
   }
 
   @Override
-  protected Map<String, String> getProps(boolean plainText) {
-    final Map<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
     props.put("pinPoint", Points.format(pinPoint));
     return props;
   }

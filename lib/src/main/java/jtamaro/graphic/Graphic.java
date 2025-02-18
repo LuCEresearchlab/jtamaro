@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
+import java.util.SequencedMap;
 import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -155,6 +155,14 @@ public abstract sealed class Graphic
     return new Color(color.red(), color.green(), color.blue(), color.alpha());
   }
 
+  /**
+   * Return an <b>ordered</b> map that contains children (and their "names" as key) of this
+   * graphic.
+   */
+  SequencedMap<String, Graphic> getChildren() {
+    return new LinkedHashMap<>();
+  }
+
   /* **** Info **** */
 
   /**
@@ -177,14 +185,15 @@ public abstract sealed class Graphic
    * @implNote All the props from {@link #getProps(boolean)} are automatically added by invoking the
    * super method.
    */
-  protected void dump(StringBuilder sb, String indent) {
+  protected final void dump(StringBuilder sb, String indent) {
     sb.append(indent)
         .append(getClass().getSimpleName())
         .append("\n");
     getProps(true).forEach((k, v) -> dumpField(sb, indent, k, v));
+    getChildren().forEach((k, v) -> dumpChild(sb, indent, k, v));
   }
 
-  protected final void dumpField(StringBuilder sb, String indent, String name, Object value) {
+  private void dumpField(StringBuilder sb, String indent, String name, Object value) {
     sb.append(indent)
         .append("├─ ")
         .append(name)
@@ -193,7 +202,7 @@ public abstract sealed class Graphic
         .append("\n");
   }
 
-  protected final void dumpChild(StringBuilder sb, String indent, String name, Graphic child) {
+  private void dumpChild(StringBuilder sb, String indent, String name, Graphic child) {
     sb.append(indent)
         .append("├─ ")
         .append(name)
@@ -206,7 +215,7 @@ public abstract sealed class Graphic
    * JTree.
    */
   public MutableTreeNode createInspectTree() {
-    return new InspectTreeNode();
+    return new InspectTreeNode(getChildren().values());
   }
 
   /**
@@ -230,11 +239,11 @@ public abstract sealed class Graphic
    * @see GuiGraphicPropertiesPanel
    * @see GuiGraphicTreeCellRenderer
    */
-  protected Map<String, String> getProps(boolean plainText) {
+  protected SequencedMap<String, String> getProps(boolean plainText) {
     // We use LinkedHashMap as the implementation class because:
     //   1. We care about insertion order
     //   2. We never perform random reads on the map, just forEach iterations
-    final Map<String, String> props = new LinkedHashMap<>();
+    final SequencedMap<String, String> props = new LinkedHashMap<>();
     props.put("width", String.format("%.2f", getWidth()));
     props.put("height", String.format("%.2f", getHeight()));
     return props;
@@ -273,10 +282,7 @@ public abstract sealed class Graphic
 
   final class InspectTreeNode extends DefaultMutableTreeNode {
 
-    public InspectTreeNode() {
-    }
-
-    public InspectTreeNode(Graphic... children) {
+    public InspectTreeNode(Iterable<Graphic> children) {
       for (Graphic child : children) {
         add(child.createInspectTree());
       }
