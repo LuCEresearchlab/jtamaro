@@ -2,9 +2,11 @@ package jtamaro.graphic;
 
 import java.awt.BorderLayout;
 import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
 /**
  * Swing panel component that renders the properties of a graphic.
@@ -24,9 +26,12 @@ public final class GuiGraphicPropertiesPanel extends JPanel {
     setLayout(new BorderLayout());
     label = new JLabel();
     add(label, BorderLayout.NORTH);
+
     canvasRenderOptions = new RenderOptions(10);
     canvas = new GuiGraphicCanvas(canvasRenderOptions);
-    add(new JScrollPane(canvas), BorderLayout.CENTER);
+    final JScrollPane canvasScrollPanel = new JScrollPane(canvas);
+    canvasScrollPanel.setBorder(BorderFactory.createEmptyBorder());
+    add(canvasScrollPanel, BorderLayout.CENTER);
 
     setGraphic(null);
 

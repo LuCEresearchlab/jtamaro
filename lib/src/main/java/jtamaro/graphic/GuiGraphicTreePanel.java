@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -25,7 +26,9 @@ public final class GuiGraphicTreePanel extends JPanel {
     tree = new JTree();
     tree.setCellRenderer(new GuiGraphicTreeCellRenderer());
     ToolTipManager.sharedInstance().registerComponent(tree);
-    add(new JScrollPane(tree), BorderLayout.CENTER);
+    final JScrollPane treeScrollPanel = new JScrollPane(tree);
+    treeScrollPanel.setBorder(BorderFactory.createEmptyBorder());
+    add(treeScrollPanel, BorderLayout.CENTER);
 
     tree.addKeyListener(new KeyAdapter() {
       @Override
