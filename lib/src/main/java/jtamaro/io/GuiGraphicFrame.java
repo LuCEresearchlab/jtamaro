@@ -97,6 +97,12 @@ final class GuiGraphicFrame extends JFrame {
     setGraphic(graphic);
   }
 
+  @Override
+  public void dispose() {
+    treePanel.dispose();
+    super.dispose();
+  }
+
   public void setGraphic(Graphic graphic) {
     canvas.setGraphic(graphic);
     treePanel.setGraphic(graphic);

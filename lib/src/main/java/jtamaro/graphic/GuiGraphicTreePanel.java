@@ -55,4 +55,8 @@ public final class GuiGraphicTreePanel extends JPanel {
   public void setGraphic(Graphic g) {
     tree.setModel(new DefaultTreeModel(g.createInspectTree()));
   }
+
+  public void dispose() {
+    ToolTipManager.sharedInstance().unregisterComponent(tree);
+  }
 }
