@@ -51,24 +51,25 @@ final class GuiGraphicFrame extends JFrame {
     fileMenu.setMnemonic(KeyEvent.VK_F);
     menuBar.add(fileMenu);
 
-    final JMenuItem copyItem = new JMenuItem("Copy", KeyEvent.VK_C);
-    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, menuShortcutKey));
+    final JMenuItem copyItem = new JMenuItem("Copy graphic", KeyEvent.VK_C);
+    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
+        KeyEvent.SHIFT_DOWN_MASK | menuShortcutKey));
     copyItem.addActionListener(e -> copyGraphicToClipboard());
     fileMenu.add(copyItem);
 
-    final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
+    final JMenuItem saveItem = new JMenuItem("Save graphic", KeyEvent.VK_S);
     saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, menuShortcutKey));
     saveItem.addActionListener(e -> saveGraphic());
     fileMenu.add(saveItem);
 
-    final JMenu viewMenu = new JMenu("View");
-    fileMenu.setMnemonic(KeyEvent.VK_V);
-    menuBar.add(viewMenu);
+    final JMenu editMenu = new JMenu("Edit");
+    fileMenu.setMnemonic(KeyEvent.VK_E);
+    menuBar.add(editMenu);
 
     final JMenuItem paddingItem = new JMenuItem("Padding", KeyEvent.VK_P);
     paddingItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, menuShortcutKey));
     paddingItem.addActionListener(e -> setPadding());
-    viewMenu.add(paddingItem);
+    editMenu.add(paddingItem);
 
     // canvas
     canvas = new GuiGraphicCanvas(renderOptions);
