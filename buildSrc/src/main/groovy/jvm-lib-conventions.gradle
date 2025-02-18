@@ -40,6 +40,10 @@ compileJava {
   options.compilerArgs << "-Xlint:all,-serial"
 }
 
+test {
+  systemProperty("java.awt.headless", true)
+}
+
 tasks.withType(AbstractArchiveTask).configureEach {
   preserveFileTimestamps = false
   reproducibleFileOrder = true
