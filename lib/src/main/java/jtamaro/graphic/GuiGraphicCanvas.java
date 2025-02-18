@@ -147,6 +147,7 @@ public final class GuiGraphicCanvas extends JComponent {
       g2d.translate(padding, padding);
       g2d.translate(-bBox.getMinX(), -bBox.getMinY());
       graphic.render(g2d, renderOptions);
+      graphic.drawDebugInfo(g2d, renderOptions);
       return image;
     } finally {
       g2d.dispose();
