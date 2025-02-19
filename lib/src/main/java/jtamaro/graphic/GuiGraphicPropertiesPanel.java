@@ -6,7 +6,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 
 /**
  * Swing panel component that renders the properties of a graphic.
@@ -35,7 +34,7 @@ public final class GuiGraphicPropertiesPanel extends JPanel {
 
     setGraphic(null);
 
-    renderOptions.addRenderOptionsListener(() -> setGraphic(renderOptions.getLeadSelection()));
+    renderOptions.addRenderOptionsListener(() -> setGraphic(renderOptions.getSelection()));
   }
 
   public void setGraphic(Graphic graphic) {

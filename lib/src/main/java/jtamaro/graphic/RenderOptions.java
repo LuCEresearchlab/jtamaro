@@ -1,10 +1,7 @@
 package jtamaro.graphic;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Graphic render configuration.
@@ -20,9 +17,7 @@ public final class RenderOptions {
 
   private final int fixedHeight;
 
-  private final Set<Graphic> selection;
-
-  private Graphic leadSelection;
+  private Graphic selection;
 
   private final List<Listener> listeners;
 
@@ -34,7 +29,7 @@ public final class RenderOptions {
     this.padding = padding;
     this.fixedWidth = fixedWidth;
     this.fixedHeight = fixedHeight;
-    selection = Collections.newSetFromMap(new IdentityHashMap<>());
+    selection = null;
     listeners = new ArrayList<>();
   }
 
@@ -60,27 +55,21 @@ public final class RenderOptions {
   }
 
   public void clearSelection() {
-    selection.clear();
-    leadSelection = null;
+    selection = null;
     fireRenderOptionsChanged();
   }
 
   void select(Graphic g) {
-    selection.add(g);
-    leadSelection = g;
+    selection = g;
     fireRenderOptionsChanged();
   }
 
   boolean isSelected(Graphic g) {
-    return selection.contains(g);
+    return selection == g;
   }
 
-  Graphic getLeadSelection() {
-    return leadSelection;
-  }
-
-  boolean isLeadSelection(Graphic g) {
-    return selection.contains(g);
+  Graphic getSelection() {
+    return selection;
   }
 
   public void addRenderOptionsListener(Listener li) {
@@ -96,8 +85,7 @@ public final class RenderOptions {
   /**
    * Graphic render configuration listener.
    *
-   * <p>For internal usage only!
-   *
+   * @apiNote For internal usage only!
    * @hidden
    */
   public interface Listener {
