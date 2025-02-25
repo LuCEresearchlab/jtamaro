@@ -1,12 +1,8 @@
 package jtamaro.graphic;
 
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.SequencedMap;
-import javax.swing.tree.MutableTreeNode;
-import jtamaro.data.Pair;
 
 /**
  * A graphic composed by placing the two graphics one above the other. The two graphics are

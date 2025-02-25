@@ -3,7 +3,6 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import javax.swing.tree.MutableTreeNode;
 
 /**
  * Useful to create operators like {@link Overlay}, {@link Above}, and {@link Beside}, or any other
@@ -63,10 +62,5 @@ abstract sealed class DelegatingGraphic
   @Override
   public double getHeight() {
     return delegate.getHeight();
-  }
-
-  @Override
-  public MutableTreeNode createInspectTree() {
-    return delegate.createInspectTree();
   }
 }
