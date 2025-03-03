@@ -2,7 +2,6 @@ package jtamaro.data;
 
 import java.util.Iterator;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A Sequence is an ordered list of elements of type <code>T</code>, it corresponds directly to what
@@ -54,6 +53,15 @@ public interface Sequence<T> extends Iterable<T> {
    */
   Sequence<T> filter(Function1<T, Boolean> predicate);
 
+  /**
+   * Perform a reduction on this sequence.
+   *
+   * @param initial The neutral element of the reduction (initial folding value)
+   * @param reducer The function that takes an element of the sequence and an accumulator as
+   *                arguments and produces a folded value
+   * @param <U>     The type of the reduced value
+   * @return The accumulated result of the reduction
+   */
   default <U> U reduce(U initial, Function2<T, U, U> reducer) {
     return foldRight(initial, reducer);
   }
@@ -62,10 +70,10 @@ public interface Sequence<T> extends Iterable<T> {
    * Fold this sequence on the right.
    *
    * @param initial The neutral element of the reduction (initial folding value)
-   * @param reducer The function that takes an element of the sequence and an accumulator and
-   *                produces a folded value
-   * @param <U>     Type of the reduced value
-   * @return The accumulated result of the fold
+   * @param reducer The function that takes an element of the sequence and an accumulator as
+   *                arguments and produces a folded value
+   * @param <U>     The type of the reduced value
+   * @return The accumulated result of the folding
    */
   <U> U foldRight(U initial, Function2<T, U, U> reducer);
 
@@ -73,10 +81,10 @@ public interface Sequence<T> extends Iterable<T> {
    * Fold this sequence on the left.
    *
    * @param initial The neutral element of the reduction (initial folding value)
-   * @param reducer The function that takes the accumulator and an element of the sequence and
-   *                produces a folded value
-   * @param <U>     Type of the reduced value
-   * @return The accumulated result of the fold
+   * @param reducer The function that takes the accumulator and an element of the sequence as
+   *                arguments and produces a folded value
+   * @param <U>     The type of the reduced value
+   * @return The accumulated result of the folding
    */
   <U> U foldLeft(U initial, Function2<U, T, U> reducer);
 

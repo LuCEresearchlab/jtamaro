@@ -293,11 +293,10 @@ public final class IO {
   }
 
   /**
-   * Open a window with a scrollable filmstrip, with each from for each of the given graphics. This
+   * Open a window with a scrollable filmstrip, with a frame for each of the given graphics. This
    * method automatically detects the width and height of the frames. For empty sequences, it uses a
    * default frame size. For sequences with a definite size, it determines the maximum width and
-   * height. For sequences without a definite size, it uses the width and height of their first
-   * frame.
+   * height.
    *
    * @param graphics sequence of graphics (frames) to show in the filmstrip
    */
@@ -307,7 +306,7 @@ public final class IO {
   }
 
   /**
-   * Open a window with a scrollable filmstrip, with each from for each of the given graphics.
+   * Open a window with a scrollable filmstrip, with a frame for each of the given graphics.
    *
    * @param graphics    sequence of graphics (frames) to show in the filmstrip
    * @param frameWidth  the width of frames (should be at least the maximum of all the graphics'
@@ -339,16 +338,14 @@ public final class IO {
   }
 
   private static Pair<Double, Double> determineMaxWidthHeight(Sequence<Graphic> graphics) {
-    if (graphics.isEmpty()) {
-      // no frames: use a default
-      return new Pair<>(400.0, 300.0);
-    } else {
-      // known, finite number of frames: determine max
-      return graphics.reduce(new Pair<>(0.0, 0.0), (g, acc) -> new Pair<>(
-          Math.max(acc.first(), g.getWidth()),
-          Math.max(acc.second(), g.getHeight())
-      ));
-    }
+    return graphics.isEmpty()
+        // no frames: use a default
+        ? new Pair<>(400.0, 300.0)
+        // known, finite number of frames: determine max
+        : graphics.reduce(new Pair<>(0.0, 0.0), (g, acc) -> new Pair<>(
+            Math.max(acc.first(), g.getWidth()),
+            Math.max(acc.second(), g.getHeight())
+        ));
   }
 
   private static <T> int length(Sequence<T> seq) {
