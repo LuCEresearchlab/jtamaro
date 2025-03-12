@@ -49,8 +49,12 @@ public final class IO {
    * @param sequence the sequence to print
    */
   public static <T> void print(Sequence<T> sequence) {
-    for (T element : sequence) {
-      System.out.print(element);
+    if (sequence == null) {
+      System.err.print("Nothing to print");
+    } else {
+      for (T element : sequence) {
+        System.out.print(element);
+      }
     }
   }
 
@@ -60,7 +64,11 @@ public final class IO {
    * @see java.io.PrintStream#print(Object)
    */
   public static void print(Object object) {
-    System.out.print(object);
+    if (object == null) {
+      System.err.print("Nothing to print");
+    } else {
+      System.out.print(object);
+    }
   }
 
   /**
@@ -71,8 +79,12 @@ public final class IO {
    * @param sequence the sequence to print
    */
   public static <T> void println(Sequence<T> sequence) {
-    for (T element : sequence) {
-      System.out.println(element);
+    if (sequence == null) {
+      System.err.println("Nothing to print");
+    } else {
+      for (T element : sequence) {
+        System.out.println(element);
+      }
     }
   }
 
@@ -84,7 +96,11 @@ public final class IO {
    * @see Graphic#dump()
    */
   public static void println(Graphic graphic) {
-    System.out.println(graphic.dump());
+    if (graphic == null) {
+      System.err.println("Nothing to print");
+    } else {
+      System.out.println(graphic.dump());
+    }
   }
 
   /**
@@ -114,8 +130,12 @@ public final class IO {
    * @param pair the pair to print
    */
   public static <F, S> void print(Pair<F, S> pair) {
-    System.out.print(pair.first());
-    System.out.print(pair.second());
+    if (pair == null) {
+      System.err.print("Nothing to print");
+    } else {
+      System.out.print(pair.first());
+      System.out.print(pair.second());
+    }
   }
 
   /**
@@ -127,8 +147,12 @@ public final class IO {
    * @param pair the pair to print
    */
   public static <F, S> void println(Pair<F, S> pair) {
-    System.out.println(pair.first());
-    System.out.println(pair.second());
+    if (pair == null) {
+      System.err.println("Nothing to print");
+    } else {
+      System.out.println(pair.first());
+      System.out.println(pair.second());
+    }
   }
 
   /**
@@ -317,13 +341,12 @@ public final class IO {
   public static void showFilmStrip(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
     if (graphics == null) {
       System.err.println("Nothing to show");
-      return;
+    } else {
+      assert frameWidth >= 0 : "Can't have a negative width";
+      assert frameHeight >= 0 : "Can't have a negative height";
+      SwingUtilities.invokeLater(() ->
+          new FilmStripFrame(graphics, frameWidth, frameHeight).setVisible(true));
     }
-
-    assert frameWidth >= 0 : "Can't have a negative width";
-    assert frameHeight >= 0 : "Can't have a negative height";
-    SwingUtilities.invokeLater(() ->
-        new FilmStripFrame(graphics, frameWidth, frameHeight).setVisible(true));
   }
 
   /**
