@@ -31,14 +31,14 @@ public final class OptionTest {
   @Test
   public void someFold() {
     final AtomicInteger i = new AtomicInteger(0);
-    Assert.assertEquals(6, (long) Options.some(5).fold(x -> x + i.incrementAndGet(), 0));
+    Assert.assertEquals(6, (long) Options.some(5).fold(x -> x + i.incrementAndGet(), () -> 0));
     Assert.assertEquals(1, i.get());
   }
 
   @Test
   public void noneFold() {
     final AtomicInteger i = new AtomicInteger(0);
-    Assert.assertEquals(0, (long) new None<Integer>().fold(x -> x + i.incrementAndGet(), 0));
+    Assert.assertEquals(0, (long) new None<Integer>().fold(x -> x + i.incrementAndGet(), () -> 0));
     Assert.assertEquals(0, i.get());
   }
 

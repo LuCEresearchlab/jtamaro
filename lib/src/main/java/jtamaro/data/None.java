@@ -13,7 +13,7 @@ record None<T>() implements Option<T> {
   }
 
   @Override
-  public <S> S fold(Function1<T, S> someCase, S noneValue) {
-    return noneValue;
+  public <S> S fold(Function1<T, S> someCase, Function0<S> noneCase) {
+    return noneCase.apply();
   }
 }

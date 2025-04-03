@@ -27,15 +27,15 @@ public sealed interface Option<T> permits Some, None {
    * Obtain a value depending on whether this option is empty or not.
    *
    * @return Returns the result of applying the someCase function to the value of this option if
-   * this option is non-empty or noneValue if this option is empty.
+   * this option is non-empty or noneCase if this option is empty.
    */
-  <S> S fold(Function1<T, S> someCase, S noneValue);
+  <S> S fold(Function1<T, S> someCase, Function0<S> noneCase);
 
   /**
    * Determine whether this option is empty.
    */
   default boolean isEmpty() {
-    return fold($ -> false, true);
+    return fold($ -> false, () -> true);
   }
 
   /**
@@ -45,6 +45,6 @@ public sealed interface Option<T> permits Some, None {
    * is non-empty.
    */
   default Stream<T> stream() {
-    return fold(Stream::of, Stream.empty());
+    return fold(Stream::of, Stream::empty);
   }
 }
