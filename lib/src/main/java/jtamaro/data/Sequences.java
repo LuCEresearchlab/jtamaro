@@ -159,6 +159,37 @@ public final class Sequences {
   }
 
   /**
+   * Constructs a sequence of floating point numbers starting at <code>from</code>, with the last
+   * element being &lt; <code>toExclusive</code> with each element being <code>previousElement +
+   * step</code>.
+   *
+   * <p><code>range(0, 1, 0.2) === of(0.0, 0.2, 0.4, 0.6, 0.8)</code>
+   *
+   * @param from        the value of the first element
+   * @param toExclusive the number which all elements of the sequence are less than by at most
+   *                    <code>step</code>
+   * @param step        the difference between an element of the sequence and its predecessor
+   */
+  public static Sequence<Double> range(double from, double toExclusive, double step) {
+    if (step == 0) {
+      throw new IllegalArgumentException("Step must not be zero");
+    } else if (from - toExclusive == 0.0) {
+      return new Empty<>();
+    } else if ((step > 0 && from > toExclusive) || (step < 0 && from < toExclusive)) {
+      return new Empty<>();
+    } else {
+      Sequence<Double> seq = new Empty<>();
+      double curr = from;
+      do {
+        seq = new Cons<>(curr, seq);
+        curr += step;
+      } while (step > 0 ? curr < toExclusive : curr > toExclusive);
+
+      return seq.reversed();
+    }
+  }
+
+  /**
    * Constructs a sequence of integers starting at <code>from</code>, with the last element being
    * <code>toExclusive</code>.
    *

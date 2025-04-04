@@ -170,6 +170,37 @@ public final class SequencesTest {
   }
 
   @Test
+  public void testRangeDoubleEmpty() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.range(0.0, 0.0, 0.1));
+  }
+
+  @Test
+  public void testRangeDoubleOneElem() {
+    TestUtil.assertSequenceEquals(Sequences.of(0.0), Sequences.range(0.0, 0.1, 0.1));
+  }
+
+  @Test
+  public void testRangeDoubleTwoElems() {
+    TestUtil.assertSequenceEquals(Sequences.of(0.0, 1.0), Sequences.range(0.0, 2.0, 1.0));
+  }
+
+  @Test
+  public void testRangeDoubleThreeElems() {
+    TestUtil.assertSequenceEquals(Sequences.of(0.0, 0.1, 0.2), Sequences.range(0, 0.3, 0.1));
+  }
+
+  @Test
+  public void testRangeDoubleThreeUntilZeroStepMinusOne() {
+    TestUtil.assertSequenceEquals(Sequences.of(3.0, 2.0, 1.0), Sequences.range(3.0, 0.0, -1.0));
+  }
+
+  @Test
+  public void testRangeDoubleThreeUntilZeroStepMinusZeroDotFive() {
+    TestUtil.assertSequenceEquals(Sequences.of(3.0, 2.5, 2.0, 1.5, 1.0, 0.5),
+        Sequences.range(3.0, 0.0, -0.5));
+  }
+
+  @Test
   public void testRangeClosedOneElem() {
     TestUtil.assertSequenceEquals(Sequences.of(0), Sequences.rangeClosed(0, 0));
   }
