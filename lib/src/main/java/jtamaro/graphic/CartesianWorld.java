@@ -1,6 +1,8 @@
 package jtamaro.graphic;
 
 import java.util.Objects;
+import jtamaro.data.Sequence;
+import jtamaro.data.Sequences;
 
 /**
  * A CartesianWorld can be used to place Graphics at specific positions in a Cartesian coordinate
@@ -8,20 +10,21 @@ import java.util.Objects;
  * (composite) Graphic.
  *
  * <p>The origin of the CartesianWorld, the position (0, 0),
- * is always included in the resulting graphic. We can configure the CartesianWorld to include
- * padding around the composition, to render the background (including the padding) in a given
- * color, and to include axes, rendered as a horizontal and vertical line intersecting at the
- * origin, in a given color.
+ * is always included in the resulting graphic. We can configure the CartesianWorld render the
+ * background in a given color, and to include axes, rendered as a horizontal and vertical line
+ * intersecting at the origin, in a given color.
  */
 public final class CartesianWorld {
 
-  private final Graphic composition;
-
-  private final Color backgroundColor;
+  /**
+   * @implNote It is ok to use Sequence here because it is useful have fast insertion, and we never
+   * need to perform random accesses.
+   */
+  private final Sequence<CompositionElement> compositionElements;
 
   private final Color axisColor;
 
-  private final double padding;
+  private final Color backgroundColor;
 
   /**
    * Default constructor.
@@ -29,22 +32,43 @@ public final class CartesianWorld {
    * <p>Create an empty CartesianWorld.
    */
   public CartesianWorld() {
-    this(new EmptyGraphic(), Colors.TRANSPARENT, Colors.TRANSPARENT, 0.0);
+    this(Sequences.empty(), Colors.TRANSPARENT, Colors.TRANSPARENT);
+  }
+
+  private CartesianWorld(
+      Sequence<CompositionElement> compositionElements,
+      Color axisColor,
+      Color backgroundColor
+  ) {
+    this.compositionElements = compositionElements;
+    this.axisColor = axisColor;
+    this.backgroundColor = backgroundColor;
   }
 
   /**
-   * Create a CartesianWorld.
+   * Configure the color of the axes for a CartesianWorld.
    *
-   * @param composition     Graphic of the cartesian world. Drawn on top of a background.
-   * @param backgroundColor Color of the background.
-   * @param axisColor       Color of the axes, drawn on top of the composition.
-   * @param padding         Padding added to the background with respect to the composition.
+   * @return A new CartesianWorld with the given axes color.
    */
-  public CartesianWorld(Graphic composition, Color backgroundColor, Color axisColor, double padding) {
-    this.composition = composition;
-    this.backgroundColor = backgroundColor;
-    this.axisColor = axisColor;
-    this.padding = padding;
+  public CartesianWorld withAxes(Color axisColor) {
+    return new CartesianWorld(
+        compositionElements,
+        axisColor,
+        backgroundColor
+    );
+  }
+
+  /**
+   * Configure the background color for a CartesianWorld.
+   *
+   * @return A new CartesianWorld with the given background color.
+   */
+  public CartesianWorld withBackground(Color backgroundColor) {
+    return new CartesianWorld(
+        compositionElements,
+        axisColor,
+        backgroundColor
+    );
   }
 
   /**
@@ -57,102 +81,138 @@ public final class CartesianWorld {
    * @return a new CartesianWorld that also includes the given graphic
    */
   public CartesianWorld place(double x, double y, Graphic graphic) {
-    final Graphic offset = new Rectangle(Math.abs(x), Math.abs(y), Colors.TRANSPARENT);
-    final Point offsetOriginPoint;
-    final Point offsetPoint;
-    if (x < 0) {
-      if (y < 0) {
-        offsetOriginPoint = Points.TOP_RIGHT;
-        offsetPoint = Points.BOTTOM_LEFT;
-      } else {
-        offsetOriginPoint = Points.BOTTOM_RIGHT;
-        offsetPoint = Points.TOP_LEFT;
-      }
-    } else {
-      if (y < 0) {
-        offsetOriginPoint = Points.TOP_LEFT;
-        offsetPoint = Points.BOTTOM_RIGHT;
-      } else {
-        offsetOriginPoint = Points.BOTTOM_LEFT;
-        offsetPoint = Points.TOP_RIGHT;
-      }
-    }
-    final Graphic pinnedOffset = new Pin(offsetPoint, offset);
-    final Graphic placedGraphicImpl = new Compose(graphic, pinnedOffset);
-    final Graphic result = new Compose(new Pin(offsetOriginPoint, placedGraphicImpl),
-        composition);
-    return new CartesianWorld(result, backgroundColor, axisColor, padding);
+    return new CartesianWorld(
+        Sequences.cons(new CompositionElement(graphic, x, y), compositionElements),
+        axisColor,
+        backgroundColor
+    );
   }
 
-  /**
-   * Configure the background color for a CartesianWorld.
-   *
-   * @return A new CartesianWorld with the given background color.
-   */
-  public CartesianWorld withBackground(Color backgroundColor) {
-    return new CartesianWorld(composition, backgroundColor, axisColor, padding);
-  }
-
-  /**
-   * Configure the color of the axes for a CartesianWorld.
-   *
-   * @return A new CartesianWorld with the given axes color.
-   */
-  public CartesianWorld withAxes(Color axisColor) {
-    return new CartesianWorld(composition, backgroundColor, axisColor, padding);
-  }
-
-  /**
-   * Configure the color of the background of a CartesianWorld.
-   *
-   * @return A new CartesianWorld with the given background color.
-   */
-  public CartesianWorld withPadding(double padding) {
-    return new CartesianWorld(composition, backgroundColor, axisColor, padding);
-  }
 
   /**
    * Produce a graphic from the cartesian world.
    */
   public Graphic asGraphic() {
-    Graphic result = composition;
+    /*
+     * Note: this method is long and ugly for performance reasons.
+     * The main use-case of cartesian-world is interactive programs and simulations,
+     * so we want it to render as fast as possible, within the constraints of our
+     * public APIs.
+     */
 
-    // Add background
-    if (backgroundColor.alpha() > 0 || (Double.isFinite(padding) && padding != 0.0)) {
-      final double width = composition.getWidth() + padding * 2.0;
-      final double height = composition.getHeight() + padding * 2.0;
+    Graphic composition = new EmptyGraphic();
+    double maxX = 0.0;
+    double maxY = 0.0;
+    double minX = 0.0;
+    double minY = 0.0;
+    for (final CompositionElement el : compositionElements) {
+      // Compute position
+      final double startX = el.x - el.offsetX;
+      final double endX = el.x + el.offsetX;
+      final double startY = el.y - el.offsetY;
+      final double endY = el.y + el.offsetY;
+      minX = Math.min(minX, startX);
+      maxX = Math.max(maxX, endX);
+      minY = Math.min(minY, startY);
+      maxY = Math.max(maxY, endY);
 
-      // Overlay the composition on top of the background while retaining the original pin
-      result = new Pin(
-          result.getPin(),
-          new Overlay(
-              result,
-              new Rectangle(width, height, backgroundColor)
-          ));
+      final double strutWidth = Math.abs(el.x) + el.offsetX;
+      final double strutHeight = Math.abs(el.y) + el.offsetY;
+      final boolean straddleX0 = Math.abs(el.x) < el.offsetX;
+      final boolean straddleY0 = Math.abs(el.y) < el.offsetY;
+
+      final Graphic area = new Rectangle(
+          straddleX0 ? strutWidth * 2 : strutWidth,
+          straddleY0 ? strutHeight * 2 : strutHeight,
+          Colors.TRANSPARENT
+      );
+
+      // Determine pinning
+      final Point originPin;
+      final Point areaPin;
+      if (el.x >= 0) {
+        if (el.y >= 0) {
+          originPin = straddleX0 && straddleY0 ? Points.CENTER
+              : straddleX0 ? Points.BOTTOM_CENTER
+                  : straddleY0 ? Points.CENTER_LEFT
+                      : Points.BOTTOM_LEFT;
+          areaPin = Points.TOP_RIGHT;
+        } else {
+          originPin = straddleX0 && straddleY0 ? Points.CENTER
+              : straddleX0 ? Points.TOP_CENTER
+                  : straddleY0 ? Points.CENTER_LEFT
+                      : Points.TOP_LEFT;
+          areaPin = Points.BOTTOM_RIGHT;
+        }
+      } else {
+        if (el.y >= 0) {
+          originPin = straddleX0 && straddleY0 ? Points.CENTER
+              : straddleX0 ? Points.BOTTOM_CENTER
+                  : straddleY0 ? Points.CENTER_RIGHT
+                      : Points.BOTTOM_RIGHT;
+          areaPin = Points.TOP_LEFT;
+        } else {
+          originPin = straddleX0 && straddleY0 ? Points.CENTER
+              : straddleX0 ? Points.TOP_CENTER
+                  : straddleY0 ? Points.CENTER_RIGHT
+                      : Points.TOP_RIGHT;
+          areaPin = Points.BOTTOM_LEFT;
+        }
+      }
+
+      // Add graphic to composition
+      composition = new Compose(
+          new Pin(originPin, new Compose(
+              new Pin(areaPin, area),
+              new Pin(areaPin, el.graphic)
+          )),
+          composition
+      );
     }
 
-    // Add axes
-    if (axisColor.alpha() > 0) {
-      final Graphic verticalAxis = new Rectangle(1.0, result.getHeight(), axisColor);
-      final Graphic horizontalAxis = new Rectangle(result.getWidth(), 1.0, axisColor);
-
-      // Overlay the axes on top of the composition while retaining the original pin
-      result = new Pin(
-          result.getPin(),
+    // Add axes (if their color would be visible)
+    if (axisColor.alpha() > 0.0) {
+      composition = new Compose(
+          composition,
           new Compose(
-              new Pin(Points.TOP_CENTER, verticalAxis),
-              new Pin(
-                  Points.TOP_CENTER,
+              // xAxisNeg
+              new Pin(Points.CENTER_RIGHT, new Rectangle(-minX, 1, axisColor)),
+              new Compose(
+                  // xAxisPos
+                  new Pin(Points.CENTER_LEFT, new Rectangle(maxX, 1, axisColor)),
                   new Compose(
-                      new Pin(Points.CENTER_LEFT, horizontalAxis),
-                      new Pin(Points.CENTER_LEFT, result)
+                      // yAxisNeg
+                      new Pin(Points.TOP_CENTER, new Rectangle(1, -minY, axisColor)),
+                      // yAxisPos
+                      new Pin(Points.BOTTOM_CENTER, new Rectangle(1, maxY, axisColor))
                   )
               )
           )
       );
     }
 
-    return result;
+    // Add background (if the color would be visible)
+    if (backgroundColor.alpha() > 0) {
+      composition = new Compose(
+          composition,
+          new Compose(
+              // q1
+              new Pin(Points.BOTTOM_LEFT, new Rectangle(maxX, maxY, backgroundColor)),
+              new Compose(
+                  // q2,
+                  new Pin(Points.BOTTOM_RIGHT, new Rectangle(-minX, maxY, backgroundColor)),
+                  new Compose(
+                      // q3
+                      new Pin(Points.TOP_RIGHT, new Rectangle(-minX, -minY, backgroundColor)),
+                      // q4
+                      new Pin(Points.TOP_LEFT, new Rectangle(maxX, -minY, backgroundColor))
+                  )
+              )
+          )
+      );
+    }
+
+    return composition;
   }
 
   public Color getBackgroundColor() {
@@ -163,26 +223,29 @@ public final class CartesianWorld {
     return axisColor;
   }
 
-  public double getPadding() {
-    return padding;
-  }
-
   @Override
   public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    } else if (other instanceof CartesianWorld that) {
-      return Double.compare(that.padding, padding) == 0
-          && Objects.equals(that.composition, composition)
-          && Objects.equals(that.backgroundColor, backgroundColor)
-          && Objects.equals(that.axisColor, axisColor);
-    } else {
-      return false;
-    }
+    return this == other || (other instanceof CartesianWorld that
+        && Objects.equals(that.compositionElements, compositionElements)
+        && Objects.equals(that.backgroundColor, backgroundColor)
+        && Objects.equals(that.axisColor, axisColor));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(CartesianWorld.class, composition, backgroundColor, axisColor, padding);
+    return Objects.hash(CartesianWorld.class, compositionElements, backgroundColor, axisColor);
+  }
+
+  private record CompositionElement(
+      Graphic graphic,
+      double x,
+      double y,
+      double offsetX,
+      double offsetY
+  ) {
+
+    public CompositionElement(Graphic graphic, double x, double y) {
+      this(graphic, x, y, graphic.getWidth() / 2.0, graphic.getHeight() / 2.0);
+    }
   }
 }

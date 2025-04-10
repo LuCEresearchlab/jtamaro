@@ -21,7 +21,6 @@ public class PointSequenceDemo {
         new CartesianWorld(),
         (e, a) -> a.place(e.first(), e.second(), dot));
     Graphic result = cs.withAxes(BLACK)
-        .withPadding(20)
         .asGraphic();
     show(result);
   }

@@ -34,7 +34,6 @@ public class FunctionPlotterDemo {
         (point, world) -> world.place(point.first(), point.second(), dot));
     return cs.withAxes(BLACK)
         .withBackground(WHITE)
-        .withPadding(20)
         .asGraphic();
   }
 }
