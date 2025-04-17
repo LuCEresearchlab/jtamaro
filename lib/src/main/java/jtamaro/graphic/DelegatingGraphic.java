@@ -3,6 +3,7 @@ package jtamaro.graphic;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import jtamaro.data.Option;
 
 /**
  * Useful to create operators like {@link Overlay}, {@link Above}, and {@link Beside}, or any other
@@ -42,6 +43,11 @@ abstract sealed class DelegatingGraphic
   @Override
   double yForLocation(RelativeLocation location) {
     return delegate.yForLocation(location);
+  }
+
+  @Override
+  Option<RelativeLocation> relativeLocationOf(double x, double y) {
+    return delegate.relativeLocationOf(x, y);
   }
 
   @Override

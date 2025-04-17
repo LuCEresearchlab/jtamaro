@@ -5,6 +5,8 @@ import java.awt.geom.Path2D;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.SequencedMap;
+import jtamaro.data.Option;
+import jtamaro.data.Options;
 
 /**
  * A graphic that composes the two provided graphics. The first graphic is kept in the foreground,
@@ -85,6 +87,16 @@ final class Compose extends Graphic {
     } else {
       return Double.NaN;
     }
+  }
+
+  @Override
+  Option<RelativeLocation> relativeLocationOf(double x, double y) {
+    // The point is in the foreground graphic, ...
+    return foreground.relativeLocationOf(x, y).fold(
+        Options::some,
+        // ... in the background graphic, or neither
+        () -> background.relativeLocationOf(x, y)
+    );
   }
 
   @Override

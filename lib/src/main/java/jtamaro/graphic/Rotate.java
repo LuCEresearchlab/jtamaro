@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.SequencedMap;
+import jtamaro.data.Option;
 
 /**
  * A new graphic that rotates counterclockwise a provided graphic around its pinning position by the
@@ -14,6 +15,8 @@ import java.util.SequencedMap;
 final class Rotate extends Graphic {
 
   private final double angle;
+
+  private final double radAngle;
 
   private final Graphic graphic;
 
@@ -26,6 +29,7 @@ final class Rotate extends Graphic {
   public Rotate(double angle, Graphic graphic) {
     super(buildPath(angle, graphic.getPath()));
     this.angle = angle;
+    this.radAngle = Math.toRadians(angle);
     this.graphic = graphic;
   }
 
@@ -45,7 +49,6 @@ final class Rotate extends Graphic {
       // Rotate by angle
       final double xInGraphic = graphic.xForLocation(location);
       final double yInGraphic = graphic.yForLocation(location);
-      final double radAngle = Math.toRadians(angle);
       return Double.isNaN(xInGraphic) || Double.isNaN(yInGraphic)
           ? Double.NaN
           : Math.cos(radAngle) * xInGraphic - Math.sin(radAngle) * yInGraphic;
@@ -60,7 +63,6 @@ final class Rotate extends Graphic {
       // Rotate by angle
       final double xInGraphic = graphic.xForLocation(location);
       final double yInGraphic = graphic.yForLocation(location);
-      final double radAngle = Math.toRadians(angle);
       return Double.isNaN(xInGraphic) || Double.isNaN(yInGraphic)
           ? Double.NaN
           : Math.sin(radAngle) * xInGraphic + Math.cos(radAngle) * yInGraphic;
@@ -68,9 +70,20 @@ final class Rotate extends Graphic {
   }
 
   @Override
+  Option<RelativeLocation> relativeLocationOf(double x, double y) {
+    final double rotatedX = Double.isNaN(x)
+        ? Double.NaN
+        : Math.cos(radAngle) * x - Math.sin(radAngle) * y;
+    final double rotatedY = Double.isNaN(y)
+        ? Double.NaN
+        : Math.sin(radAngle) * x + Math.cos(radAngle) * y;
+    return graphic.relativeLocationOf(rotatedX, rotatedY);
+  }
+
+  @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
     final AffineTransform baseTransform = g2d.getTransform();
-    g2d.rotate(-Math.toRadians(angle));
+    g2d.rotate(-radAngle);
     graphic.render(g2d, options);
     g2d.setTransform(baseTransform);
   }

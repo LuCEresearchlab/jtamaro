@@ -10,6 +10,8 @@ import java.util.SequencedMap;
 import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import jtamaro.data.Option;
+import jtamaro.data.Options;
 
 /**
  * A graphic (image) with a position for pinning.
@@ -128,6 +130,25 @@ public abstract sealed class Graphic
     return location.isOfGraphic(this)
         ? location.y()
         : Double.NaN;
+  }
+
+  /**
+   * Return the location coordinates relative to the (child) graphic corresponding to the given
+   * absolute coordinates.
+   *
+   * <p>The two coordinates must be given with respect to the origin point of the graphic.
+   * To convert from the conventional origin point at the top-left that grows rightward and
+   * downwards, you can convert <code>x</code> and <code>y</code> to the appropriate values
+   * <code>x'</code> and <code>y'</code> as follows:
+   * <ul>
+   *   <li><code>x'</code>: <code>x - {@link #getWidth()} / 2</code></li>
+   *   <li><code>y'</code>: <code>y - {@link #getHeight()} / 2</code></li>
+   * </ul>
+   */
+  Option<RelativeLocation> relativeLocationOf(double x, double y) {
+    return path.contains(x, y)
+        ? Options.some(new RelativeLocation(this, x, y))
+        : Options.none();
   }
 
   /* **** Rendering **** */
