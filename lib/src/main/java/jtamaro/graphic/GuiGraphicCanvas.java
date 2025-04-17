@@ -1,5 +1,8 @@
 package jtamaro.graphic;
 
+import jtamaro.data.Option;
+import jtamaro.data.Options;
+import jtamaro.interaction.Coordinate;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -54,6 +57,18 @@ public final class GuiGraphicCanvas extends JComponent {
     this.graphic = graphic;
     revalidate();
     repaint();
+  }
+
+  public Option<String> getLabelOfGraphicAtCoordinate(Coordinate coordinate) {
+    return graphic.nodeContaining(
+        coordinate.x() - graphic.getWidth() / 2.0,
+        coordinate.y() - graphic.getHeight() / 2.0
+    ).fold(
+        g -> g instanceof LabeledGraphic lg
+            ? Options.some(lg.getLabel())
+            : Options.none(),
+        Options::none
+    );
   }
 
   public boolean saveGraphic(Path path) {

@@ -151,8 +151,10 @@ final class InteractionFrame<M> extends JFrame {
       public void mousePressed(MouseEvent ev) {
         graphicCanvas.requestFocus();
         final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        final MouseButton button = new MouseButton(ev);
-        traceEvent(new TraceEvent.MousePressed(coordinate, button));
+        graphicCanvas.getLabelOfGraphicAtCoordinate(coordinate).forEach(
+            label -> traceEvent(new TraceEvent.GraphicPressed(label)),
+            () -> traceEvent(new TraceEvent.MousePressed(coordinate, new MouseButton(ev)))
+        );
       }
 
       @Override

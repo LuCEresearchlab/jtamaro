@@ -132,13 +132,12 @@ public abstract sealed class Graphic
   }
 
   /**
-   * Return the graphic that contains the point at the given coordinates that is deepest within the
-   * graphic tree, if any.
+   * Return the graphic that contains the point at the given coordinates.
    *
-   * @hidden
+   * @implNote If the graphic contains the point and has children, we want to return the child that
+   * contains the given coordinates instead.
    */
-  public Option<Graphic> nodeContaining(double x, double y) {
-    // TODO: make package private. Now it is public only for demonstration purposes
+  Option<Graphic> nodeContaining(double x, double y) {
     return path.contains(x, y)
         ? Options.some(this)
         : Options.none();

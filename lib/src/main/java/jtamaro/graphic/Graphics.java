@@ -193,4 +193,13 @@ public final class Graphics {
   public static Graphic rotate(double angle, Graphic graphic) {
     return new Rotate(angle, graphic);
   }
+
+  /**
+   * Creates a graphic that wraps another graphic and contains a label that allows to identify it.
+   *
+   * <p>This is only use in interactions to handle click events of specific graphics.
+   */
+  public static Graphic labeledGraphic(String label, Graphic graphic) {
+    return new LabeledGraphic(label, graphic);
+  }
 }

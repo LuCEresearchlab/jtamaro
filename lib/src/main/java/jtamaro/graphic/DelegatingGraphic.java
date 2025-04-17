@@ -11,7 +11,7 @@ import jtamaro.data.Option;
  */
 abstract sealed class DelegatingGraphic
     extends Graphic
-    permits Above, Beside, Overlay {
+    permits Above, Beside, Overlay, LabeledGraphic {
 
   private final Graphic delegate;
 

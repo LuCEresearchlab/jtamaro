@@ -8,16 +8,21 @@ import jtamaro.interaction.KeyboardKey;
 
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.BLUE;
+import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.beside;
 import static jtamaro.graphic.Graphics.emptyGraphic;
+import static jtamaro.graphic.Graphics.labeledGraphic;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
+import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.interact;
 import static jtamaro.io.IO.println;
 
 public class TextFieldDemo {
+
+  private static final String LABEL_CLEAR_TEXT = "btn_clear_text";
 
   // Model
   record TextField(String text, int cursor, boolean cursorVisible) {
@@ -84,6 +89,13 @@ public class TextFieldDemo {
         : textField;
   }
 
+  private static TextField graphicPressed(TextField textField, String label) {
+    return switch (label) {
+      case LABEL_CLEAR_TEXT -> new TextField("", 0, true);
+      default -> textField;
+    };
+  }
+
   // Rendering
   private static final int SIZE = 200;
 
@@ -102,15 +114,28 @@ public class TextFieldDemo {
     Graphic board = emptyGraphic();
     int i;
     for (i = 0; i < textField.text.length(); i++) {
-      char c = textField.text.charAt(i);
+      final char c = textField.text.charAt(i);
       board = beside(board, renderCursorGap(i, textField));
-      Graphic cell = overlay(
+      final Graphic cell = overlay(
           c != ' ' ? text("" + c, Fonts.MONOSPACED, SIZE * 0.9, TEXT) : emptyGraphic(),
           rectangle(SIZE, SIZE, BACKGROUND)
       );
       board = beside(board, cell);
     }
     board = beside(board, renderCursorGap(i, textField));
+    board = beside(
+        labeledGraphic(
+            LABEL_CLEAR_TEXT,
+            rotate(
+                45,
+                overlay(
+                    rectangle(10, 80, RED),
+                    rectangle(80, 10, RED)
+                )
+            )
+        ),
+        board
+    );
     return board;
   }
 
@@ -122,6 +147,7 @@ public class TextFieldDemo {
         .withRenderer(TextFieldDemo::render)
         .withKeyReleaseHandler(TextFieldDemo::keyRelease)
         .withKeyTypeHandler(TextFieldDemo::keyType)
+        .withGraphicPressHandler(TextFieldDemo::graphicPressed)
         .withTickHandler(TextFieldDemo::tick)
         .withMsBetweenTicks(300)
         .run();

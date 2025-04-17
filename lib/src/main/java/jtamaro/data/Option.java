@@ -1,5 +1,6 @@
 package jtamaro.data;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -30,6 +31,13 @@ public sealed interface Option<T> permits Some, None {
    * this option is non-empty or noneCase if this option is empty.
    */
   <S> S fold(Function1<T, S> someCase, Function0<S> noneCase);
+
+  /**
+   * Perform a side effect depending on whether this option is empty or not.
+   *
+   * @hidden
+   */
+  void forEach(Consumer<T> someCase, Runnable noneCase);
 
   /**
    * Determine whether this option is empty.

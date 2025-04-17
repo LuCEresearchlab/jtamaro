@@ -77,6 +77,11 @@ public final class Interaction<M> {
   private final Function2<M, Coordinate, M> mouseMoveHandler;
 
   /**
+   * Function that evolves the model when a named graphic is pressed;
+   */
+  private final Function2<M, String, M> graphicPressHandler;
+
+  /**
    * Defines the width of the canvas in which the interaction is rendered.
    *
    * @implNote If the value is &lt; 0, the canvas will take the width of the first rendered frame.
@@ -120,6 +125,7 @@ public final class Interaction<M> {
     this.mousePressHandler = (model, coords, button) -> model;
     this.mouseReleaseHandler = (model, coords, button) -> model;
     this.mouseMoveHandler = (model, coords) -> model;
+    this.graphicPressHandler = (model, label) -> model;
 
     this.canvasWidth = -1;
     this.canvasHeight = -1;
@@ -142,6 +148,7 @@ public final class Interaction<M> {
       Function3<M, Coordinate, MouseButton, M> mousePressHandler,
       Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler,
       Function2<M, Coordinate, M> mouseMoveHandler,
+      Function2<M, String, M> graphicPressHandler,
       int canvasWidth,
       int canvasHeight,
       Graphic background,
@@ -155,6 +162,7 @@ public final class Interaction<M> {
     this.mousePressHandler = mousePressHandler;
     this.mouseReleaseHandler = mouseReleaseHandler;
     this.mouseMoveHandler = mouseMoveHandler;
+    this.graphicPressHandler = graphicPressHandler;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.msBetweenTicks = msBetweenTicks;
@@ -182,6 +190,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -204,6 +213,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -226,6 +236,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -250,6 +261,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -273,6 +285,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -297,6 +310,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -321,6 +335,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -345,6 +360,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -369,6 +385,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -393,6 +410,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -417,6 +435,31 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
+        canvasWidth,
+        canvasHeight,
+        background,
+        renderer);
+  }
+
+  /**
+   * Specify a function that is executed when a labeled graphic is pressed with the moused to evolve
+   * the model.
+   */
+  public Interaction<M> withGraphicPressHandler(Function2<M, String, M> graphicPressHandler) {
+    return new Interaction<>(initialModel,
+        name,
+        msBetweenTicks,
+        tickHandler,
+        wellFormedPredicate,
+        stoppingPredicate,
+        keyPressHandler,
+        keyReleaseHandler,
+        keyTypeHandler,
+        mousePressHandler,
+        mouseReleaseHandler,
+        mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -442,6 +485,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -464,6 +508,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -474,9 +519,9 @@ public final class Interaction<M> {
    * Set a static background graphic.
    *
    * @implNote The foreground graphic (rendered with the function specified with
-   * {@link #withRenderer(Function1)}) is {@link jtamaro.graphic.Compose}'d on top of this
-   * background. The pin position of both the background and the foreground is not changed by the
-   * interaction, so make sure to pin the produced graphics appropriately.
+   * {@link #withRenderer(Function1)}) is composed on top of this background. The pin position of
+   * both the background and the foreground is not changed by the interaction, so make sure to pin
+   * the produced graphics appropriately.
    */
   public Interaction<M> withBackground(Graphic background) {
     return new Interaction<>(initialModel,
@@ -491,6 +536,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         background,
@@ -524,6 +570,7 @@ public final class Interaction<M> {
         && Objects.equals(mousePressHandler, that.mousePressHandler)
         && Objects.equals(mouseReleaseHandler, that.mouseReleaseHandler)
         && Objects.equals(mouseMoveHandler, that.mouseMoveHandler)
+        && Objects.equals(graphicPressHandler, that.graphicPressHandler)
         && Objects.equals(renderer, that.renderer);
   }
 
@@ -541,6 +588,7 @@ public final class Interaction<M> {
         mousePressHandler,
         mouseReleaseHandler,
         mouseMoveHandler,
+        graphicPressHandler,
         canvasWidth,
         canvasHeight,
         renderer);
@@ -594,6 +642,10 @@ public final class Interaction<M> {
 
   Function2<M, Coordinate, M> getMouseMoveHandler() {
     return mouseMoveHandler;
+  }
+
+  Function2<M, String, M> getGraphicPressHandler() {
+    return graphicPressHandler;
   }
 
   int getCanvasWidth() {

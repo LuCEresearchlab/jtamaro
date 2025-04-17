@@ -115,4 +115,18 @@ sealed abstract class TraceEvent {
       return interaction.getMouseMoveHandler().apply(model, coordinate);
     }
   }
+
+  public static final class GraphicPressed extends TraceEvent {
+
+    private final String label;
+
+    public GraphicPressed(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public <M> M process(Interaction<M> interaction, M model) {
+      return interaction.getGraphicPressHandler().apply(model, label);
+    }
+  }
 }
