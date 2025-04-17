@@ -10,6 +10,8 @@ import java.util.SequencedMap;
 import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import jtamaro.data.Option;
+import jtamaro.data.Options;
 
 /**
  * A graphic (image) with a position for pinning.
@@ -127,6 +129,19 @@ public abstract sealed class Graphic
     return location.isOfGraphic(this)
         ? location.y
         : Double.NaN;
+  }
+
+  /**
+   * Return the graphic that contains the point at the given coordinates that is deepest within the
+   * graphic tree, if any.
+   *
+   * @hidden
+   */
+  public Option<Graphic> nodeContaining(double x, double y) {
+    // TODO: make package private. Now it is public only for demonstration purposes
+    return path.contains(x, y)
+        ? Options.some(this)
+        : Options.none();
   }
 
   /* **** Rendering **** */

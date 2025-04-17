@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.SequencedMap;
+import jtamaro.data.Option;
 
 /**
  * A graphic that corresponds to a provided graphic, with a new pinning position.
@@ -73,6 +74,11 @@ final class Pin extends Graphic {
           ? Double.NaN
           : yInGraphic - dx;
     }
+  }
+
+  @Override
+  public Option<Graphic> nodeContaining(double x, double y) {
+    return graphic.nodeContaining( x + dx, y + dy);
   }
 
   @Override
