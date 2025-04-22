@@ -38,9 +38,9 @@ final class Rotate extends Graphic {
   }
 
   @Override
-  double xForLocation(Location location) {
+  double xForLocation(RelativeLocation location) {
     if (location.isOfGraphic(this)) {
-      return location.x;
+      return location.x();
     } else {
       // Rotate by angle
       final double xInGraphic = graphic.xForLocation(location);
@@ -53,9 +53,9 @@ final class Rotate extends Graphic {
   }
 
   @Override
-  double yForLocation(Location location) {
+  double yForLocation(RelativeLocation location) {
     if (location.isOfGraphic(this)) {
-      return location.y;
+      return location.y();
     } else {
       // Rotate by angle
       final double xInGraphic = graphic.xForLocation(location);

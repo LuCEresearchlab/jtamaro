@@ -51,9 +51,9 @@ final class Compose extends Graphic {
   }
 
   @Override
-  double xForLocation(Location location) {
+  double xForLocation(RelativeLocation location) {
     return location.isOfGraphic(this)
-        ? location.x
+        ? location.x()
         : valueForLocation(
             location,
             background.xForLocation(location),
@@ -62,9 +62,9 @@ final class Compose extends Graphic {
   }
 
   @Override
-  double yForLocation(Location location) {
+  double yForLocation(RelativeLocation location) {
     return location.isOfGraphic(this)
-        ? location.y
+        ? location.y()
         : valueForLocation(
             location,
             background.yForLocation(location),
@@ -72,7 +72,7 @@ final class Compose extends Graphic {
         );
   }
 
-  private double valueForLocation(Location location, double inBottom, double inTop) {
+  private double valueForLocation(RelativeLocation location, double inBottom, double inTop) {
     if (!Double.isNaN(inBottom) && !Double.isNaN(inTop)) {
       throw new IllegalArgumentException(location
           + " exists multiple times in composition "

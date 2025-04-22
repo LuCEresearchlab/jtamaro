@@ -38,7 +38,7 @@ final class Pin extends Graphic {
     this.pinPoint = pinPoint;
     this.graphic = graphic;
 
-    final Location pinLocation = graphic.getLocation(pinPoint);
+    final RelativeLocation pinLocation = graphic.getLocation(pinPoint);
     this.dx = graphic.xForLocation(pinLocation);
     this.dy = graphic.yForLocation(pinLocation);
   }
@@ -57,9 +57,9 @@ final class Pin extends Graphic {
   }
 
   @Override
-  double xForLocation(Location location) {
+  double xForLocation(RelativeLocation location) {
     if (location.isOfGraphic(this)) {
-      return location.x;
+      return location.x();
     } else {
       final double xInGraphic = graphic.xForLocation(location);
       return Double.isNaN(xInGraphic)
@@ -69,9 +69,9 @@ final class Pin extends Graphic {
   }
 
   @Override
-  double yForLocation(Location location) {
+  double yForLocation(RelativeLocation location) {
     if (location.isOfGraphic(this)) {
-      return location.y;
+      return location.y();
     } else {
       final double yInGraphic = graphic.yForLocation(location);
       return Double.isNaN(yInGraphic)
@@ -121,7 +121,7 @@ final class Pin extends Graphic {
   }
 
   private static Path2D.Double buildPath(Point pinPoint, Graphic graphic) {
-    final Location location = graphic.getLocation(pinPoint);
+    final RelativeLocation location = graphic.getLocation(pinPoint);
     final double dx = graphic.xForLocation(location);
     final double dy = graphic.yForLocation(location);
     if (Double.isNaN(dx) || Double.isNaN(dy)) {

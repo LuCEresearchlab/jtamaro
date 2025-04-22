@@ -30,17 +30,17 @@ abstract sealed class DelegatingGraphic
   }
 
   @Override
-  Location getLocation(Point point) {
+  RelativeLocation getLocation(Point point) {
     return delegate.getLocation(point);
   }
 
   @Override
-  double xForLocation(Location location) {
+  double xForLocation(RelativeLocation location) {
     return delegate.xForLocation(location);
   }
 
   @Override
-  double yForLocation(Location location) {
+  double yForLocation(RelativeLocation location) {
     return delegate.yForLocation(location);
   }
 

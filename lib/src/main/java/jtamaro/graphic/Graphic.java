@@ -93,7 +93,7 @@ public abstract sealed class Graphic
     return getBBox().getMinY();
   }
 
-  Location getLocation(Point point) {
+  RelativeLocation getLocation(Point point) {
     /*
      * switch (point.x) {
      *   case -1 -> bbox.getMinX();
@@ -105,7 +105,8 @@ public abstract sealed class Graphic
     final double yForPointY0 = (bbox.getMinY() + bbox.getMaxY()) / 2.0;
     final double dxForPointX1 = bbox.getWidth() / 2.0;
     final double dyForPointY1 = bbox.getHeight() / 2.0;
-    return new Location(
+    return new RelativeLocation(
+        this,
         xForPointX0 + point.getX() * dxForPointX1,
         yForPointY0 + point.getY() * dyForPointY1
     );
@@ -114,18 +115,18 @@ public abstract sealed class Graphic
   /**
    * Get the coordinate x of the given location, if it belongs to this graphic, or NaN.
    */
-  double xForLocation(Location location) {
+  double xForLocation(RelativeLocation location) {
     return location.isOfGraphic(this)
-        ? location.x
+        ? location.x()
         : Double.NaN;
   }
 
   /**
    * Get the coordinate y of the given location, if it belongs to this graphic, or NaN.
    */
-  double yForLocation(Location location) {
+  double yForLocation(RelativeLocation location) {
     return location.isOfGraphic(this)
-        ? location.y
+        ? location.y()
         : Double.NaN;
   }
 
@@ -291,40 +292,6 @@ public abstract sealed class Graphic
 
     public Graphic getGraphic() {
       return Graphic.this;
-    }
-  }
-
-  final class Location {
-
-    public final double x;
-
-    public final double y;
-
-    public Location(double x, double y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    public boolean isOfGraphic(Graphic graphic) {
-      return graphic == Graphic.this;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      return this == other
-          || (other instanceof Location that
-          && Double.compare(x, that.x) == 0
-          && Double.compare(y, that.y) == 0);
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(x, y);
-    }
-
-    @Override
-    public String toString() {
-      return String.format("Graphic.Location[x=%1$.2f, y=%2$.2f]", x, y);
     }
   }
 }
