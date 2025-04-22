@@ -1,17 +1,21 @@
 package jtamaro.interaction;
 
 import java.awt.event.MouseEvent;
-import jtamaro.data.Function3;
 
 /**
  * Mouse (or trackpad) button that was either pressed or released.
  *
  * @param button One of {@link MouseButton#PRIMARY}, {@link MouseButton#AUXILIARY} or
- *               {@link MouseButton#SECONDARY}
- * @see Interaction#withMousePressHandler(Function3)
- * @see Interaction#withMouseReleaseHandler(Function3)
+ *               {@link MouseButton#SECONDARY} or {@link MouseButton#NO_BUTTON} if no button is
+ *               involved in the action.
+ * @see MouseAction
  */
 public record MouseButton(int button) {
+
+  /**
+   * No button.
+   */
+  public static final int NO_BUTTON = MouseEvent.NOBUTTON;
 
   /**
    * Primary mouse button (usually the left button).
@@ -35,6 +39,7 @@ public record MouseButton(int button) {
   @Override
   public String toString() {
     return switch (button) {
+      case NO_BUTTON -> "MouseButton.NO_BUTTON";
       case PRIMARY -> "MouseButton.PRIMARY";
       case AUXILIARY -> "MouseButton.AUXILIARY";
       case SECONDARY -> "MouseButton.SECONDARY";

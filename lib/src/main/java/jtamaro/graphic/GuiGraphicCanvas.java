@@ -20,6 +20,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import jtamaro.data.Function1;
+import jtamaro.data.Option;
+import jtamaro.data.Options;
+import jtamaro.data.Pair;
+import jtamaro.interaction.Coordinate;
+import jtamaro.interaction.MouseAction;
+import jtamaro.interaction.MouseDragAction;
+import jtamaro.interaction.MouseMoveAction;
+import jtamaro.interaction.MousePressAction;
+import jtamaro.interaction.MouseReleaseAction;
 
 /**
  * Swing canvas component that renders a graphic.
@@ -39,10 +49,6 @@ public final class GuiGraphicCanvas extends JComponent {
 
   private Graphic graphic;
 
-  public GuiGraphicCanvas(int width, int height) {
-    this(new RenderOptions(0, width, height, true));
-  }
-
   public GuiGraphicCanvas(RenderOptions renderOptions) {
     super();
     this.renderOptions = renderOptions;
@@ -55,6 +61,89 @@ public final class GuiGraphicCanvas extends JComponent {
     this.graphic = graphic;
     revalidate();
     repaint();
+  }
+
+  /**
+   * Get the mouse press action for the graphic drawn at the given absolute coordinates.
+   *
+   * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
+   *                            drawn by this component (absolute coordinates)
+   * @return Pair of {@link MousePressAction} (type-erased) and {@link Coordinate} with respect to
+   * the {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   */
+  public Option<Pair<MouseAction<?>, Coordinate>> getMousePressAction(
+      Coordinate absoluteCoordinates
+  ) {
+    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getPressAction);
+  }
+
+  /**
+   * Get the mouse release action for the graphic drawn at the given absolute coordinates.
+   *
+   * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
+   *                            drawn by this component (absolute coordinates)
+   * @return Pair of {@link MouseReleaseAction} (type-erased) and {@link Coordinate} with respect to
+   * the {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   */
+  public Option<Pair<MouseAction<?>, Coordinate>> getMouseReleaseAction(
+      Coordinate absoluteCoordinates
+  ) {
+    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getReleaseAction);
+  }
+
+  /**
+   * Get the mouse move action for the graphic drawn at the given absolute coordinates.
+   *
+   * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
+   *                            drawn by this component (absolute coordinates)
+   * @return Pair of {@link MouseMoveAction} (type-erased) and {@link Coordinate} with respect to
+   * the {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   */
+  public Option<Pair<MouseAction<?>, Coordinate>> getMouseMoveAction(
+      Coordinate absoluteCoordinates
+  ) {
+    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getMoveAction);
+  }
+
+  /**
+   * Get the mouse drag action for the graphic drawn at the given absolute coordinates.
+   *
+   * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
+   *                            drawn by this component (absolute coordinates)
+   * @return Pair of {@link MouseDragAction} (type-erased) and {@link Coordinate} with respect to
+   * the {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   */
+  public Option<Pair<MouseAction<?>, Coordinate>> getMouseDragAction(
+      Coordinate absoluteCoordinates
+  ) {
+    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getDragAction);
+  }
+
+  /**
+   * Get the mouse action for the graphic drawn at the given absolute coordinates.
+   *
+   * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
+   *                            drawn by this component (absolute coordinates)
+   * @param getAction           Function to obtain the desired action from the
+   *                            {@link ActionableGraphic} at the given coordinates
+   * @return Pair of {@link MouseAction} (type-erased) and {@link Coordinate} with respect to the
+   * {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   */
+  private <T extends MouseAction<?>> Option<Pair<T, Coordinate>> getMouseActionAtCoordinates(
+      Coordinate absoluteCoordinates,
+      Function1<ActionableGraphic<?>, T> getAction
+  ) {
+    // Translate the absolute coordinates with respect to the origin point
+    // of the drawn graphic
+    final double x = absoluteCoordinates.x() - graphic.getWidth() / 2.0;
+    final double y = absoluteCoordinates.y() - graphic.getHeight() / 2.0;
+
+    return graphic.relativeLocationOf(x, y).fold(
+        rl -> rl.graphic() instanceof ActionableGraphic<?> ag
+            ? Options.some(new Pair<>(getAction.apply(ag), rl.relativeCoordinates()))
+            : Options.none(),
+        Options::none
+    );
   }
 
   public boolean saveGraphic(Path path) {

@@ -1,5 +1,7 @@
 package jtamaro.graphic;
 
+import jtamaro.interaction.Coordinate;
+
 /**
  * Location with coordinates relative to a given graphic.
  *
@@ -18,5 +20,9 @@ record RelativeLocation(
    */
   public boolean isOfGraphic(Graphic graphic) {
     return this.graphic == graphic;
+  }
+
+  public Coordinate relativeCoordinates() {
+    return new Coordinate((int) x, (int) y);
   }
 }

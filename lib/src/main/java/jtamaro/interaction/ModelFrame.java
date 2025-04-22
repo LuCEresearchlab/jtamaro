@@ -9,17 +9,14 @@ import jtamaro.data.Sequence;
 
 final class ModelFrame<M> extends JFrame {
 
-  private final Interaction<M> bang;
-
   private final JTextArea textArea;
 
-  public ModelFrame(Interaction<M> bang, Trace trace) {
+  public ModelFrame(Interaction<M> bang, Trace<M> trace) {
     super();
     setTitle("Model");
     textArea = new JTextArea(3, 40);
     add(new JScrollPane(textArea));
 
-    this.bang = bang;
     final TraceListener tl = ev -> {
       final M model = getLastModel(trace.getEventSequence(), bang.getInitialModel());
       textArea.setText(model.toString());
@@ -38,9 +35,9 @@ final class ModelFrame<M> extends JFrame {
     pack();
   }
 
-  private M getLastModel(Sequence<TraceEvent> events, M model) {
+  private M getLastModel(Sequence<TraceEvent<M>> events, M model) {
     return events.isEmpty()
         ? model
-        : events.first().process(bang, getLastModel(events.rest(), model));
+        : events.first().process(getLastModel(events.rest(), model));
   }
 }

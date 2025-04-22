@@ -30,12 +30,12 @@ final class TraceTableModel implements TableModel {
 
   private final List<TableModelListener> listeners;
 
-  private final Trace trace;
+  private final Trace<?> trace;
 
-  public TraceTableModel(Trace trace) {
+  public TraceTableModel(Trace<?> trace) {
     this.listeners = new ArrayList<>();
     this.trace = trace;
-    trace.addTraceListener(event -> fireTableDataChanged());
+    trace.addTraceListener($ -> fireTableDataChanged());
   }
 
   @Override
@@ -70,11 +70,11 @@ final class TraceTableModel implements TableModel {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    final TraceEvent event = trace.get(getRowCount() - 1 - rowIndex);
+    final TraceEvent<?> event = trace.get(getRowCount() - 1 - rowIndex);
     return switch (columnIndex) {
       case INDEX_COLUMN -> rowIndex;
       case TIME_COLUMN -> {
-        final TraceEvent first = trace.get(getRowCount() - 1);
+        final TraceEvent<?> first = trace.get(getRowCount() - 1);
         final long startTime = first.getTimeStamp();
         final long eventTime = event.getTimeStamp();
         final long delta = eventTime - startTime;

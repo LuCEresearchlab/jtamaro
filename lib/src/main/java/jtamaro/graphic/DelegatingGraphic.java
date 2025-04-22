@@ -8,12 +8,14 @@ import jtamaro.data.Option;
 /**
  * Useful to create operators like {@link Overlay}, {@link Above}, and {@link Beside}, or any other
  * operator we want to explicitly represent, but that can be expressed with existing operators.
+ *
+ * @hidden
  */
 abstract sealed class DelegatingGraphic
     extends Graphic
-    permits Above, Beside, Overlay {
+    permits Above, Beside, Overlay, ActionableGraphic {
 
-  private final Graphic delegate;
+  protected final Graphic delegate;
 
   public DelegatingGraphic(Graphic delegate) {
     super(); // Use the special constructor

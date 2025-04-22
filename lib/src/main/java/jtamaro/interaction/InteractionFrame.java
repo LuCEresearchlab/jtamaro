@@ -2,10 +2,7 @@ package jtamaro.interaction;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.Box;
@@ -46,7 +43,9 @@ final class InteractionFrame<M> extends JFrame {
   // Save reference to the renderer for performance
   private final Function1<M, Graphic> renderer;
 
-  private final Trace eventsTrace;
+  private final Trace<M> eventsTrace;
+
+  private final TraceEvent.Tick<M> tickEvent;
 
   private final Timer timer;
 
@@ -63,7 +62,11 @@ final class InteractionFrame<M> extends JFrame {
     this.interaction = interaction;
     this.state = new InteractionState<>(interaction);
     this.renderer = interaction.getRenderer();
-    this.eventsTrace = new Trace();
+
+    this.eventsTrace = new Trace<>();
+    // The tick event is not going to mutate across the whole lifecycle of the
+    // interaction, and it would be re-created very often
+    this.tickEvent = new TraceEvent.Tick<>(interaction.getTickHandler());
     this.timer = new Timer(interaction.getMsBetweenTicks(), this::onTick);
 
     setTitle(interaction.getName());
@@ -148,56 +151,18 @@ final class InteractionFrame<M> extends JFrame {
     canvasPanel.setLayout(new OverlayLayout(canvasPanel));
 
     graphicCanvas = new GuiGraphicCanvas(renderOptions);
-    graphicCanvas.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent ev) {
-        final KeyboardKey key = new KeyboardKey(ev);
-        traceEvent(new TraceEvent.KeyPressed(key));
-      }
-
-      @Override
-      public void keyReleased(KeyEvent ev) {
-        final KeyboardKey key = new KeyboardKey(ev);
-        traceEvent(new TraceEvent.KeyReleased(key));
-      }
-
-      @Override
-      public void keyTyped(KeyEvent ev) {
-        final KeyboardChar ch = new KeyboardChar(ev);
-        traceEvent(new TraceEvent.KeyTyped(ch));
-      }
-    });
-
-    graphicCanvas.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent ev) {
-        graphicCanvas.requestFocus();
-        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        final MouseButton button = new MouseButton(ev);
-        traceEvent(new TraceEvent.MousePressed(coordinate, button));
-      }
-
-      @Override
-      public void mouseReleased(MouseEvent ev) {
-        graphicCanvas.requestFocus();
-        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        final MouseButton button = new MouseButton(ev);
-        traceEvent(new TraceEvent.MouseReleased(coordinate, button));
-      }
-    });
-    graphicCanvas.addMouseMotionListener(new MouseAdapter() {
-      @Override
-      public void mouseMoved(MouseEvent ev) {
-        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        traceEvent(new TraceEvent.MouseMoved(coordinate));
-      }
-
-      @Override
-      public void mouseDragged(MouseEvent ev) {
-        final Coordinate coordinate = new Coordinate(ev.getX(), ev.getY());
-        traceEvent(new TraceEvent.MouseMoved(coordinate));
-      }
-    });
+    final InteractionKeyboardHandler<M> keyboardHandler = new InteractionKeyboardHandler<>(
+        interaction,
+        this::traceEvent
+    );
+    graphicCanvas.addKeyListener(keyboardHandler);
+    final InteractionMouseHandler<M> mouseHandler = new InteractionMouseHandler<>(
+        interaction,
+        graphicCanvas,
+        this::traceEvent
+    );
+    graphicCanvas.addMouseListener(mouseHandler);
+    graphicCanvas.addMouseMotionListener(mouseHandler);
     canvasPanel.add(graphicCanvas);
 
     interaction.getBackground().stream().forEach(bg -> {
@@ -208,8 +173,8 @@ final class InteractionFrame<M> extends JFrame {
 
     add(canvasPanel, BorderLayout.CENTER);
 
+    // Show on instantiation
     pack();
-
     SwingUtilities.invokeLater(() -> {
       renderAndShowGraphic();
       // Request focus to capture keyboard and mouse events.
@@ -254,20 +219,20 @@ final class InteractionFrame<M> extends JFrame {
     if (interaction.getStoppingPredicate().apply(state.getModel())) {
       stopTimer();
     } else {
-      traceEvent(new TraceEvent.Tick());
+      traceEvent(tickEvent);
       state.tick();
       tickLabel.setText(String.valueOf(state.getTick()));
     }
   }
 
-  private void traceEvent(TraceEvent event) {
+  private void traceEvent(TraceEvent<M> event) {
     if (!timer.isRunning()) {
       return;
     }
 
     eventsTrace.append(event);
     final M before = state.getModel();
-    final M after = event.process(interaction, before);
+    final M after = event.process(before);
     state.update("Model after " + event.getKind(), after);
     renderAndShowGraphic();
   }
@@ -297,4 +262,5 @@ final class InteractionFrame<M> extends JFrame {
         Math.max(firstFrameHeight, bgHeight)
     );
   }
+
 }

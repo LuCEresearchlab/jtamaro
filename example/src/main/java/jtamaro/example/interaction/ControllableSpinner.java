@@ -34,7 +34,7 @@ public class ControllableSpinner {
         .withMsBetweenTicks(30)
         .withTickHandler(ControllableSpinner::tick)
         .withRenderer(ControllableSpinner::render)
-        .withMouseMoveHandler((wheel, c) -> new Spinner(wheel.angle, c.x() / 100.0, c.y()))
+        .withGlobalMouseMoveHandler((wheel, c, btn) -> new Spinner(wheel.angle, c.x() / 100.0, c.y()))
         .run();
   }
 

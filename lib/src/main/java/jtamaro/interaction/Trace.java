@@ -5,9 +5,9 @@ import java.util.List;
 import jtamaro.data.Sequence;
 import jtamaro.data.Sequences;
 
-final class Trace {
+final class Trace<T> {
 
-  private Sequence<TraceEvent> events;
+  private Sequence<TraceEvent<T>> events;
 
   // Cache for performance
   private int length;
@@ -20,7 +20,7 @@ final class Trace {
     listeners = new ArrayList<>();
   }
 
-  public void append(TraceEvent event) {
+  public void append(TraceEvent<T> event) {
     events = Sequences.cons(event, events);
     length++;
     fireEventAppended(event);
@@ -30,8 +30,8 @@ final class Trace {
     return length;
   }
 
-  public TraceEvent get(int index) {
-    Sequence<TraceEvent> itr = events;
+  public TraceEvent<T> get(int index) {
+    Sequence<TraceEvent<T>> itr = events;
     int i = 0;
     while (i < index && !itr.isEmpty()) {
       itr = itr.rest();
@@ -40,7 +40,7 @@ final class Trace {
     return itr.first();
   }
 
-  public Sequence<TraceEvent> getEventSequence() {
+  public Sequence<TraceEvent<T>> getEventSequence() {
     return events;
   }
 
@@ -52,7 +52,7 @@ final class Trace {
     listeners.remove(listener);
   }
 
-  public void fireEventAppended(TraceEvent event) {
+  public void fireEventAppended(TraceEvent<T> event) {
     for (final TraceListener listener : listeners) {
       listener.eventAppended(event);
     }

@@ -1,18 +1,22 @@
 package jtamaro.example.interaction;
 
+import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
 import jtamaro.interaction.KeyboardChar;
 import jtamaro.interaction.KeyboardKey;
+import jtamaro.interaction.MouseButton;
 
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.BLUE;
+import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.beside;
 import static jtamaro.graphic.Graphics.emptyGraphic;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
+import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.interact;
 import static jtamaro.io.IO.println;
@@ -57,6 +61,14 @@ public class TextFieldDemo {
     TextField clear() {
       return new TextField("", 0, cursorVisible);
     }
+
+    TextField random() {
+      return new TextField("???", 3, cursorVisible);
+    }
+
+    TextField moveCursor(int idx) {
+      return new TextField(text, idx, cursorVisible);
+    }
   }
 
 
@@ -99,19 +111,50 @@ public class TextFieldDemo {
   }
 
   private static Graphic render(TextField textField) {
+    // Board area
     Graphic board = emptyGraphic();
+    final int n = textField.text.length();
     int i;
-    for (i = 0; i < textField.text.length(); i++) {
-      char c = textField.text.charAt(i);
+    for (i = 0; i < n; i++) {
+      final char c = textField.text.charAt(i);
       board = beside(board, renderCursorGap(i, textField));
-      Graphic cell = overlay(
-          c != ' ' ? text("" + c, Fonts.MONOSPACED, SIZE * 0.9, TEXT) : emptyGraphic(),
+      final Graphic cell = overlay(
+          c != ' '
+              ? text("" + c, Fonts.MONOSPACED, SIZE * 0.9, TEXT)
+              : emptyGraphic(),
           rectangle(SIZE, SIZE, BACKGROUND)
       );
-      board = beside(board, cell);
+      final int idx = i + 1;
+      final Graphic actionableCell = new Actionable<TextField>(cell)
+          .withMouseReleaseHandler((t, coords, btn) ->
+              t.moveCursor(switch (btn.button()) {
+                case MouseButton.PRIMARY -> Math.max(0, idx - 1);
+                case MouseButton.SECONDARY -> idx;
+                case MouseButton.AUXILIARY -> n;
+                default -> t.cursor;
+              }))
+          .asGraphic();
+      board = beside(board, actionableCell);
     }
     board = beside(board, renderCursorGap(i, textField));
-    return board;
+
+    // Action area
+    final Graphic clearButton = rotate(
+        45,
+        overlay(
+            rectangle(10, 80, RED),
+            rectangle(80, 10, RED)
+        )
+    );
+    final Graphic randomButton = text("?", Fonts.MONOSPACED, 100, WHITE);
+    final boolean isEmpty = textField.text.isEmpty();
+    final Graphic shownButton = new Actionable<TextField>(overlay(
+        isEmpty ? randomButton : clearButton,
+        rectangle(SIZE, SIZE, BLACK)))
+        .withMousePressHandler((t, coords, btn) -> isEmpty ? t.random() : t.clear())
+        .asGraphic();
+
+    return beside(shownButton, board);
   }
 
   // Main program

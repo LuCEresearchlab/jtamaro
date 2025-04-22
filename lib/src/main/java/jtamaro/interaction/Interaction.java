@@ -4,7 +4,6 @@ import java.util.Objects;
 import javax.swing.SwingUtilities;
 import jtamaro.data.Function1;
 import jtamaro.data.Function2;
-import jtamaro.data.Function3;
 import jtamaro.data.Option;
 import jtamaro.data.Options;
 import jtamaro.graphic.Graphic;
@@ -66,17 +65,17 @@ public final class Interaction<M> {
   /**
    * Function that evolves the model when a mouse button is pressed.
    */
-  private final Function3<M, Coordinate, MouseButton, M> mousePressHandler;
+  private final MousePressAction<M> mousePressHandler;
 
   /**
    * Function that evolves the model when a mouse button is released.
    */
-  private final Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler;
+  private final MouseReleaseAction<M> mouseReleaseHandler;
 
   /**
-   * Function that evolves the model when the mouse cursor is moved.
+   * Function that evolves the model when the mouse cursor is dragged.
    */
-  private final Function2<M, Coordinate, M> mouseMoveHandler;
+  private final MouseMoveAction<M> mouseMoveHandler;
 
   /**
    * Defines the width of the canvas in which the interaction is rendered.
@@ -121,7 +120,7 @@ public final class Interaction<M> {
     this.keyTypeHandler = (model, c) -> model;
     this.mousePressHandler = (model, coords, button) -> model;
     this.mouseReleaseHandler = (model, coords, button) -> model;
-    this.mouseMoveHandler = (model, coords) -> model;
+    this.mouseMoveHandler = (model, coords, button) -> model;
 
     this.canvasWidth = -1;
     this.canvasHeight = -1;
@@ -141,9 +140,9 @@ public final class Interaction<M> {
       Function2<M, KeyboardKey, M> keyPressHandler,
       Function2<M, KeyboardKey, M> keyReleaseHandler,
       Function2<M, KeyboardChar, M> keyTypeHandler,
-      Function3<M, Coordinate, MouseButton, M> mousePressHandler,
-      Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler,
-      Function2<M, Coordinate, M> mouseMoveHandler,
+      MousePressAction<M> mousePressHandler,
+      MouseReleaseAction<M> mouseReleaseHandler,
+      MouseMoveAction<M> mouseMoveHandler,
       int canvasWidth,
       int canvasHeight,
       Graphic background,
@@ -358,7 +357,7 @@ public final class Interaction<M> {
    *
    * @see MouseButton
    */
-  public Interaction<M> withMousePressHandler(Function3<M, Coordinate, MouseButton, M> mousePressHandler) {
+  public Interaction<M> withGlobalMousePressHandler(MousePressAction<M> mousePressHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -382,7 +381,7 @@ public final class Interaction<M> {
    *
    * @see MouseButton
    */
-  public Interaction<M> withMouseReleaseHandler(Function3<M, Coordinate, MouseButton, M> mouseReleaseHandler) {
+  public Interaction<M> withGlobalMouseReleaseHandler(MouseReleaseAction<M> mouseReleaseHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -406,7 +405,7 @@ public final class Interaction<M> {
    *
    * @see Coordinate
    */
-  public Interaction<M> withMouseMoveHandler(Function2<M, Coordinate, M> mouseMoveHandler) {
+  public Interaction<M> withGlobalMouseMoveHandler(MouseMoveAction<M> mouseMoveHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -589,15 +588,15 @@ public final class Interaction<M> {
     return keyTypeHandler;
   }
 
-  Function3<M, Coordinate, MouseButton, M> getMousePressHandler() {
+  MouseAction<M> getMousePressHandler() {
     return mousePressHandler;
   }
 
-  Function3<M, Coordinate, MouseButton, M> getMouseReleaseHandler() {
+  MouseAction<M> getMouseReleaseHandler() {
     return mouseReleaseHandler;
   }
 
-  Function2<M, Coordinate, M> getMouseMoveHandler() {
+  MouseAction<M> getMouseMoveHandler() {
     return mouseMoveHandler;
   }
 

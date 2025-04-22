@@ -22,7 +22,7 @@ import static jtamaro.graphic.Graphics.triangle;
 
 public class RelativePositionOfTest {
 
-  private static final Graphic TEST_GRAPHIC = above(
+  private static final Graphic TEST_COMPOSITION = above(
       beside(
           rectangle(100, 200, RED),
           ellipse(150, 150, BLUE)
@@ -38,16 +38,21 @@ public class RelativePositionOfTest {
           )
       )
   );
-  private static final double HALF_HEIGHT = TEST_GRAPHIC.getHeight() / 2.0;
-  private static final double HALF_WIDTH = TEST_GRAPHIC.getWidth() / 2.0;
+
+  private static final double HALF_HEIGHT = TEST_COMPOSITION.getHeight() / 2.0;
+
+  private static final double HALF_WIDTH = TEST_COMPOSITION.getWidth() / 2.0;
+
+  // Observed >0.1 delta between ARM Mac and x86/AMD Linux machines
+  private static final double DELTA = 0.2;
 
   @Test
   public void testClickRedRectangle() {
     final Option<RelativeLocation> result = clickOn(178, 131);
     Assert.assertFalse(result.isEmpty());
     final RelativeLocation relLoc = result.fold(Function1.identity(), () -> null);
-    Assert.assertEquals(3, relLoc.x(), 0.01);
-    Assert.assertEquals(31, relLoc.y(), 0.01);
+    Assert.assertEquals(3, relLoc.x(), DELTA);
+    Assert.assertEquals(31, relLoc.y(), DELTA);
     Assert.assertTrue(relLoc.graphic() instanceof Rectangle rect
         && RED.equals(rect.getColor()));
   }
@@ -57,8 +62,8 @@ public class RelativePositionOfTest {
     final Option<RelativeLocation> result = clickOn(310, 171);
     Assert.assertFalse(result.isEmpty());
     final RelativeLocation relLoc = result.fold(Function1.identity(), () -> null);
-    Assert.assertEquals(10, relLoc.x(), 0.01);
-    Assert.assertEquals(71, relLoc.y(), 0.01);
+    Assert.assertEquals(10, relLoc.x(), DELTA);
+    Assert.assertEquals(71, relLoc.y(), DELTA);
     Assert.assertTrue(relLoc.graphic() instanceof Ellipse circle
         && BLUE.equals(circle.getColor()));
   }
@@ -68,8 +73,8 @@ public class RelativePositionOfTest {
     final Option<RelativeLocation> result = clickOn(92, 299);
     Assert.assertFalse(result.isEmpty());
     final RelativeLocation relLoc = result.fold(Function1.identity(), () -> null);
-    Assert.assertEquals(-42, relLoc.x(), 0.01);
-    Assert.assertEquals(28.47, relLoc.y(), 0.01);
+    Assert.assertEquals(-42, relLoc.x(), DELTA);
+    Assert.assertEquals(28.47, relLoc.y(), DELTA);
     Assert.assertTrue(relLoc.graphic() instanceof Triangle triangle
         && GREEN.equals(triangle.getColor()));
   }
@@ -79,8 +84,8 @@ public class RelativePositionOfTest {
     final Option<RelativeLocation> result = clickOn(113, 478);
     Assert.assertFalse(result.isEmpty());
     final RelativeLocation relLoc = result.fold(Function1.identity(), () -> null);
-    Assert.assertEquals(-187, relLoc.x(), 0.01);
-    Assert.assertEquals(62.58, relLoc.y(), 0.01);
+    Assert.assertEquals(-187, relLoc.x(), DELTA);
+    Assert.assertEquals(62.58, relLoc.y(), DELTA);
     Assert.assertTrue(relLoc.graphic() instanceof CircularSector sector
         && MAGENTA.equals(sector.getColor()));
   }
@@ -90,8 +95,8 @@ public class RelativePositionOfTest {
     final Option<RelativeLocation> result = clickOn(279, 208);
     Assert.assertFalse(result.isEmpty());
     final RelativeLocation relLoc = result.fold(Function1.identity(), () -> null);
-    Assert.assertEquals(7.74, relLoc.x(), 0.01);
-    Assert.assertEquals(-7.2, relLoc.y(), 0.01);
+    Assert.assertEquals(7.74, relLoc.x(), DELTA);
+    Assert.assertEquals(-7.2, relLoc.y(), DELTA);
     Assert.assertTrue(relLoc.graphic() instanceof Text text
         && BLACK.equals(text.getColor()));
   }
@@ -103,7 +108,7 @@ public class RelativePositionOfTest {
   }
 
   private Option<RelativeLocation> clickOn(double x, double y) {
-    return TEST_GRAPHIC.relativeLocationOf(
+    return TEST_COMPOSITION.relativeLocationOf(
         x - HALF_WIDTH,
         y - HALF_HEIGHT
     );

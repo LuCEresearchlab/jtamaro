@@ -1,6 +1,10 @@
 package jtamaro.interaction;
 
-sealed abstract class TraceEvent {
+import jtamaro.data.Function1;
+import jtamaro.data.Function2;
+import jtamaro.data.Function3;
+
+sealed abstract class TraceEvent<M> {
 
   private final long timeStamp;
 
@@ -12,113 +16,94 @@ sealed abstract class TraceEvent {
     return timeStamp;
   }
 
-  public final String getKind() {
+  public String getKind() {
     return getClass().getSimpleName();
   }
 
-  public abstract <M> M process(Interaction<M> interaction, M model);
+  public abstract M process(M model);
 
-  public static final class Tick extends TraceEvent {
+  public static final class Tick<M> extends TraceEvent<M> {
+
+    private final Function1<M, M> tickHandler;
+
+    public Tick(Function1<M, M> tickHandler) {
+      this.tickHandler = tickHandler;
+    }
 
     @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getTickHandler().apply(model);
+    public M process(M model) {
+      return tickHandler.apply(model);
     }
   }
 
-  public static final class KeyPressed extends TraceEvent {
+  public static final class KeyboardKeyEvent<M> extends TraceEvent<M> {
 
     private final KeyboardKey key;
 
-    public KeyPressed(KeyboardKey key) {
+    private final Function2<M, KeyboardKey, M> action;
+
+    public KeyboardKeyEvent(KeyboardKey key, Function2<M, KeyboardKey, M> action) {
       super();
       this.key = key;
+      this.action = action;
     }
 
     @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getKeyPressHandler().apply(model, key);
+    public M process(M model) {
+      return action.apply(model, key);
     }
   }
 
-  public static final class KeyReleased extends TraceEvent {
+  public static final class KeyboardCharEvent<M> extends TraceEvent<M> {
 
-    private final KeyboardKey key;
+    private final KeyboardChar key;
 
-    public KeyReleased(KeyboardKey key) {
+    private final Function2<M, KeyboardChar, M> action;
+
+    public KeyboardCharEvent(KeyboardChar key, Function2<M, KeyboardChar, M> action) {
       super();
       this.key = key;
+      this.action = action;
     }
 
     @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getKeyReleaseHandler().apply(model, key);
+    public M process(M model) {
+      return action.apply(model, key);
     }
   }
 
-  public static final class KeyTyped extends TraceEvent {
+  public static final class MouseEvent<M> extends TraceEvent<M> {
 
-    private final KeyboardChar keyboardChar;
-
-    public KeyTyped(KeyboardChar keyboardChar) {
-      super();
-      this.keyboardChar = keyboardChar;
-    }
-
-    @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getKeyTypeHandler().apply(model, keyboardChar);
-    }
-  }
-
-  public static final class MousePressed extends TraceEvent {
+    private final String kind;
 
     private final Coordinate coordinate;
 
     private final MouseButton button;
 
-    public MousePressed(Coordinate coordinate, MouseButton button) {
+    private final Function3<M, Coordinate, MouseButton, M> action;
+
+
+    public MouseEvent(
+        String kind,
+        Coordinate coordinate,
+        MouseButton button,
+        Function3<M, Coordinate, MouseButton, M> action
+    ) {
       super();
+      this.kind = kind;
       this.coordinate = coordinate;
       this.button = button;
+      this.action = action;
     }
 
     @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getMousePressHandler().apply(model, coordinate, button);
-    }
-  }
-
-  public static final class MouseReleased extends TraceEvent {
-
-    private final Coordinate coordinate;
-
-    private final MouseButton button;
-
-    public MouseReleased(Coordinate coordinate, MouseButton button) {
-      super();
-      this.coordinate = coordinate;
-      this.button = button;
+    public M process(M model) {
+      return action.apply(model, coordinate, button);
     }
 
     @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getMouseReleaseHandler().apply(model, coordinate, button);
-    }
-  }
-
-  public static final class MouseMoved extends TraceEvent {
-
-    private final Coordinate coordinate;
-
-    public MouseMoved(Coordinate coordinate) {
-      super();
-      this.coordinate = coordinate;
-    }
-
-    @Override
-    public <M> M process(Interaction<M> interaction, M model) {
-      return interaction.getMouseMoveHandler().apply(model, coordinate);
+    public String getKind() {
+      return kind;
     }
   }
 }
