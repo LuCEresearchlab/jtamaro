@@ -1,6 +1,7 @@
 package jtamaro.io;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -196,7 +197,7 @@ public final class IO {
     try {
       return Files.readString(path, StandardCharsets.UTF_8);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
@@ -211,7 +212,7 @@ public final class IO {
           StandardOpenOption.WRITE,
           StandardOpenOption.CREATE);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
@@ -222,7 +223,7 @@ public final class IO {
     try {
       Files.write(path, content, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
