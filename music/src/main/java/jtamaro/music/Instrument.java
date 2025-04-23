@@ -136,15 +136,14 @@ public enum Instrument {
   TELEPHONE_RING(125), // use for rotary phone demo?
   HELICOPTER(126),
   APPLAUSE(127),
-  GUNSHOT(128);
-
+  GUNSHOT(128),
+  ;
 
   private final int pcNumber;
 
   private final InstrumentFamily family;
 
-
-  private Instrument(int pcNumber) {
+  Instrument(int pcNumber) {
     this.pcNumber = pcNumber;
     this.family = InstrumentFamily.familyForPcNumber(pcNumber);
   }
@@ -189,8 +188,7 @@ public enum Instrument {
     return Sequences.fromStream(Arrays.stream(values()));
   }
 
-
-  public static void main(String[] args) {
+  public static void demo() {
     for (Instrument instrument : values()) {
       System.out.println(instrument);
       Note root = Notes.C4;

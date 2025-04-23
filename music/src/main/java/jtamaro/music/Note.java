@@ -1,15 +1,21 @@
 package jtamaro.music;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
 /**
+ * Music note.
+ *
  * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Wikipedia: Scientific
  * pitch notation</a>
  * @see <a href="https://en.wikipedia.org/wiki/Pitch_class">Wikipedia: Pitch class</a>
  */
 public record Note(int noteNumber) {
+
+  private static final Logger LOGGER = Logger.getLogger(Note.class.getSimpleName());
 
   public void on(Receiver receiver, int channel) {
     try {
@@ -18,7 +24,7 @@ public record Note(int noteNumber) {
       long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.WARNING, "Failed turn on note " + noteNumber, ex);
     }
   }
 
@@ -29,7 +35,7 @@ public record Note(int noteNumber) {
       long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.WARNING, "Failed turn off note " + noteNumber, ex);
     }
   }
 

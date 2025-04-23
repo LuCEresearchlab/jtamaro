@@ -1,27 +1,20 @@
 package jtamaro.music;
 
 /**
- * Octaves middle C: SPN: C4, Helmholz: c' A440: SPN: A4, Helmholz: a' C-1 = C,,, = Double Contra C0
- * = C,, = Sub Contra C1 = C, = Contra C2 = C, = Great C3 = c, = Small C4 = c' = 1 Line C5 = c'' = 2
- * Line C6 = c''' = 3 Line C7 = c'''' = 4 Line C8 = c''''' = 5 Line C9 = c'''''' = 6 Line
+ * Octave.
  *
- * Scientific Pitch Notation C0, F♯4, D♭6 https://en.wikipedia.org/wiki/Scientific_pitch_notation
+ * <p>Octaves middle C: SPN: C4, Helmholz: c' A440: SPN: A4, Helmholz: a' C-1 = C,,, = Double
+ * Contra C0 = C,, = Sub Contra C1 = C, = Contra C2 = C, = Great C3 = c, = Small C4 = c' = 1 Line C5
+ * = c'' = 2 Line C6 = c''' = 3 Line C7 = c'''' = 4 Line C8 = c''''' = 5 Line C9 = c'''''' = 6 Line
  *
- * Helmholtz pitch notation f♯' https://en.wikipedia.org/wiki/Helmholtz_pitch_notation
+ * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific Pitch Notation
+ * C0, F♯4, D♭6</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Helmholtz_pitch_notation">Helmholtz pitch notation
+ * f♯'</a>
  */
 public record Octave(int number, boolean helmholzSmall, String helmholzSuffix, String name) {
 
   public static final Interval INTERVAL = Interval.PERFECT_OCTAVE;
-
-  private static final Octave[] OCTAVES = new Octave[11];
-
-  public Octave {
-    OCTAVES[number + 1] = this;
-  }
-
-  public static Octave get(int number) {
-    return OCTAVES[number + 1];
-  }
 
   public static final Octave OCTAVE_M1 = new Octave(-1, false, ",,,", "Double Contra");
 
@@ -45,4 +38,13 @@ public record Octave(int number, boolean helmholzSmall, String helmholzSuffix, S
 
   public static final Octave OCTAVE_9 = new Octave(4, true, "'", "6 Line");
 
+  private static final Octave[] OCTAVES = new Octave[11];
+
+  public static Octave get(int number) {
+    return OCTAVES[number + 1];
+  }
+
+  public Octave {
+    OCTAVES[number + 1] = this;
+  }
 }

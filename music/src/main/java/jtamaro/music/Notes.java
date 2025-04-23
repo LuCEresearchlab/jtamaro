@@ -1,18 +1,13 @@
 package jtamaro.music;
 
+/**
+ * Known music notes.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific pitch
+ * notation</a>
+ */
+public final class Notes {
 
-public class Notes {
-
-  public static Note note(int noteNumber) {
-    assert noteNumber >= 0 && noteNumber <= 127;
-    return new Note(noteNumber);
-  }
-
-  public static Note transpose(Note note, int semitones) {
-    return note.transpose(semitones);
-  }
-
-  // https://en.wikipedia.org/wiki/Scientific_pitch_notation
   public static final Note C0 = note(12);  // lowest note on 108-key piano
 
   public static final Note CS0 = note(13);
@@ -320,5 +315,14 @@ public class Notes {
   public static final Note B8 = note(119); // highest note on 108-key piano
 
   private Notes() {
+  }
+
+  public static Note note(int noteNumber) {
+    assert noteNumber >= 0 && noteNumber <= 127;
+    return new Note(noteNumber);
+  }
+
+  public static Note transpose(Note note, int semitones) {
+    return note.transpose(semitones);
   }
 }

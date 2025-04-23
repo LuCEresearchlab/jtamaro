@@ -8,7 +8,7 @@ import jtamaro.data.Sequences;
  * In MIDI, percussion instruments corresponds to notes. If those note numbers are played on channel
  * 10, then the sounds produced is that of the percussion instrument.
  *
- * This quirky design makes it somewhat difficult to cleanly model things.
+ * <p>This quirky design makes it somewhat difficult to cleanly model things.
  * TODO: Improve the design of Note/Percussion/AbsoluteChord/TimedChord.
  */
 public enum Percussion {
@@ -90,7 +90,7 @@ public enum Percussion {
     return Sequences.fromStream(Arrays.stream(values()));
   }
 
-  public static void main(String[] args) {
+  public static void demo() {
     // TODO: It seems that Java's default sound bank (Gervill?)
     //       only includes a subset of the General MIDI percussion sounds.
     //       https://www.midi.org/specifications-old/item/gm-level-1-sound-set
@@ -128,5 +128,4 @@ public enum Percussion {
       );
     }
   }
-
 }

@@ -1,9 +1,12 @@
 package jtamaro.music;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.midi.Receiver;
-import jtamaro.data.Sequences;
 
 public record TimedChord(int beats, AbsoluteChord chord) {
+
+  private static final Logger LOGGER = Logger.getLogger(TimedChord.class.getSimpleName());
 
   public void play(Receiver receiver, int channel, int msPerBeat) {
     for (Note note : chord.notes()) {
@@ -13,7 +16,7 @@ public record TimedChord(int beats, AbsoluteChord chord) {
       System.out.println("chord -- " + System.nanoTime() + " (" + beats + ")");
       Thread.sleep((long) beats * msPerBeat);
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Failed to play chord", ex);
     }
     for (Note note : chord.notes()) {
       note.off(receiver, channel);

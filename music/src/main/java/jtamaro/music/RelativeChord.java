@@ -13,7 +13,7 @@ import static jtamaro.music.Scales.C_MAJOR;
  * A chord like they are used in chord progressions, with a scale step (usually shown as a Roman
  * numeral) and an underlying chord (e.g., a Major triad).
  *
- * TODO: Not at all sure this is right.
+ * <p>TODO: Not at all sure this is right.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Chord_(music)#Roman_numerals">Wikipedia: Chord</a>
  * @see <a href="https://en.wikipedia.org/wiki/Roman_numeral_analysis">Wikipedia: Roman numeral
@@ -77,7 +77,7 @@ public record RelativeChord(int scaleStep, Chord chord, String symbol) {
 
   public static final RelativeChord vii_DIM_CHORD = new RelativeChord(7, DIMINISHED_TRIAD, "vii^o");
 
-  public static void main(String[] args) {
+  public static void demo() {
     // https://en.wikipedia.org/wiki/Roman_numeral_analysis#Major_scale
     //play(C_MAJOR, of(I_CHORD, ii_CHORD, iii_CHORD, IV_CHORD, V_CHORD, vi_CHORD, vii_DIM_CHORD));
 
@@ -117,5 +117,4 @@ public record RelativeChord(int scaleStep, Chord chord, String symbol) {
     Sequence<AbsoluteChord> acs = cs.map(scale::in);
     MusicIO.playChords(acs, 60);
   }
-
 }

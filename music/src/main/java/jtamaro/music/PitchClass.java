@@ -9,7 +9,9 @@ import static jtamaro.music.Octave.OCTAVE_4;
 
 
 /**
- * https://en.wikipedia.org/wiki/Pitch_class
+ * Pitch class.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Pitch_class">Wikipedia</a>
  */
 public record PitchClass(int number, String symbol) {
 
@@ -37,16 +39,16 @@ public record PitchClass(int number, String symbol) {
 
   public static final PitchClass B = new PitchClass(11, "B");
 
+  public static final PitchClass[] PITCH_CLASSES = new PitchClass[]{
+      C, CS, D, DS, E, F, FS, G, GS, A, AS, B,
+  };
+
   public Note in(Octave octave) {
     assert octave.number() >= -1;
     assert octave.number() <= 9;
     assert octave.number() < 9 || number <= 7;
     return note((octave.number() + 1) * 12 + number);
   }
-
-  public static PitchClass[] PITCH_CLASSES = new PitchClass[]{
-      C, CS, D, DS, E, F, FS, G, GS, A, AS, B
-  };
 
   public static void main(String[] args) {
     for (PitchClass pc : PITCH_CLASSES) {
@@ -59,5 +61,4 @@ public record PitchClass(int number, String symbol) {
       ), 60);
     }
   }
-
 }

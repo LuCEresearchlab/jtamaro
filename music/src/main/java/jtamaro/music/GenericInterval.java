@@ -5,13 +5,13 @@ package jtamaro.music;
  * involved (including the staff positions the two notes occupy). A generic interval does not
  * consider accidentals (#, b, ...).
  *
- * They really are numbers, from "firsts" (top and bottom note on same staff position) to "eights"
- * (top and bottom node straddling 8 staff positions, inclusive).
+ * <p>They really are numbers, from "firsts" (top and bottom note on same staff position) to
+ * "eights" (top and bottom node straddling 8 staff positions, inclusive).
  *
- * https://www.musictheory.net/lessons/30
- *
- * For example, C-C, C-C#, Db-D, or even Ab-A# all are FIRSTs, C-D, C#-D, and even F#-Gb all are
+ * <p>For example, C-C, C-C#, Db-D, or even Ab-A# all are FIRSTs, C-D, C#-D, and even F#-Gb all are
  * SECONDs, C-E, D-F, and F#-Ab all are THIRDs.
+ *
+ * @see <a href="https://www.musictheory.net/lessons/30">Music Theory</a>
  */
 public enum GenericInterval {
 
@@ -22,7 +22,8 @@ public enum GenericInterval {
   FIFTH(5, "Fifth"),
   SIXTH(6, "Sixth"),
   SEVENTH(7, "Seventh"),
-  EIGHTH(8, "Eight");    // aka. Octave
+  EIGHTH(8, "Eight"),    // aka. Octave
+  ;
 
   private static final GenericInterval[] INTERVAL_BY_STAFF_POSITIONS = new GenericInterval[]{
       null,
@@ -74,10 +75,9 @@ public enum GenericInterval {
     return INTERVAL_BY_STAFF_POSITIONS[staffPositions];
   }
 
-  public static void main(String[] args) {
+  public static void demo() {
     for (GenericInterval gi : values()) {
       System.out.println(gi + " " + gi.getStaffPositions() + " " + gi.getName());
     }
   }
-
 }

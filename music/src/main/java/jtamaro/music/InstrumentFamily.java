@@ -20,7 +20,8 @@ public enum InstrumentFamily {
   SYNTH_EFFECTS(97, 104),
   ETHNIC(105, 112),
   PERCUSSIVE(113, 120),
-  SOUND_EFFECTS(121, 128);
+  SOUND_EFFECTS(121, 128),
+  ;
 
   private final int minPcNumber;
 
@@ -55,5 +56,4 @@ public enum InstrumentFamily {
                 .toLowerCase())
         .collect(Collectors.joining(" "));
   }
-
 }

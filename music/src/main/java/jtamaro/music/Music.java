@@ -34,7 +34,7 @@ import static jtamaro.data.Sequences.of;
  * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific notation</a>
  * @see <a href="https://en.wikipedia.org/wiki/Helmholtz_pitch_notation">Helmholtz notation</a>
  */
-public abstract class Music {
+public final class Music {
 
   private Music() {
   }
@@ -46,7 +46,6 @@ public abstract class Music {
   public Note note(PitchClass pitchClass, Octave octave) {
     return pitchClass.in(octave);
   }
-
 
   public static AbsoluteChord chord(Sequence<Note> notes) {
     return new AbsoluteChord(notes);
@@ -61,5 +60,4 @@ public abstract class Music {
     assert beats > 0;
     return new TimedChord(beats, new AbsoluteChord(of()));
   }
-
 }

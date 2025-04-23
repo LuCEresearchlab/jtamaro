@@ -1,5 +1,7 @@
 package jtamaro.music;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -12,7 +14,9 @@ import static jtamaro.data.Sequences.of;
 import static jtamaro.music.Music.chord;
 import static jtamaro.music.Music.timed;
 
-public class MusicIO {
+public final class MusicIO {
+
+  private static final Logger LOGGER = Logger.getLogger(MusicIO.class.getSimpleName());
 
   public static void play(Sequence<TimedChord> song, int bpm) {
     play(song, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
@@ -21,8 +25,7 @@ public class MusicIO {
   public static void play(Sequence<TimedChord> song, int bpm, int channel, Instrument instrument) {
     System.out.println("IO.play:");
     int msPerBeat = 60 * 1000 / bpm;
-    try {
-      Receiver receiver = MidiSystem.getReceiver();
+    try (Receiver receiver = MidiSystem.getReceiver()) {
       receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE,
           channel,
           instrument.internalPcNumber(),
@@ -32,13 +35,13 @@ public class MusicIO {
         c.play(receiver, channel, msPerBeat);
       }
     } catch (MidiUnavailableException | InvalidMidiDataException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Failed to play song", ex);
     }
     try {
-      System.out.println("waiting at end of play.");
+      LOGGER.info("waiting at end of play.");
       Thread.sleep(4 * msPerBeat);
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Couldn't sleep. Music too loud?", ex);
     }
   }
 

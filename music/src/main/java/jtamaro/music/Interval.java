@@ -1,6 +1,6 @@
 package jtamaro.music;
 
-import java.util.ArrayList;
+import java.util.List;
 import jtamaro.data.Sequences;
 
 import static jtamaro.music.GenericInterval.EIGHTH;
@@ -21,18 +21,23 @@ import static jtamaro.music.Notes.C4;
 /**
  * An unordered pitch interval.
  *
- * https://en.wikipedia.org/wiki/Pitch_interval#Unordered_Pitch_Interval
- * https://en.wikipedia.org/wiki/Interval_(music) https://www.musictheory.net/lessons/31
- * https://viva.pressbooks.pub/openmusictheory/chapter/intervals/
- * https://www.omnicalculator.com/other/music-interval
- * https://www.earmaster.com/music-theory-online/ch04/chapter-4-1.html
- * https://muted.io/circle-of-fifths/
+ * <p>Comments: An octave, like C-C, includes 13 semitones (the distance is 12 semitones). An
+ * octave, like C-C, includes 8 staff positions (the distance is 7 staff positions) When we talk
+ * about semitones, we start at 0 (we exclude the start pitch). When we talk about staff positions,
+ * we start at 1 (we include the start pitch). So, an octave, a PERFECT_EIGHT, spans 8 staff
+ * positions (inclusive) and is 12 semitones wide (exclusive).
  *
- * Comments: An octave, like C-C, includes 13 semitones (the distance is 12 semitones). An octave,
- * like C-C, includes 8 staff positions (the distance is 7 staff positions) When we talk about
- * semitones, we start at 0 (we exclude the start pitch). When we talk about staff positions, we
- * start at 1 (we include the start pitch). So, an octave, a PERFECT_EIGHT, spans 8 staff positions
- * (inclusive) and is 12 semitones wide (exclusive).
+ * @see <a href="https://en.wikipedia.org/wiki/Pitch_interval#Unordered_Pitch_Interval">Unordered
+ * Pitch Interval (Wikipedia)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Interval_(music)">Interval (Wikipedia)</a>
+ * @see <a href="https://www.musictheory.net/lessons/31">Music Theory Lesson 31</a>
+ * @see <a href="https://viva.pressbooks.pub/openmusictheory/chapter/intervals/">Open Music Theory
+ * book</a>
+ * @see <a href="https://www.omnicalculator.com/other/music-interval">Music interval (Omni
+ * Calculator)</a>
+ * @see <a href="https://www.earmaster.com/music-theory-online/ch04/chapter-4-1.html">Music Theory
+ * Online (Ch.4)</a>
+ * @see <a href="https://muted.io/circle-of-fifths/">Circle of Fifths</a>
  */
 public record Interval(int semitones, IntervalQuality quality, GenericInterval genericInterval) {
 
@@ -90,38 +95,15 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
 
   public static final Interval AUGMENTED_OCTAVE = new Interval(13, AUGMENTED, EIGHTH);
 
-
-  public final static ArrayList<Interval> INTERVALS = new ArrayList<>();
-
-  static {
-    INTERVALS.add(PERFECT_UNISON);
-    INTERVALS.add(DIMINISHED_SECOND);
-    INTERVALS.add(MINOR_SECOND);
-    INTERVALS.add(AUGMENTED_UNISON);
-    INTERVALS.add(MAJOR_SECOND);
-    INTERVALS.add(DIMINISHED_THIRD);
-    INTERVALS.add(MINOR_THIRD);
-    INTERVALS.add(AUGMENTED_SECOND);
-    INTERVALS.add(MAJOR_THIRD);
-    INTERVALS.add(DIMINISHED_FOURTH);
-    INTERVALS.add(PERFECT_FOURTH);
-    INTERVALS.add(AUGMENTED_THIRD);
-    INTERVALS.add(AUGMENTED_FOURTH);
-    INTERVALS.add(DIMINISHED_FIFTH);
-    INTERVALS.add(PERFECT_FIFTH);
-    INTERVALS.add(DIMINISHED_SIXTH);
-    INTERVALS.add(MINOR_SIXTH);
-    INTERVALS.add(AUGMENTED_FIFTH);
-    INTERVALS.add(MAJOR_SIXTH);
-    INTERVALS.add(DIMINISHED_SEVENTH);
-    INTERVALS.add(MINOR_SEVENTH);
-    INTERVALS.add(AUGMENTED_SIXTH);
-    INTERVALS.add(MAJOR_SEVENTH);
-    INTERVALS.add(DIMINISHED_OCTAVE);
-    INTERVALS.add(PERFECT_OCTAVE);
-    INTERVALS.add(AUGMENTED_SEVENTH);
-    INTERVALS.add(AUGMENTED_OCTAVE);
-  }
+  public final static List<Interval> INTERVALS = List.of(
+      PERFECT_UNISON, DIMINISHED_SECOND, MINOR_SECOND, AUGMENTED_UNISON,
+      MAJOR_SECOND, DIMINISHED_THIRD, MINOR_THIRD, AUGMENTED_SECOND,
+      MAJOR_THIRD, DIMINISHED_FOURTH, PERFECT_FOURTH, AUGMENTED_THIRD,
+      AUGMENTED_FOURTH, DIMINISHED_FIFTH, PERFECT_FIFTH, DIMINISHED_SIXTH,
+      MINOR_SIXTH, AUGMENTED_FIFTH, MAJOR_SIXTH, DIMINISHED_SEVENTH,
+      MINOR_SEVENTH, AUGMENTED_SIXTH, MAJOR_SEVENTH, DIMINISHED_OCTAVE,
+      PERFECT_OCTAVE, AUGMENTED_SEVENTH, AUGMENTED_OCTAVE
+  );
 
   public String toString() {
     return getShortName() + " (" + getLongName() + ")";
@@ -169,8 +151,8 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
    * Produce an Interval that is the inversion of this Interval.
    *
    * @return the inverted Interval
-   * @see <a href="https://en.wikipedia.org/wiki/Inversion_(music)#Intervals">Wikipedia:
-   * Inversion</a>
+   * @see <a href="https://en.wikipedia.org/wiki/Inversion_(music)#Intervals">Inversion
+   * (Wikipedia)</a>
    */
   public Interval invert() {
     Interval simple = getSimple(); // Get simple interval from which this is compounded
@@ -190,7 +172,9 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
 
   public Interval getSimple() {
     // TODO: Check that this is correct!
-    return isSimple() ? this : new Interval(semitones % 12, quality, genericInterval.getSimple());
+    return isSimple()
+        ? this
+        : new Interval(semitones % 12, quality, genericInterval.getSimple());
   }
 
   public static Interval get(GenericInterval genericInterval, IntervalQuality quality) {
@@ -239,11 +223,10 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
     }
   }
 
-  public static void main(String[] args) {
+  public static void demo() {
     System.out.println("Number of semitones for the different specific intervals:");
     printIntervalTable();
     System.out.println("All intervals with their intervallic inversions:");
     printInversionTable();
   }
-
 }

@@ -1,25 +1,42 @@
 package jtamaro.music;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
- * https://en.wikipedia.org/wiki/Interval_(music)#Quality https://www.musictheory.net/lessons/31
+ * Interval quality.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Interval_(music)#Quality">Interval Quality
+ * (Wikipedia)</a>
+ * @see <a href="https://www.musictheory.net/lessons/31">Music Theory lesson 31</a>
  */
 public enum IntervalQuality {
 
-  DIMINISHED("d",
-      "Diminished"), // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
-  MINOR("m", "Minor"),           // Seconds, Thirds, Sixths, Sevenths
-  PERFECT("P", "Perfect"),       // Firsts, Fourths, Fifths, Eights
-  MAJOR("M", "Major"),           // Seconds, Thirds, Sixths, Sevenths
-  AUGMENTED("A",
-      "Augmented");   // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  DIMINISHED("d", "Diminished"),
+  // Seconds, Thirds, Sixths, Sevenths
+  MINOR("m", "Minor"),
+  // Firsts, Fourths, Fifths, Eights
+  PERFECT("P", "Perfect"),
+  // Seconds, Thirds, Sixths, Sevenths
+  MAJOR("M", "Major"),
+  // Firsts, Seconds, Thirds, Fourths, Fifths, Sixths, Sevenths, Eights
+  AUGMENTED("A", "Augmented"),
+  ;
+
+  // https://en.wikipedia.org/wiki/Inversion_(music)#Intervals
+  private static final Map<IntervalQuality, IntervalQuality> INVERSES = Map.of(
+      PERFECT, PERFECT,
+      MAJOR, MINOR,
+      MINOR, MAJOR,
+      AUGMENTED, DIMINISHED,
+      DIMINISHED, AUGMENTED
+  );
 
   private final String symbol;
 
   private final String name;
 
-  private IntervalQuality(String symbol, String name) {
+  IntervalQuality(String symbol, String name) {
     this.symbol = symbol;
     this.name = name;
   }
@@ -32,26 +49,13 @@ public enum IntervalQuality {
     return name;
   }
 
-  // https://en.wikipedia.org/wiki/Inversion_(music)#Intervals
-  private static final HashMap<IntervalQuality, IntervalQuality> INVERSES;
-
-  static {
-    INVERSES = new HashMap<>();
-    INVERSES.put(PERFECT, PERFECT);
-    INVERSES.put(MAJOR, MINOR);
-    INVERSES.put(MINOR, MAJOR);
-    INVERSES.put(AUGMENTED, DIMINISHED);
-    INVERSES.put(DIMINISHED, AUGMENTED);
-  }
-
   public IntervalQuality invert() {
     return INVERSES.get(this);
   }
 
-  public static void main(String[] args) {
+  public static void demo() {
     for (IntervalQuality q : values()) {
       System.out.println(q + " Inverse: " + q.invert());
     }
   }
-
 }
