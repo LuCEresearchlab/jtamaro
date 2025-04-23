@@ -6,13 +6,13 @@ import org.junit.Test;
 
 public final class GraphicPropsTest {
 
-  private static final Graphic childA = new Rectangle(200, 80, Colors.RED);
+  private static final Graphic CHILD_A = new Rectangle(200, 80, Colors.RED);
 
-  private static final Graphic childB = new Rectangle(80, 200, Colors.BLUE);
+  private static final Graphic CHILD_B = new Rectangle(80, 200, Colors.BLUE);
 
   @Test
   public void testAboveContent() {
-    final SequencedMap<String, String> props = new Above(childA, childB)
+    final SequencedMap<String, String> props = new Above(CHILD_A, CHILD_B)
         .getProps(true);
     Assert.assertEquals(2, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -21,7 +21,7 @@ public final class GraphicPropsTest {
 
   @Test
   public void testBesideContent() {
-    final SequencedMap<String, String> props = new Beside(childA, childB)
+    final SequencedMap<String, String> props = new Beside(CHILD_A, CHILD_B)
         .getProps(true);
     Assert.assertEquals(2, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -42,7 +42,7 @@ public final class GraphicPropsTest {
 
   @Test
   public void testComposeContent() {
-    final SequencedMap<String, String> props = new Compose(childA, childB)
+    final SequencedMap<String, String> props = new Compose(CHILD_A, CHILD_B)
         .getProps(true);
     Assert.assertEquals(2, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -70,7 +70,7 @@ public final class GraphicPropsTest {
 
   @Test
   public void testOverlayContent() {
-    final SequencedMap<String, String> props = new Overlay(childA, childB)
+    final SequencedMap<String, String> props = new Overlay(CHILD_A, CHILD_B)
         .getProps(true);
     Assert.assertEquals(2, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -79,7 +79,7 @@ public final class GraphicPropsTest {
 
   @Test
   public void testPinContent() {
-    final SequencedMap<String, String> props = new Pin(Points.TOP_LEFT, childA)
+    final SequencedMap<String, String> props = new Pin(Points.TOP_LEFT, CHILD_A)
         .getProps(true);
     Assert.assertEquals(3, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -99,7 +99,7 @@ public final class GraphicPropsTest {
 
   @Test
   public void testRotateContent() {
-    final SequencedMap<String, String> props = new Rotate(30, childA)
+    final SequencedMap<String, String> props = new Rotate(30, CHILD_A)
         .getProps(true);
     Assert.assertEquals(3, props.size());
     Assert.assertTrue(props.containsKey("width"));
@@ -135,25 +135,25 @@ public final class GraphicPropsTest {
 
   @Test
   public void testAboveDumpOrder() {
-    final String dump = new Above(childA, childB).dump();
+    final String dump = new Above(CHILD_A, CHILD_B).dump();
     Assert.assertTrue(dump.indexOf("top") < dump.indexOf("bottom"));
   }
 
   @Test
   public void testBesideDumpOrder() {
-    final String dump = new Beside(childA, childB).dump();
+    final String dump = new Beside(CHILD_A, CHILD_B).dump();
     Assert.assertTrue(dump.indexOf("left") < dump.indexOf("right"));
   }
 
   @Test
   public void testComposeDumpOrder() {
-    final String dump = new Compose(childA, childB).dump();
+    final String dump = new Compose(CHILD_A, CHILD_B).dump();
     Assert.assertTrue(dump.indexOf("foreground") < dump.indexOf("background"));
   }
 
   @Test
   public void testOverlayDumpOrder() {
-    final String dump = new Overlay(childA, childB).dump();
+    final String dump = new Overlay(CHILD_A, CHILD_B).dump();
     Assert.assertTrue(dump.indexOf("foreground") < dump.indexOf("background"));
   }
 }
