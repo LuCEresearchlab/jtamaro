@@ -56,6 +56,7 @@ public final class FilmStripCanvas extends JComponent {
   private int position;
 
   public FilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
+    super();
     this.indexedGraphics = graphics.zipWithIndex();
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;

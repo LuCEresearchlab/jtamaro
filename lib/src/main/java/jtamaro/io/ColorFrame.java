@@ -12,6 +12,7 @@ import jtamaro.graphic.Graphic;
 final class ColorFrame extends JFrame {
 
   public ColorFrame(Color color) {
+    super();
     setTitle("Color");
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     final JLabel rgbLabel = new JLabel("RGBA: "

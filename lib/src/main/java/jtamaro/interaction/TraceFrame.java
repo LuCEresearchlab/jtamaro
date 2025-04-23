@@ -10,6 +10,7 @@ import javax.swing.JTable;
 final class TraceFrame extends JFrame {
 
   public TraceFrame(Trace trace) {
+    super();
     setTitle("Event Trace");
     final TraceTableModel traceTableModel = new TraceTableModel(trace);
     final JTable table = new JTable(traceTableModel);

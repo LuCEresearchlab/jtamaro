@@ -283,6 +283,7 @@ public abstract sealed class Graphic
   final class InspectTreeNode extends DefaultMutableTreeNode {
 
     public InspectTreeNode(Iterable<Graphic> children) {
+      super();
       for (Graphic child : children) {
         add(child.createInspectTree());
       }

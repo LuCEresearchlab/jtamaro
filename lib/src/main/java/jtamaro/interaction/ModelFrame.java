@@ -14,6 +14,7 @@ final class ModelFrame<M> extends JFrame {
   private final JTextArea textArea;
 
   public ModelFrame(Interaction<M> bang, Trace trace) {
+    super();
     setTitle("Model");
     textArea = new JTextArea(3, 40);
     add(new JScrollPane(textArea));

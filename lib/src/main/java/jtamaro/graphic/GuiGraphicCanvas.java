@@ -44,6 +44,7 @@ public final class GuiGraphicCanvas extends JComponent {
   }
 
   public GuiGraphicCanvas(RenderOptions renderOptions) {
+    super();
     this.renderOptions = renderOptions;
     this.graphic = new EmptyGraphic();
 

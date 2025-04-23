@@ -22,6 +22,7 @@ public final class GuiGraphicPropertiesPanel extends JPanel {
   private final RenderOptions canvasRenderOptions;
 
   public GuiGraphicPropertiesPanel(RenderOptions renderOptions) {
+    super();
     setLayout(new BorderLayout());
     label = new JLabel();
     add(label, BorderLayout.NORTH);

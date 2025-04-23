@@ -23,12 +23,12 @@ final class FilmStripFrame extends JFrame {
   private final FilmStripCanvas canvas;
 
   public FilmStripFrame(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
-    completeFrameWidth = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
-    final String titleSuffix = " (" + length(graphics) + " frames)";
-    setTitle("Film Strip" + titleSuffix);
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    super();
+    setTitle("Film Strip (" + length(graphics) + " frames)");
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
 
+    completeFrameWidth = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
     canvas = new FilmStripCanvas(graphics, frameWidth, frameHeight);
     add(canvas, BorderLayout.CENTER);
     final JPanel bar = new JPanel(new BorderLayout());
@@ -63,7 +63,7 @@ final class FilmStripFrame extends JFrame {
   }
 
   private static <T> int length(Sequence<T> s) {
-    return s.isEmpty() ? 0 : 1 + length(s.rest());
+    return s.reduce(0, (it, acc) -> acc + 1);
   }
 
   private void updateSliderModelMax() {

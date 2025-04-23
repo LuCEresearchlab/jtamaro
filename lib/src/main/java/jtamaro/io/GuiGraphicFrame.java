@@ -36,6 +36,7 @@ final class GuiGraphicFrame extends JFrame {
   private final GuiGraphicTreePanel treePanel;
 
   public GuiGraphicFrame() {
+    super();
     setTitle("JTamaro");
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

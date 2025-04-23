@@ -50,6 +50,7 @@ final class InteractionFrame<M> extends JFrame {
   private final GuiGraphicCanvas graphicCanvas;
 
   public InteractionFrame(Interaction<M> interaction) {
+    super();
     this.interaction = interaction;
     this.state = new InteractionState<>(interaction);
     this.eventsTrace = new Trace();

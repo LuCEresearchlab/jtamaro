@@ -22,6 +22,7 @@ public final class GuiGraphicTreePanel extends JPanel {
   private final JTree tree;
 
   public GuiGraphicTreePanel(RenderOptions renderOptions) {
+    super();
     setLayout(new BorderLayout());
     tree = new JTree();
     tree.setCellRenderer(new GuiGraphicTreeCellRenderer());

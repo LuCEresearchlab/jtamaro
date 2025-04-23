@@ -14,7 +14,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class GuiGraphicTreeCellRenderer extends DefaultTreeCellRenderer {
 
+  /**
+   * Default constructor.
+   */
   public GuiGraphicTreeCellRenderer() {
+    super();
   }
 
   @Override

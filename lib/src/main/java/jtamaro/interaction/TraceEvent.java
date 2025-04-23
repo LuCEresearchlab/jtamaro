@@ -31,6 +31,7 @@ sealed abstract class TraceEvent {
     private final KeyboardKey key;
 
     public KeyPressed(KeyboardKey key) {
+      super();
       this.key = key;
     }
 
@@ -45,6 +46,7 @@ sealed abstract class TraceEvent {
     private final KeyboardKey key;
 
     public KeyReleased(KeyboardKey key) {
+      super();
       this.key = key;
     }
 
@@ -59,6 +61,7 @@ sealed abstract class TraceEvent {
     private final KeyboardChar keyboardChar;
 
     public KeyTyped(KeyboardChar keyboardChar) {
+      super();
       this.keyboardChar = keyboardChar;
     }
 
@@ -75,6 +78,7 @@ sealed abstract class TraceEvent {
     private final MouseButton button;
 
     public MousePressed(Coordinate coordinate, MouseButton button) {
+      super();
       this.coordinate = coordinate;
       this.button = button;
     }
@@ -92,6 +96,7 @@ sealed abstract class TraceEvent {
     private final MouseButton button;
 
     public MouseReleased(Coordinate coordinate, MouseButton button) {
+      super();
       this.coordinate = coordinate;
       this.button = button;
     }
@@ -107,6 +112,7 @@ sealed abstract class TraceEvent {
     private final Coordinate coordinate;
 
     public MouseMoved(Coordinate coordinate) {
+      super();
       this.coordinate = coordinate;
     }
 
