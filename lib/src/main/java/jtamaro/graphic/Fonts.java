@@ -9,9 +9,6 @@ import java.awt.Font;
  */
 public final class Fonts {
 
-  private Fonts() {
-  }
-
   /**
    * Default serif font.
    */
@@ -26,4 +23,7 @@ public final class Fonts {
    * Default monospaced font.
    */
   public static final String MONOSPACED = Font.MONOSPACED;
+
+  private Fonts() {
+  }
 }

@@ -24,4 +24,7 @@ final class TestUtil {
         .intersperse(", "))
         .foldRight("]", String::concat);
   }
+
+  private TestUtil() {
+  }
 }

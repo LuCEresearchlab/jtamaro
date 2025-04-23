@@ -3,7 +3,7 @@ package jtamaro.graphic;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ColorTest {
+public final class ColorTest {
 
   private void assertColor(int r, int g, int b, int a, Color actual) {
     Assert.assertEquals(new Color(r, g, b, a / 255.0), actual);

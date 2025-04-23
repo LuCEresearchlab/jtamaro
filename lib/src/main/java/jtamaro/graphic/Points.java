@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @see jtamaro.graphic.Point
  */
-public class Points {
+public final class Points {
 
   /**
    * The top left corner of the bounding box.
