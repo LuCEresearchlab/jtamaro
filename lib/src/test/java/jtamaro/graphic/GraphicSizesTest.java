@@ -3,8 +3,6 @@ package jtamaro.graphic;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static jtamaro.graphic.Colors.BLACK;
-import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.compose;
 import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.pin;
@@ -229,8 +227,8 @@ public final class GraphicSizesTest {
     final Graphic g = rotate(
         9 * 5,
         compose(
-            pin(BOTTOM_CENTER, ellipse(inner, inner, BLACK)),
-            pin(BOTTOM_CENTER, ellipse(outer, outer, WHITE)))
+            pin(BOTTOM_CENTER, ellipse(inner, inner, Colors.BLACK)),
+            pin(BOTTOM_CENTER, ellipse(outer, outer, Colors.WHITE)))
     );
 
     Assert.assertEquals(outer, g.getWidth(), 0.0001);

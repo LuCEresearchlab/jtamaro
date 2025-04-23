@@ -56,7 +56,7 @@ final class InteractionFrame<M> extends JFrame {
     this.timer = new Timer(interaction.getMsBetweenTicks(), this::onTick);
 
     setTitle(interaction.getName());
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent winEvt) {

@@ -7,7 +7,6 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Map;
 import java.util.Objects;
 import java.util.SequencedMap;
 
@@ -65,7 +64,7 @@ final class Text extends Graphic {
 
   @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
-    g2d.setPaint(Graphic.renderableColor(color));
+    g2d.setPaint(renderableColor(color));
     g2d.fill(getPath());
   }
 

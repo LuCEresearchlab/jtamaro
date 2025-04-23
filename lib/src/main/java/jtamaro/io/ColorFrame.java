@@ -13,7 +13,7 @@ final class ColorFrame extends JFrame {
 
   public ColorFrame(Color color) {
     setTitle("Color");
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     final JLabel rgbLabel = new JLabel("RGBA: "
         + color.red() + ", "
         + color.green() + ", "

@@ -2,7 +2,6 @@ package jtamaro.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
-import java.util.Map;
 import java.util.Objects;
 import java.util.SequencedMap;
 
@@ -47,7 +46,7 @@ final class Rectangle extends Graphic {
 
   @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
-    g2d.setPaint(Graphic.renderableColor(color));
+    g2d.setPaint(renderableColor(color));
     g2d.fill(getPath());
   }
 

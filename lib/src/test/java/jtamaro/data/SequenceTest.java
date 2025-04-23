@@ -4,10 +4,6 @@ import java.util.stream.IntStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static jtamaro.data.Sequences.empty;
-import static jtamaro.data.Sequences.of;
-import static jtamaro.data.Sequences.range;
-
 public final class SequenceTest {
 
   @Test

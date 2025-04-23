@@ -53,7 +53,7 @@ final class CircularSector extends Graphic {
 
   @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
-    g2d.setPaint(Graphic.renderableColor(color));
+    g2d.setPaint(renderableColor(color));
     g2d.fill(getPath());
   }
 

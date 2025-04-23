@@ -37,7 +37,7 @@ final class GuiGraphicFrame extends JFrame {
 
   public GuiGraphicFrame() {
     setTitle("JTamaro");
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     renderOptions = new RenderOptions(10);
 
