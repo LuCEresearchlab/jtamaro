@@ -60,7 +60,7 @@ public final class GuiGraphicCanvas extends JComponent {
   public boolean saveGraphic(Path path) {
     final BufferedImage image = getBufImage();
 
-    try (final OutputStream oStream = Files.newOutputStream(path,
+    try (OutputStream oStream = Files.newOutputStream(path,
         StandardOpenOption.CREATE,
         StandardOpenOption.WRITE)) {
       ImageIO.write(image, "png", oStream);

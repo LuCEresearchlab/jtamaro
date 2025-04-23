@@ -12,8 +12,8 @@ public final class IoTest {
   @Test
   public void testToDo() {
     final PrintStream stdErr = System.err;
-    try (final ByteArrayOutputStream oStream = new ByteArrayOutputStream();
-         final PrintStream testErr = new PrintStream(oStream)) {
+    try (ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+         PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
       IO.todo("test message");
