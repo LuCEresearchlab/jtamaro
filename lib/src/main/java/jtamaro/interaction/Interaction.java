@@ -147,7 +147,7 @@ public final class Interaction<M> {
       Graphic background,
       Function1<M, Graphic> renderer) {
     this.initialModel = initialModel;
-    this.renderer = buildRenderer(renderer, background);
+    this.renderer = renderer;
     this.tickHandler = tickHandler;
     this.keyPressHandler = keyPressHandler;
     this.keyReleaseHandler = keyReleaseHandler;
@@ -474,7 +474,7 @@ public final class Interaction<M> {
    * Set a static background graphic.
    *
    * @implNote The foreground graphic (rendered with the function specified with
-   * {@link #withRenderer(Function1)}) is {@link jtamaro.graphic.Compose}'d on top of this
+   * {@link #withRenderer(Function1)}) is composed on top of this
    * background. The pin position of both the background and the foreground is not changed by the
    * interaction, so make sure to pin the produced graphics appropriately.
    */
@@ -605,13 +605,8 @@ public final class Interaction<M> {
   }
 
   Function1<M, Graphic> getRenderer() {
-    return renderer;
-  }
-
-  private static <M> Function1<M, Graphic> buildRenderer(Function1<M, Graphic> fgRenderer,
-      Graphic background) {
     return background == null
-        ? fgRenderer
-        : m -> Graphics.compose(fgRenderer.apply(m), background);
+        ? renderer
+        : m -> Graphics.compose(renderer.apply(m), background);
   }
 }

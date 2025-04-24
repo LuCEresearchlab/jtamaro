@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import jtamaro.data.Function1;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.GuiGraphicCanvas;
 import jtamaro.io.IO;
@@ -37,6 +38,9 @@ final class InteractionFrame<M> extends JFrame {
 
   private final InteractionState<M> state;
 
+  // Save reference to the renderer for performance
+  private final Function1<M, Graphic> renderer;
+
   private final Trace eventsTrace;
 
   private final Timer timer;
@@ -53,6 +57,7 @@ final class InteractionFrame<M> extends JFrame {
     super();
     this.interaction = interaction;
     this.state = new InteractionState<>(interaction);
+    this.renderer = interaction.getRenderer();
     this.eventsTrace = new Trace();
     this.timer = new Timer(interaction.getMsBetweenTicks(), this::onTick);
 
@@ -84,7 +89,7 @@ final class InteractionFrame<M> extends JFrame {
     viewFrame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     viewFrame.addActionListener(e -> SwingUtilities.invokeLater(() -> {
       stopTimer();
-      IO.show(interaction.getRenderer().apply(state.getModel()));
+      IO.show(renderer.apply(state.getModel()));
     }));
     fileMenu.add(viewFrame);
 
@@ -121,7 +126,7 @@ final class InteractionFrame<M> extends JFrame {
     int canvasWidth = interaction.getCanvasWidth();
     int canvasHeight = interaction.getCanvasHeight();
     if (canvasWidth <= 0 || canvasHeight <= 0) {
-      final Graphic g = interaction.getRenderer().apply(state.getModel());
+      final Graphic g = renderer.apply(state.getModel());
       canvasWidth = (int) g.getWidth();
       canvasHeight = (int) g.getHeight();
     }
@@ -244,7 +249,6 @@ final class InteractionFrame<M> extends JFrame {
   }
 
   private void renderAndShowGraphic() {
-    final Graphic graphic = interaction.getRenderer().apply(state.getModel());
-    graphicCanvas.setGraphic(graphic);
+    graphicCanvas.setGraphic(renderer.apply(state.getModel()));
   }
 }
