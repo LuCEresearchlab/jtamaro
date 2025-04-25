@@ -5,6 +5,8 @@ import javax.swing.SwingUtilities;
 import jtamaro.data.Function1;
 import jtamaro.data.Function2;
 import jtamaro.data.Function3;
+import jtamaro.data.Option;
+import jtamaro.data.Options;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
 
@@ -450,6 +452,10 @@ public final class Interaction<M> {
 
   /**
    * Specify a function that takes the current model and produces a graphic at each tick.
+   *
+   * @implNote The graphic produced by the renderer and the (optional) background are going to be
+   * drawn aligned with respect to their top-left corner. Make sure that the produced graphics are
+   * sized accordingly with respect to the background (if any).
    */
   public Interaction<M> withRenderer(Function1<M, Graphic> renderer) {
     return new Interaction<>(initialModel,
@@ -473,10 +479,9 @@ public final class Interaction<M> {
   /**
    * Set a static background graphic.
    *
-   * @implNote The foreground graphic (rendered with the function specified with
-   * {@link #withRenderer(Function1)}) is composed on top of this
-   * background. The pin position of both the background and the foreground is not changed by the
-   * interaction, so make sure to pin the produced graphics appropriately.
+   * @implNote The graphic produced by the renderer and the (optional) background are going to be
+   * drawn aligned with respect to their top-left corner. Make sure that the background is sized
+   * accordingly with respect to graphics produced by the renderer.
    */
   public Interaction<M> withBackground(Graphic background) {
     return new Interaction<>(initialModel,
@@ -596,6 +601,12 @@ public final class Interaction<M> {
     return mouseMoveHandler;
   }
 
+  Option<Graphic> getBackground() {
+    return background == null
+        ? Options.none()
+        : Options.some(background);
+  }
+
   int getCanvasWidth() {
     return canvasWidth;
   }
@@ -605,8 +616,6 @@ public final class Interaction<M> {
   }
 
   Function1<M, Graphic> getRenderer() {
-    return background == null
-        ? renderer
-        : m -> Graphics.compose(renderer.apply(m), background);
+    return renderer;
   }
 }

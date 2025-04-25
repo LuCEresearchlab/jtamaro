@@ -17,11 +17,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import jtamaro.data.Function1;
+import jtamaro.data.Option;
+import jtamaro.data.Pair;
 import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Graphics;
 import jtamaro.graphic.GuiGraphicCanvas;
+import jtamaro.graphic.RenderOptions;
 import jtamaro.io.IO;
 
 /**
@@ -92,6 +97,15 @@ final class InteractionFrame<M> extends JFrame {
       IO.show(renderer.apply(state.getModel()));
     }));
     fileMenu.add(viewFrame);
+    final JMenuItem viewBackground = new JMenuItem("Inspect Background");
+    viewBackground.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK));
+    viewBackground.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+      stopTimer();
+      IO.show(interaction.getBackground().fold(Function1.identity(), Graphics::emptyGraphic));
+    }));
+    viewBackground.setEnabled(!interaction.getBackground().isEmpty());
+    fileMenu.add(viewBackground);
 
     final JMenu viewMenu = new JMenu("View");
     viewMenu.setMnemonic(KeyEvent.VK_V);
@@ -123,15 +137,17 @@ final class InteractionFrame<M> extends JFrame {
     toolbar.add(startStopButton, BorderLayout.EAST);
 
     // Canvas component
-    int canvasWidth = interaction.getCanvasWidth();
-    int canvasHeight = interaction.getCanvasHeight();
-    if (canvasWidth <= 0 || canvasHeight <= 0) {
-      final Graphic g = renderer.apply(state.getModel());
-      canvasWidth = (int) g.getWidth();
-      canvasHeight = (int) g.getHeight();
-    }
+    final Pair<Integer, Integer> canvasSize = computeCanvasSize(interaction);
+    final RenderOptions renderOptions = new RenderOptions(
+        0,
+        canvasSize.first(),
+        canvasSize.second(),
+        false
+    );
+    final JPanel canvasPanel = new JPanel();
+    canvasPanel.setLayout(new OverlayLayout(canvasPanel));
 
-    graphicCanvas = new GuiGraphicCanvas(canvasWidth, canvasHeight);
+    graphicCanvas = new GuiGraphicCanvas(renderOptions);
     graphicCanvas.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent ev) {
@@ -182,7 +198,15 @@ final class InteractionFrame<M> extends JFrame {
         traceEvent(new TraceEvent.MouseMoved(coordinate));
       }
     });
-    add(graphicCanvas, BorderLayout.CENTER);
+    canvasPanel.add(graphicCanvas);
+
+    interaction.getBackground().stream().forEach(bg -> {
+      final GuiGraphicCanvas bgCanvas = new GuiGraphicCanvas(renderOptions);
+      bgCanvas.setGraphic(bg);
+      canvasPanel.add(bgCanvas);
+    });
+
+    add(canvasPanel, BorderLayout.CENTER);
 
     pack();
 
@@ -250,5 +274,27 @@ final class InteractionFrame<M> extends JFrame {
 
   private void renderAndShowGraphic() {
     graphicCanvas.setGraphic(renderer.apply(state.getModel()));
+  }
+
+  private static <M> Pair<Integer, Integer> computeCanvasSize(Interaction<M> interaction) {
+    // Either user-defined size...
+    final int interactionWidth = interaction.getCanvasWidth();
+    final int interactionHeight = interaction.getCanvasHeight();
+    if (interactionWidth > 0 && interactionHeight > 0) {
+      return new Pair<>(interactionWidth, interactionHeight);
+    }
+
+    // ...or the biggest between first frame and background
+    final Graphic firstFrame = interaction.getRenderer().apply(interaction.getInitialModel());
+    final int firstFrameWidth = (int) firstFrame.getWidth();
+    final int firstFrameHeight = (int) firstFrame.getHeight();
+
+    final Option<Graphic> bg = interaction.getBackground();
+    final int bgWidth = bg.fold(g -> (int) g.getWidth(), () -> 0);
+    final int bgHeight = bg.fold(g -> (int) g.getHeight(), () -> 0);
+    return new Pair<>(
+        Math.max(firstFrameWidth, bgWidth),
+        Math.max(firstFrameHeight, bgHeight)
+    );
   }
 }

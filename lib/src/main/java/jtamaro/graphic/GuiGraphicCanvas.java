@@ -40,7 +40,7 @@ public final class GuiGraphicCanvas extends JComponent {
   private Graphic graphic;
 
   public GuiGraphicCanvas(int width, int height) {
-    this(new RenderOptions(0, width, height));
+    this(new RenderOptions(0, width, height, true));
   }
 
   public GuiGraphicCanvas(RenderOptions renderOptions) {
@@ -105,9 +105,12 @@ public final class GuiGraphicCanvas extends JComponent {
     final Graphics2D g2 = (Graphics2D) g;
     g2.setRenderingHints(new RenderingHints(
         RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON));
+        RenderingHints.VALUE_ANTIALIAS_ON
+    ));
     final int padding = renderOptions.getPadding();
-    paintBackground(g);
+    if (renderOptions.shouldDrawBackground()) {
+      paintBackground(g);
+    }
     g2.translate(padding, padding);
     g2.translate(-graphic.getBBox().getMinX(), -graphic.getBBox().getMinY());
     graphic.render(g2, renderOptions);

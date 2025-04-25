@@ -17,20 +17,28 @@ public final class RenderOptions {
 
   private final int fixedHeight;
 
+  private final boolean drawBackground;
+
   private Graphic selection;
 
   private final List<Listener> listeners;
 
   public RenderOptions(int padding) {
-    this(padding, -1, -1);
+    this(padding, -1, -1, true);
   }
 
-  public RenderOptions(int padding, int fixedWidth, int fixedHeight) {
+  public RenderOptions(
+      int padding,
+      int fixedWidth,
+      int fixedHeight,
+      boolean drawBackground
+  ) {
     this.padding = padding;
     this.fixedWidth = fixedWidth;
     this.fixedHeight = fixedHeight;
-    selection = null;
-    listeners = new ArrayList<>();
+    this.drawBackground = drawBackground;
+    this.selection = null;
+    this.listeners = new ArrayList<>();
   }
 
   public void setPadding(int padding) {
@@ -52,6 +60,10 @@ public final class RenderOptions {
 
   public int getFixedHeight() {
     return fixedHeight;
+  }
+
+  public boolean shouldDrawBackground() {
+    return drawBackground;
   }
 
   public void clearSelection() {
