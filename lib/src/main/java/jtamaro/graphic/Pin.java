@@ -43,6 +43,11 @@ final class Pin extends Graphic {
     this.dy = graphic.yForLocation(pinLocation);
   }
 
+  @Override
+  public Point getPin() {
+    return pinPoint;
+  }
+
   public Point getPinPoint() {
     return pinPoint;
   }
