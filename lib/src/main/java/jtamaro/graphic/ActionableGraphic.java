@@ -53,7 +53,7 @@ final class ActionableGraphic<T> extends DelegatingGraphic {
   Option<RelativeLocation> relativeLocationOf(double x, double y) {
     return delegate.relativeLocationOf(x, y)
         // "Eat" non-actionable graphic children
-        .map(it -> it.graphic() instanceof ActionableGraphic<?>
+        .map(it -> it.isGraphicActionable()
             ? it
             : new RelativeLocation(this, x, y));
   }

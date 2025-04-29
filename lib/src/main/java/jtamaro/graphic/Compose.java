@@ -96,10 +96,17 @@ final class Compose extends Graphic {
     // to go deeper to avoid unnecessary traversals
     final Rectangle2D bbox = getBBox();
     if (bbox.contains(x, y)) {
-      // The point is in the foreground graphic, ...
       return foreground.relativeLocationOf(x, y).fold(
-          Options::some,
-          // ... in the background graphic, or neither
+          fg -> Options.some(fg.isGraphicActionable()
+              // Priority #1: actionable foreground
+              ? fg
+              : background.relativeLocationOf(x, y).fold(
+                  // Priority #2: actionable background
+                  // Priority #3: foreground
+                  bg -> bg.isGraphicActionable() ? bg : fg,
+                  () -> fg
+              )),
+          // Priority #4: background (if any)
           () -> background.relativeLocationOf(x, y)
       );
     } else {

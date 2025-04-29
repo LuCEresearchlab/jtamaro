@@ -22,6 +22,10 @@ record RelativeLocation(
     return this.graphic == graphic;
   }
 
+  public boolean isGraphicActionable() {
+    return graphic instanceof ActionableGraphic<?>;
+  }
+
   public Coordinate relativeCoordinates() {
     return new Coordinate((int) x, (int) -y);
   }
