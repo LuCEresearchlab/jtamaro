@@ -24,10 +24,6 @@ import jtamaro.interaction.MouseReleaseAction;
  */
 public final class Actionable<T> {
 
-  private static <T> MouseDragAction<T> noop() {
-    return (model, coordinates, button) -> model;
-  }
-
   private final Graphic graphic;
 
   private final MousePressAction<T> pressActionHandler;
@@ -73,13 +69,13 @@ public final class Actionable<T> {
    * @see MousePressAction
    */
   public Actionable<T> withMousePressHandler(MousePressAction<T> action) {
-    return new Actionable<>(new ActionableGraphic<>(
+    return new Actionable<>(
         action,
         releaseActionHandler,
         moveActionHandler,
         dragActionHandler,
         graphic
-    ));
+    );
   }
 
   /**
@@ -88,13 +84,13 @@ public final class Actionable<T> {
    * @see MouseReleaseAction
    */
   public Actionable<T> withMouseReleaseHandler(MouseReleaseAction<T> action) {
-    return new Actionable<>(new ActionableGraphic<>(
+    return new Actionable<>(
         pressActionHandler,
         action,
         moveActionHandler,
         dragActionHandler,
         graphic
-    ));
+    );
   }
 
   /**
@@ -103,13 +99,13 @@ public final class Actionable<T> {
    * @see MouseMoveAction
    */
   public Actionable<T> withMouseMoveHandler(MouseMoveAction<T> action) {
-    return new Actionable<>(new ActionableGraphic<>(
+    return new Actionable<>(
         pressActionHandler,
         releaseActionHandler,
         action,
         dragActionHandler,
         graphic
-    ));
+    );
   }
 
   /**
@@ -118,13 +114,13 @@ public final class Actionable<T> {
    * @see MouseDragAction
    */
   public Actionable<T> withMouseDragHandler(MouseDragAction<T> action) {
-    return new Actionable<>(new ActionableGraphic<>(
+    return new Actionable<>(
         pressActionHandler,
         releaseActionHandler,
         moveActionHandler,
         action,
         graphic
-    ));
+    );
   }
 
   /**
