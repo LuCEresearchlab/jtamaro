@@ -1,5 +1,7 @@
 package jtamaro.graphic;
 
+import jtamaro.data.Option;
+import jtamaro.data.Options;
 import jtamaro.interaction.MouseAction;
 import jtamaro.interaction.MouseDragAction;
 import jtamaro.interaction.MouseMoveAction;
@@ -26,13 +28,13 @@ public final class Actionable<T> {
 
   private final Graphic graphic;
 
-  private final MousePressAction<T> pressActionHandler;
+  private final Option<MousePressAction<T>> pressActionHandler;
 
-  private final MouseReleaseAction<T> releaseActionHandler;
+  private final Option<MouseReleaseAction<T>> releaseActionHandler;
 
-  private final MouseMoveAction<T> moveActionHandler;
+  private final Option<MouseMoveAction<T>> moveActionHandler;
 
-  private final MouseDragAction<T> dragActionHandler;
+  private final Option<MouseDragAction<T>> dragActionHandler;
 
   /**
    * Default constructor.
@@ -41,19 +43,19 @@ public final class Actionable<T> {
    */
   public Actionable(Graphic g) {
     this(
-        (model, coordinate, mouseButton) -> model,
-        (model, coordinate, mouseButton) -> model,
-        (model, coordinate, mouseButton) -> model,
-        (model, coordinate, mouseButton) -> model,
+        Options.none(),
+        Options.none(),
+        Options.none(),
+        Options.none(),
         g
     );
   }
 
   private Actionable(
-      MousePressAction<T> pressActionHandler,
-      MouseReleaseAction<T> releaseActionHandler,
-      MouseMoveAction<T> moveActionHandler,
-      MouseDragAction<T> dragActionHandler,
+      Option<MousePressAction<T>> pressActionHandler,
+      Option<MouseReleaseAction<T>> releaseActionHandler,
+      Option<MouseMoveAction<T>> moveActionHandler,
+      Option<MouseDragAction<T>> dragActionHandler,
       Graphic graphic
   ) {
     this.graphic = graphic;
@@ -70,7 +72,7 @@ public final class Actionable<T> {
    */
   public Actionable<T> withMousePressHandler(MousePressAction<T> action) {
     return new Actionable<>(
-        action,
+        Options.some(action),
         releaseActionHandler,
         moveActionHandler,
         dragActionHandler,
@@ -86,7 +88,7 @@ public final class Actionable<T> {
   public Actionable<T> withMouseReleaseHandler(MouseReleaseAction<T> action) {
     return new Actionable<>(
         pressActionHandler,
-        action,
+        Options.some(action),
         moveActionHandler,
         dragActionHandler,
         graphic
@@ -102,7 +104,7 @@ public final class Actionable<T> {
     return new Actionable<>(
         pressActionHandler,
         releaseActionHandler,
-        action,
+        Options.some(action),
         dragActionHandler,
         graphic
     );
@@ -118,7 +120,7 @@ public final class Actionable<T> {
         pressActionHandler,
         releaseActionHandler,
         moveActionHandler,
-        action,
+        Options.some(action),
         graphic
     );
   }

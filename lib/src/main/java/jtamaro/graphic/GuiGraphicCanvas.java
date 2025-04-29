@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import jtamaro.data.Function1;
 import jtamaro.data.Option;
 import jtamaro.data.Options;
 import jtamaro.data.Pair;
@@ -74,7 +73,12 @@ public final class GuiGraphicCanvas extends JComponent {
   public Option<Pair<MouseAction<?>, Coordinate>> getMousePressAction(
       Coordinate absoluteCoordinates
   ) {
-    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getPressAction);
+    return getMouseActionAtCoordinates(absoluteCoordinates).flatMap(p ->
+        p.first().getPressAction().fold(
+            action -> Options.some(p.withFirst(action)),
+            Options::none
+        )
+    );
   }
 
   /**
@@ -88,7 +92,12 @@ public final class GuiGraphicCanvas extends JComponent {
   public Option<Pair<MouseAction<?>, Coordinate>> getMouseReleaseAction(
       Coordinate absoluteCoordinates
   ) {
-    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getReleaseAction);
+    return getMouseActionAtCoordinates(absoluteCoordinates).flatMap(p ->
+        p.first().getReleaseAction().fold(
+            action -> Options.some(p.withFirst(action)),
+            Options::none
+        )
+    );
   }
 
   /**
@@ -102,7 +111,12 @@ public final class GuiGraphicCanvas extends JComponent {
   public Option<Pair<MouseAction<?>, Coordinate>> getMouseMoveAction(
       Coordinate absoluteCoordinates
   ) {
-    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getMoveAction);
+    return getMouseActionAtCoordinates(absoluteCoordinates).flatMap(p ->
+        p.first().getMoveAction().fold(
+            action -> Options.some(p.withFirst(action)),
+            Options::none
+        )
+    );
   }
 
   /**
@@ -116,7 +130,12 @@ public final class GuiGraphicCanvas extends JComponent {
   public Option<Pair<MouseAction<?>, Coordinate>> getMouseDragAction(
       Coordinate absoluteCoordinates
   ) {
-    return getMouseActionAtCoordinates(absoluteCoordinates, ActionableGraphic::getDragAction);
+    return getMouseActionAtCoordinates(absoluteCoordinates).flatMap(p ->
+        p.first().getDragAction().fold(
+            action -> Options.some(p.withFirst(action)),
+            Options::none
+        )
+    );
   }
 
   /**
@@ -124,14 +143,11 @@ public final class GuiGraphicCanvas extends JComponent {
    *
    * @param absoluteCoordinates Coordinates of the mouse event with respect to the whole graphic
    *                            drawn by this component (absolute coordinates)
-   * @param getAction           Function to obtain the desired action from the
-   *                            {@link ActionableGraphic} at the given coordinates
-   * @return Pair of {@link MouseAction} (type-erased) and {@link Coordinate} with respect to the
-   * {@link ActionableGraphic} at the given coordinates (relative coordinates)
+   * @return Pair of {@link ActionableGraphic} (type-erased) and {@link Coordinate} with respect to
+   * the {@link ActionableGraphic} at the given coordinates (relative coordinates)
    */
-  private <T extends MouseAction<?>> Option<Pair<T, Coordinate>> getMouseActionAtCoordinates(
-      Coordinate absoluteCoordinates,
-      Function1<ActionableGraphic<?>, T> getAction
+  private Option<Pair<ActionableGraphic<?>, Coordinate>> getMouseActionAtCoordinates(
+      Coordinate absoluteCoordinates
   ) {
     // Translate the absolute coordinates with respect to the origin point
     // of the drawn graphic
@@ -144,7 +160,7 @@ public final class GuiGraphicCanvas extends JComponent {
 
     return graphic.relativeLocationOf(x, y).fold(
         rl -> rl.graphic() instanceof ActionableGraphic<?> ag
-            ? Options.some(new Pair<>(getAction.apply(ag), rl.relativeCoordinates()))
+            ? Options.some(new Pair<>(ag, rl.relativeCoordinates()))
             : Options.none(),
         Options::none
     );

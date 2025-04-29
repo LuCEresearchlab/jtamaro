@@ -11,19 +11,19 @@ import jtamaro.interaction.MouseReleaseAction;
 
 final class ActionableGraphic<T> extends DelegatingGraphic {
 
-  private final MousePressAction<T> pressAction;
+  private final Option<MousePressAction<T>> pressAction;
 
-  private final MouseReleaseAction<T> releaseAction;
+  private final Option<MouseReleaseAction<T>> releaseAction;
 
-  private final MouseMoveAction<T> moveAction;
+  private final Option<MouseMoveAction<T>> moveAction;
 
-  private final MouseDragAction<T> dragAction;
+  private final Option<MouseDragAction<T>> dragAction;
 
   public ActionableGraphic(
-      MousePressAction<T> pressAction,
-      MouseReleaseAction<T> releaseAction,
-      MouseMoveAction<T> moveAction,
-      MouseDragAction<T> dragAction,
+      Option<MousePressAction<T>> pressAction,
+      Option<MouseReleaseAction<T>> releaseAction,
+      Option<MouseMoveAction<T>> moveAction,
+      Option<MouseDragAction<T>> dragAction,
       Graphic graphic
   ) {
     super(graphic);
@@ -33,19 +33,19 @@ final class ActionableGraphic<T> extends DelegatingGraphic {
     this.dragAction = dragAction;
   }
 
-  public MousePressAction<T> getPressAction() {
+  public Option<MousePressAction<T>> getPressAction() {
     return pressAction;
   }
 
-  public MouseReleaseAction<T> getReleaseAction() {
+  public Option<MouseReleaseAction<T>> getReleaseAction() {
     return releaseAction;
   }
 
-  public MouseMoveAction<T> getMoveAction() {
+  public Option<MouseMoveAction<T>> getMoveAction() {
     return moveAction;
   }
 
-  public MouseDragAction<T> getDragAction() {
+  public Option<MouseDragAction<T>> getDragAction() {
     return dragAction;
   }
 
@@ -63,6 +63,24 @@ final class ActionableGraphic<T> extends DelegatingGraphic {
     final SequencedMap<String, Graphic> children = new LinkedHashMap<>();
     children.put("graphic", delegate);
     return children;
+  }
+
+  @Override
+  protected SequencedMap<String, String> getProps(boolean plainText) {
+    final SequencedMap<String, String> props = super.getProps(plainText);
+    if (!pressAction.isEmpty()) {
+      props.put("onPress", "event");
+    }
+    if (!releaseAction.isEmpty()) {
+      props.put("onRelease", "event");
+    }
+    if (!moveAction.isEmpty()) {
+      props.put("onMove", "event");
+    }
+    if (!dragAction.isEmpty()) {
+      props.put("onDrag", "event");
+    }
+    return props;
   }
 
   @Override
