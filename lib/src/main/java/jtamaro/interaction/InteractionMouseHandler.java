@@ -52,12 +52,12 @@ final class InteractionMouseHandler<M> extends MouseAdapter {
 
   @Override
   public void mouseDragged(MouseEvent ev) {
-    handleAction("Mouse dragged", GuiGraphicCanvas::getMouseMoveAction, ev, moveHandler);
+    handleAction("Mouse dragged", GuiGraphicCanvas::getMouseDragAction, ev, moveHandler);
   }
 
   @Override
   public void mouseMoved(MouseEvent ev) {
-    handleAction("Mouse moved", GuiGraphicCanvas::getMouseDragAction, ev, moveHandler);
+    handleAction("Mouse moved", GuiGraphicCanvas::getMouseMoveAction, ev, moveHandler);
   }
 
   private void handleAction(
