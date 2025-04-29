@@ -23,6 +23,6 @@ record RelativeLocation(
   }
 
   public Coordinate relativeCoordinates() {
-    return new Coordinate((int) x, (int) y);
+    return new Coordinate((int) x, (int) -y);
   }
 }
