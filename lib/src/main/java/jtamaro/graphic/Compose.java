@@ -2,6 +2,7 @@ package jtamaro.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.SequencedMap;
@@ -91,12 +92,19 @@ final class Compose extends Graphic {
 
   @Override
   Option<RelativeLocation> relativeLocationOf(double x, double y) {
-    // The point is in the foreground graphic, ...
-    return foreground.relativeLocationOf(x, y).fold(
-        Options::some,
-        // ... in the background graphic, or neither
-        () -> background.relativeLocationOf(x, y)
-    );
+    // Do a quick check against the bounding box to determine whether it's worth
+    // to go deeper to avoid unnecessary traversals
+    final Rectangle2D bbox = getBBox();
+    if (bbox.contains(x, y)) {
+      // The point is in the foreground graphic, ...
+      return foreground.relativeLocationOf(x, y).fold(
+          Options::some,
+          // ... in the background graphic, or neither
+          () -> background.relativeLocationOf(x, y)
+      );
+    } else {
+      return Options.none();
+    }
   }
 
   @Override
