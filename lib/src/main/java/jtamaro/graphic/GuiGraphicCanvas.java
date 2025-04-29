@@ -135,8 +135,12 @@ public final class GuiGraphicCanvas extends JComponent {
   ) {
     // Translate the absolute coordinates with respect to the origin point
     // of the drawn graphic
-    final double x = absoluteCoordinates.x() - graphic.getWidth() / 2.0;
-    final double y = absoluteCoordinates.y() - graphic.getHeight() / 2.0;
+    final Rectangle2D bbox = graphic.getBBox();
+    final double padding = renderOptions.getPadding();
+    final double dx = padding - bbox.getMinX();
+    final double dy = padding - bbox.getMinY();
+    final double x = absoluteCoordinates.x() - dx;
+    final double y = absoluteCoordinates.y() - dy;
 
     return graphic.relativeLocationOf(x, y).fold(
         rl -> rl.graphic() instanceof ActionableGraphic<?> ag
