@@ -19,7 +19,6 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.interact;
-import static jtamaro.io.IO.println;
 
 public class TextFieldDemo {
 
@@ -74,7 +73,6 @@ public class TextFieldDemo {
 
   // Event handling
   private static TextField tick(TextField textField) {
-    println("TICK:" + textField);
     return textField.blinkCursor();
   }
 

@@ -18,20 +18,23 @@ import static jtamaro.io.IO.interact;
 public final class DrawingDemo {
 
   static Graphic renderDrawing(Drawing drawing) {
-    CartesianWorld world = drawing.points().reduce(
+    final CartesianWorld world = drawing.points().reduce(
         new CartesianWorld(),
         (point, w) -> w.place(point.x(), point.y(), ellipse(10, 10, BLUE))
     ).place(0, 0, rectangle(400, 200, WHITE));
+
     return new Actionable<Drawing>(world.asGraphic())
-        .withMouseDragHandler((Drawing d, Coordinate c, MouseButton b) -> {
-          System.out.println("mouse drag " + c);
-          return d.addPoint(new Point(c.x(), c.y()));
-        })
+        .withMouseDragHandler((Drawing d, Coordinate c, MouseButton b) ->
+            d.addPoint(new Point(c.x(), c.y())))
         .asGraphic();
   }
 
-  record Point(double x, double y) {}
+  record Point(double x, double y) {
+
+  }
+
   record Drawing(Sequence<Point> points) {
+
     public Drawing addPoint(Point p) {
       return new Drawing(cons(p, points));
     }

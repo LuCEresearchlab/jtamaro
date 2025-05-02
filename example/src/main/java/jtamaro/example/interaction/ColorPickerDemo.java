@@ -171,7 +171,7 @@ public class ColorPickerDemo {
 
   private static Model onDrag(Model m, Coordinate coords, MouseButton button) {
     final double x = coords.x() / RADIUS;
-    final double y = -coords.y() / RADIUS;
+    final double y = coords.y() / RADIUS;
     final double angle = Math.toDegrees(Math.atan2(y, x));
     final double h = angle < 0 ? angle + 360.0 : angle;
     final double s = Math.hypot(x, y);
