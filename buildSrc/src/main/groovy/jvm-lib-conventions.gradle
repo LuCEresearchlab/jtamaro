@@ -1,7 +1,5 @@
 plugins {
   id("java-library")
-  id("maven-publish")
-  id("signing")
 }
 
 group = "jtamaro"
@@ -9,10 +7,6 @@ version = "25.1.1"
 
 repositories {
   mavenCentral()
-}
-
-dependencies {
-  testImplementation(libs.junit)
 }
 
 java {
@@ -47,82 +41,4 @@ test {
 tasks.withType(AbstractArchiveTask).configureEach {
   preserveFileTimestamps = false
   reproducibleFileOrder = true
-}
-
-final Properties localProps = new Properties()
-final File localPropsFile = project.rootProject.file("local.properties")
-if (localPropsFile.exists()) {
-  localProps.load localPropsFile.newDataInputStream()
-}
-
-publishing {
-  repositories {
-    maven {
-      name = "Central"
-      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-      credentials {
-        username = localProps.getProperty("repo.central.username", "")
-        password = localProps.getProperty("repo.central.password", "")
-      }
-    }
-  }
-
-  publications {
-    mavenJava(MavenPublication) {
-      artifactId = localProps.getProperty("artifact.${project.name}.id", project.name)
-      groupId = localProps.getProperty("artifact.${project.name}.group", "jtamaro")
-      setVersion(project.version)
-
-      from(components.java)
-      versionMapping {
-        usage("java-api") {
-          fromResolutionOf("runtimeClasspath")
-        }
-        usage("java-runtime") {
-          fromResolutionResult()
-        }
-      }
-      pom {
-        name = "Jtamaro - ${project.name}"
-        description = localProps.getProperty("artifact.${project.name}.description", "")
-        url = "https://github.com/LuCEresearchlab/jtamaro"
-        developers {
-          developer {
-            name = "hauswirth"
-          }
-          developer {
-            name = "bvlj"
-          }
-        }
-        licenses {
-          license {
-            name = "MIT"
-            url = "https://opensource.org/license/MIT"
-          }
-        }
-        scm {
-          connection = "scm:git:git://github.com/LuCEresearchlab/jtamaro.git"
-          developerConnection = "scm:git:git://github.com/LuCEresearchlab/jtamaro.git"
-          url = "https://github.com/LuCEresearchlab/jtamaro/tree/main"
-        }
-      }
-    }
-  }
-}
-
-signing {
-  final String signingKeyPath = localProps.getProperty("signing.secretKeyFile", "")
-  if (signingKeyPath == "") {
-    required = false
-  } else {
-    required = true
-
-    final String signingPassword = localProps.getProperty("signing.password", "")
-    final File signingKeyFile = file("${rootProject.rootDir.absolutePath}/${signingKeyPath}")
-
-    if (signingKeyFile.exists()) {
-      useInMemoryPgpKeys(signingKeyFile.text, signingPassword)
-    }
-  }
-  sign(publishing.publications.mavenJava)
 }

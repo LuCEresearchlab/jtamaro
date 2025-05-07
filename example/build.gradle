@@ -1,12 +1,16 @@
 plugins {
-    id 'application'
+  id("application")
 }
 
 application {
-    mainClass = 'jtamaro.example.Application'
+  mainClass = "jtamaro.example.Application"
 }
 
 dependencies {
-  implementation project(':lib')
-  implementation project(':music')
+  implementation project(":lib")
+  implementation project(":music")
+}
+
+java {
+  toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }

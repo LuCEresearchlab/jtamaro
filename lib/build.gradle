@@ -1,3 +1,8 @@
 plugins {
-  id 'jvm-lib-conventions'
+  id("jvm-lib-conventions")
+  id("publish-conventions")
+}
+
+dependencies {
+  testImplementation(libs.junit)
 }
