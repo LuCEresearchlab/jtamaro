@@ -1,14 +1,17 @@
 package jtamaro.graphic;
 
+import java.awt.AWTError;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -44,20 +47,31 @@ public final class GuiGraphicCanvas extends JComponent {
 
   private static final Color DARK = new Color(230, 230, 230);
 
-  private final RenderOptions renderOptions;
+  private static final int BG_TILE_SIZE = 10;
 
-  private Graphic graphic;
+  private static final AffineTransform AFFINE_ID = new AffineTransform(1f, 0f, 0f, 1f, 0f, 0f);
+
+  private static final RenderingHints RENDERING_HINTS = new RenderingHints(
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON
+  );
+
+  private State state;
+
+  private final RenderOptions renderOptions;
 
   public GuiGraphicCanvas(RenderOptions renderOptions) {
     super();
+    this.state = new State();
     this.renderOptions = renderOptions;
-    this.graphic = new EmptyGraphic();
-
     renderOptions.addRenderOptionsListener(this::repaint);
   }
 
+  /**
+   * Change the graphic drawn by this canvas.
+   */
   public void setGraphic(Graphic graphic) {
-    this.graphic = graphic;
+    this.state = state.withGraphic(renderOptions, graphic);
     revalidate();
     repaint();
   }
@@ -151,14 +165,14 @@ public final class GuiGraphicCanvas extends JComponent {
   ) {
     // Translate the absolute coordinates with respect to the origin point
     // of the drawn graphic
-    final Rectangle2D bbox = graphic.getBBox();
+    final Rectangle2D bbox = state.graphic.getBBox();
     final double padding = renderOptions.getPadding();
     final double dx = padding - bbox.getMinX();
     final double dy = padding - bbox.getMinY();
     final double x = absoluteCoordinates.x() - dx;
     final double y = absoluteCoordinates.y() - dy;
 
-    return graphic.relativeLocationOf(x, y).fold(
+    return state.graphic.relativeLocationOf(x, y).fold(
         rl -> rl.graphic() instanceof ActionableGraphic<?> ag
             ? Options.some(new Pair<>(ag, rl.relativeCoordinates()))
             : Options.none(),
@@ -166,13 +180,14 @@ public final class GuiGraphicCanvas extends JComponent {
     );
   }
 
+  /**
+   * Save the current graphic to the given path as a PNG file.
+   */
   public boolean saveGraphic(Path path) {
-    final BufferedImage image = getBufImage();
-
     try (OutputStream oStream = Files.newOutputStream(path,
         StandardOpenOption.CREATE,
         StandardOpenOption.WRITE)) {
-      ImageIO.write(image, "png", oStream);
+      ImageIO.write(state.image, "png", oStream);
       return true;
     } catch (IOException e) {
       LOGGER.log(Level.SEVERE, "Failed to write graphics to " + path, e);
@@ -180,90 +195,126 @@ public final class GuiGraphicCanvas extends JComponent {
     }
   }
 
+  /**
+   * Copies the current graphic to the given path as a PNG file.
+   */
   public boolean copyGraphicToClipboard() {
-    final Transferable transferable = new TransferableBufferedImage(getBufImage());
+    final Transferable transferable = new TransferableBufferedImage(state.image);
     try {
       Toolkit.getDefaultToolkit()
           .getSystemClipboard()
           .setContents(transferable, null);
       return true;
-    } catch (Exception e) {
-      // Unsupported operation...
+    } catch (AWTError
+             | HeadlessException
+             | IllegalStateException e) {
+      LOGGER.log(Level.SEVERE, "Failed to copy graphic to system clipboard", e);
       return false;
     }
   }
 
   @Override
   public Dimension getPreferredSize() {
-    final int padding = renderOptions.getPadding();
+    final int padding = renderOptions.getPadding() * 2;
     if (renderOptions.hasFixedSize()) {
       return new Dimension(
-          renderOptions.getFixedWidth() + 2 * padding,
-          renderOptions.getFixedHeight() + 2 * padding
+          renderOptions.getFixedWidth() + padding,
+          renderOptions.getFixedHeight() + padding
       );
     } else {
       return new Dimension(
-          (int) graphic.getWidth() + 2 * padding,
-          (int) graphic.getHeight() + 2 * padding
+          (int) state.graphic.getWidth() + padding,
+          (int) state.graphic.getHeight() + padding
       );
     }
   }
 
   @Override
-  public void paintComponent(Graphics g) {
-    final Graphics2D g2 = (Graphics2D) g;
-    g2.setRenderingHints(new RenderingHints(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON
-    ));
+  protected void paintComponent(Graphics g) {
+    final Graphics2D g2d = (Graphics2D) g;
+    g2d.setRenderingHints(RENDERING_HINTS);
+
     final int padding = renderOptions.getPadding();
     if (renderOptions.shouldDrawBackground()) {
-      paintBackground(g);
+      paintBackground(g2d);
     }
-    g2.translate(padding, padding);
-    g2.translate(-graphic.getBBox().getMinX(), -graphic.getBBox().getMinY());
-    graphic.render(g2, renderOptions);
-    graphic.drawDebugInfo(g2, renderOptions);
+
+    // Draw pre-rendered version of the graphic
+    g2d.drawImage(state.image, AFFINE_ID, null);
+
+    // Dynamically draw info
+    if (renderOptions.isSelected(state.graphic)) {
+      final Rectangle2D bbox = state.graphic.getBBox();
+      g2d.translate(padding, padding);
+      g2d.translate(-bbox.getMinX(), -bbox.getMinY());
+      state.graphic.drawDebugInfo(g2d);
+    }
   }
 
-  private void paintBackground(Graphics g) {
+  private void paintBackground(Graphics2D g2d) {
     final int width = getWidth();
     final int height = getHeight();
-    g.setColor(Color.WHITE);
-    g.fillRect(0, 0, width, height);
-    final int tileSize = 10;
-    final int rows = height / tileSize;
-    final int cols = width / tileSize;
-    for (int col = 0; col <= cols; col++) {
-      for (int row = 0; row <= rows; row++) {
-        g.setColor((col + row) % 2 == 0 ? BRIGHT : DARK);
-        int tileWidth = Math.min(width - col * tileSize, tileSize);
-        int tileHeight = Math.min(height - row * tileSize, tileSize);
-        g.fillRect(col * tileSize, row * tileSize, tileWidth, tileHeight);
+    g2d.setColor(BRIGHT);
+    g2d.fillRect(0, 0, width, height);
+    g2d.setColor(DARK);
+    final int rows = height / BG_TILE_SIZE;
+    final int cols = width / BG_TILE_SIZE;
+
+    final int extraVert = BG_TILE_SIZE - (height % BG_TILE_SIZE);
+    final int extraHoriz = BG_TILE_SIZE - (width % BG_TILE_SIZE);
+
+    for (int col = 0; col < cols; col++) {
+      for (int row = 0; row < rows; row++) {
+        if ((col + row) % 2 == 0) {
+          g2d.fillRect(col * BG_TILE_SIZE, row * BG_TILE_SIZE, BG_TILE_SIZE, BG_TILE_SIZE);
+        }
+      }
+      if ((col + rows) % 2 == 0) {
+        // Horizontal remainder for the column
+        g2d.fillRect(col * BG_TILE_SIZE, rows * BG_TILE_SIZE, BG_TILE_SIZE, extraHoriz);
+      }
+    }
+    for (int row = 0; row < rows; row++) {
+      if ((cols + row) % 2 == 0) {
+        // Vertical remainder for the row
+        g2d.fillRect(cols * BG_TILE_SIZE, row * BG_TILE_SIZE, extraVert, BG_TILE_SIZE);
       }
     }
   }
 
-  private BufferedImage getBufImage() {
+  private static BufferedImage graphicToImage(RenderOptions renderOptions, Graphic graphic) {
     final int padding = renderOptions.getPadding();
-    final Rectangle2D bBox = graphic.getBBox();
-    final int width = (int) Math.ceil(bBox.getWidth()) + 2 * padding;
-    final int height = (int) Math.ceil(bBox.getHeight()) + 2 * padding;
+    final Rectangle2D bbox = graphic.getBBox();
+    final int width = (int) Math.ceil(bbox.getWidth()) + 2 * padding;
+    final int height = (int) Math.ceil(bbox.getHeight()) + 2 * padding;
 
     final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     // According to the documentation, the concrete type is always Graphics2D
     final Graphics2D g2d = (Graphics2D) image.getGraphics();
     try {
-      g2d.setRenderingHints(new RenderingHints(
-          RenderingHints.KEY_ANTIALIASING,
-          RenderingHints.VALUE_ANTIALIAS_ON));
+      g2d.setRenderingHints(RENDERING_HINTS);
       g2d.translate(padding, padding);
-      g2d.translate(-bBox.getMinX(), -bBox.getMinY());
+      g2d.translate(-bbox.getMinX(), -bbox.getMinY());
       graphic.render(g2d, renderOptions);
-      graphic.drawDebugInfo(g2d, renderOptions);
       return image;
     } finally {
       g2d.dispose();
+    }
+  }
+
+  private record State(Graphic graphic, BufferedImage image) {
+
+    public State() {
+      this(new EmptyGraphic(), new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY));
+    }
+
+    public State withGraphic(RenderOptions renderOptions, Graphic graphic) {
+      return new State(
+          graphic,
+          graphic.structurallyEqualTo(this.graphic)
+              ? image
+              : graphicToImage(renderOptions, graphic)
+      );
     }
   }
 

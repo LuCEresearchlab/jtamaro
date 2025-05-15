@@ -35,7 +35,7 @@ final class GuiGraphicFrame extends JFrame {
 
   private final GuiGraphicTreePanel treePanel;
 
-  public GuiGraphicFrame() {
+  public GuiGraphicFrame(Graphic graphic) {
     super();
     setTitle("JTamaro");
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -74,12 +74,13 @@ final class GuiGraphicFrame extends JFrame {
 
     // canvas
     canvas = new GuiGraphicCanvas(renderOptions);
+    canvas.setGraphic(graphic);
     final JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());
     panel.add(canvas, BorderLayout.CENTER);
 
     // tree
-    treePanel = new GuiGraphicTreePanel(renderOptions);
+    treePanel = new GuiGraphicTreePanel(renderOptions, graphic);
     final GuiGraphicPropertiesPanel propertiesPanel = new GuiGraphicPropertiesPanel(renderOptions);
     final JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     rightSplitPane.setTopComponent(treePanel);
@@ -93,21 +94,10 @@ final class GuiGraphicFrame extends JFrame {
     pack();
   }
 
-  public GuiGraphicFrame(Graphic graphic) {
-    this();
-    setGraphic(graphic);
-  }
-
   @Override
   public void dispose() {
     treePanel.dispose();
     super.dispose();
-  }
-
-  public void setGraphic(Graphic graphic) {
-    canvas.setGraphic(graphic);
-    treePanel.setGraphic(graphic);
-    pack();
   }
 
   private void setPadding() {

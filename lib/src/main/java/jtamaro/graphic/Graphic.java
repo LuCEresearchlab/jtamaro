@@ -154,6 +154,10 @@ public abstract sealed class Graphic
    */
   protected abstract void render(Graphics2D g2d, RenderOptions options);
 
+  final void drawDebugInfo(Graphics2D g2d) {
+    GraphicsDebugInfo.render(g2d, getPath(), getBBox());
+  }
+
   Path2D.Double getPath() {
     return path;
   }
@@ -183,7 +187,7 @@ public abstract sealed class Graphic
   /**
    * Creates a string visualization of this graphic and its components.
    */
-  public String dump() {
+  public final String dump() {
     final StringBuilder sb = new StringBuilder();
     dump(sb, "");
     return sb.toString();
@@ -229,7 +233,7 @@ public abstract sealed class Graphic
    * Create a node that can be used to inspect this graphic in a GUI by representing it with a
    * JTree.
    */
-  public MutableTreeNode createInspectTree() {
+  public final MutableTreeNode createInspectTree() {
     return new InspectTreeNode(getChildren().values());
   }
 
@@ -264,11 +268,6 @@ public abstract sealed class Graphic
     return props;
   }
 
-  void drawDebugInfo(Graphics2D g2d, RenderOptions options) {
-    if (options.isSelected(this)) {
-      GraphicsDebugInfo.render(g2d, getPath(), getBBox());
-    }
-  }
 
   public abstract boolean structurallyEqualTo(Graphic other);
 

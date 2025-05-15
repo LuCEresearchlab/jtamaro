@@ -21,11 +21,12 @@ public final class GuiGraphicTreePanel extends JPanel {
 
   private final JTree tree;
 
-  public GuiGraphicTreePanel(RenderOptions renderOptions) {
+  public GuiGraphicTreePanel(RenderOptions renderOptions, Graphic graphic) {
     super();
     setLayout(new BorderLayout());
     tree = new JTree();
     tree.setCellRenderer(new GuiGraphicTreeCellRenderer());
+    tree.setModel(new DefaultTreeModel(graphic.createInspectTree()));
     ToolTipManager.sharedInstance().registerComponent(tree);
     final JScrollPane treeScrollPanel = new JScrollPane(tree);
     treeScrollPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -47,14 +48,9 @@ public final class GuiGraphicTreePanel extends JPanel {
       }
       for (final TreePath path : paths) {
         final Graphic.InspectTreeNode node = (Graphic.InspectTreeNode) path.getLastPathComponent();
-        final Graphic graphic = node.getGraphic();
-        renderOptions.select(graphic);
+        renderOptions.select(node.getGraphic());
       }
     });
-  }
-
-  public void setGraphic(Graphic g) {
-    tree.setModel(new DefaultTreeModel(g.createInspectTree()));
   }
 
   public void dispose() {
