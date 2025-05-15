@@ -23,6 +23,11 @@ final class EmptyGraphic extends Graphic {
   }
 
   @Override
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof EmptyGraphic;
+  }
+
+  @Override
   public boolean equals(Object other) {
     return other instanceof EmptyGraphic;
   }

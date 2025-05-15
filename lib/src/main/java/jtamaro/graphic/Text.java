@@ -86,13 +86,18 @@ final class Text extends Graphic {
   }
 
   @Override
-  public boolean equals(Object other) {
-    return this == other
-        || (other instanceof Text that
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Text that
         && Double.compare(that.size, size) == 0
         && Objects.equals(that.content, content)
         && Objects.equals(that.font, font)
-        && Objects.equals(that.color, color));
+        && Objects.equals(that.color, color);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return this == other
+        || (other instanceof Text that && structurallyEqualTo(that));
   }
 
   @Override

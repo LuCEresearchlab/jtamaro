@@ -82,13 +82,18 @@ final class Triangle extends Graphic {
   }
 
   @Override
-  public boolean equals(Object other) {
-    return this == other
-        || (other instanceof Triangle that
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Triangle that
         && Double.compare(that.side1, side1) == 0
         && Double.compare(that.side2, side2) == 0
         && Double.compare(that.angle, angle) == 0
-        && Objects.equals(that.color, color));
+        && Objects.equals(that.color, color);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return this == other
+        || (other instanceof Triangle that && structurallyEqualTo(that));
   }
 
   @Override

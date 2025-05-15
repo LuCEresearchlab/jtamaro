@@ -108,6 +108,13 @@ final class Rotate extends Graphic {
   }
 
   @Override
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Rotate that
+        && Double.compare(normalizeAngle(angle), normalizeAngle(that.angle)) == 0
+        && graphic.structurallyEqualTo(that.graphic);
+  }
+
+  @Override
   public boolean equals(Object other) {
     return this == other
         || (other instanceof Rotate that
@@ -124,5 +131,15 @@ final class Rotate extends Graphic {
     final Path2D.Double path = new Path2D.Double(graphicPath);
     path.transform(AffineTransform.getRotateInstance(-Math.toRadians(angle)));
     return path;
+  }
+
+  private static double normalizeAngle(double value) {
+    return (value < 0.0
+        // Negative angle: convert to positive
+        ? value + (360.0 * (1.0 + Math.floor(Math.abs(value) / 360.0)))
+        // Non-negative angle
+        : value)
+        // Modulo 360 to normalize
+        % 360.0;
   }
 }

@@ -71,4 +71,14 @@ abstract sealed class DelegatingGraphic
   public double getHeight() {
     return delegate.getHeight();
   }
+
+  @Override
+  public boolean structurallyEqualTo(Graphic other) {
+    // Two cases to account for:
+    // - above(a, b) = above(a, b)
+    // - above(a, b) = pin(CENTER, compose(pin(BOTTOM_CENTER, a), pin(TOP_CENTER, b)))
+    return other instanceof DelegatingGraphic that
+        ? delegate.structurallyEqualTo(that.delegate)
+        : delegate.structurallyEqualTo(other);
+  }
 }

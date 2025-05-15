@@ -114,6 +114,13 @@ final class Pin extends Graphic {
   }
 
   @Override
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Pin that
+        && Objects.equals(pinPoint, that.pinPoint)
+        && graphic.structurallyEqualTo(that.graphic);
+  }
+
+  @Override
   public boolean equals(Object other) {
     return this == other
         || (other instanceof Pin that

@@ -74,12 +74,17 @@ final class CircularSector extends Graphic {
   }
 
   @Override
-  public boolean equals(Object other) {
-    return this == other
-        || (other instanceof CircularSector that
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof CircularSector that
         && Double.compare(that.radius, radius) == 0
         && Double.compare(that.angle, angle) == 0
-        && Objects.equals(that.color, color));
+        && Objects.equals(that.color, color);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return this == other
+        || (other instanceof CircularSector that && structurallyEqualTo(that));
   }
 
   @Override

@@ -69,12 +69,17 @@ final class Ellipse extends Graphic {
   }
 
   @Override
-  public boolean equals(Object other) {
-    return this == other
-        || (other instanceof Ellipse that
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Ellipse that
         && Double.compare(that.width, width) == 0
         && Double.compare(that.height, height) == 0
-        && Objects.equals(that.color, color));
+        && Objects.equals(that.color, color);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return this == other
+        || (other instanceof Ellipse that && structurallyEqualTo(that));
   }
 
   @Override

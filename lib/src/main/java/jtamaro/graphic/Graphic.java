@@ -270,6 +270,8 @@ public abstract sealed class Graphic
     }
   }
 
+  public abstract boolean structurallyEqualTo(Graphic other);
+
   @Override
   public boolean equals(Object other) {
     return this == other

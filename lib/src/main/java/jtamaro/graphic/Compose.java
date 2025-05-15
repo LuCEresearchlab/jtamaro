@@ -128,6 +128,13 @@ final class Compose extends Graphic {
   }
 
   @Override
+  public boolean structurallyEqualTo(Graphic other) {
+    return other instanceof Compose that
+        && foreground.structurallyEqualTo(that.foreground)
+        && background.structurallyEqualTo(that.background);
+  }
+
+  @Override
   public boolean equals(Object other) {
     return this == other
         || (other instanceof Compose that
