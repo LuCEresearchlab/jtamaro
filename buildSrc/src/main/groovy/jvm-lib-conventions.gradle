@@ -2,8 +2,8 @@ plugins {
   id("java-library")
 }
 
-group = "jtamaro"
-version = "25.1.1"
+group = rootProject.group
+version = rootProject.version
 
 repositories {
   mavenCentral()
@@ -17,11 +17,10 @@ java {
 }
 
 javadoc {
-  options.memberLevel = JavadocMemberLevel.PUBLIC
-  options.addStringOption("Xdoclint:all,-missing", "-quiet")
-  options.addBooleanOption("html5", true)
-
   configure(options) {
+    memberLevel = JavadocMemberLevel.PUBLIC
+    addStringOption("Xdoclint:all,-missing", "-quiet")
+    addBooleanOption("html5", true)
     tags(
         "apiNote:a:API Note:",
         "implSpec:a:Implementation Requirements:",
@@ -30,15 +29,17 @@ javadoc {
   }
 }
 
+jar {
+  manifest {
+    attributes([
+        "Implementation-Title"  : project.name,
+        "Implementation-Version": archiveVersion,
+    ])
+  }
+}
+
 compileJava {
-  options.compilerArgs << "-Xlint:all,-serial"
-}
-
-test {
-  systemProperty("java.awt.headless", true)
-}
-
-tasks.withType(AbstractArchiveTask).configureEach {
-  preserveFileTimestamps = false
-  reproducibleFileOrder = true
+  configure(options) {
+    compilerArgs << "-Xlint:all,-serial"
+  }
 }
