@@ -6,14 +6,14 @@ plugins {
 final Properties localProps = new Properties()
 final File localPropsFile = project.rootProject.file("local.properties")
 if (localPropsFile.exists()) {
-  localProps.load localPropsFile.newDataInputStream()
+  localProps.load(localPropsFile.newDataInputStream())
 }
 
 publishing {
   repositories {
     maven {
       name = "Central"
-      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+      url = "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
       credentials {
         username = localProps.getProperty("repo.central.username", "")
         password = localProps.getProperty("repo.central.password", "")
@@ -24,7 +24,7 @@ publishing {
   publications {
     mavenJava(MavenPublication) {
       artifactId = localProps.getProperty("artifact.${project.name}.id", project.name)
-      groupId = localProps.getProperty("artifact.${project.name}.group", "jtamaro")
+      groupId = localProps.getProperty("artifact.${project.name}.group", rootProject.group.toString())
       setVersion(project.version)
 
       from(components.java)

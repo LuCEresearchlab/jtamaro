@@ -5,6 +5,10 @@ on:
     tags:
       - '*'
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -19,22 +23,25 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'gradle'
-      - name: Build
-        id: build
-        run: ./gradlew assemble --no-daemon
-      - name: Test
-        id: test
-        if: success()
-        run: ./gradlew check --no-daemon
-      - name: Javadoc
-        id: javadoc
-        if: success()
-        run: ./gradlew javadoc --no-daemon
-      - name: Publish Javadoc
-        id: pages
-        if: success()
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+      - name: Build code
+        run: ./gradlew --no-daemon assemble
+      - name: Test code
+        run: ./gradlew --no-daemon check
+      - name: Build docs
+        run: ./gradlew --no-daemon javadoc
+      - name: Upload docs
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: docs
-          folder: lib/build/docs/javadoc
-          single-commit: true
+          path: lib/build/docs/javadoc
+  deploy:
+    name: Deploy docs
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs:
+      - build
+    runs-on: ubuntu-24-04
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

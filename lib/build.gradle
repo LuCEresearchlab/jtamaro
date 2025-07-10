@@ -6,3 +6,7 @@ plugins {
 dependencies {
   testImplementation(libs.junit)
 }
+
+test {
+  systemProperty("java.awt.headless", true)
+}
