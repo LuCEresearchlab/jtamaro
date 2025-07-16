@@ -23,4 +23,5 @@ public final class Options {
   public static <T> Option<T> some(T value) {
     return new Some<>(value);
   }
+
 }
