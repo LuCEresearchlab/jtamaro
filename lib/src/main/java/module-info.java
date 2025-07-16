@@ -22,4 +22,5 @@ module jtamaro {
   exports jtamaro.graphic;
   exports jtamaro.io;
   exports jtamaro.interaction;
+  exports jtamaro.optics;
 }

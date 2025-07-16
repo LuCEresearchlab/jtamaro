@@ -1,7 +1,11 @@
 package jtamaro.data;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Stream;
+import jtamaro.optics.AffineTraversal;
+import jtamaro.optics.Lens;
+import jtamaro.optics.Traversal;
 
 /**
  * Static methods for working with sequences.
@@ -297,12 +301,125 @@ public final class Sequences {
     return new Pair<>(a, b);
   }
 
+  /**
+   * Traverse a {@link Sequence} of <code>A</code> by producing a <code>B</code> for each
+   * <code>A</code>, ultimately collecting them into a <code>Sequence&lt;B&gt;</code>.
+   */
+  public static <A, B> Traversal<Sequence<A>, Sequence<B>, A, B> traverseEvery() {
+    return new Traversal<>() {
+      @Override
+      public <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, Sequence<A> source) {
+        return source.foldLeft(neutralElement, (acc, it) -> reducer.apply(acc, map.apply(it)));
+      }
+
+      @Override
+      public Sequence<B> over(Function1<A, B> lift, Sequence<A> source) {
+        return source.map(lift);
+      }
+    };
+  }
+
+  /**
+   * Traverse each element of a {@link Sequence} (of <code>A</code>s) that is a member of
+   * <code>S</code>, providing a {@link Lens} from <code>S</code> to <code>A</code> instead of the
+   * plain value <code>A</code> to allow further combination of optics to operate on each element.
+   *
+   * @param parent Parent optic (<code>S</code> to <code>Sequence&lt;A&gt;</code>)
+   */
+  public static <S, A> Traversal<S, S, Lens<S, S, A, A>, A> traverseEvery(
+      Lens<S, S, Sequence<A>, Sequence<A>> parent
+  ) {
+    return parent.then(new Traversal<>() {
+      @Override
+      public <R> R foldMap(
+          R neutralElement,
+          Function2<R, R, R> reducer,
+          Function1<Lens<S, S, A, A>, R> map,
+          Sequence<A> source
+      ) {
+        return source.zipWithIndex().foldLeft(neutralElement,
+            (acc, it) -> reducer.apply(acc,
+                map.apply(parent.then(lensAtIndex(it.second())))));
+      }
+
+      @Override
+      public Sequence<A> over(Function1<Lens<S, S, A, A>, A> lift, Sequence<A> source) {
+        return source.zipWithIndex()
+            .map(it -> lift.apply(parent.then(lensAtIndex(it.second()))));
+      }
+    });
+  }
+
+  /**
+   * Traverse a {@link Sequence} of <code>A</code> to operate on the element <code>A</code> at the
+   * given index only.
+   *
+   * @param idx Zero-based index of the element of the sequence to operate on
+   */
+  public static <A> AffineTraversal<Sequence<A>, Sequence<A>, A, A> traversalAt(int idx) {
+    return new AffineTraversal<>() {
+      @Override
+      public Sequence<A> set(A value, Sequence<A> source) {
+        return source.zipWithIndex()
+            .map(it -> Objects.equals(idx, it.second()) ? value : it.first());
+      }
+
+      @Override
+      public Either<Sequence<A>, A> getOrModify(Sequence<A> source) {
+        return source.zipWithIndex().foldLeft(EitherFactory.left(source),
+            (acc, it) -> Objects.equals(idx, it.second())
+                ? EitherFactory.right(it.first())
+                : acc);
+      }
+
+      @Override
+      public Option<A> preview(Sequence<A> source) {
+        return source.zipWithIndex().foldLeft(Options.none(),
+            (acc, it) -> Objects.equals(idx, it.second())
+                ? Options.some(it.first())
+                : acc);
+      }
+    };
+  }
+
   private static <T> Sequence<T> fromIterator(Iterator<T> iterator) {
     Sequence<T> result = new Empty<>();
     while (iterator.hasNext()) {
       result = new Cons<>(iterator.next(), result);
     }
     return result.reverse();
+  }
+
+  /**
+   * Provide a Lens to a specific element in a {@link Sequence}.
+   *
+   * @param idx Zero-based index of the element of the sequence to operate on
+   * @throws IndexOutOfBoundsException if <code>idx</code> is out of bounds.
+   * @implNote We throw an exception here instead of using {@link Option} because we are using this
+   * exclusively in a context where we know that the index is going to be within bounds
+   * ({@link #traverseEvery(Lens)}), and we don't want to deal with folding options that are
+   * never going to be empty.
+   * @see #traverseEvery(Lens)
+   */
+  private static <A> Lens<Sequence<A>, Sequence<A>, A, A> lensAtIndex(int idx) {
+    return new Lens<>() {
+      @Override
+      public Sequence<A> over(Function1<A, A> lift, Sequence<A> source) {
+        return source.zipWithIndex()
+            .map(it -> Objects.equals(idx, it.second())
+                ? lift.apply(it.first())
+                : it.first());
+      }
+
+      @Override
+      public A view(Sequence<A> source) {
+        try {
+          return source.drop(idx).first();
+        } catch (UnsupportedOperationException e) {
+          throw new IndexOutOfBoundsException(idx);
+        }
+      }
+    };
   }
 
   private static int getLastElementClosed(int start, int end, int step) {
