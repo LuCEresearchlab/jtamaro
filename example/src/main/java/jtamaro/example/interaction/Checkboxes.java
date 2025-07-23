@@ -7,7 +7,6 @@ import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
 import jtamaro.interaction.Coordinate;
 import jtamaro.interaction.MouseButton;
-import jtamaro.optics.Getter;
 import jtamaro.optics.Lens;
 import jtamaro.optics.RecordComponentLens;
 
@@ -33,7 +32,7 @@ public final class Checkboxes {
     }
   }
 
-  record CheckboxModel(String label, boolean pressed) {
+  record CheckboxModel(String label, boolean isPressed) {
 
     static final class Optics {
 
@@ -41,44 +40,52 @@ public final class Checkboxes {
           label = new RecordComponentLens<>(CheckboxModel.class, "label");
 
       public static final Lens<CheckboxModel, CheckboxModel, Boolean, Boolean>
-          pressed = new RecordComponentLens<>(CheckboxModel.class, "pressed");
+          isPressed = new RecordComponentLens<>(CheckboxModel.class, "isPressed");
     }
   }
 
   public Checkboxes() {
   }
 
-  private static Graphic renderCheckbox(
+  private static Graphic renderCheckbox(CheckboxModel checkbox) {
+    return overlay(
+        beside(
+            overlay(
+                rectangle(18, 18, checkbox.isPressed ? RED : WHITE),
+                rectangle(20, 20, BLACK)),
+            text(checkbox.label, SANS_SERIF, 20, BLACK)
+        ),
+        rectangle(200, 50, WHITE)
+    );
+  }
+
+  private static Graphic clickableCheckbox(
       Model model,
-      Getter<Model, String> label,
-      Lens<Model, Model, Boolean, Boolean> pressed
+      Lens<Model, Model, CheckboxModel, CheckboxModel> checkboxModelLens
   ) {
-    final String labelTxt = label.view(model);
-    final boolean isPressed = pressed.view(model);
-    return new Actionable<Model>(
-        overlay(
-            beside(
-                overlay(
-                    rectangle(18, 18, isPressed ? RED : WHITE),
-                    rectangle(20, 20, BLACK)),
-                text(labelTxt, SANS_SERIF, 20, BLACK)
-            ),
-            rectangle(200, 50, WHITE)
-        )
-    ).withMousePressHandler((Model m, Coordinate c, MouseButton b) ->
-        pressed.set(!isPressed, model)
-    ).asGraphic();
+    // feature 1: *find* a submodel n-layers down (and render graphics in old/plain style)
+    final Graphic checkboxGraphic = renderCheckbox(checkboxModelLens.view(model));
+    // feature 2: compose together a lens that can *modify* a specific submodel without manual reconstruction
+    final Lens<Model, Model, Boolean, Boolean> isPressedLens = checkboxModelLens.then(CheckboxModel.Optics.isPressed);
+
+    return new Actionable<Model>(checkboxGraphic)
+        .withMousePressHandler((Model m, Coordinate c, MouseButton b) ->
+            // map a function (toggle) over the boolean state of the specific checkbox
+            isPressedLens.over(Checkboxes::toggle, model))
+        .asGraphic();
+  }
+
+  private static boolean toggle(boolean isPressed) {
+    return !isPressed;
   }
 
   private static Graphic renderCheckboxes(Model model) {
-    return Sequences.combineTraversal(Model.Optics.checkboxes).foldMap(
+    // - Map from sequence of checkbox lenses to graphics
+    // - Fold (compose) the graphics
+    return Sequences.traverseEvery(Model.Optics.checkboxes).foldMap(
         Graphics.emptyGraphic(),
         Graphics::beside,
-        itLens -> renderCheckbox(
-            model,
-            itLens.then(CheckboxModel.Optics.label),
-            itLens.then(CheckboxModel.Optics.pressed)
-        ),
+        itLens -> clickableCheckbox(model, itLens),
         model
     );
   }
