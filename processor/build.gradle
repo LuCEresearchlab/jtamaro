@@ -1,0 +1,11 @@
+plugins {
+  id("jvm-lib-conventions")
+  id("publish-conventions")
+}
+
+dependencies {
+  testAnnotationProcessor(project(":processor"))
+  testImplementation(project(":lib"))
+  testImplementation(libs.junit)
+}
+

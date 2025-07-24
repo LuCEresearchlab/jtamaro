@@ -3,3 +3,4 @@ rootProject.name = "jtamaro"
 include("example")
 include("lib")
 include("music")
+include("processor")

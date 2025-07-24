@@ -5,7 +5,8 @@
  *
  * <p>Optics hierarchy:
  * <br>
- * <img src="https://hackage.haskell.org/package/optics-0.4/docs/diagrams/optics.png" alt="Optics">
+ * <img style="max-width: 100%" alt="Optics hierarchy"
+ * src="https://hackage.haskell.org/package/optics-0.4/docs/diagrams/optics.png">
  * <br>
  * <b>Note</b>: we only provide implementation of the optics hierarchy up to Lens, and Prism as the
  * rest is not needed for the educational use cases of JTamaro.</p>

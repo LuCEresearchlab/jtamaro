@@ -91,7 +91,7 @@ public final class ToDoDemo {
   }
 
   private static Graphic render(Model model) {
-    return Sequences.traverseEvery(ToDoDemo$ModelLenses.entries).foldMap(
+    return ToDoDemo$ModelLenses.entriesElements.foldMap(
         renderInputField(model),
         Graphics::above,
         lens -> renderEntry(lens, model),

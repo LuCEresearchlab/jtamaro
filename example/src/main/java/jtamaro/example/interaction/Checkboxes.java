@@ -1,14 +1,13 @@
 package jtamaro.example.interaction;
 
 import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
 import jtamaro.interaction.Coordinate;
 import jtamaro.interaction.MouseButton;
+import jtamaro.optics.Glasses;
 import jtamaro.optics.Lens;
-import jtamaro.optics.RecordComponentLens;
 
 import static jtamaro.data.Sequences.of;
 import static jtamaro.graphic.Colors.BLACK;
@@ -23,25 +22,14 @@ import static jtamaro.io.IO.interact;
 
 public final class Checkboxes {
 
+  @Glasses
   record Model(Sequence<CheckboxModel> checkboxes) {
 
-    static final class Optics {
-
-      public static final Lens<Model, Model, Sequence<CheckboxModel>, Sequence<CheckboxModel>>
-          checkboxes = new RecordComponentLens<>(Model.class, "checkboxes");
-    }
   }
 
+  @Glasses
   record CheckboxModel(String label, boolean isPressed) {
 
-    static final class Optics {
-
-      public static final Lens<CheckboxModel, CheckboxModel, String, String>
-          label = new RecordComponentLens<>(CheckboxModel.class, "label");
-
-      public static final Lens<CheckboxModel, CheckboxModel, Boolean, Boolean>
-          isPressed = new RecordComponentLens<>(CheckboxModel.class, "isPressed");
-    }
   }
 
   public Checkboxes() {
@@ -66,7 +54,8 @@ public final class Checkboxes {
     // feature 1: *find* a submodel n-layers down (and render graphics in old/plain style)
     final Graphic checkboxGraphic = renderCheckbox(checkboxModelLens.view(model));
     // feature 2: compose together a lens that can *modify* a specific submodel without manual reconstruction
-    final Lens<Model, Model, Boolean, Boolean> isPressedLens = checkboxModelLens.then(CheckboxModel.Optics.isPressed);
+    final Lens<Model, Model, Boolean, Boolean> isPressedLens = checkboxModelLens.then(
+        Checkboxes$CheckboxModelLenses.isPressed);
 
     return new Actionable<Model>(checkboxGraphic)
         .withMousePressHandler((Model m, Coordinate c, MouseButton b) ->
@@ -82,7 +71,7 @@ public final class Checkboxes {
   private static Graphic renderCheckboxes(Model model) {
     // - Map from sequence of checkbox lenses to graphics
     // - Fold (compose) the graphics
-    return Sequences.traverseEvery(Model.Optics.checkboxes).foldMap(
+    return Checkboxes$ModelLenses.checkboxesElements.foldMap(
         Graphics.emptyGraphic(),
         Graphics::beside,
         itLens -> clickableCheckbox(model, itLens),

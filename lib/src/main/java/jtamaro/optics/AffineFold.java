@@ -22,7 +22,10 @@ public interface AffineFold<S, A> extends Fold<S, A> {
 
   @Override
   default <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, S source) {
-    return preview(source).fold(map, () -> neutralElement);
+    return preview(source).fold(
+        it -> reducer.apply(neutralElement, map.apply(it)),
+        () -> neutralElement
+    );
   }
 
   /**
