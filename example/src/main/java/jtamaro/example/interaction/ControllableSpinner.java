@@ -3,8 +3,7 @@ package jtamaro.example.interaction;
 import jtamaro.graphic.Graphic;
 import jtamaro.interaction.Coordinate;
 import jtamaro.interaction.MouseButton;
-import jtamaro.optics.Lens;
-import jtamaro.optics.RecordComponentLens;
+import jtamaro.optics.Glasses;
 
 import static jtamaro.example.Toolbelt.square;
 import static jtamaro.graphic.Colors.BLUE;
@@ -16,19 +15,9 @@ import static jtamaro.io.IO.interact;
 
 public class ControllableSpinner {
 
+  @Glasses
   public record Spinner(double angle, double speed, double size) {
 
-    public static final class Optics {
-
-      public static final Lens<Spinner, Spinner, Double, Double> angle
-          = new RecordComponentLens<>(Spinner.class, "angle");
-
-      public static final Lens<Spinner, Spinner, Double, Double> speed
-          = new RecordComponentLens<>(Spinner.class, "speed");
-
-      public static final Lens<Spinner, Spinner, Double, Double> size
-          = new RecordComponentLens<>(Spinner.class, "size");
-    }
   }
 
   private static Graphic render(Spinner spinner) {
@@ -39,11 +28,11 @@ public class ControllableSpinner {
   }
 
   private static Spinner tick(Spinner spinner) {
-    return Spinner.Optics.angle.over(a -> a + spinner.speed, spinner);
+    return ControllableSpinner$SpinnerLenses.angle.over(a -> a + spinner.speed, spinner);
   }
 
   private static Spinner onGlobalMouseMove(Spinner spinner, Coordinate c, MouseButton btn) {
-    return Spinner.Optics.speed.set(c.x() / 100.0, spinner);
+    return ControllableSpinner$SpinnerLenses.speed.set(c.x() / 100.0, spinner);
   }
 
   public static void main(String[] args) {

@@ -12,7 +12,7 @@ import jtamaro.data.Function1;
  * @implNote This class uses reflection to automatically generate a lens for a record component. It
  * is not properly type-checked at compile time, as unchecked casts are used.
  * @hidden Usage in public projects is not recommended. Please use the
- * <code>@Glasses</code> annotation on record classes and the annotation processor instead.
+ * {@link Glasses} annotation on record classes and the annotation processor instead.
  */
 @SuppressWarnings("unchecked")
 public final class RecordComponentLens<R extends Record, C> implements Lens<R, R, C, C> {

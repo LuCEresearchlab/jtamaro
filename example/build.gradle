@@ -7,6 +7,7 @@ application {
 }
 
 dependencies {
+  annotationProcessor project(":processor")
   implementation project(":lib")
   implementation project(":music")
 }
