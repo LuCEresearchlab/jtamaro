@@ -58,7 +58,7 @@ public final class Checkboxes {
         Checkboxes$CheckboxModelLenses.isPressed);
 
     return new Actionable<Model>(checkboxGraphic)
-        .withMousePressHandler((Model m, Coordinate c, MouseButton b) ->
+        .withMousePressHandler((Coordinate c, MouseButton b) ->
             // map a function (toggle) over the boolean state of the specific checkbox
             isPressedLens.over(Checkboxes::toggle, model))
         .asGraphic();

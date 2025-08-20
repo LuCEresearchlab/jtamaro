@@ -24,8 +24,8 @@ public final class DrawingDemo {
     ).place(0, 0, rectangle(400, 200, WHITE));
 
     return new Actionable<Drawing>(world.asGraphic())
-        .withMouseDragHandler((Drawing d, Coordinate c, MouseButton b) ->
-            d.addPoint(new Point(c.x(), c.y())))
+        .withMouseDragHandler((Coordinate c, MouseButton b) ->
+            drawing.addPoint(new Point(c.x(), c.y())))
         .asGraphic();
   }
 

@@ -21,7 +21,7 @@ public class ActionableTest {
         rectangle(100, 80, RED),
         new Actionable<>(
             rectangle(80, 100, BLUE)
-        ).withMousePressHandler(($, c, m) -> {
+        ).withMousePressHandler((c, m) -> {
               count[0]++;
               return count[0];
             }
@@ -34,7 +34,7 @@ public class ActionableTest {
         ? ag.getPressAction()
         : Options.none()
     ).stream().forEach(action ->
-      action.apply(null, new Coordinate(0, 0), new MouseButton(0)));
+      action.apply(new Coordinate(0, 0), new MouseButton(0)));
     Assert.assertEquals(1, count[0]);
   }
 

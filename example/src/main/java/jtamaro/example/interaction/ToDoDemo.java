@@ -62,8 +62,8 @@ public final class ToDoDemo {
     );
 
     final Graphic actionableCheckbox = new Actionable<Model>(checkedGraphic)
-        .withMouseReleaseHandler((m, $$, $$$) ->
-            lens.then(ToDoDemo$EntryLenses.isChecked).over(b -> !b, m))
+        .withMouseReleaseHandler(($, $$) ->
+            lens.then(ToDoDemo$EntryLenses.isChecked).over(b -> !b, model))
         .asGraphic();
 
     final Graphic entryGraphic = compose(
@@ -76,14 +76,14 @@ public final class ToDoDemo {
     );
 
     return new Actionable<Model>(entryGraphic).withMouseReleaseHandler(
-        (m, $$, $$$) -> new Model(
+        ($, $$) -> new Model(
             entry.content,
-            m.entries,
-            (mo, newContent) -> ToDoDemo$ModelLenses.currentInput.set(
+            model.entries,
+            (m, newContent) -> ToDoDemo$ModelLenses.currentInput.set(
                 "",
                 ToDoDemo$ModelLenses.onEnter.set(
                     ToDoDemo::addNewEntry,
-                    lens.then(ToDoDemo$EntryLenses.content).set(newContent, mo)
+                    lens.then(ToDoDemo$EntryLenses.content).set(newContent, m)
                 )
             )
         )

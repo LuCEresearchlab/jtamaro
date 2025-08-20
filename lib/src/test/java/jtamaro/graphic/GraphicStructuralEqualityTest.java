@@ -43,12 +43,12 @@ public class GraphicStructuralEqualityTest {
   @Test
   public void testActionable() {
     final Graphic target = new Actionable<>(CHILD_A)
-        .withMouseMoveHandler((m, c, b) -> m)
+        .withMouseMoveHandler((c, b) -> c)
         .asGraphic();
 
     Assert.assertTrue(target.structurallyEqualTo(target));
     Assert.assertTrue(target.structurallyEqualTo(new Actionable<>(CHILD_A)
-        .withMouseMoveHandler((m, c, b) -> b)
+        .withMouseMoveHandler((c, b) -> b)
         .asGraphic()));
     Assert.assertTrue(target.structurallyEqualTo(new Actionable<>(CHILD_A)
         .asGraphic()));

@@ -23,14 +23,14 @@ public class ButtonsDemo {
 
   public record Button(String label) {
 
-    public Graphic render() {
+    public Graphic render(Model model) {
       final Graphic graphic = overlay(
           text(label, SANS_SERIF, 10, WHITE),
           rectangle(200, 50, BLACK)
       );
 
       return new Actionable<Model>(graphic)
-          .withMousePressHandler(((model, coordinate, button) -> model.setChoice(label)))
+          .withMousePressHandler(((coordinate, button) -> model.setChoice(label)))
           .asGraphic();
     }
   }
@@ -65,7 +65,7 @@ public class ButtonsDemo {
       ));
       final Graphic buttons = besides(
           this.buttons
-              .map(Button::render)
+              .map(b -> b.render(this))
               .intersperse(hgap(20))
       );
       final Graphic foreground = above(header, buttons);
