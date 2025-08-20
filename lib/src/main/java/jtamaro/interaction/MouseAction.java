@@ -1,6 +1,6 @@
 package jtamaro.interaction;
 
-import jtamaro.data.Function3;
+import jtamaro.data.Function2;
 
 /**
  * Mouse actions for an {@link Interaction}.
@@ -12,6 +12,6 @@ import jtamaro.data.Function3;
  * @see MouseMoveAction
  * @see MouseDragAction
  */
-public interface MouseAction<M> extends Function3<M, Coordinate, MouseButton, M> {
+public interface MouseAction<M> extends Function2<Coordinate, MouseButton, M> {
 
 }

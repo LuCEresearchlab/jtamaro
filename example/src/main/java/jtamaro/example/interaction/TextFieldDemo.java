@@ -124,12 +124,12 @@ public class TextFieldDemo {
       );
       final int idx = i + 1;
       final Graphic actionableCell = new Actionable<TextField>(cell)
-          .withMouseReleaseHandler((t, coords, btn) ->
-              t.moveCursor(switch (btn.button()) {
+          .withMouseReleaseHandler((coords, btn) ->
+              textField.moveCursor(switch (btn.button()) {
                 case MouseButton.PRIMARY -> Math.max(0, idx - 1);
                 case MouseButton.SECONDARY -> idx;
                 case MouseButton.AUXILIARY -> n;
-                default -> t.cursor;
+                default -> textField.cursor;
               }))
           .asGraphic();
       board = beside(board, actionableCell);
@@ -149,7 +149,9 @@ public class TextFieldDemo {
     final Graphic shownButton = new Actionable<TextField>(overlay(
         isEmpty ? randomButton : clearButton,
         rectangle(SIZE, SIZE, BLACK)))
-        .withMousePressHandler((t, coords, btn) -> isEmpty ? t.random() : t.clear())
+        .withMousePressHandler((coords, btn) -> isEmpty
+            ? textField.random()
+            : textField.clear())
         .asGraphic();
 
     return beside(shownButton, board);

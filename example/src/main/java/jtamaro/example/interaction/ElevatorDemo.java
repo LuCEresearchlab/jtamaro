@@ -37,7 +37,7 @@ public final class ElevatorDemo {
                 new Actionable<Elevator>(overlay(
                     text(String.valueOf(floor), MONOSPACED, 12, WHITE),
                     ellipse(32, 32, elevator.currentFloor() == floor ? MAGENTA : BLUE)
-                )).withMousePressHandler((m, c, b) -> m.scheduleFloor(floor))
+                )).withMousePressHandler((c, b) -> elevator.scheduleFloor(floor))
                     .asGraphic(),
                 rectangle(0, 8, TRANSPARENT)
             ),

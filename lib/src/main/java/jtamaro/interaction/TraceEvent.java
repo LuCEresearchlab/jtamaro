@@ -4,7 +4,7 @@ import jtamaro.data.Function1;
 import jtamaro.data.Function2;
 import jtamaro.data.Function3;
 
-sealed abstract class TraceEvent<M> {
+abstract sealed class TraceEvent<M> {
 
   private final long timeStamp;
 
@@ -72,38 +72,63 @@ sealed abstract class TraceEvent<M> {
     }
   }
 
-  public static final class MouseEvent<M> extends TraceEvent<M> {
+  abstract static sealed class AbstractMouseEvent<M> extends TraceEvent<M> {
 
     private final String kind;
 
-    private final Coordinate coordinate;
+    protected final Coordinate coordinate;
 
-    private final MouseButton button;
+    protected final MouseButton button;
 
-    private final Function3<M, Coordinate, MouseButton, M> action;
+    private AbstractMouseEvent(String kind, Coordinate coordinate, MouseButton button) {
+      this.kind = kind;
+      this.coordinate = coordinate;
+      this.button = button;
+    }
 
+    @Override
+    public String getKind() {
+      return kind;
+    }
+  }
+
+  public static final class MouseEvent<M> extends AbstractMouseEvent<M> {
+
+    private final Function2<Coordinate, MouseButton, M> action;
 
     public MouseEvent(
         String kind,
         Coordinate coordinate,
         MouseButton button,
+        Function2<Coordinate, MouseButton, M> action
+    ) {
+      super(kind, coordinate, button);
+      this.action = action;
+    }
+
+    @Override
+    public M process(M model) {
+      return action.apply(coordinate, button);
+    }
+  }
+
+  public static final class GlobalMouseEvent<M> extends AbstractMouseEvent<M> {
+
+    private final Function3<M, Coordinate, MouseButton, M> action;
+
+    public GlobalMouseEvent(
+        String kind,
+        Coordinate coordinate,
+        MouseButton button,
         Function3<M, Coordinate, MouseButton, M> action
     ) {
-      super();
-      this.kind = kind;
-      this.coordinate = coordinate;
-      this.button = button;
+      super(kind, coordinate, button);
       this.action = action;
     }
 
     @Override
     public M process(M model) {
       return action.apply(model, coordinate, button);
-    }
-
-    @Override
-    public String getKind() {
-      return kind;
     }
   }
 }

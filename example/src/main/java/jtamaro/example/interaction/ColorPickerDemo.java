@@ -169,7 +169,7 @@ public class ColorPickerDemo {
     };
   }
 
-  private static Model onDrag(Model m, Coordinate coords, MouseButton button) {
+  private static Model onDrag(Model m, Coordinate coords) {
     final double x = coords.x() / RADIUS;
     final double y = coords.y() / RADIUS;
     final double angle = Math.toDegrees(Math.atan2(y, x));
@@ -198,7 +198,7 @@ public class ColorPickerDemo {
             // "background" for clicking outside the color dots
             circularSector(RADIUS, 360, TRANSPARENT)
         )
-    ).withMouseDragHandler(ColorPickerDemo::onDrag).asGraphic();
+    ).withMouseDragHandler((coords, $) -> onDrag(model, coords)).asGraphic();
   }
 
   public static void main(String[] args) {

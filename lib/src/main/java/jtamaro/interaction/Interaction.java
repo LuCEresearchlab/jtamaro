@@ -65,17 +65,17 @@ public final class Interaction<M> {
   /**
    * Function that evolves the model when a mouse button is pressed.
    */
-  private final MousePressAction<M> mousePressHandler;
+  private final GlobalMousePressAction<M> mousePressHandler;
 
   /**
    * Function that evolves the model when a mouse button is released.
    */
-  private final MouseReleaseAction<M> mouseReleaseHandler;
+  private final GlobalMouseReleaseAction<M> mouseReleaseHandler;
 
   /**
    * Function that evolves the model when the mouse cursor is dragged.
    */
-  private final MouseMoveAction<M> mouseMoveHandler;
+  private final GlobalMouseMoveAction<M> mouseMoveHandler;
 
   /**
    * Defines the width of the canvas in which the interaction is rendered.
@@ -140,9 +140,9 @@ public final class Interaction<M> {
       Function2<M, KeyboardKey, M> keyPressHandler,
       Function2<M, KeyboardKey, M> keyReleaseHandler,
       Function2<M, KeyboardChar, M> keyTypeHandler,
-      MousePressAction<M> mousePressHandler,
-      MouseReleaseAction<M> mouseReleaseHandler,
-      MouseMoveAction<M> mouseMoveHandler,
+      GlobalMousePressAction<M> mousePressHandler,
+      GlobalMouseReleaseAction<M> mouseReleaseHandler,
+      GlobalMouseMoveAction<M> mouseMoveHandler,
       int canvasWidth,
       int canvasHeight,
       Graphic background,
@@ -357,7 +357,7 @@ public final class Interaction<M> {
    *
    * @see MouseButton
    */
-  public Interaction<M> withGlobalMousePressHandler(MousePressAction<M> mousePressHandler) {
+  public Interaction<M> withGlobalMousePressHandler(GlobalMousePressAction<M> mousePressHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -381,7 +381,7 @@ public final class Interaction<M> {
    *
    * @see MouseButton
    */
-  public Interaction<M> withGlobalMouseReleaseHandler(MouseReleaseAction<M> mouseReleaseHandler) {
+  public Interaction<M> withGlobalMouseReleaseHandler(GlobalMouseReleaseAction<M> mouseReleaseHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -405,7 +405,7 @@ public final class Interaction<M> {
    *
    * @see Coordinate
    */
-  public Interaction<M> withGlobalMouseMoveHandler(MouseMoveAction<M> mouseMoveHandler) {
+  public Interaction<M> withGlobalMouseMoveHandler(GlobalMouseMoveAction<M> mouseMoveHandler) {
     return new Interaction<>(initialModel,
         name,
         msBetweenTicks,
@@ -588,15 +588,15 @@ public final class Interaction<M> {
     return keyTypeHandler;
   }
 
-  MouseAction<M> getMousePressHandler() {
+  GlobalMouseAction<M> getMousePressHandler() {
     return mousePressHandler;
   }
 
-  MouseAction<M> getMouseReleaseHandler() {
+  GlobalMouseAction<M> getMouseReleaseHandler() {
     return mouseReleaseHandler;
   }
 
-  MouseAction<M> getMouseMoveHandler() {
+  GlobalMouseAction<M> getMouseMoveHandler() {
     return mouseMoveHandler;
   }
 
