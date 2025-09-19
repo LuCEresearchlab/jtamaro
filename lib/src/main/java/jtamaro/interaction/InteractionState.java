@@ -8,7 +8,7 @@ final class InteractionState<M> {
 
   private M model;
 
-  private long tick;
+  private long tickNumber;
 
   public InteractionState(Interaction<M> interaction) {
     this.interaction = interaction;
@@ -16,20 +16,16 @@ final class InteractionState<M> {
     final M initialModel = interaction.getInitialModel();
     check("Initial model", initialModel);
     this.model = initialModel;
-    this.tick = 0;
+    this.tickNumber = 0L;
   }
 
-  public void tick() {
-    tick++;
+  public long tick() {
+    return tickNumber++;
   }
 
   public void update(String what, M model) {
     check(what, model);
     this.model = model;
-  }
-
-  public long getTick() {
-    return tick;
   }
 
   public M getModel() {
