@@ -52,7 +52,7 @@ final class Trace<T> {
     listeners.remove(listener);
   }
 
-  public void fireEventAppended(TraceEvent<T> event) {
+  private void fireEventAppended(TraceEvent<T> event) {
     for (final TraceListener listener : listeners) {
       listener.eventAppended(event);
     }

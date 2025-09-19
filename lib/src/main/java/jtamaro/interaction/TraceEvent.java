@@ -26,13 +26,20 @@ abstract sealed class TraceEvent<M> {
 
     private final Function1<M, M> tickHandler;
 
-    public Tick(Function1<M, M> tickHandler) {
+    private final long tickNumber;
+
+    public Tick(Function1<M, M> tickHandler, long tickNumber) {
       this.tickHandler = tickHandler;
+      this.tickNumber = tickNumber;
     }
 
     @Override
     public M process(M model) {
       return tickHandler.apply(model);
+    }
+
+    public long getTickNumber() {
+      return tickNumber;
     }
   }
 
