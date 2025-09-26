@@ -149,7 +149,7 @@ library.
 
 The output will be in `lib/build/libs/lib-*.jar`
 
-**Note**: The library is targeting Java 21, and it makes extensive use of the
+**Note**: The library is targeting Java 25, and it makes extensive use of the
 latest additions to the language (records, sealed classes, pattern matching...).
 Older Java versions are not supported.
 
