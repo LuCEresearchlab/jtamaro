@@ -40,7 +40,7 @@ public final class GuiGraphicTreePanel extends JPanel {
         }
       }
     });
-    tree.getSelectionModel().addTreeSelectionListener(ev -> {
+    tree.getSelectionModel().addTreeSelectionListener(_ -> {
       renderOptions.clearSelection();
       final TreePath[] paths = tree.getSelectionPaths();
       if (paths == null) {

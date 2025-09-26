@@ -27,7 +27,7 @@ public interface Setter<S, T, A, B> {
    * Apply a setter.
    */
   default T set(B value, S source) {
-    return over($ -> value, source);
+    return over(_ -> value, source);
   }
 
   /**

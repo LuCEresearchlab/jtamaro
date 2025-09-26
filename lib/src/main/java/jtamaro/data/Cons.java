@@ -85,7 +85,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
   public Sequence<T> drop(int count) {
     Sequence<T> result = this;
     int i = 0;
-    while (result instanceof Cons<T>(T ignored, Sequence<T> tail) && i < count) {
+    while (result instanceof Cons<T>(T _, Sequence<T> tail) && i < count) {
       result = tail;
       i += 1;
     }

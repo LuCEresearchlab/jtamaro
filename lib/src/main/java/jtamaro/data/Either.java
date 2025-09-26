@@ -71,6 +71,6 @@ public sealed interface Either<L, R> permits Left, Right {
    * Determine whether this either is right.
    */
   default boolean isRight() {
-    return fold($ -> false, $ -> true);
+    return fold(_ -> false, _ -> true);
   }
 }

@@ -35,7 +35,7 @@ final class TraceTableModel implements TableModel {
   public TraceTableModel(Trace<?> trace) {
     this.listeners = new ArrayList<>();
     this.trace = trace;
-    trace.addTraceListener($ -> fireTableDataChanged());
+    trace.addTraceListener(_ -> fireTableDataChanged());
   }
 
   @Override

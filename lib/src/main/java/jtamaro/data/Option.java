@@ -35,7 +35,7 @@ public sealed interface Option<T> permits Some, None {
    * Determine whether this option is empty.
    */
   default boolean isEmpty() {
-    return fold($ -> false, () -> true);
+    return fold(_ -> false, () -> true);
   }
 
   /**

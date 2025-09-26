@@ -112,20 +112,20 @@ public final class Interaction<M> {
     this.msBetweenTicks = 100;
     this.tickHandler = Function1.identity();
 
-    this.wellFormedPredicate = model -> true;
-    this.stoppingPredicate = model -> false;
+    this.wellFormedPredicate = _ -> true;
+    this.stoppingPredicate = _ -> false;
 
-    this.keyPressHandler = (model, k) -> model;
-    this.keyReleaseHandler = (model, k) -> model;
-    this.keyTypeHandler = (model, c) -> model;
-    this.mousePressHandler = (model, coords, button) -> model;
-    this.mouseReleaseHandler = (model, coords, button) -> model;
-    this.mouseMoveHandler = (model, coords, button) -> model;
+    this.keyPressHandler = (model, _) -> model;
+    this.keyReleaseHandler = (model, _) -> model;
+    this.keyTypeHandler = (model, _) -> model;
+    this.mousePressHandler = (model, _, _) -> model;
+    this.mouseReleaseHandler = (model, _, _) -> model;
+    this.mouseMoveHandler = (model, _, _) -> model;
 
     this.canvasWidth = -1;
     this.canvasHeight = -1;
     this.background = null;
-    this.renderer = model -> Graphics.emptyGraphic();
+    this.renderer = _ -> Graphics.emptyGraphic();
   }
 
   /**

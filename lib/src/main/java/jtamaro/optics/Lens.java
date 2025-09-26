@@ -22,7 +22,7 @@ public interface Lens<S, T, A, B> extends AffineTraversal<S, T, A, B>, Getter<S,
 
   @Override
   default T set(B value, S source) {
-    return over($ -> value, source);
+    return over(_ -> value, source);
   }
 
   @Override
@@ -32,7 +32,7 @@ public interface Lens<S, T, A, B> extends AffineTraversal<S, T, A, B>, Getter<S,
 
   @Override
   default <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, S source) {
-    return getOrModify(source).fold($ -> neutralElement, map);
+    return getOrModify(source).fold(_ -> neutralElement, map);
   }
 
   /**

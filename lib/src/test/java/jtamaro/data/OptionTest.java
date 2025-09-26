@@ -9,23 +9,23 @@ public final class OptionTest {
   @Test
   public void someFlatMap() {
     Assert.assertEquals(Options.some(2), Options.some(1).flatMap(x -> Options.some(x + 1)));
-    Assert.assertEquals(Options.none(), Options.some(1).flatMap($ -> Options.none()));
+    Assert.assertEquals(Options.none(), Options.some(1).flatMap(_ -> Options.none()));
   }
 
   @Test
   public void noneFlatMap() {
-    Assert.assertEquals(Options.none(), Options.none().flatMap($ -> Options.some(1)));
-    Assert.assertEquals(Options.none(), Options.none().flatMap($ -> Options.none()));
+    Assert.assertEquals(Options.none(), Options.none().flatMap(_ -> Options.some(1)));
+    Assert.assertEquals(Options.none(), Options.none().flatMap(_ -> Options.none()));
   }
 
   @Test
   public void someMap() {
-    Assert.assertEquals(Options.some(0), Options.some(1).map($ -> 0));
+    Assert.assertEquals(Options.some(0), Options.some(1).map(_ -> 0));
   }
 
   @Test
   public void noneMap() {
-    Assert.assertEquals(Options.none(), Options.none().map($ -> 1));
+    Assert.assertEquals(Options.none(), Options.none().map(_ -> 1));
   }
 
   @Test
