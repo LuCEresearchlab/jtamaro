@@ -362,22 +362,22 @@ public final class SequencesTest {
 
   @Test
   public void testFilterEmptyTrue() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(x -> true));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(_ -> true));
   }
 
   @Test
   public void testFilterEmptyFalse() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(x -> false));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().filter(_ -> false));
   }
 
   @Test
   public void testFilter1True() {
-    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).filter(s -> true));
+    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).filter(_ -> true));
   }
 
   @Test
   public void testFilter1False() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(1).filter(s -> false));
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.of(1).filter(_ -> false));
   }
 
   @Test
@@ -399,7 +399,7 @@ public final class SequencesTest {
   @Test
   public void testFilterPredicateApplicationCountConsumed() {
     final int[] count = new int[]{0};
-    Sequences.range(10).filter(s -> {
+    Sequences.range(10).filter(_ -> {
       count[0]++;
       return true;
     });
@@ -410,10 +410,10 @@ public final class SequencesTest {
   public void testFilterFilterPredicateApplicationCountConsumed() {
     int[] firstCount = new int[]{0};
     int[] secondCount = new int[]{0};
-    Sequences.range(10).filter(s -> {
+    Sequences.range(10).filter(_ -> {
       firstCount[0]++;
       return true;
-    }).filter(s -> {
+    }).filter(_ -> {
       secondCount[0]++;
       return false;
     });
@@ -423,12 +423,12 @@ public final class SequencesTest {
 
   @Test
   public void testReduceEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.empty().reduce(0, (e, a) -> a));
+    Assert.assertEquals(0L, (long) Sequences.empty().reduce(0, (_, a) -> a));
   }
 
   @Test
   public void testReduceMany() {
-    Assert.assertEquals(110L, (long) Sequences.range(10).reduce(100, (e, a) -> a + 1));
+    Assert.assertEquals(110L, (long) Sequences.range(10).reduce(100, (_, a) -> a + 1));
   }
 
   @Test
@@ -443,13 +443,13 @@ public final class SequencesTest {
 
   @Test
   public void testFoldRightEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.empty().foldRight(0, (e, a) -> a));
+    Assert.assertEquals(0L, (long) Sequences.empty().foldRight(0, (_, a) -> a));
   }
 
   @Test
   public void testFoldRightMany() {
     Assert.assertEquals(110L,
-        (long) Sequences.range(10).foldRight(100, (e, a) -> a + 1));
+        (long) Sequences.range(10).foldRight(100, (_, a) -> a + 1));
   }
 
   @Test
@@ -464,12 +464,12 @@ public final class SequencesTest {
 
   @Test
   public void testFoldLeftEmpty() {
-    Assert.assertEquals(0L, (long) Sequences.empty().foldLeft(0, (a, e) -> a));
+    Assert.assertEquals(0L, (long) Sequences.empty().foldLeft(0, (a, _) -> a));
   }
 
   @Test
   public void testFoldLeftMany() {
-    Assert.assertEquals(110L, (long) Sequences.range(10).foldLeft(100, (a, e) -> a + 1));
+    Assert.assertEquals(110L, (long) Sequences.range(10).foldLeft(100, (a, _) -> a + 1));
   }
 
   @Test
@@ -674,7 +674,7 @@ public final class SequencesTest {
   @Test
   public void testZipWithIndexSemanticallyEqualToZipWith() {
     final Sequence<Character> seq = Sequences.rangeClosed('A', 'Z');
-    final Sequence<Integer> indices = Sequences.range(seq.foldLeft(0, (acc, c) -> acc + 1));
+    final Sequence<Integer> indices = Sequences.range(seq.foldLeft(0, (acc, _) -> acc + 1));
     TestUtil.assertSequenceEquals(
         seq.zipWith(indices),
         seq.zipWithIndex()

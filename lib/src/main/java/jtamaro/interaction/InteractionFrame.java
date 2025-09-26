@@ -105,12 +105,12 @@ final class InteractionFrame<M> extends JFrame {
 
     startStopItem = new JMenuItem();
     startStopItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-    startStopItem.addActionListener(e -> toggleExecutor());
+    startStopItem.addActionListener(_ -> toggleExecutor());
     fileMenu.add(startStopItem);
 
     final JMenuItem viewFrame = new JMenuItem("Inspect Frame");
     viewFrame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-    viewFrame.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+    viewFrame.addActionListener(_ -> SwingUtilities.invokeLater(() -> {
       stopExecutor();
       IO.show(renderer.apply(executor.getCurrentModel()));
     }));
@@ -118,7 +118,7 @@ final class InteractionFrame<M> extends JFrame {
     final JMenuItem viewBackground = new JMenuItem("Inspect Background");
     viewBackground.setAccelerator(KeyStroke.getKeyStroke(
         KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK));
-    viewBackground.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+    viewBackground.addActionListener(_ -> SwingUtilities.invokeLater(() -> {
       stopExecutor();
       IO.show(interaction.getBackground().fold(Function1.identity(), Graphics::emptyGraphic));
     }));
@@ -131,13 +131,13 @@ final class InteractionFrame<M> extends JFrame {
 
     final JMenuItem viewTrace = new JMenuItem("Trace");
     viewTrace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-    viewTrace.addActionListener(e -> SwingUtilities.invokeLater(() ->
+    viewTrace.addActionListener(_ -> SwingUtilities.invokeLater(() ->
         new TraceFrame(eventsTrace).setVisible(true)));
     viewMenu.add(viewTrace);
 
     final JMenuItem viewModel = new JMenuItem("Model");
     viewModel.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-    viewModel.addActionListener(e -> SwingUtilities.invokeLater(() ->
+    viewModel.addActionListener(_ -> SwingUtilities.invokeLater(() ->
         new ModelFrame<>(interaction, eventsTrace).setVisible(true)));
     viewMenu.add(viewModel);
 
@@ -151,7 +151,7 @@ final class InteractionFrame<M> extends JFrame {
     toolbar.add(Box.createHorizontalStrut(20));
 
     startStopButton = new JButton();
-    startStopButton.addActionListener(e -> toggleExecutor());
+    startStopButton.addActionListener(_ -> toggleExecutor());
     toolbar.add(startStopButton, BorderLayout.EAST);
 
     // Canvas component

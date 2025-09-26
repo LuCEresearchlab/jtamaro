@@ -34,7 +34,7 @@ final class ModelFrame<M> extends JFrame {
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
     add(scrollPane);
 
-    final TraceListener tl = ev -> {
+    final TraceListener tl = _ -> {
       final M model = getLastModel(trace.getEventSequence(), bang.getInitialModel());
       textArea.setText(prettyPrint(model, 0));
     };

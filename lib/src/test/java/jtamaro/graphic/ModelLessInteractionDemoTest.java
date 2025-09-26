@@ -119,7 +119,7 @@ public final class ModelLessInteractionDemoTest {
   }
 
   // Demo interaction
-  public static void main(String[] args) {
+  static void main() {
     interact(INITIAL_GRAPHIC)
         .withName("Model-less TextField")
         .withRenderer(Function1.identity())

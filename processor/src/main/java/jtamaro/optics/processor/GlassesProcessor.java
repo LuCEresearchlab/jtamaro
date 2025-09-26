@@ -186,7 +186,7 @@ public final class GlassesProcessor extends AbstractProcessor {
     messager.printWarning("Skipping Lenses generation for "
         + reason
         + " "
-        + el.getSimpleName().toString());
+        + el.getSimpleName());
   }
 
   private record OpticsClassSpecs(

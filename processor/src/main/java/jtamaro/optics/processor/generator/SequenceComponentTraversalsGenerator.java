@@ -90,7 +90,7 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         sourceTypeStr,
         targetName,
         allComponentNames,
-        ignored -> "newValue"
+        _ -> "newValue"
     );
     return String.format("""
               public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElements = new Traversal<>() {

@@ -45,11 +45,11 @@ final class FilmStripFrame extends JFrame {
     add(bar, BorderLayout.SOUTH);
 
     // register listeners
-    prevButton.addActionListener((ev) ->
+    prevButton.addActionListener(_ ->
         sliderModel.setValue(sliderModel.getValue() - completeFrameWidth));
-    nextButton.addActionListener((ev) ->
+    nextButton.addActionListener(_ ->
         sliderModel.setValue(sliderModel.getValue() + completeFrameWidth));
-    sliderModel.addChangeListener(ev ->
+    sliderModel.addChangeListener(_ ->
         canvas.setPosition(sliderModel.getValue()));
 
     addComponentListener(new ComponentAdapter() {
@@ -63,7 +63,7 @@ final class FilmStripFrame extends JFrame {
   }
 
   private static <T> int length(Sequence<T> s) {
-    return s.reduce(0, (it, acc) -> acc + 1);
+    return s.reduce(0, (_, acc) -> acc + 1);
   }
 
   private void updateSliderModelMax() {

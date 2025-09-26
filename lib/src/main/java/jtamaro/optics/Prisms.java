@@ -27,7 +27,7 @@ public final class Prisms {
 
       @Override
       public Option<A> preview(Either<A, R> source) {
-        return source.fold(Options::some, r -> Options.none());
+        return source.fold(Options::some, _ -> Options.none());
       }
 
       @Override
@@ -51,7 +51,7 @@ public final class Prisms {
 
       @Override
       public Option<A> preview(Either<L, A> source) {
-        return source.fold(l -> Options.none(), Options::some);
+        return source.fold(_ -> Options.none(), Options::some);
       }
 
       @Override

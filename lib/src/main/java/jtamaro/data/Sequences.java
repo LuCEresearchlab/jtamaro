@@ -1,11 +1,7 @@
 package jtamaro.data;
 
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.stream.Stream;
-import jtamaro.optics.AffineTraversal;
-import jtamaro.optics.Lens;
-import jtamaro.optics.Traversal;
 
 /**
  * Static methods for working with sequences.

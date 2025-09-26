@@ -1,7 +1,6 @@
 package jtamaro.optics.processor;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 import jtamaro.data.Sequence;
 import jtamaro.optics.Glasses;
 

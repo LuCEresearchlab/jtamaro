@@ -55,12 +55,12 @@ final class GuiGraphicFrame extends JFrame {
     final JMenuItem copyItem = new JMenuItem("Copy graphic", KeyEvent.VK_C);
     copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
         KeyEvent.SHIFT_DOWN_MASK | menuShortcutKey));
-    copyItem.addActionListener(e -> copyGraphicToClipboard());
+    copyItem.addActionListener(_ -> copyGraphicToClipboard());
     fileMenu.add(copyItem);
 
     final JMenuItem saveItem = new JMenuItem("Save graphic", KeyEvent.VK_S);
     saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, menuShortcutKey));
-    saveItem.addActionListener(e -> saveGraphic());
+    saveItem.addActionListener(_ -> saveGraphic());
     fileMenu.add(saveItem);
 
     final JMenu editMenu = new JMenu("Edit");
@@ -69,7 +69,7 @@ final class GuiGraphicFrame extends JFrame {
 
     final JMenuItem paddingItem = new JMenuItem("Padding", KeyEvent.VK_P);
     paddingItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, menuShortcutKey));
-    paddingItem.addActionListener(e -> setPadding());
+    paddingItem.addActionListener(_ -> setPadding());
     editMenu.add(paddingItem);
 
     // canvas
@@ -158,7 +158,7 @@ final class GuiGraphicFrame extends JFrame {
         // Show in files option
         try {
           Desktop.getDesktop().open(selectedFile.getParent().toFile());
-        } catch (IOException ignored) {
+        } catch (IOException _) {
         }
       }
     } else {
