@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * A Sequence is an ordered list of elements of type <code>T</code>, it corresponds directly to what
- * you called "List-of-T" in <code>PF1</code>.
+ * A Sequence is an ordered list of elements of type {@code T}, it corresponds directly to what
+ * you called "List-of-T" in {@code PF1}.
  *
  * <p>To work with a Sequence, you can use the methods in the {@link Sequences} class.
  *
@@ -49,7 +49,7 @@ public sealed interface Sequence<T>
   /**
    * Filter the elements of this sequence by testing a given predicate.
    *
-   * @param predicate The test predicate. If this produces a <code>true</code> the tested element is
+   * @param predicate The test predicate. If this produces a {@code true} the tested element is
    *                  kept in the newly produced Sequence, otherwise it is discarded.
    * @return The filtered sequence
    */
@@ -104,7 +104,7 @@ public sealed interface Sequence<T>
    * Returns a sequence that is the reverse of this one.
    *
    * <p>Invoking this method twice should return a Sequence that is equal to
-   * this sequence: <code>s.equals(s.reversed().reversed())</code>.
+   * this sequence: {@code s.equals(s.reversed().reversed())}.
    *
    * @return A reversed sequence
    */
@@ -113,18 +113,18 @@ public sealed interface Sequence<T>
   /**
    * Take up to the first n elements of this sequence.
    *
-   * @param count The number of elements to take from the given sequence.
-   * @return A sequence of length <code>min(length(seq), n)</code> containing up to the first n
-   * elements of seq
+   * @param count The number of elements to take.
+   * @return A sequence of length {@code min(length(seq), n)} containing up to the first n elements
+   * of seq
    */
   Sequence<T> take(int count);
 
   /**
    * Drop up to the first n elements of this sequence.
    *
-   * @param count The number of elements to drop from the given sequence.
-   * @return A sequence of length <code>min(length(seq) - n, 0)</code> containing up to the
-   * remaining <code>length(seq) - n</code> elements of seq
+   * @param count The number of elements to drop.
+   * @return A sequence of length {@code min(length(seq) - n, 0)} containing up to the remaining
+   * {@code length(seq) - n} elements of seq
    */
   Sequence<T> drop(int count);
 
@@ -140,11 +140,10 @@ public sealed interface Sequence<T>
   /**
    * Inserts an element between all elements of this sequence.
    *
-   * <p><code>intersperse("-", of("1", "2", "3")) === of("1", "-", "2", "-", "3")</code>
+   * <p>{@code of("1", "2", "3").intersperse("-")} is equal to {@code of("1", "-", "2", "-", "3")}
    *
    * @param element The element to insert
-   * @return A sequence with the elements of the original sequence internally separated by
-   * <code>element</code>
+   * @return A sequence with the elements of the original sequence internally separated by element
    */
   Sequence<T> intersperse(T element);
 

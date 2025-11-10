@@ -5,7 +5,7 @@
  * <p>JTamaro is a close cousin to
  * the <a href="https://github.com/LuceResearchLab/pytamaro">PyTamaro</a> compositional graphics
  * library for Python. Unlike PyTamaro, JTamaro also includes simple purely functional data
- * structures (with types like <code>Sequence</code>, <code>Option</code>, and <code>Pair</code>),
+ * structures (with types like {@code Sequence}, {@code Option}, and {@code Pair}),
  * and functionality for developing purely-functional interactive applications (with a fluent API to
  * configure and run an Interaction). JTamaro provides a minimal API, much smaller than the Java API
  * surface covered in standard Java programming courses.

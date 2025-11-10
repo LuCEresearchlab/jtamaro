@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used on a {@link Record} class <code>R</code> to generate a <code>RLenses</code> class
- * with a {@link Lens} for each of its component.
+ * Annotation used on a {@link Record} class {@code R} to generate a {@code RLenses} class with a
+ * {@link Lens} for each of its component.
  *
- * <p><b>Example</b>: for the following record class <code>Demo</code>:
+ * <p><b>Example</b>: for the following record class {@code Demo}:
  * <pre>{@code
  * public record Demo(int c0, String c1) {}
  * }</pre>
- * it would generate the following class <code>DemoLenses</code>:
+ * it would generate the following class {@code DemoLenses}:
  * <pre>{@code
  * public final class DemoLenses {
  *   public static final Lens<Demo, Demo, Integer, Integer> c0 = new Lens<>() {

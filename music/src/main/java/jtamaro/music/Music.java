@@ -26,9 +26,9 @@ import static jtamaro.data.Sequences.of;
  *   <li>C9 = c'''''' = 6 Line</li>
  * </ul>
  *
- * <p>Scientific Pitch Notation: <code>C0, F♯4, D♭6</code>
+ * <p>Scientific Pitch Notation: {@code C0, F♯4, D♭6}
  *
- * <p>Helmholtz pitch notation: <code>f♯'</code>
+ * <p>Helmholtz pitch notation: {@code f♯'}
  *
  * @see <a href="https://en.wikipedia.org/wiki/Pitch_(music)">Pitch</a>
  * @see <a href="https://en.wikipedia.org/wiki/Scientific_pitch_notation">Scientific notation</a>

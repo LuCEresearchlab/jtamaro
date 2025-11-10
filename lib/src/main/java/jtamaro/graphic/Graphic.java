@@ -199,8 +199,8 @@ public abstract sealed class Graphic
    * <p>The output resembles a tree where the leaves are graphics, their attributes and children
    * graphics.
    *
-   * @implSpec Remember to invoke <code>super.dump(sb, indent)</code> first, then add all children
-   * using {@link #dumpChild(StringBuilder, String, String, Graphic)}.
+   * @implSpec Remember to invoke {@code super.dump(sb, indent)} first, then add all children using
+   * {@link #dumpChild(StringBuilder, String, String, Graphic)}.
    * @implNote All the props from {@link #getProps(boolean)} are automatically added by invoking the
    * super method.
    */
@@ -249,8 +249,8 @@ public abstract sealed class Graphic
    *
    * <p>These are used to produce various representations of the graphic.
    *
-   * @param plainText Whether the value strings be in plain text (<code>true</code>) or formatted in
-   *                  HTML markup (<code>false</code>).
+   * @param plainText Whether the value strings be in plain text ({@code true}) or formatted in HTML
+   *                  markup ({@code false}).
    * @implSpec The returned map is supposed to be mutable in non final-classes that override this
    * method so that it's easier for subclasses to add more entries to it.
    * @see #dump(StringBuilder, String)

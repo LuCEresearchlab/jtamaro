@@ -4,11 +4,11 @@ import java.util.Objects;
 
 /**
  * A Point in a Graphic. There are some noteworthy points, like the top-left corner of a graphic's
- * bounding box. For those points class Points provides constants (<code>TOP_LEFT</code>,
- * <code>TOP_RIGHT</code>, etc.).
+ * bounding box. For those points class Points provides constants ({@code TOP_LEFT},
+ * {@code TOP_RIGHT}, etc.).
  *
  * <p>The points are "normalized" point in the local coordinate system of a graphic. The bounding
- * box corners have points: <code>(-1, -1), (-1, 1), (1, 1), (1, -1)</code>.
+ * box corners have points: {@code (-1, -1), (-1, 1), (1, 1), (1, -1)}.
  *
  * @see jtamaro.graphic.Points
  */
