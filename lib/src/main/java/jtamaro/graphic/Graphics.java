@@ -163,9 +163,8 @@ public final class Graphics {
    * <p>Each graphic is contained in a rectangular bounding box. There are 9 notable points,
    * corresponding to the four corners of this rectangle, the middle points of the four edges and
    * the center of the rectangle. These points can be referred to using these names:
-   * <code>TOP_LEFT</code>, <code>TOP_CENTER</code>, <code>TOP_RIGHT</code>,
-   * <code>CENTER_LEFT</code>, <code>CENTER</code>, <code>CENTER_RIGHT</code>,
-   * <code>BOTTOM_LEFT</code>, <code>BOTTOM_CENTER</code> and <code>BOTTOM_RIGHT</code>.
+   * {@code TOP_LEFT}, {@code TOP_CENTER}, {@code TOP_RIGHT}, {@code CENTER_LEFT}, {@code CENTER},
+   * {@code CENTER_RIGHT}, {@code BOTTOM_LEFT}, {@code BOTTOM_CENTER} and {@code BOTTOM_RIGHT}.
    *
    * @param pinPoint the point indicating the new pinning position
    * @param graphic  original graphic

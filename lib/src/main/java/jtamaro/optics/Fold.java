@@ -4,9 +4,8 @@ import jtamaro.data.Function1;
 import jtamaro.data.Function2;
 
 /**
- * A Fold has the ability to extract some number of elements of type <code>A</code> from a container
- * of type <code>S</code>. For example, toListOf can be used to obtain the contained elements as a
- * list.
+ * A Fold has the ability to extract some number of elements of type {@code A} from a container of
+ * type {@code S}. For example, toListOf can be used to obtain the contained elements as a list.
  *
  * <p>Unlike a {@link Traversal}, there is no way to set or update elements.
  *
@@ -17,7 +16,7 @@ public interface Fold<S, A> {
 
 
   /**
-   * Map each target to <code>R</code> and fold the results.
+   * Map each target to {@code R} and fold the results.
    */
   <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, S source);
 

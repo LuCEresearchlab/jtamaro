@@ -38,12 +38,12 @@ public final class Interaction<M> {
   private final Function1<M, M> tickHandler;
 
   /**
-   * Model well-formed predicate. Returns <code>true</code> if the model is well-formed.
+   * Model well-formed predicate. Returns {@code true} if the model is well-formed.
    */
   private final Function1<M, Boolean> wellFormedPredicate;
 
   /**
-   * Stopping predicate. Returns <code>true</code> if the interaction should stop running.
+   * Stopping predicate. Returns {@code true} if the interaction should stop running.
    */
   private final Function1<M, Boolean> stoppingPredicate;
 
@@ -94,7 +94,7 @@ public final class Interaction<M> {
   /**
    * Fixed background {@link Graphic}.
    *
-   * @implNote If <code>null</code>, there is no background.
+   * @implNote If {@code null}, there is no background.
    */
   private final Graphic background;
 
@@ -236,7 +236,7 @@ public final class Interaction<M> {
   /**
    * Specify a function that checks the well-formedness of the model at each tick.
    *
-   * <p>If this function returns <code>false</code>, an {@link Exception} is thrown.
+   * <p>If this function returns {@code false}, an {@link Exception} is thrown.
    */
   public Interaction<M> withWellFormedPredicate(Function1<M, Boolean> wellFormedPredicate) {
     return new Interaction<>(initialModel,
@@ -259,7 +259,7 @@ public final class Interaction<M> {
 
   /**
    * Specify a function that checks the well-formedness of the model at each tick. If this function
-   * returns <code>false</code>, an {@link Exception} is thrown.
+   * returns {@code false}, an {@link Exception} is thrown.
    */
   public Interaction<M> withStoppingPredicate(Function1<M, Boolean> stoppingPredicate) {
     return new Interaction<>(initialModel,

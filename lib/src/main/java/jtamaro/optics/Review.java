@@ -1,7 +1,7 @@
 package jtamaro.optics;
 
 /**
- * A Review is a backwards {@link Getter}, i.e. a function from <code>B</code> to <code>T</code>.
+ * A Review is a backwards {@link Getter}, i.e. a function from {@code B} to {@code T}.
  *
  * @param <B> Source of the review
  * @param <T> Target of the review

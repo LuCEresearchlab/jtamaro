@@ -101,9 +101,9 @@ public final class Sequences {
 
   /**
    * Constructs a sequence of integers starting at 0, with the last element being
-   * <code>toExclusive-1</code>.
+   * {@code toExclusive - 1}.
    *
-   * <p><code>range(3) === of(0, 1, 2)</code>
+   * <p>Example: {@code range(3) === of(0, 1, 2)}
    *
    * @param toExclusive the number that would come right after the last value of the sequence
    * @return a new sequence of integers starting at 0, and ending just before the given number
@@ -113,10 +113,10 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of integers starting at <code>from</code>, with the last element being
-   * <code>toExclusive - 1</code>.
+   * Constructs a sequence of integers starting at {@code from}, with the last element being
+   * {@code toExclusive - 1}.
    *
-   * <p><code>range(1, 3) === of(1, 2)</code>
+   * <p>Example: {@code range(1, 3) === of(1, 2)}
    *
    * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
@@ -126,10 +126,10 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of integers starting at <code>from</code>, with the last element being
-   * <code>toExclusive - 1</code> with each element being <code>previousElement + step</code>.
+   * Constructs a sequence of integers starting at {@code from}, with the last element being
+   * {@code toExclusive - 1} with each element being {@code previousElement + step}.
    *
-   * <p><code>range(0, 8, 2) === of(0, 2, 4, 6)</code>
+   * <p>Example: {@code range(0, 8, 2) === of(0, 2, 4, 6)}
    *
    * @param from        the value of the first element
    * @param toExclusive the number that would come right after the last value of the sequence
@@ -159,15 +159,14 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of floating point numbers starting at <code>from</code>, with the last
-   * element being &lt; <code>toExclusive</code> with each element being <code>previousElement +
-   * step</code>.
+   * Constructs a sequence of floating point numbers starting at {@code from}, with the last element
+   * being &lt; {@code toExclusive} with each element being {@code previousElement + step}.
    *
-   * <p><code>range(0, 1, 0.2) === of(0.0, 0.2, 0.4, 0.6, 0.8)</code>
+   * <p>Example: {@code range(0, 1, 0.2) === of(0.0, 0.2, 0.4, 0.6, 0.8)}
    *
    * @param from        the value of the first element
    * @param toExclusive the number which all elements of the sequence are less than by at most
-   *                    <code>step</code>
+   *                    {@code step}
    * @param step        the difference between an element of the sequence and its predecessor
    */
   public static Sequence<Double> range(double from, double toExclusive, double step) {
@@ -190,10 +189,10 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of integers starting at <code>from</code>, with the last element being
-   * <code>toExclusive</code>.
+   * Constructs a sequence of integers starting at {@code from}, with the last element being
+   * {@code toExclusive}.
    *
-   * <p><code>rangeClosed(1, 3) === of(1, 2, 3)</code>
+   * <p>Example: {@code rangeClosed(1, 3) === of(1, 2, 3)}
    *
    * @param from the value of the first element
    * @param to   the value of the last element
@@ -203,10 +202,10 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of integers starting at <code>from</code>, with the last element being
-   * <code>toExclusive</code>.
+   * Constructs a sequence of integers starting at {@code from}, with the last element being
+   * {@code toExclusive}.
    *
-   * <p><code>range(0, 8, 2) === of(0, 2, 4, 6, 8)</code>
+   * <p>Example: {@code range(0, 8, 2) === of(0, 2, 4, 6, 8)}
    *
    * @param from the value of the first element
    * @param to   the value of which the last element is less than or equal
@@ -232,10 +231,10 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence of characters starting at <code>from</code>, with the last element being
-   * <code>toExclusive</code>.
+   * Constructs a sequence of characters starting at {@code from}, with the last element being
+   * {@code toExclusive}.
    *
-   * <p><code>rangeClosed('a', 'd') === of('a', 'b','c','d')</code>
+   * <p>Example: {@code rangeClosed('a', 'd') === of('a', 'b','c','d')}
    *
    * @param from the value of the first element
    * @param to   the value of the last element
@@ -246,7 +245,7 @@ public final class Sequences {
   }
 
   /**
-   * Constructs a sequence with the given <code>element</code> repeated <code>count</code> times.
+   * Constructs a sequence with the given {@code element} repeated {@code count} times.
    *
    * @param <T>     the type of the elements in the sequence
    * @param element the element to repeat
