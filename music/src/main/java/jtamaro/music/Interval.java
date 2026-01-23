@@ -95,7 +95,7 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
 
   public static final Interval AUGMENTED_OCTAVE = new Interval(13, AUGMENTED, EIGHTH);
 
-  public final static List<Interval> INTERVALS = List.of(
+  public static final List<Interval> INTERVALS = List.of(
       PERFECT_UNISON, DIMINISHED_SECOND, MINOR_SECOND, AUGMENTED_UNISON,
       MAJOR_SECOND, DIMINISHED_THIRD, MINOR_THIRD, AUGMENTED_SECOND,
       MAJOR_THIRD, DIMINISHED_FOURTH, PERFECT_FOURTH, AUGMENTED_THIRD,
