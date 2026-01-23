@@ -8,7 +8,7 @@ import static jtamaro.data.Sequences.empty;
 import static jtamaro.data.Sequences.of;
 import static jtamaro.io.IO.println;
 
-public class QuickSort {
+public final class QuickSort {
 
   public static <T> Sequence<T> quickSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
     return sequence.isEmpty()
@@ -32,8 +32,8 @@ public class QuickSort {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main() {
     println(quickSort((a, b) -> a <= b, of(1, 3, 2, 9, 2, 1, 8, 7)));
-    println(quickSort((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
+    println(quickSortNice((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
   }
 }
