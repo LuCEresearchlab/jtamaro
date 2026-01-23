@@ -12,7 +12,9 @@ import java.util.stream.Stream;
  * @see <a href="https://htdp.org/2022-8-7/Book/part_two.html">HTDP</a>
  * @see Sequences
  */
-public interface Sequence<T> extends Iterable<T> {
+public sealed interface Sequence<T>
+    extends Iterable<T>
+    permits Cons, Empty {
 
   /**
    * Determines whether this is an empty sequence (i.e., it has no elements).
