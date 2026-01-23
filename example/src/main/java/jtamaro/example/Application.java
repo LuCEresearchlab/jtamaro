@@ -20,9 +20,6 @@ import jtamaro.example.graphic.SwissFlag;
 import jtamaro.example.graphic.TextDemo;
 import jtamaro.example.graphic.TriangleDemo;
 import jtamaro.example.interaction.ControllableSpinner;
-import jtamaro.example.sequence.Demo;
-import jtamaro.example.sequence.Digits;
-import jtamaro.example.sequence.ForLoops;
 import jtamaro.example.sequence.InsertionSort;
 import jtamaro.example.sequence.QuickSort;
 import jtamaro.example.sequence.Scan;
@@ -34,19 +31,16 @@ import static jtamaro.io.IO.println;
  * Note: This is the main class when running with gradle :demo-app:run However, one can e.g., run
  * any of the demos directly from the IDE (and thanks the gradle, the IDE should find the library).
  */
-public class Application {
+public final class Application {
 
-  public static void main(String[] args) {
+  static void main(String[] args) {
     println("JTamaro Demo Application");
 
     // Sequence
-    Demo.main(args);
-    Digits.main(args);
-    ForLoops.main(args);
-    InsertionSort.main(args);
-    QuickSort.main(args);
+    InsertionSort.main();
+    QuickSort.main();
     GraphicReductions.main(args);
-    Scan.main(args);
+    Scan.main();
 
     // Colors
     ColorDemo.main(args);

@@ -6,9 +6,8 @@ import jtamaro.data.Sequence;
 import static jtamaro.data.Sequences.cons;
 import static jtamaro.data.Sequences.empty;
 import static jtamaro.data.Sequences.of;
-import static jtamaro.io.IO.println;
 
-public class Scan {
+public final class Scan {
 
   // scanl (+) 0 [3,5,2,1] = [0,3,8,10,11]
   // http://learnyouahaskell.com/higher-order-functions#folds
@@ -21,9 +20,7 @@ public class Scan {
         );
   }
 
-
-  public static void main(String[] args) {
-    println(scan(Integer::sum, 0, of(1, 3, 2, 9, 2, 1, 8, 7)));
+  public static void main() {
+    System.out.println(scan(Integer::sum, 0, of(1, 3, 2, 9, 2, 1, 8, 7)));
   }
-
 }
