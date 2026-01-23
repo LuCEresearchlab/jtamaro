@@ -29,7 +29,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
   @Override
   public <U> U foldRight(U initial, Function2<T, U, U> reducer) {
     U acc = initial;
-    Sequence<T> itr = reversed();
+    Sequence<T> itr = reverse();
     while (itr instanceof Cons<T>(T head, Sequence<T> tail)) {
       acc = reducer.apply(head, acc);
       itr = tail;
@@ -58,7 +58,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
    * @implSpec Cannot depend on {@link #foldRight(Object, Function2)}.
    */
   @Override
-  public Sequence<T> reversed() {
+  public Sequence<T> reverse() {
     Sequence<T> result = new Empty<>();
     Sequence<T> itr = this;
     while (itr instanceof Cons<T>(T head, Sequence<T> tail)) {
@@ -78,7 +78,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
       itr = tail;
       i += 1;
     }
-    return result.reversed();
+    return result.reverse();
   }
 
   @Override
@@ -94,7 +94,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
 
   @Override
   public Sequence<T> concat(Sequence<T> other) {
-    Sequence<T> itr = reversed();
+    Sequence<T> itr = reverse();
     Sequence<T> result = other;
     while (itr instanceof Cons<T>(T head, Sequence<T> tail)) {
       result = new Cons<>(head, result);
@@ -122,7 +122,7 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
       thatItr = thatTail;
     }
 
-    return result.reversed();
+    return result.reverse();
   }
 
   @Override

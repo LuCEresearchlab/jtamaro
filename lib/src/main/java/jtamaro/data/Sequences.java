@@ -185,7 +185,7 @@ public final class Sequences {
         curr += step;
       } while (step > 0 ? curr < toExclusive : curr > toExclusive);
 
-      return seq.reversed();
+      return seq.reverse();
     }
   }
 
@@ -288,7 +288,7 @@ public final class Sequences {
   public static <A, B> Pair<Sequence<A>, Sequence<B>> unzip(Sequence<Pair<A, B>> seq) {
     Sequence<A> a = new Empty<>();
     Sequence<B> b = new Empty<>();
-    Sequence<Pair<A, B>> itr = seq.reversed();
+    Sequence<Pair<A, B>> itr = seq.reverse();
     while (itr instanceof Cons(Pair(A p1, B p2), Sequence<Pair<A, B>> rest)) {
       a = new Cons<>(p1, a);
       b = new Cons<>(p2, b);
@@ -302,7 +302,7 @@ public final class Sequences {
     while (iterator.hasNext()) {
       result = new Cons<>(iterator.next(), result);
     }
-    return result.reversed();
+    return result.reverse();
   }
 
   private static int getLastElementClosed(int start, int end, int step) {

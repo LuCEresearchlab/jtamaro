@@ -45,7 +45,7 @@ record Empty<T>() implements Sequence<T> {
   }
 
   @Override
-  public Sequence<T> reversed() {
+  public Sequence<T> reverse() {
     return this;
   }
 

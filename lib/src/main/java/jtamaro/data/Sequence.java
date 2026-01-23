@@ -108,7 +108,7 @@ public sealed interface Sequence<T>
    *
    * @return A reversed sequence
    */
-  Sequence<T> reversed();
+  Sequence<T> reverse();
 
   /**
    * Take up to the first n elements of this sequence.

@@ -293,23 +293,23 @@ public final class SequencesTest {
 
   @Test
   public void testReverseEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().reversed());
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().reverse());
   }
 
   @Test
   public void testReverseOne() {
-    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).reversed());
+    TestUtil.assertSequenceEquals(Sequences.of(1), Sequences.of(1).reverse());
   }
 
   @Test
   public void testReverseTwo() {
-    TestUtil.assertSequenceEquals(Sequences.of(1, 0), Sequences.range(2).reversed());
+    TestUtil.assertSequenceEquals(Sequences.of(1, 0), Sequences.range(2).reverse());
   }
 
   @Test
   public void testReverseFive() {
     TestUtil.assertSequenceEquals(Sequences.rangeClosed(4, 0, -1),
-        Sequences.rangeClosed(0, 4).reversed());
+        Sequences.rangeClosed(0, 4).reverse());
   }
 
   @Test
