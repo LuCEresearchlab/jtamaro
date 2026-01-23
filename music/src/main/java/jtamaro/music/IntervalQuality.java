@@ -23,7 +23,9 @@ public enum IntervalQuality {
   AUGMENTED("A", "Augmented"),
   ;
 
-  // https://en.wikipedia.org/wiki/Inversion_(music)#Intervals
+  /**
+   * @see <a href="https://en.wikipedia.org/wiki/Inversion_(music)#Intervals">Wikipedia</a>
+   */
   private static final Map<IntervalQuality, IntervalQuality> INVERSES = Map.of(
       PERFECT, PERFECT,
       MAJOR, MINOR,
@@ -51,11 +53,5 @@ public enum IntervalQuality {
 
   public IntervalQuality invert() {
     return INVERSES.get(this);
-  }
-
-  public static void demo() {
-    for (IntervalQuality q : values()) {
-      System.out.println(q + " Inverse: " + q.invert());
-    }
   }
 }

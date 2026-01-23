@@ -19,9 +19,9 @@ public record Note(int noteNumber) {
 
   public void on(Receiver receiver, int channel) {
     try {
-      ShortMessage message = new ShortMessage();
+      final ShortMessage message = new ShortMessage();
       message.setMessage(ShortMessage.NOTE_ON, channel, noteNumber, 127);
-      long timeStamp = -1;
+      final long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
       LOGGER.log(Level.WARNING, "Failed turn on note " + noteNumber, ex);
@@ -30,9 +30,9 @@ public record Note(int noteNumber) {
 
   public void off(Receiver receiver, int channel) {
     try {
-      ShortMessage message = new ShortMessage();
+      final ShortMessage message = new ShortMessage();
       message.setMessage(ShortMessage.NOTE_OFF, channel, noteNumber);
-      long timeStamp = -1;
+      final long timeStamp = -1;
       receiver.send(message, timeStamp);
     } catch (InvalidMidiDataException ex) {
       LOGGER.log(Level.WARNING, "Failed turn off note " + noteNumber, ex);
@@ -43,8 +43,8 @@ public record Note(int noteNumber) {
     return new Note(noteNumber + semitones);
   }
 
+  @Override
   public String toString() {
     return "" + noteNumber;
   }
-
 }

@@ -39,7 +39,7 @@ public record PitchClass(int number, String symbol) {
 
   public static final PitchClass B = new PitchClass(11, "B");
 
-  public static final PitchClass[] PITCH_CLASSES = new PitchClass[]{
+  public static final PitchClass[] PITCH_CLASSES = {
       C, CS, D, DS, E, F, FS, G, GS, A, AS, B,
   };
 
@@ -48,17 +48,5 @@ public record PitchClass(int number, String symbol) {
     assert octave.number() <= 9;
     assert octave.number() < 9 || number <= 7;
     return note((octave.number() + 1) * 12 + number);
-  }
-
-  public static void main(String[] args) {
-    for (PitchClass pc : PITCH_CLASSES) {
-      System.out.println(pc);
-      Note root = pc.in(OCTAVE_4);
-      MusicIO.playChords(Sequences.of(
-          Music.chord(Sequences.of(root)),
-          MAJOR_TRIAD.on(root),
-          MINOR_TRIAD.on(root)
-      ), 60);
-    }
   }
 }

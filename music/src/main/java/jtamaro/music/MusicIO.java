@@ -23,15 +23,15 @@ public final class MusicIO {
   }
 
   public static void play(Sequence<TimedChord> song, int bpm, int channel, Instrument instrument) {
-    System.out.println("IO.play:");
-    int msPerBeat = 60 * 1000 / bpm;
+    LOGGER.info("IO.play:");
+    final int msPerBeat = 60 * 1000 / bpm;
     try (Receiver receiver = MidiSystem.getReceiver()) {
       receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE,
           channel,
           instrument.internalPcNumber(),
           0), -1);
       for (TimedChord c : cons(timed(2, chord(of())), song)) {
-        System.out.println(c);
+        LOGGER.info(c.toString());
         c.play(receiver, channel, msPerBeat);
       }
     } catch (MidiUnavailableException | InvalidMidiDataException ex) {

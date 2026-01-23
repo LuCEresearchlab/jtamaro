@@ -1,9 +1,5 @@
 package jtamaro.music;
 
-import java.util.Arrays;
-import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
-
 /**
  * In MIDI, percussion instruments corresponds to notes. If those note numbers are played on channel
  * 10, then the sounds produced is that of the percussion instrument.
@@ -59,8 +55,8 @@ public enum Percussion {
   MUTE_CUICA(78),
   OPEN_CUICA(79),
   MUTE_TRIANGLE(80),
-  OPEN_TRIANGLE(81);
-
+  OPEN_TRIANGLE(81),
+  ;
 
   private final int midiNoteNumber;
 
@@ -79,53 +75,5 @@ public enum Percussion {
   @Override
   public String toString() {
     return capitalizedName() + " [Key# " + midiNoteNumber + "]";
-  }
-
-  /**
-   * Get a sequence of all available percussion instruments.
-   *
-   * @return a sequence of the available percussion instruments.
-   */
-  public static Sequence<Percussion> percussions() {
-    return Sequences.fromStream(Arrays.stream(values()));
-  }
-
-  public static void demo() {
-    // TODO: It seems that Java's default sound bank (Gervill?)
-    //       only includes a subset of the General MIDI percussion sounds.
-    //       https://www.midi.org/specifications-old/item/gm-level-1-sound-set
-
-    //System.out.println("Play through all in one go:");
-    //playDrumNotes(map(pe->pe.asNote(), percussions()), 80);
-
-    System.out.println("Play a piece:");
-    MusicIO.playDrumChords(
-        Sequences.of(
-            Music.chord(Sequences.of(ACOUSTIC_BASS_DRUM.asNote())),
-            Music.chord(Sequences.of(ACOUSTIC_SNARE.asNote())),
-            Music.chord(Sequences.of(ACOUSTIC_BASS_DRUM.asNote())),
-            Music.chord(Sequences.of(ACOUSTIC_SNARE.asNote())),
-            Music.chord(Sequences.of(CLOSED_HI_HAT.asNote())),
-            Music.chord(Sequences.of(OPEN_HI_HAT.asNote())),
-            Music.chord(Sequences.of(LOW_FLOOR_TOM.asNote())),
-            Music.chord(Sequences.of(HIGH_FLOOR_TOM.asNote())),
-            Music.chord(Sequences.of(LOW_TOM.asNote())),
-            Music.chord(Sequences.of(LOW_MID_TOM.asNote())),
-            Music.chord(Sequences.of(HI_MID_TOM.asNote())),
-            Music.chord(Sequences.of(HIGH_TOM.asNote())),
-            Music.chord(Sequences.of(CRASH_CYMBAL_1.asNote())),
-            Music.chord(Sequences.of(LOW_FLOOR_TOM.asNote(), HIGH_TOM.asNote()))
-        ),
-        80
-    );
-
-    System.out.println("Play each percussion instrument individually:");
-    for (Percussion percussion : values()) {
-      System.out.println(percussion);
-      MusicIO.playDrumNotes(
-          Sequences.of(percussion.asNote()),
-          80
-      );
-    }
   }
 }

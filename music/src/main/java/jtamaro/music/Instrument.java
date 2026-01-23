@@ -187,20 +187,4 @@ public enum Instrument {
   public static Sequence<Instrument> instruments() {
     return Sequences.fromStream(Arrays.stream(values()));
   }
-
-  public static void demo() {
-    for (Instrument instrument : values()) {
-      System.out.println(instrument);
-      Note root = Notes.C4;
-      MusicIO.playChords(
-          Sequences.of(
-              Music.chord(Sequences.of(root)),
-              Chord.MAJOR_TRIAD.on(root)
-          ),
-          80,
-          0,
-          instrument
-      );
-    }
-  }
 }
