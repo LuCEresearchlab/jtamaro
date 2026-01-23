@@ -15,17 +15,17 @@ package jtamaro.music;
  */
 public enum GenericInterval {
 
-  FIRST(1, "First"),     // aka. Unison, Prime
+  FIRST(1, "First"),     // a.k.a. Unison, Prime
   SECOND(2, "Second"),
   THIRD(3, "Third"),
   FOURTH(4, "Fourth"),
   FIFTH(5, "Fifth"),
   SIXTH(6, "Sixth"),
   SEVENTH(7, "Seventh"),
-  EIGHTH(8, "Eight"),    // aka. Octave
+  EIGHTH(8, "Eight"),    // a.k.a. Octave
   ;
 
-  private static final GenericInterval[] INTERVAL_BY_STAFF_POSITIONS = new GenericInterval[]{
+  private static final GenericInterval[] INTERVAL_BY_STAFF_POSITIONS = {
       null,
       FIRST,
       SECOND,
@@ -73,11 +73,5 @@ public enum GenericInterval {
   public static GenericInterval byStaffPositions(int staffPositions) {
     assert staffPositions >= 1 && staffPositions <= 8 : "staffPositions must be 1...8";
     return INTERVAL_BY_STAFF_POSITIONS[staffPositions];
-  }
-
-  public static void demo() {
-    for (GenericInterval gi : values()) {
-      System.out.println(gi + " " + gi.getStaffPositions() + " " + gi.getName());
-    }
   }
 }

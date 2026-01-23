@@ -1,13 +1,9 @@
 package jtamaro.music;
 
-import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
-
 import static jtamaro.music.Chord.AUGMENTED_TRIAD;
 import static jtamaro.music.Chord.DIMINISHED_TRIAD;
 import static jtamaro.music.Chord.MAJOR_TRIAD;
 import static jtamaro.music.Chord.MINOR_TRIAD;
-import static jtamaro.music.Scales.C_MAJOR;
 
 /**
  * A chord like they are used in chord progressions, with a scale step (usually shown as a Roman
@@ -76,45 +72,4 @@ public record RelativeChord(int scaleStep, Chord chord, String symbol) {
   public static final RelativeChord vi_DIM_CHORD = new RelativeChord(6, DIMINISHED_TRIAD, "vi^o");
 
   public static final RelativeChord vii_DIM_CHORD = new RelativeChord(7, DIMINISHED_TRIAD, "vii^o");
-
-  public static void demo() {
-    // https://en.wikipedia.org/wiki/Roman_numeral_analysis#Major_scale
-    //play(C_MAJOR, of(I_CHORD, ii_CHORD, iii_CHORD, IV_CHORD, V_CHORD, vi_CHORD, vii_DIM_CHORD));
-
-    // https://en.wikipedia.org/wiki/Roman_numeral_analysis#Minor_scale
-    // This progression on the minor scale is strange:
-    //play(C_MINOR, of(i_CHORD, ii_DIM_CHORD, III_AUG_CHORD, iv_CHORD, V_CHORD, VI_CHORD, vii_DIM_CHORD));
-
-    // https://blog.landr.com/common-chord-progressions/
-    // 1
-    //play(C_MAJOR, of(I_CHORD, V_CHORD, vi_CHORD, IV_CHORD));
-    // 2
-    //play(C_MAJOR, of(I_CHORD, IV_CHORD, V_CHORD, IV_CHORD));
-    // 3
-    // play(C_MAJOR, of(
-    //   new RelativeChord(2, MINOR_SEVENTH_CHORD, "ii-7"),
-    //   new RelativeChord(5, DOMINANT_SEVENTH_CHORD, "V7"),
-    //   new RelativeChord(1, MAJOR_SEVENTH_CHORD, "IΔ7")
-    // ));
-    // 4 - 12 Bar Blues
-    // play(C_MAJOR, of(
-    //   I_CHORD, I_CHORD, I_CHORD, I_CHORD,
-    //   IV_CHORD, IV_CHORD, I_CHORD, I_CHORD,
-    //   V_CHORD, IV_CHORD, I_CHORD, I_CHORD
-    // ));
-    // 5
-    //play(C_MAJOR, of(I_CHORD, vi_CHORD, IV_CHORD, V_CHORD));
-    // 6
-    play(C_MAJOR, Sequences.of(
-        I_CHORD, V_CHORD, vi_CHORD, iii_CHORD,
-        IV_CHORD, I_CHORD, IV_CHORD, V_CHORD
-    ));
-    // 7
-    //play(C_MAJOR, of(I_CHORD, new RelativeChord(0, ???, "bVII"), I_CHORD));
-  }
-
-  private static void play(Scale scale, Sequence<RelativeChord> cs) {
-    Sequence<AbsoluteChord> acs = cs.map(scale::in);
-    MusicIO.playChords(acs, 60);
-  }
 }

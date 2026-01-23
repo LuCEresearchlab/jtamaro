@@ -16,7 +16,6 @@ import static jtamaro.music.IntervalQuality.DIMINISHED;
 import static jtamaro.music.IntervalQuality.MAJOR;
 import static jtamaro.music.IntervalQuality.MINOR;
 import static jtamaro.music.IntervalQuality.PERFECT;
-import static jtamaro.music.Notes.C4;
 
 /**
  * An unordered pitch interval.
@@ -105,8 +104,13 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
       PERFECT_OCTAVE, AUGMENTED_SEVENTH, AUGMENTED_OCTAVE
   );
 
-  public String toString() {
-    return getShortName() + " (" + getLongName() + ")";
+  public static Interval get(GenericInterval genericInterval, IntervalQuality quality) {
+    for (Interval i : INTERVALS) {
+      if (i.quality() == quality && i.genericInterval() == genericInterval) {
+        return i;
+      }
+    }
+    return null;
   }
 
   public String getShortName() {
@@ -155,10 +159,10 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
    * (Wikipedia)</a>
    */
   public Interval invert() {
-    Interval simple = getSimple(); // Get simple interval from which this is compounded
-    int s = 12 - simple.semitones;
-    IntervalQuality q = simple.quality.invert();
-    GenericInterval gi = simple.genericInterval.invert();
+    final Interval simple = getSimple(); // Get simple interval from which this is compounded
+    final int s = 12 - simple.semitones;
+    final IntervalQuality q = simple.quality.invert();
+    final GenericInterval gi = simple.genericInterval.invert();
     return new Interval(s, q, gi);
   }
 
@@ -177,56 +181,8 @@ public record Interval(int semitones, IntervalQuality quality, GenericInterval g
         : new Interval(semitones % 12, quality, genericInterval.getSimple());
   }
 
-  public static Interval get(GenericInterval genericInterval, IntervalQuality quality) {
-    for (Interval i : INTERVALS) {
-      if (i.quality() == quality && i.genericInterval() == genericInterval) {
-        return i;
-      }
-    }
-    return null;
-  }
-
-  // Table shown in the last step of this page:
-  // https://www.musictheory.net/lessons/31
-  private static void printIntervalTable() {
-    System.out.print('\t');
-    for (IntervalQuality q : IntervalQuality.values()) {
-      System.out.print(q.getName() + '\t');
-    }
-    System.out.println();
-    for (GenericInterval gi : GenericInterval.values()) {
-      System.out.print(gi.getName() + '\t');
-      for (IntervalQuality q : IntervalQuality.values()) {
-        Interval i = get(gi, q);
-        //String cell = i==null ? "" : i.getShortName();
-        String cell = i == null ? "" : "" + i.semitones();
-        System.out.print(cell + '\t');
-      }
-      System.out.println();
-    }
-  }
-
-  private static void printInversionTable() {
-    System.out.println("Interval\tInversion\t");
-    for (Interval interval : INTERVALS) {
-      System.out.println(interval + "\t" + interval.invert());
-    }
-  }
-
-  private static void playIntervals() {
-    final Note root = C4;
-    for (Interval interval : INTERVALS) {
-      MusicIO.playChords(Sequences.of(
-          interval.dyad(root),
-          interval.invert().dyad(root)
-      ));
-    }
-  }
-
-  public static void demo() {
-    System.out.println("Number of semitones for the different specific intervals:");
-    printIntervalTable();
-    System.out.println("All intervals with their intervallic inversions:");
-    printInversionTable();
+  @Override
+  public String toString() {
+    return getShortName() + " (" + getLongName() + ")";
   }
 }

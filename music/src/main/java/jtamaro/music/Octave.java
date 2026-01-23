@@ -28,15 +28,15 @@ public record Octave(int number, boolean helmholzSmall, String helmholzSuffix, S
 
   public static final Octave OCTAVE_4 = new Octave(4, true, "'", "1 Line");
 
-  public static final Octave OCTAVE_5 = new Octave(4, true, "'", "2 Line");
+  public static final Octave OCTAVE_5 = new Octave(5, true, "'", "2 Line");
 
-  public static final Octave OCTAVE_6 = new Octave(4, true, "'", "3 Line");
+  public static final Octave OCTAVE_6 = new Octave(6, true, "'", "3 Line");
 
-  public static final Octave OCTAVE_7 = new Octave(4, true, "'", "4 Line");
+  public static final Octave OCTAVE_7 = new Octave(7, true, "'", "4 Line");
 
-  public static final Octave OCTAVE_8 = new Octave(4, true, "'", "5 Line");
+  public static final Octave OCTAVE_8 = new Octave(8, true, "'", "5 Line");
 
-  public static final Octave OCTAVE_9 = new Octave(4, true, "'", "6 Line");
+  public static final Octave OCTAVE_9 = new Octave(9, true, "'", "6 Line");
 
   private static final Octave[] OCTAVES = new Octave[11];
 
