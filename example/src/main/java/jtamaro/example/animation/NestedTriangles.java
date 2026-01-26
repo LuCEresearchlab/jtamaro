@@ -14,7 +14,16 @@ import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.show;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class NestedTriangles {
+public final class NestedTriangles {
+
+  private NestedTriangles() {
+  }
+
+  public static void main() {
+    show(triangles(105));
+    showFilmStrip(angleAnimation());
+    animate(angleAnimation());
+  }
 
   private static Graphic triangles(double angle) {
     return compose(
@@ -29,11 +38,4 @@ public class NestedTriangles {
   private static Sequence<Graphic> angleAnimation() {
     return range(180).map(NestedTriangles::triangles);
   }
-
-  public static void main(String[] args) {
-    show(triangles(105));
-    showFilmStrip(angleAnimation());
-    animate(angleAnimation());
-  }
-
 }

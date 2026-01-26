@@ -30,11 +30,8 @@ import static jtamaro.graphic.Points.CENTER_LEFT;
  * expect students to develop themselves throughout a course. We place them here so examples can use
  * them.
  */
+@SuppressWarnings("unused")
 public final class Toolbelt {
-
-  // prevent instantiation
-  private Toolbelt() {
-  }
 
   // JTamaro Colors
   public static final Color JT_RED = rgb(210, 7, 27);
@@ -49,6 +46,9 @@ public final class Toolbelt {
 
   public static final Color JT_BLUE = rgb(1, 138, 204);
 
+  // prevent instantiation
+  private Toolbelt() {
+  }
 
   public static <T> int length(Sequence<T> s) {
     return s.isEmpty() ? 0 : 1 + length(s.rest());
@@ -247,8 +247,8 @@ public final class Toolbelt {
     assert side >= 0;
     assert angle >= 0;
     assert angle <= 180;
-    Graphic tri1 = rotate(-angle / 2, triangle(side, symmetryDiagonal, angle, color));
-    Graphic tri2 = triangle(symmetryDiagonal, side, angle, color);
+    final Graphic tri1 = rotate(-angle / 2, triangle(side, symmetryDiagonal, angle, color));
+    final Graphic tri2 = triangle(symmetryDiagonal, side, angle, color);
     return pin(CENTER_LEFT, above(tri2, tri1));
   }
 
@@ -260,10 +260,10 @@ public final class Toolbelt {
     assert height1 >= 0;
     assert height2 >= 0;
     assert crossDiagonal >= 0;
-    Graphic tl = rotate(90, triangle(crossDiagonal / 2, height1, 90, color));
-    Graphic tr = triangle(height2, crossDiagonal / 2, 90, color);
-    Graphic bl = rotate(180, triangle(height1, crossDiagonal / 2, 90, color));
-    Graphic br = rotate(270, triangle(crossDiagonal / 2, height2, 90, color));
+    final Graphic tl = rotate(90, triangle(crossDiagonal / 2, height1, 90, color));
+    final Graphic tr = triangle(height2, crossDiagonal / 2, 90, color);
+    final Graphic bl = rotate(180, triangle(height1, crossDiagonal / 2, 90, color));
+    final Graphic br = rotate(270, triangle(crossDiagonal / 2, height2, 90, color));
     return above(
         beside(tl, tr),
         beside(bl, br)
@@ -276,11 +276,11 @@ public final class Toolbelt {
     assert topWidth <= bottomWidth;
     assert height > 0;
     assert bottomWidth > 0;
-    Graphic leftTriangle = rotate(90,
+    final Graphic leftTriangle = rotate(90,
         triangle(height, (bottomWidth - topWidth) / 2, 90, color)
     );
-    Graphic rightTriangle = triangle((bottomWidth - topWidth) / 2, height, 90, color);
-    Graphic centralBody = rectangle(topWidth, height, color);
+    final Graphic rightTriangle = triangle((bottomWidth - topWidth) / 2, height, 90, color);
+    final Graphic centralBody = rectangle(topWidth, height, color);
     return besides(of(leftTriangle, centralBody, rightTriangle));
   }
 
@@ -292,9 +292,9 @@ public final class Toolbelt {
     assert height > 0;
     assert bottomWidth > 0;
     final double wDiff = bottomWidth - topWidth;
-    Graphic tri = rotate(flip ? -90 : 0,
+    final Graphic tri = rotate(flip ? -90 : 0,
         triangle(flip ? height : wDiff, flip ? wDiff : height, 90, color));
-    Graphic rec = rectangle(bottomWidth - wDiff, height, color);
+    final Graphic rec = rectangle(bottomWidth - wDiff, height, color);
     return beside(rec, tri);
   }
 
@@ -305,8 +305,8 @@ public final class Toolbelt {
     final double angleDelta = (endAngle - startAngle) / length(pieces);
     double angle = startAngle;
     for (Graphic piece : pieces) {
-      Graphic spacer = rectangle(diameter / 2, 0, BLACK);
-      Graphic offsetPiece = pin(CENTER_LEFT, beside(spacer, piece));
+      final Graphic spacer = rectangle(diameter / 2, 0, BLACK);
+      final Graphic offsetPiece = pin(CENTER_LEFT, beside(spacer, piece));
       result = compose(result, rotate(angle, offsetPiece));
       angle += angleDelta;
     }
@@ -329,11 +329,11 @@ public final class Toolbelt {
   //--- star using ring
   public static Graphic star(double innerRadius, double outerRadius, int points, Color color) {
     // TODO: reformulate using kite()
-    Graphic tri1 = rotate(-360.0 / 2.0 / points,
+    final Graphic tri1 = rotate(-360.0 / 2.0 / points,
         triangle(innerRadius, outerRadius, 360.0 / 2.0 / points, color)
     );
-    Graphic tri2 = triangle(outerRadius, innerRadius, 360.0 / 2.0 / points, color);
-    Graphic kite = pin(CENTER_LEFT, above(tri2, tri1));
+    final Graphic tri2 = triangle(outerRadius, innerRadius, 360.0 / 2.0 / points, color);
+    final Graphic kite = pin(CENTER_LEFT, above(tri2, tri1));
     return ring(0, kite, points);
   }
 
@@ -344,5 +344,4 @@ public final class Toolbelt {
         rotate(-360.0 / sideCount / 2.0, triangle(diameter, diameter, 360.0 / sideCount, color)),
         sideCount);
   }
-
 }

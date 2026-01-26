@@ -17,7 +17,7 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.io.IO.interact;
 
-public class InteractionWithBackgroundDemo {
+public final class InteractionWithBackgroundDemo {
 
   private static final int WIDTH = 500;
 
@@ -25,7 +25,10 @@ public class InteractionWithBackgroundDemo {
 
   private static final int STEP = 10;
 
-  public static void main(String[] args) {
+  private InteractionWithBackgroundDemo() {
+  }
+
+  public static void main() {
     final Graphic bg = pin(
         BOTTOM_LEFT,
         above(

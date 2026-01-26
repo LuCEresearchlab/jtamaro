@@ -14,7 +14,16 @@ import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.triangle;
 import static jtamaro.io.IO.show;
 
-public class TriangleDemo {
+public final class TriangleDemo {
+
+  private TriangleDemo() {
+  }
+
+  public static void main() {
+    show(rotate(45, triangle(200, 100, 90, RED)));
+    show(kindsOfTriangles());
+    show(triangleVsSector(200, 45));
+  }
 
   private static Graphic kindsOfTriangles() {
     return above(
@@ -28,11 +37,5 @@ public class TriangleDemo {
         isoscelesTriangle(side, angle, RED),
         circularSector(side, angle, BLUE)
     );
-  }
-
-  public static void main(String[] args) {
-    show(rotate(45, triangle(200, 100, 90, RED)));
-    show(kindsOfTriangles());
-    show(triangleVsSector(200, 45));
   }
 }

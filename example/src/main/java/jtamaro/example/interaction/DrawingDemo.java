@@ -17,7 +17,17 @@ import static jtamaro.io.IO.interact;
 
 public final class DrawingDemo {
 
-  static Graphic renderDrawing(Drawing drawing) {
+  private DrawingDemo() {
+  }
+
+  public static void main() {
+    interact(new Drawing(of()))
+        .withRenderer(DrawingDemo::renderDrawing)
+        .withKeyPressHandler((d, k) -> new Drawing(of()))
+        .run();
+  }
+
+  private static Graphic renderDrawing(Drawing drawing) {
     final CartesianWorld world = drawing.points().reduce(
         new CartesianWorld(),
         (point, w) -> w.place(point.x(), point.y(), ellipse(10, 10, BLUE))
@@ -29,21 +39,14 @@ public final class DrawingDemo {
         .asGraphic();
   }
 
-  record Point(double x, double y) {
+  private record Point(double x, double y) {
 
   }
 
-  record Drawing(Sequence<Point> points) {
+  private record Drawing(Sequence<Point> points) {
 
     public Drawing addPoint(Point p) {
       return new Drawing(cons(p, points));
     }
-  }
-
-  public static void main(String[] args) {
-    interact(new Drawing(of()))
-        .withRenderer(DrawingDemo::renderDrawing)
-        .withKeyPressHandler((d, k) -> new Drawing(of()))
-        .run();
   }
 }

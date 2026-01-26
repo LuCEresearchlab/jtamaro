@@ -20,56 +20,30 @@ import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.interact;
 
-public class TextFieldDemo {
+public final class TextFieldDemo {
 
-  // Model
-  record TextField(String text, int cursor, boolean cursorVisible) {
+  private static final int SIZE = 200;
 
-    TextField blinkCursor() {
-      return new TextField(text, cursor, !cursorVisible);
-    }
+  private static final Color CURSOR = BLUE;
 
-    TextField cursorLeft() {
-      if (cursor > 0) {
-        return new TextField(text, cursor - 1, cursorVisible);
-      }
-      return this;
-    }
+  private static final Color TEXT = BLACK;
 
-    TextField cursorRight() {
-      if (cursor < text.length()) {
-        return new TextField(text, cursor + 1, cursorVisible);
-      }
-      return this;
-    }
+  private static final Color BACKGROUND = WHITE;
 
-    TextField character(char c) {
-      return new TextField(text.substring(0, cursor)
-          + c
-          + text.substring(cursor), cursor + 1, cursorVisible);
-    }
-
-    TextField backspace() {
-      if (cursor > 0) {
-        return new TextField(text.substring(0, cursor - 1) + text.substring(
-            cursor), cursor - 1, cursorVisible);
-      }
-      return this;
-    }
-
-    TextField clear() {
-      return new TextField("", 0, cursorVisible);
-    }
-
-    TextField random() {
-      return new TextField("???", 3, cursorVisible);
-    }
-
-    TextField moveCursor(int idx) {
-      return new TextField(text, idx, cursorVisible);
-    }
+  private TextFieldDemo() {
   }
 
+  public static void main() {
+    interact(new TextField("Hi", 2, true))
+        .withName("TextField")
+        .withCanvasSize(SIZE * 10, SIZE)
+        .withRenderer(TextFieldDemo::render)
+        .withKeyReleaseHandler(TextFieldDemo::keyRelease)
+        .withKeyTypeHandler(TextFieldDemo::keyType)
+        .withTickHandler(TextFieldDemo::tick)
+        .withMsBetweenTicks(300)
+        .run();
+  }
 
   // Event handling
   private static TextField tick(TextField textField) {
@@ -95,14 +69,6 @@ public class TextFieldDemo {
   }
 
   // Rendering
-  private static final int SIZE = 200;
-
-  private static final Color CURSOR = BLUE;
-
-  private static final Color TEXT = BLACK;
-
-  private static final Color BACKGROUND = WHITE;
-
   private static Graphic renderCursorGap(int position, TextField textField) {
     Color color = position == textField.cursor && textField.cursorVisible ? CURSOR : BACKGROUND;
     return rectangle(SIZE / 10.0, SIZE, color);
@@ -157,16 +123,51 @@ public class TextFieldDemo {
     return beside(shownButton, board);
   }
 
-  // Main program
-  public static void main(String[] args) {
-    interact(new TextField("Hi", 2, true))
-        .withName("TextField")
-        .withCanvasSize(SIZE * 10, SIZE)
-        .withRenderer(TextFieldDemo::render)
-        .withKeyReleaseHandler(TextFieldDemo::keyRelease)
-        .withKeyTypeHandler(TextFieldDemo::keyType)
-        .withTickHandler(TextFieldDemo::tick)
-        .withMsBetweenTicks(300)
-        .run();
+  // Model
+  private record TextField(String text, int cursor, boolean cursorVisible) {
+
+    TextField blinkCursor() {
+      return new TextField(text, cursor, !cursorVisible);
+    }
+
+    TextField cursorLeft() {
+      if (cursor > 0) {
+        return new TextField(text, cursor - 1, cursorVisible);
+      }
+      return this;
+    }
+
+    TextField cursorRight() {
+      if (cursor < text.length()) {
+        return new TextField(text, cursor + 1, cursorVisible);
+      }
+      return this;
+    }
+
+    TextField character(char c) {
+      return new TextField(text.substring(0, cursor)
+          + c
+          + text.substring(cursor), cursor + 1, cursorVisible);
+    }
+
+    TextField backspace() {
+      if (cursor > 0) {
+        return new TextField(text.substring(0, cursor - 1) + text.substring(
+            cursor), cursor - 1, cursorVisible);
+      }
+      return this;
+    }
+
+    TextField clear() {
+      return new TextField("", 0, cursorVisible);
+    }
+
+    TextField random() {
+      return new TextField("???", 3, cursorVisible);
+    }
+
+    TextField moveCursor(int idx) {
+      return new TextField(text, idx, cursorVisible);
+    }
   }
 }

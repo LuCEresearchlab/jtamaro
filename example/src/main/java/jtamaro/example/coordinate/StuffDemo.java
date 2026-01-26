@@ -10,9 +10,11 @@ import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.io.IO.show;
 
-public class StuffDemo {
+public final class StuffDemo {
 
-  public static void main(String[] args) {
+  private StuffDemo() {}
+
+  public static void main() {
     CartesianWorld cs = new CartesianWorld()
         .withBackground(hsv(45, 0.2, 1.0))
         .withAxes(hsv(45, 0.2, 0.75))

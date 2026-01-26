@@ -2,14 +2,12 @@ package jtamaro.example.interaction;
 
 import java.awt.event.KeyEvent;
 import jtamaro.data.Sequence;
-import jtamaro.data.Triplet;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.CartesianWorld;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 import jtamaro.interaction.Coordinate;
 import jtamaro.interaction.KeyboardKey;
-import jtamaro.interaction.MouseButton;
 
 import static jtamaro.data.Sequences.of;
 import static jtamaro.data.Sequences.range;
@@ -25,88 +23,22 @@ import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.io.IO.interact;
 
-public class ColorPickerDemo {
+public final class ColorPickerDemo {
 
   public static final double RADIUS = 200;
 
   public static final double LIGHTNESS = 0.5;
 
-  private sealed interface Harmony {
-
-    Sequence<Color> compute(Color main);
-
-    record Complementary() implements Harmony {
-
-      @Override
-      public Sequence<Color> compute(Color main) {
-        final Triplet<Double, Double, Double> components = rgbToHsl(main);
-        return of(
-            main,
-            hsl(
-                (components.first() + 180.0) % 360.0,
-                components.second(),
-                components.third()
-            )
-        );
-      }
-    }
-
-    record Mono() implements Harmony {
-
-      @Override
-      public Sequence<Color> compute(Color main) {
-        final Triplet<Double, Double, Double> components = rgbToHsl(main);
-        return of(
-            hsl(
-                components.first(),
-                components.second() / 3.0,
-                components.third()
-            ),
-            hsl(
-                components.first(),
-                components.second() / 3.0 * 2.0,
-                components.third()
-            ),
-            main
-        );
-      }
-    }
-
-    record Triadic() implements Harmony {
-
-      @Override
-      public Sequence<Color> compute(Color main) {
-        final Triplet<Double, Double, Double> components = rgbToHsl(main);
-        return of(
-            main,
-            hsl(
-                (components.first() + 120) % 360.0,
-                components.second(),
-                components.third()
-            ),
-            hsl(
-                (components.first() + 240.0) % 360.0,
-                components.second(),
-                components.third()
-            )
-        );
-      }
-    }
-
+  private ColorPickerDemo() {
   }
 
-  private record Model(
-      Color color,
-      Harmony harmony
-  ) {
-
-    public Model withColor(Color color) {
-      return new Model(color, harmony);
-    }
-
-    public Model withHarmony(Harmony harmony) {
-      return new Model(color, harmony);
-    }
+  public static void main() {
+    final Model initialModel = new Model(hsl(1, 0.7, 0.5), new Harmony.Complementary());
+    interact(initialModel)
+        .withRenderer(ColorPickerDemo::render)
+        .withBackground(colorWheel())
+        .withKeyPressHandler(ColorPickerDemo::onKeyEvent)
+        .run();
   }
 
   private static Triplet<Double, Double, Double> rgbToHsl(Color color) {
@@ -201,12 +133,85 @@ public class ColorPickerDemo {
     ).withMouseDragHandler((coords, $) -> onDrag(model, coords)).asGraphic();
   }
 
-  public static void main(String[] args) {
-    final Model initialModel = new Model(hsl(1, 0.7, 0.5), new Harmony.Complementary());
-    interact(initialModel)
-        .withRenderer(ColorPickerDemo::render)
-        .withBackground(colorWheel())
-        .withKeyPressHandler(ColorPickerDemo::onKeyEvent)
-        .run();
+  private sealed interface Harmony {
+
+    Sequence<Color> compute(Color main);
+
+    record Complementary() implements Harmony {
+
+      @Override
+      public Sequence<Color> compute(Color main) {
+        final Triplet<Double, Double, Double> components = rgbToHsl(main);
+        return of(
+            main,
+            hsl(
+                (components.first() + 180.0) % 360.0,
+                components.second(),
+                components.third()
+            )
+        );
+      }
+    }
+
+    record Mono() implements Harmony {
+
+      @Override
+      public Sequence<Color> compute(Color main) {
+        final Triplet<Double, Double, Double> components = rgbToHsl(main);
+        return of(
+            hsl(
+                components.first(),
+                components.second() / 3.0,
+                components.third()
+            ),
+            hsl(
+                components.first(),
+                components.second() / 3.0 * 2.0,
+                components.third()
+            ),
+            main
+        );
+      }
+    }
+
+    record Triadic() implements Harmony {
+
+      @Override
+      public Sequence<Color> compute(Color main) {
+        final Triplet<Double, Double, Double> components = rgbToHsl(main);
+        return of(
+            main,
+            hsl(
+                (components.first() + 120) % 360.0,
+                components.second(),
+                components.third()
+            ),
+            hsl(
+                (components.first() + 240.0) % 360.0,
+                components.second(),
+                components.third()
+            )
+        );
+      }
+    }
+
+  }
+
+  private record Triplet<A, B, C>(A first, B second, C third) {
+
+  }
+
+  private record Model(
+      Color color,
+      Harmony harmony
+  ) {
+
+    public Model withColor(Color color) {
+      return new Model(color, harmony);
+    }
+
+    public Model withHarmony(Harmony harmony) {
+      return new Model(color, harmony);
+    }
   }
 }

@@ -14,15 +14,23 @@ import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.io.IO.show;
 
-public class FunctionPlotterDemo {
+public final class FunctionPlotterDemo {
 
-  public static void main(String[] args) {
-    show(
-        plot(x -> Math.sin(x * x), 0, 2 * Math.PI, 1000, 200, RED)
-    );
+  private FunctionPlotterDemo() {
   }
 
-  public static Graphic plot(Function1<Double, Double> f, double xMin, double xMax, int width, double yScale, Color color) {
+  public static void main() {
+    show(plot(x -> Math.sin(x * x), 0, 2 * Math.PI, 1000, 200, RED));
+  }
+
+  private static Graphic plot(
+      Function1<Double, Double> f,
+      double xMin,
+      double xMax,
+      int width,
+      double yScale,
+      Color color
+  ) {
     Graphic dot = ellipse(5, 5, color);
     Sequence<Integer> viewXs = range(width);
     Sequence<Double> xs = viewXs.map(i -> i / (double) width * (xMax - xMin));

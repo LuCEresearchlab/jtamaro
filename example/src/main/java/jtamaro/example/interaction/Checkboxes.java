@@ -22,17 +22,14 @@ import static jtamaro.io.IO.interact;
 
 public final class Checkboxes {
 
-  @Glasses
-  record Model(Sequence<CheckboxModel> checkboxes) {
-
+  private Checkboxes() {
   }
 
-  @Glasses
-  record CheckboxModel(String label, boolean isPressed) {
-
-  }
-
-  public Checkboxes() {
+  public static void main() {
+    interact(new Model(of(
+        new CheckboxModel("Hungry", true),
+        new CheckboxModel("Tired", false))
+    )).withRenderer(Checkboxes::renderCheckboxes).run();
   }
 
   private static Graphic renderCheckbox(CheckboxModel checkbox) {
@@ -79,10 +76,13 @@ public final class Checkboxes {
     );
   }
 
-  public static void main(String[] args) {
-    interact(new Model(of(
-        new CheckboxModel("Hungry", true),
-        new CheckboxModel("Tired", false))
-    )).withRenderer(Checkboxes::renderCheckboxes).run();
+  @Glasses
+  record Model(Sequence<CheckboxModel> checkboxes) {
+
+  }
+
+  @Glasses
+  record CheckboxModel(String label, boolean isPressed) {
+
   }
 }

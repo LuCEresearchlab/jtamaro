@@ -2,7 +2,6 @@ package jtamaro.example.interaction;
 
 import jtamaro.data.Function2;
 import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
@@ -29,18 +28,16 @@ import static jtamaro.io.IO.interact;
 
 public final class ToDoDemo {
 
-  @Glasses
-  record Entry(String content, boolean isChecked) {
-
+  private ToDoDemo() {
   }
 
-  @Glasses
-  record Model(
-      String currentInput,
-      Sequence<Entry> entries,
-      Function2<Model, String, Model> onEnter
-  ) {
-
+  public static void main() {
+    interact(new Model("Hello!", empty(), ToDoDemo::addNewEntry))
+        .withCanvasSize(500, 400)
+        .withRenderer(ToDoDemo::render)
+        .withKeyTypeHandler(ToDoDemo::onKeyType)
+        .withKeyPressHandler(ToDoDemo::onKeyPress)
+        .run();
   }
 
   private static Graphic renderInputField(Model model) {
@@ -135,12 +132,17 @@ public final class ToDoDemo {
     );
   }
 
-  public static void main(String[] args) {
-    interact(new Model("Hello!", empty(), ToDoDemo::addNewEntry))
-        .withCanvasSize(500, 400)
-        .withRenderer(ToDoDemo::render)
-        .withKeyTypeHandler(ToDoDemo::onKeyType)
-        .withKeyPressHandler(ToDoDemo::onKeyPress)
-        .run();
+  @Glasses
+  record Entry(String content, boolean isChecked) {
+
+  }
+
+  @Glasses
+  record Model(
+      String currentInput,
+      Sequence<Entry> entries,
+      Function2<Model, String, Model> onEnter
+  ) {
+
   }
 }

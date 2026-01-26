@@ -19,7 +19,23 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.interact;
 
-public class ButtonsDemo {
+public final class ButtonsDemo {
+
+  private ButtonsDemo() {
+  }
+
+  public static void main() {
+    interact(Model.initialModel())
+        .withKeyPressHandler(ButtonsDemo::handleKey)
+        .withRenderer(Model::render)
+        .run();
+  }
+
+  private static Model handleKey(Model model, KeyboardKey key) {
+    return key.keyChar() == ' '
+        ? Model.initialModel()
+        : model;
+  }
 
   public record Button(String label) {
 
@@ -30,7 +46,7 @@ public class ButtonsDemo {
       );
 
       return new Actionable<Model>(graphic)
-          .withMousePressHandler(((coordinate, button) -> model.setChoice(label)))
+          .withMousePressHandler(((_, _) -> model.setChoice(label)))
           .asGraphic();
     }
   }
@@ -75,18 +91,5 @@ public class ButtonsDemo {
           background
       );
     }
-  }
-
-  public static Model handleKey(Model model, KeyboardKey key) {
-    return key.keyChar() == ' '
-        ? Model.initialModel()
-        : model;
-  }
-
-  public static void main(String[] args) {
-    interact(Model.initialModel())
-        .withKeyPressHandler(ButtonsDemo::handleKey)
-        .withRenderer(Model::render)
-        .run();
   }
 }

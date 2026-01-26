@@ -16,16 +16,18 @@ import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class CountUp {
+public final class CountUp {
 
-  public static void main(String[] args) {
-    Sequence<Graphic> frames = range(0, 1 << 10).map(t -> overlay(
+  private CountUp() {
+  }
+
+  public static void main() {
+    final Sequence<Graphic> frames = range(0, 1 << 10).map(t -> overlay(
         text("" + (t / 100), Fonts.SANS_SERIF, 100, BLACK),
         compose(
             circularSector(100, (t * 360.0 / 100) % 360, RED),
             rectangle(200, 200, WHITE))));
     animate(frames, false, 10);
     showFilmStrip(frames.take(200));
-    // saveAnimatedGif(take(100, frames), true, 10, "countup.gif");
   }
 }

@@ -6,10 +6,10 @@ import jtamaro.music.TimedChord;
 
 import static jtamaro.data.Sequences.of;
 import static jtamaro.example.Toolbelt.concats;
-import static jtamaro.music.MusicIO.play;
 import static jtamaro.music.Music.chord;
 import static jtamaro.music.Music.pause;
 import static jtamaro.music.Music.timed;
+import static jtamaro.music.MusicIO.play;
 import static jtamaro.music.Notes.BF4;
 import static jtamaro.music.Notes.C5;
 import static jtamaro.music.Notes.CS4;
@@ -17,9 +17,12 @@ import static jtamaro.music.Notes.EF4;
 import static jtamaro.music.Notes.F4;
 import static jtamaro.music.Notes.GF4;
 
-public class SwissRailwayJingle {
+public final class SwissRailwayJingle {
 
-  public static void main(String[] args) {
+  private SwissRailwayJingle() {
+  }
+
+  public static void main() {
     // https://onlinesequencer.net/3133236
     Sequence<TimedChord> sbbChords = of(
         timed(1, chord(of(EF4))),

@@ -17,7 +17,7 @@ import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.show;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class Polygons {
+public final class Polygons {
 
   private static Graphic polygonFacet(double radius, int number, int sides) {
     return rotate(number * 360.0 / sides,
@@ -42,10 +42,12 @@ public class Polygons {
     ));
   }
 
-  public static void main(String[] args) {
+  public static void main() {
     show(regularPolygon(200, 5));
     showFilmStrip(polygonAnimation());
     animate(polygonAnimation(), 1000);
   }
 
+  private Polygons() {
+  }
 }

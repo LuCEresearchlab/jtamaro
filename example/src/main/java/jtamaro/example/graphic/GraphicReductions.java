@@ -12,9 +12,12 @@ import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.show;
 
-public class GraphicReductions {
+public final class GraphicReductions {
 
-  public static void main(String[] args) {
+  private GraphicReductions() {
+  }
+
+  public static void main() {
     show(besides(of(
         text("Left", Fonts.SANS_SERIF, 100, RED),
         text("Middle", Fonts.SANS_SERIF, 100, GREEN),
@@ -31,5 +34,4 @@ public class GraphicReductions {
         text("Back", Fonts.SANS_SERIF, 100, BLUE)
     )));
   }
-
 }

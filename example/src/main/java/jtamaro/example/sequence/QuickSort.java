@@ -10,7 +10,15 @@ import static jtamaro.io.IO.println;
 
 public final class QuickSort {
 
-  public static <T> Sequence<T> quickSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private QuickSort() {
+  }
+
+  public static void main() {
+    println(quickSort((a, b) -> a <= b, of(1, 3, 2, 9, 2, 1, 8, 7)));
+    println(quickSortNice((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
+  }
+
+  private static <T> Sequence<T> quickSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
     return sequence.isEmpty()
         ? empty()
         : quickSort(lessEqual, sequence.rest().filter(x -> lessEqual.apply(x, sequence.first())))
@@ -20,7 +28,7 @@ public final class QuickSort {
                     sequence.rest().filter(x -> !lessEqual.apply(x, sequence.first())))));
   }
 
-  public static <T> Sequence<T> quickSortNice(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private static <T> Sequence<T> quickSortNice(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
     if (sequence.isEmpty()) {
       return empty();
     } else {
@@ -30,10 +38,5 @@ public final class QuickSort {
       return quickSortNice(lessEqual, smaller)
           .concat(cons(pivot, quickSortNice(lessEqual, larger)));
     }
-  }
-
-  public static void main() {
-    println(quickSort((a, b) -> a <= b, of(1, 3, 2, 9, 2, 1, 8, 7)));
-    println(quickSortNice((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
   }
 }

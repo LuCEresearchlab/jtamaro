@@ -4,9 +4,12 @@ import jtamaro.graphic.Colors;
 
 import static jtamaro.io.IO.show;
 
-public class ColorDemo {
+public final class ColorDemo {
 
-  public static void main(String[] args) {
+  private ColorDemo() {
+  }
+
+  public static void main() {
     show(Colors.RED);
   }
 }
