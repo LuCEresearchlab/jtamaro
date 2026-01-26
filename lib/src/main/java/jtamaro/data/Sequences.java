@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * Static methods for working with sequences.
+ * Procedures for working with {@link Sequence} objects.
  *
  * @see jtamaro.data.Sequence
  */

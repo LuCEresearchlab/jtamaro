@@ -3,7 +3,7 @@ package jtamaro.graphic;
 import java.awt.Font;
 
 /**
- * Static fields for well-known fonts.
+ * Well-known fonts.
  *
  * @see jtamaro.graphic.Text
  */

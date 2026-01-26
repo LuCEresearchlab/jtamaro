@@ -1,7 +1,7 @@
 package jtamaro.data;
 
 /**
- * Static methods for working with options.
+ * Procedures for working with {@link Option} objects.
  *
  * @see jtamaro.data.Option
  */

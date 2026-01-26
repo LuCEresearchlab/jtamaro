@@ -232,6 +232,9 @@ public abstract sealed class Graphic
   /**
    * Create a node that can be used to inspect this graphic in a GUI by representing it with a
    * JTree.
+   *
+   * @apiNote Internal usage only.
+   * @hidden
    */
   public final MutableTreeNode createInspectTree() {
     return new InspectTreeNode(getChildren().values());
@@ -268,7 +271,18 @@ public abstract sealed class Graphic
     return props;
   }
 
-
+  /**
+   * Check whether this graphic is "structurally equal" to another one.
+   *
+   * <p>This is a less-strict version of {@link Graphic#equals(Object)} that uses additional
+   * heuristics to allow some graphics that <i>look</i> identical be reported as <i>equal</i> even
+   * if they do not have the exact same structure.
+   *
+   * @implNote Right now, the implementation is not formally sound, nor complete, but it is good
+   * enough for the current use-case. In the future we may want to devise a fully-specified algebra
+   * of graphics with a complete set of equality laws.
+   * @hidden
+   */
   public abstract boolean structurallyEqualTo(Graphic other);
 
   @Override
@@ -296,6 +310,9 @@ public abstract sealed class Graphic
 
   /* **** Internal util classes **** */
 
+  /**
+   * @hidden
+   */
   final class InspectTreeNode extends DefaultMutableTreeNode {
 
     public InspectTreeNode(Iterable<Graphic> children) {

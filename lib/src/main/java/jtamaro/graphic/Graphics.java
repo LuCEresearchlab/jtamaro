@@ -1,7 +1,7 @@
 package jtamaro.graphic;
 
 /**
- * Static methods for working with graphics.
+ * Procedures for working with {@link Graphic} objects.
  *
  * @see jtamaro.graphic.Graphic
  */
