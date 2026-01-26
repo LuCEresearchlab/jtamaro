@@ -3,9 +3,9 @@
 JTamaro is a Java educational library designed for teaching problem
 decomposition using graphics.
 
-JTamaro is a close cousin to
-the [PyTamaro](https://github.com/LuceResearchLab/pytamaro) compositional
-graphics library for Python.
+JTamaro is a close cousin to the
+[PyTamaro](https://github.com/LuceResearchLab/pytamaro) compositional graphics
+library for Python.
 Unlike PyTamaro, JTamaro also includes simple purely functional data
 structures (with types like `Sequence`, `Option`, and `Pair`), and functionality
 for developing purely-functional interactive applications (with a fluent API to
@@ -19,8 +19,8 @@ interfaces, generics and modern features of the Java programming languages such
 as records, and by a design that encourages immutability and the composition of
 independent components.
 
-It is featured in our
-textbook, [Composition in Java](https://luce.si.usi.ch/composition-in-java/).
+It is featured in our textbook,
+[Composition in Java](https://luce.si.usi.ch/composition-in-java/).
 
 ## Components
 
@@ -28,44 +28,25 @@ textbook, [Composition in Java](https://luce.si.usi.ch/composition-in-java/).
 
 Provides implementation for the following types:
 
+- `Either`: values with two possibilities
 - `Function{0-4}`: interfaces for function objects with up to 4 arguments
-- `Option`: the Option(al) / Maybe monad. Used to handle errors
+- `Option`: the Maybe monad. Used to handle errors or exceptional cases
 - `Pair`: tuple of two elements
-- `Sequence`: ordered list of elements of a certain type
+- `Sequence`: ordered list of elements of a given type
 
 ### `lib/graphic`
 
 ```java
-import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Colors;
-import jtamaro.graphic.Graphics;
-
-public class Example {
-
-  public static void example() {
-    Graphic h = Graphics.rectangle(200, 60, Colors.WHITE);
-    Graphic v = Graphics.rectangle(60, 200, Colors.WHITE);
-    Graphic cross = Graphics.overlay(h, v);
-  }
-}
-```
-
-Using static imports, we can eliminate the need for mentioning class Graphics in
-each call:
-
-```java
 import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Graphics;
+import jtamaro.io.IO;
 
-import static jtamaro.graphic.Colors.*;
-import static jtamaro.graphic.Graphics.*;
-
-public class Example {
-
-  public static void example() {
-    Graphic h = rectangle(200, 60, WHITE);
-    Graphic v = rectangle(60, 200, WHITE);
-    Graphic cross = overlay(h, v);
-  }
+void main() {
+  final Graphic floor = Graphics.rectangle(100, 100, Colors.YELLOW);
+  final Graphic roof = Graphics.rectangle(100, 100, 60, Colors.RED);
+  final Graphic house = Graphics.above(roof, floor);
+  IO.show(house);
 }
 ```
 
@@ -74,49 +55,41 @@ public class Example {
 Interaction allows to develop an interactive application:
 
 ```java
-import jtamaro.data.Pair;
-import jtamaro.graphic.Graphic;
-
 import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Fonts.*;
 import static jtamaro.graphic.Graphics.*;
 import static jtamaro.interaction.KeyboardKey.*;
 import static jtamaro.io.IO.*;
 
-public class Example {
-
-  public static void example() {
-    interact(0)
-        .withKeyReleaseHandler((model, key) -> model + switch (key.keyCode()) {
-          case UP -> 1;
-          case DOWN -> -1;
-          default -> 0;
-        })
-        .withRenderer(model -> text(String.valueOf(model),
-            MONOSPACED, 100, BLACK))
-        .run();
-  }
+void main() {
+  interact(0)
+      .withKeyReleaseHandler((model, key) -> model + switch (key.keyCode()) {
+        case UP -> 1;
+        case DOWN -> -1;
+        default -> 0;
+      })
+      .withRenderer(model ->
+          text(String.valueOf(model), MONOSPACED, 100, BLACK))
+      .run();
 }
 ```
 
 ### `lib/io`
 
 The colors and graphics are pure.
-Code that performs side effects (e.g., showing a graphic on the screen)
-is accessible through methods of class `IO`:
+Code that performs side effects (e.g., showing a graphic on the screen) is
+accessible through methods of classes in the `jtamaro.io` package.
 
-```java
-import static jtamaro.graphic.Colors.*;
-import static jtamaro.graphic.Graphics.*;
-import static jtamaro.io.IO.*;
+### `lib/optics` and `processor`
 
-public class Example {
+Optics are a composable notion of substructure.
+They can be used to easily traverse and modify arbitrarily complex data
+structures.
 
-  public static void example() {
-    show(rectangle(200, 100, RED));
-  }
-}
-```
+An annotation processor (`:processor`) is provided to automatically generate
+`Lens`es for components of `record` classes annotated with `@Glasses`.
+Additional `Traversal`s and `Lens`es are also generated for those components of
+type `Sequence`.
 
 ## Build
 
@@ -127,12 +100,16 @@ It contains multiple subprojects:
 - `lib` - Main jTamaro module. It includes the data structures, graphics,
   interaction and I/O.
 - `music` - A midi-based music library that allows to play notes and chords.
+- `processor` - An annotation processor for the automatic generation of optics
+  for record classes.
 
 To just the build library's jar file for usage in other projects:
 
 ```bash
 ./gradlew :lib:jar
 ```
+
+The output will be in `lib/build/libs/lib-*.jar`
 
 To build everything and run the example app:
 
@@ -142,12 +119,10 @@ To build everything and run the example app:
 
 To run individual demos in the example app, run the corresponding classes
 with `main` methods in the `example` directory from within an IDE that
-understands gradle (e.g., VS Code) and thus will find (and if needed build) the
+understands Gradle (e.g., VS Code) and thus will find (and if needed build) the
 library.
 
 ### Requirements
-
-The output will be in `lib/build/libs/lib-*.jar`
 
 **Note**: The library is targeting Java 25, and it makes extensive use of the
 latest additions to the language (records, sealed classes, pattern matching...).
@@ -155,8 +130,8 @@ Older Java versions are not supported.
 
 ## Documentation
 
-The documentation is published
-at [this link](https://luceresearchlab.github.io/jtamaro), or it can be
+The documentation is published at
+[this link](https://luceresearchlab.github.io/jtamaro), or it can be
 generated by running the following command (output at `lib/build/docs/javadoc`):
 
 ```bash
