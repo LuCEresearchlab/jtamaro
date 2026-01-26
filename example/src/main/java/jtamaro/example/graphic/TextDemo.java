@@ -9,11 +9,13 @@ import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.BOTTOM_RIGHT;
 import static jtamaro.io.IO.show;
 
-public class TextDemo {
+public final class TextDemo {
 
-  public static void main(String[] args) {
+  private TextDemo() {
+  }
+
+  public static void main() {
     Graphic text = text("up!", Fonts.SANS_SERIF, 400, BLACK);
     show(pin(BOTTOM_RIGHT, text));
   }
-
 }

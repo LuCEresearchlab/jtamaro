@@ -28,24 +28,26 @@ import static jtamaro.music.Notes.G3;
 import static jtamaro.music.Notes.G4;
 import static jtamaro.music.Notes.transpose;
 
-public class TwelveBarBluesDemo {
+public final class TwelveBarBluesDemo {
 
-  public static void main(String[] args) {
+  private TwelveBarBluesDemo() {}
+
+  public static void main() {
     playAsChords();
     playMelody();
   }
 
-  public static void playMelody() {
-    Sequence<Note> twelveBarBlues_C = of(
+  private static void playMelody() {
+    final Sequence<Note> twelveBarBlues_C = of(
         C3, E3, G3, A3, BF3, A3, G3, E3
     );
-    Sequence<Note> twelveBarBlues_F = of(
+    final Sequence<Note> twelveBarBlues_F = of(
         F3, A3, C4, D4, EF4, D4, C4, A3
     );
-    Sequence<Note> twelveBarBlues_G = of(
+    final Sequence<Note> twelveBarBlues_G = of(
         G3, B3, D4, E4, F4, E4, D4, B3
     );
-    Sequence<Note> twelveBarBlues = concats(of(
+    final Sequence<Note> twelveBarBlues = concats(of(
         times(4, twelveBarBlues_C),
         times(2, twelveBarBlues_F),
         times(2, twelveBarBlues_C),
@@ -59,15 +61,14 @@ public class TwelveBarBluesDemo {
     playChords(twelveBarBlues.map(n -> chord(of(transpose(n, 24)))), 800);
   }
 
-  public static void playAsChords() {
+  private static void playAsChords() {
     // https://en.wikipedia.org/wiki/Chord_progression
-    AbsoluteChord C_ = chord(of(C4, E4, G4));
-    AbsoluteChord F_ = chord(of(F4, A4, C5));
-    AbsoluteChord G_ = chord(of(G4, B4, D5));
-    Sequence<AbsoluteChord> twelveBarBluesChords = of(
+    final AbsoluteChord C_ = chord(of(C4, E4, G4));
+    final AbsoluteChord F_ = chord(of(F4, A4, C5));
+    final AbsoluteChord G_ = chord(of(G4, B4, D5));
+    final Sequence<AbsoluteChord> twelveBarBluesChords = of(
         C_, C_, C_, C_, F_, F_, C_, C_, G_, F_, C_, C_
     );
     playChords(twelveBarBluesChords, 100);
   }
-
 }

@@ -26,7 +26,7 @@ import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.graphic.Points.BOTTOM_RIGHT;
 import static jtamaro.io.IO.show;
 
-public class ChristmasTree {
+public final class ChristmasTree {
 
   private static final Color LIGHT_GREEN = rgb(0, 200, 0);
 
@@ -36,6 +36,12 @@ public class ChristmasTree {
 
   private static final Color TEXT_COLOR = rgb(255, 220, 96);
 
+  ChristmasTree() {
+  }
+
+  public static void main() {
+    show(frame(10, 100));
+  }
 
   private static Graphic level(int upwardsTriangleCount, double triangleSide) {
     final double angle = 50;
@@ -89,9 +95,4 @@ public class ChristmasTree {
         tree(levels, triangleSide)
     );
   }
-
-  public static void main(String[] args) {
-    show(frame(10, 100));
-  }
-
 }

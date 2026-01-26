@@ -10,7 +10,15 @@ import static jtamaro.io.IO.println;
 
 public final class InsertionSort {
 
-  public static <T> Sequence<T> insertionSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private InsertionSort() {
+  }
+
+  public static void main() {
+    println(insertionSort((a, b) -> a <= b, of(1, 3, 2, 9, 2, 1, 8, 7)));
+    println(insertionSort((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
+  }
+
+  private static <T> Sequence<T> insertionSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
     return sequence.isEmpty()
         ? empty()
         : insert(
@@ -20,7 +28,7 @@ public final class InsertionSort {
         );
   }
 
-  public static <T> Sequence<T> insert(T element, Sequence<T> sequence, Function2<T, T, Boolean> lessEqual) {
+  private static <T> Sequence<T> insert(T element, Sequence<T> sequence, Function2<T, T, Boolean> lessEqual) {
     return sequence.isEmpty()
         ? cons(element, empty())
         : lessEqual.apply(element, sequence.first())
@@ -29,10 +37,5 @@ public final class InsertionSort {
                 sequence.first(),
                 insert(element, sequence.rest(), lessEqual)
             );
-  }
-
-  public static void main() {
-    println(insertionSort((a, b) -> a <= b, of(1, 3, 2, 9, 2, 1, 8, 7)));
-    println(insertionSort((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
   }
 }

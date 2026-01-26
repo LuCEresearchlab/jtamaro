@@ -31,7 +31,7 @@ import static jtamaro.graphic.Points.TOP_LEFT;
 import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class Fireworks {
+public final class Fireworks {
 
   private static final int YELLOW_HUE = 44;
 
@@ -41,11 +41,20 @@ public class Fireworks {
 
   private static final int GREEN_HUE = 143;
 
+  private Fireworks() {
+  }
+
+  public static void main() {
+    final Sequence<Graphic> loop = range(20).map(t -> frame(200, t / 20.0));
+    showFilmStrip(loop);
+    animate(loop, true, 10);
+  }
+
   private static Graphic pytamaroLogo(double size) {
-    var logoRed = rgb(210, 7, 29);
-    var mountain = equilateralTriangle(size, logoRed);
-    var logoBlue = rgb(0, 139, 203);
-    var lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
+    final Color logoRed = rgb(210, 7, 29);
+    final Graphic mountain = equilateralTriangle(size, logoRed);
+    final Color logoBlue = rgb(0, 139, 203);
+    final Graphic lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
     return compose(
         pin(BOTTOM_CENTER, lake),
         pin(BOTTOM_LEFT,
@@ -93,8 +102,8 @@ public class Fireworks {
   }
 
   private static Graphic streaks(int count, double angle, double hue, double timeOffset, double size, double time) {
-    var streaks = emptyGraphic();
-    for (var s : range(count)) {
+    Graphic streaks = emptyGraphic();
+    for (int s : range(count)) {
       var rotated_streak = rotate(s * 360.0 / count, streak(angle, hue, timeOffset, size, time));
       streaks = compose(streaks, rotated_streak);
     }
@@ -142,16 +151,4 @@ public class Fireworks {
         )
     );
   }
-
-  public static void main(String[] args) {
-    Sequence<Graphic> loop = range(20)
-        .map(t -> frame(200, t / 20.0));
-    showFilmStrip(loop);
-    animate(
-        loop,
-        true,
-        10
-    );
-  }
-
 }

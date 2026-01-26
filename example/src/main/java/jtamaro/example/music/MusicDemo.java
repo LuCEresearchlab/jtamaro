@@ -23,12 +23,23 @@ import static jtamaro.music.Notes.C4;
 import static jtamaro.music.Octave.OCTAVE_4;
 
 @SuppressWarnings("unused")
-public class MusicDemo {
+public final class MusicDemo {
 
-  static void main() {
+  private MusicDemo() {
   }
 
-  public static void chord() {
+  public static void main() {
+    chord();
+    genericInterval();
+    instrument();
+    interval();
+    intervalQuality();
+    percussion();
+    pitchClass();
+    relativeChord();
+  }
+
+  private static void chord() {
     for (Chord ch : Chord.CHORDS) {
       System.out.println(ch);
       AbsoluteChord absoluteChord = ch.on(C4);
@@ -37,13 +48,13 @@ public class MusicDemo {
     }
   }
 
-  public static void genericInterval() {
+  private static void genericInterval() {
     for (GenericInterval gi : GenericInterval.values()) {
       System.out.println(gi + " " + gi.getStaffPositions() + " " + gi.getName());
     }
   }
 
-  public static void instrument() {
+  private static void instrument() {
     for (Instrument instrument : Instrument.values()) {
       System.out.println(instrument);
       Note root = Notes.C4;
@@ -59,7 +70,7 @@ public class MusicDemo {
     }
   }
 
-  public static void interval() {
+  private static void interval() {
     // Table shown in the last step of this page:
     // https://www.musictheory.net/lessons/31
     System.out.println("Number of semitones for the different specific intervals:");
@@ -95,13 +106,13 @@ public class MusicDemo {
     }
   }
 
-  public static void intervalQuality() {
+  private static void intervalQuality() {
     for (IntervalQuality q : IntervalQuality.values()) {
       System.out.println(q + " Inverse: " + q.invert());
     }
   }
 
-  public static void percussion() {
+  private static void percussion() {
     // TODO: It seems that Java's default sound bank (Gervill?)
     //       only includes a subset of the General MIDI percussion sounds.
     //       https://www.midi.org/specifications-old/item/gm-level-1-sound-set
@@ -140,7 +151,7 @@ public class MusicDemo {
     }
   }
 
-  public static void pitchClass() {
+  private static void pitchClass() {
     for (PitchClass pc : PitchClass.PITCH_CLASSES) {
       System.out.println(pc);
       Note root = pc.in(OCTAVE_4);
@@ -152,7 +163,7 @@ public class MusicDemo {
     }
   }
 
-  public static void relativeChord() {
+  private static void relativeChord() {
     // https://blog.landr.com/common-chord-progressions/
     MusicIO.playChords(Sequences.of(
         RelativeChord.I_CHORD,

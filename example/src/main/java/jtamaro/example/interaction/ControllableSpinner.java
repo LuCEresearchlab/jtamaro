@@ -13,11 +13,20 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.io.IO.interact;
 
-public class ControllableSpinner {
+public final class ControllableSpinner {
 
-  @Glasses
-  public record Spinner(double angle, double speed, double size) {
+  private ControllableSpinner() {
+  }
 
+  public static void main() {
+    interact(new Spinner(0, 1, 100))
+        .withName("Spinner")
+        .withCanvasSize(600, 400)
+        .withMsBetweenTicks(30)
+        .withTickHandler(ControllableSpinner::tick)
+        .withRenderer(ControllableSpinner::render)
+        .withGlobalMouseMoveHandler(ControllableSpinner::onGlobalMouseMove)
+        .run();
   }
 
   private static Graphic render(Spinner spinner) {
@@ -35,15 +44,8 @@ public class ControllableSpinner {
     return ControllableSpinner$SpinnerLenses.speed.set(c.x() / 100.0, spinner);
   }
 
-  public static void main(String[] args) {
-    interact(new Spinner(0, 1, 100))
-        .withName("Spinner")
-        .withCanvasSize(600, 400)
-        .withMsBetweenTicks(30)
-        .withTickHandler(ControllableSpinner::tick)
-        .withRenderer(ControllableSpinner::render)
-        .withGlobalMouseMoveHandler(ControllableSpinner::onGlobalMouseMove)
-        .run();
-  }
+  @Glasses
+  public record Spinner(double angle, double speed, double size) {
 
+  }
 }

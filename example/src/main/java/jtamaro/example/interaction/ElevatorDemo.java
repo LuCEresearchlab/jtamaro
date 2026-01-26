@@ -29,6 +29,16 @@ import static jtamaro.graphic.Points.TOP_RIGHT;
 
 public final class ElevatorDemo {
 
+  private ElevatorDemo() {
+  }
+
+  public static void main() {
+    IO.<Elevator>interact(new RestingElevator(0, empty()))
+        .withRenderer(ElevatorDemo::render)
+        .withKeyReleaseHandler(ElevatorDemo::onKeypress)
+        .run();
+  }
+
   private static Graphic render(Elevator elevator) {
     final Graphic floorButtons = range(6).reduce(
         emptyGraphic(),
@@ -54,13 +64,6 @@ public final class ElevatorDemo {
     return key.keyChar() == ' '
         ? elevator.step()
         : elevator;
-  }
-
-  public static void main(String[] args) {
-    IO.<Elevator>interact(new RestingElevator(0, empty()))
-        .withRenderer(ElevatorDemo::render)
-        .withKeyReleaseHandler(ElevatorDemo::onKeypress)
-        .run();
   }
 
   interface Elevator {

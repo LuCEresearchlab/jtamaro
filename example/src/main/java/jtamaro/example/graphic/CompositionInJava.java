@@ -23,10 +23,13 @@ import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.CENTER_LEFT;
 import static jtamaro.io.IO.show;
 
-public class CompositionInJava {
+public final class CompositionInJava {
 
-  public static void main(String[] args) {
-    Sequence<Color> artsyRainbow = of(
+  private CompositionInJava() {
+  }
+
+  public static void main() {
+    final Sequence<Color> artsyRainbow = of(
         rgb(128, 24, 30),
         rgb(183, 43, 31),
         rgb(194, 61, 72),
@@ -53,11 +56,11 @@ public class CompositionInJava {
         rgb(36, 31, 59)
     );
 
-    double radius = 800;
-    double fontSize = radius * 0.3;
-    double lineWidth = 2;
-    int rings = 25;
-    Graphic logo = overlay(
+    final double radius = 800;
+    final double fontSize = radius * 0.3;
+    final double lineWidth = 2;
+    final int rings = 25;
+    final Graphic logo = overlay(
         above(
             renderText("Composition", "Fira Sans", fontSize, lineWidth),
             renderText("in Java", "Fira Sans", fontSize, lineWidth)
@@ -65,12 +68,8 @@ public class CompositionInJava {
         colorRings(rings, lineWidth, radius, artsyRainbow)
     );
     final double logoWidth = logo.getWidth();
-    show(
-        overlay(logo, rectangle(logoWidth / 0.75, logoWidth, TRANSPARENT))
-    );
-    show(
-        colorRings(rings, lineWidth, radius, artsyRainbow)
-    );
+    show(overlay(logo, rectangle(logoWidth / 0.75, logoWidth, TRANSPARENT)));
+    show(colorRings(rings, lineWidth, radius, artsyRainbow));
   }
 
   private static Graphic renderText(String text, String font, double size, double lineWidth) {
@@ -90,7 +89,7 @@ public class CompositionInJava {
     return sequence.reduce(0, (e, r) -> r + 1);
   }
 
-  public static Graphic colorRing(double offsetAngle, double lineWidth, double radius, Sequence<Color> palette) {
+  private static Graphic colorRing(double offsetAngle, double lineWidth, double radius, Sequence<Color> palette) {
     final int sectorAngle = 360 / length(palette);
     Graphic result = emptyGraphic();
     int sectorIndex = 0;
@@ -110,7 +109,7 @@ public class CompositionInJava {
     return result;
   }
 
-  public static Graphic colorRings(int rings, double lineWidth, double radius, Sequence<Color> palette) {
+  private static Graphic colorRings(int rings, double lineWidth, double radius, Sequence<Color> palette) {
     double segmentAngle = 360.0 / length(palette);
     Graphic result = emptyGraphic();
     for (int ringIndex : range(rings)) {

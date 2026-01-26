@@ -23,7 +23,7 @@ import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.io.IO.show;
 
-public class Alphabet {
+public final class Alphabet {
 
   // Unicode symbols to encode our glyphs:
   // ■◜◝◞◟
@@ -170,6 +170,29 @@ public class Alphabet {
 
   private static final double OUTLINE_FRACTION = 0.1;
 
+  static {
+    GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
+    GLYPH_ELEMENTS.put('■', Toolbelt::square);
+    GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, circularSector(size, 90, color)));
+    GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, circularSector(size, 90, color)));
+    OUTLINE_GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
+    OUTLINE_GLYPH_ELEMENTS.put('■', Alphabet::outlinedSquare);
+    OUTLINE_GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, outlinedSector(size, color)));
+    OUTLINE_GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, outlinedSector(size, color)));
+  }
+
+  private Alphabet() {
+  }
+
+  public static void main() {
+    final Graphic rendering = renderString("pf", 200, true);
+    show(rendering);
+  }
+
   private static Graphic outlinedSquare(double size, Color color) {
     return overlay(
         square(size * (1 - 2 * OUTLINE_FRACTION), color),
@@ -192,21 +215,6 @@ public class Alphabet {
     );
   }
 
-  static {
-    GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
-    GLYPH_ELEMENTS.put('■', Toolbelt::square);
-    GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, circularSector(size, 90, color)));
-    GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, circularSector(size, 90, color)));
-    OUTLINE_GLYPH_ELEMENTS.put(' ', (size, color) -> square(size, TRANSPARENT));
-    OUTLINE_GLYPH_ELEMENTS.put('■', Alphabet::outlinedSquare);
-    OUTLINE_GLYPH_ELEMENTS.put('◝', (size, color) -> rotate(0, outlinedSector(size, color)));
-    OUTLINE_GLYPH_ELEMENTS.put('◜', (size, color) -> rotate(90, outlinedSector(size, color)));
-    OUTLINE_GLYPH_ELEMENTS.put('◟', (size, color) -> rotate(180, outlinedSector(size, color)));
-    OUTLINE_GLYPH_ELEMENTS.put('◞', (size, color) -> rotate(270, outlinedSector(size, color)));
-  }
-
   public static Graphic renderLetter(char symbol, double size, boolean outlined) {
     assert symbol == ' ' || (symbol >= 'a' && symbol <= 'z') : "Symbol '"
         + symbol
@@ -214,20 +222,20 @@ public class Alphabet {
     if (symbol == ' ') {
       return rectangle(size, 1, TRANSPARENT); // TODO: height: 0
     }
-    int glyphIndex = symbol - 'a';
-    String glyph = GLYPHS[glyphIndex];
-    String[] glyphLines = glyph.split("\n");
+    final int glyphIndex = symbol - 'a';
+    final String glyph = GLYPHS[glyphIndex];
+    final String[] glyphLines = glyph.split("\n");
     Graphic glyphGraphic = emptyGraphic();
     for (int lineIndex = 0; lineIndex < glyphLines.length; lineIndex++) {
       String line = glyphLines[lineIndex];
       Graphic row = emptyGraphic();
       for (int elementIndex = 0; elementIndex < line.length(); elementIndex++) {
-        char element = line.charAt(elementIndex);
-        double hue = glyphIndex * 360.0 / GLYPHS.length;
-        double saturation = (lineIndex + 1) / 5.0;
-        double lightness = 0.5 - 0.5 * (elementIndex / 5.0);
-        Color color = outlined ? WHITE : hsl(hue, saturation, lightness);
-        Function2<Double, Color, Graphic> renderer = outlined
+        final char element = line.charAt(elementIndex);
+        final double hue = glyphIndex * 360.0 / GLYPHS.length;
+        final double saturation = (lineIndex + 1) / 5.0;
+        final double lightness = 0.5 - 0.5 * (elementIndex / 5.0);
+        final Color color = outlined ? WHITE : hsl(hue, saturation, lightness);
+        final Function2<Double, Color, Graphic> renderer = outlined
             ? OUTLINE_GLYPH_ELEMENTS.get(element)
             : GLYPH_ELEMENTS.get(element);
         row = beside(row, renderer.apply(size, color));
@@ -238,18 +246,11 @@ public class Alphabet {
   }
 
   public static Graphic renderString(String text, double size, boolean outlined) {
-    Graphic gap = rectangle(size / 10, 1, TRANSPARENT);
+    final Graphic gap = rectangle(size / 10, 1, TRANSPARENT);
     Graphic result = gap;
     for (char symbol : text.toCharArray()) {
       result = beside(result, beside(renderLetter(symbol, size, outlined), gap));
     }
     return result;
   }
-
-  public static void main(String[] args) {
-    Graphic rendering = renderString("pf", 200, true);
-    show(rendering);
-    //save(overlay(rendering, rectangle(rendering.getWidth() + 50, rendering.getHeight() + 50, TRANSPARENT)), "pf2.png");
-  }
-
 }

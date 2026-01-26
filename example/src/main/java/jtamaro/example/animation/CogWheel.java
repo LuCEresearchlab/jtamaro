@@ -18,7 +18,16 @@ import static jtamaro.graphic.Points.BOTTOM_CENTER;
 import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class CogWheel {
+public final class CogWheel {
+
+  private CogWheel() {
+  }
+
+  public static void main() {
+    final Sequence<Graphic> loop = animation(true);
+    showFilmStrip(loop);
+    animate(loop);
+  }
 
   private static Graphic tooth(double innerDiameter, double outerDiameter, double angle, Color color) {
     final double diameter = (innerDiameter + outerDiameter) / 2;
@@ -61,12 +70,4 @@ public class CogWheel {
         : rectangle(outerDiameter, outerDiameter, WHITE);
     return angles.map(angle -> compose(rotate(angle, wheel), background));
   }
-
-  public static void main(String[] args) {
-    Sequence<Graphic> loop = animation(true);
-    showFilmStrip(loop);
-    animate(loop);
-    //saveAnimatedGif(animation(false), true, 25, "cogwheel.gif");
-  }
-
 }

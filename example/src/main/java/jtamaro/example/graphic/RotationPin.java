@@ -9,9 +9,12 @@ import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Points.BOTTOM_CENTER;
 import static jtamaro.io.IO.show;
 
-public class RotationPin {
+public final class RotationPin {
 
-  public static void main(String[] args) {
+  private RotationPin() {
+  }
+
+  public static void main() {
     // Test for: https://github.com/LuCEresearchlab/jtamaro/issues/1
     show(
         rotate(

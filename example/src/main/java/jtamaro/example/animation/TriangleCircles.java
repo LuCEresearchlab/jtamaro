@@ -14,7 +14,16 @@ import static jtamaro.io.IO.animate;
 import static jtamaro.io.IO.show;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class TriangleCircles {
+public final class TriangleCircles {
+
+  private TriangleCircles() {
+  }
+
+  public static void main() {
+    show(equilateralTriangleWithInCircleAndCircumCircle(200));
+    showFilmStrip(triangleCircleAnimation());
+    animate(triangleCircleAnimation());
+  }
 
   private static Graphic equilateralTriangleWithInCircleAndCircumCircle(double side) {
     final double circumRadius = side / Math.sqrt(3);
@@ -33,12 +42,4 @@ public class TriangleCircles {
     return range(0, 360, 3)
         .map((Integer a) -> rotate(a, equilateralTriangleWithInCircleAndCircumCircle(side)));
   }
-
-
-  public static void main(String[] args) {
-    show(equilateralTriangleWithInCircleAndCircumCircle(200));
-    showFilmStrip(triangleCircleAnimation());
-    animate(triangleCircleAnimation());
-  }
-
 }

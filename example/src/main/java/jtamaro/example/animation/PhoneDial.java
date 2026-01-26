@@ -33,7 +33,7 @@ import static jtamaro.io.IO.println;
 import static jtamaro.io.IO.show;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class PhoneDial {
+public final class PhoneDial {
 
   public static Graphic background(double diameter) {
     return overlay(
@@ -115,11 +115,14 @@ public class PhoneDial {
             : angleForNumber(number, remainingPairs.rest());
   }
 
-  public static void main(String[] args) {
+  public static void main() {
     println(keyNumbersWithAngles());
     println(angleForNumber(5));
     show(dialGraphic(300, 0));
     showFilmStrip(dialOneDigitAnimation(300, 5));
     animate(dialDigitsAnimation(300, of(0, 5, 8, 6, 6, 4, 0, 0, 0)), 10);
+  }
+
+  private PhoneDial() {
   }
 }

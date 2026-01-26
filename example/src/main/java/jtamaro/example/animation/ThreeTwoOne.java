@@ -11,7 +11,7 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.IO.showFilmStrip;
 
-public class ThreeTwoOne {
+public final class ThreeTwoOne {
 
   private static final int FONT_SIZE = 100;
 
@@ -19,15 +19,10 @@ public class ThreeTwoOne {
 
   private static final int HEIGHT = 400;
 
-
-  private static Graphic frame(String text) {
-    return overlay(
-        text(text, Fonts.SANS_SERIF, FONT_SIZE, BLUE),
-        rectangle(WIDTH, HEIGHT, YELLOW)
-    );
+  private ThreeTwoOne() {
   }
 
-  public static void main(String[] args) {
+  public static void main() {
     showFilmStrip(
         of("One", "Two", "Three").map(ThreeTwoOne::frame),
         WIDTH,
@@ -35,4 +30,10 @@ public class ThreeTwoOne {
     );
   }
 
+  private static Graphic frame(String text) {
+    return overlay(
+        text(text, Fonts.SANS_SERIF, FONT_SIZE, BLUE),
+        rectangle(WIDTH, HEIGHT, YELLOW)
+    );
+  }
 }

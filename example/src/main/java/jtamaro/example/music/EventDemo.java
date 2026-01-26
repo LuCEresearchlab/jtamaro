@@ -15,12 +15,15 @@ import jtamaro.data.Sequence;
 
 import static jtamaro.data.Sequences.of;
 
-public class EventDemo {
+public final class EventDemo {
 
   private static final Logger LOG = Logger.getLogger(EventDemo.class.getName());
 
-  static void main() {
-    Sequence<Event> song = of(
+  private EventDemo() {
+  }
+
+  public static void main() {
+    final Sequence<Event> song = of(
         noteOn(60, 127),
         tick(),
         noteOff(60),
@@ -39,22 +42,22 @@ public class EventDemo {
     play(song, 120);
   }
 
-  static Event noteOn(int noteNumber, int velocity) {
+  private static Event noteOn(int noteNumber, int velocity) {
     assert noteNumber >= 0 && noteNumber <= 127;
     assert velocity >= 0;
     return new NoteOn(noteNumber, velocity);
   }
 
-  static Event noteOff(int noteNumber) {
+  private static Event noteOff(int noteNumber) {
     assert noteNumber >= 0 && noteNumber <= 127;
     return new NoteOff(noteNumber);
   }
 
-  static Event tick() {
+  private static Event tick() {
     return new Tick();
   }
 
-  static void play(Sequence<Event> song, int bpm) {
+  private static void play(Sequence<Event> song, int bpm) {
     final int msPerTick = 60 * 1000 / bpm;
     try (Receiver receiver = MidiSystem.getReceiver()) {
       for (Event event : song) {
@@ -87,11 +90,11 @@ public class EventDemo {
   public static void find() {
     final List<MidiDevice.Info> synthInfos = new ArrayList<>();
     for (MidiDevice.Info deviceInfo : MidiSystem.getMidiDeviceInfo()) {
-      System.out.println("Device: " + deviceInfo);
+      LOG.log(Level.INFO, "Device: " + deviceInfo);
       try {
         final MidiDevice device = MidiSystem.getMidiDevice(deviceInfo);
         if (device instanceof Synthesizer) {
-          System.out.println("  Synthesizer");
+          LOG.log(Level.INFO, "  Synthesizer");
           synthInfos.add(deviceInfo);
         }
       } catch (MidiUnavailableException ex) {
@@ -104,7 +107,7 @@ public class EventDemo {
         final MidiDevice device = MidiSystem.getMidiDevice(deviceInfo);
         if (!(device.isOpen())) {
           device.open();
-          System.out.println("First Synthesizer opened.");
+          LOG.log(Level.INFO, "First Synthesizer opened.");
         }
       } catch (MidiUnavailableException ex) {
         LOG.log(Level.SEVERE, ex.getMessage(), ex);
@@ -112,13 +115,13 @@ public class EventDemo {
     }
   }
 
-  sealed interface Event {
+  private sealed interface Event {
 
     void perform(Receiver receiver, int msPerTick)
         throws InvalidMidiDataException, InterruptedException;
   }
 
-  record NoteOn(int noteNumber, int velocity) implements Event {
+  private record NoteOn(int noteNumber, int velocity) implements Event {
 
     public void perform(Receiver receiver, int msPerTick) throws InvalidMidiDataException {
       final ShortMessage message = new ShortMessage();
@@ -128,7 +131,7 @@ public class EventDemo {
     }
   }
 
-  record NoteOff(int noteNumber) implements Event {
+  private record NoteOff(int noteNumber) implements Event {
 
     public void perform(Receiver receiver, int msPerTick) throws InvalidMidiDataException {
       final ShortMessage message = new ShortMessage();
@@ -138,10 +141,10 @@ public class EventDemo {
     }
   }
 
-  record Tick() implements Event {
+  private record Tick() implements Event {
 
     public void perform(Receiver receiver, int msPerTick) throws InterruptedException {
-      System.out.println("tick -- " + System.nanoTime());
+      LOG.log(Level.INFO, "tick -- " + System.nanoTime());
       Thread.sleep(msPerTick);
     }
   }

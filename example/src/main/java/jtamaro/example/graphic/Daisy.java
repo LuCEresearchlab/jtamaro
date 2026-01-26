@@ -15,9 +15,16 @@ import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Points.CENTER_LEFT;
 import static jtamaro.io.IO.show;
 
-public class Daisy {
+public final class Daisy {
 
   private static final Color BUD_COLOR = hsl(48, 0.98, 0.47);
+
+  private Daisy() {
+  }
+
+  public static void main() {
+    show(daisy(400));
+  }
 
   private static Graphic petal(double size) {
     return pin(CENTER_LEFT, ellipse(size, size / 4, WHITE));
@@ -31,9 +38,4 @@ public class Daisy {
     }
     return compose(circle(size / 4, BUD_COLOR), flower);
   }
-
-  public static void main(String[] args) {
-    show(daisy(400));
-  }
-
 }
