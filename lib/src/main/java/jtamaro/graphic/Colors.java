@@ -3,7 +3,7 @@ package jtamaro.graphic;
 import java.util.function.IntFunction;
 
 /**
- * Static methods for working with Colors, and static fields for well-known Colors.
+ * Procedures for working with {@link Color} objects, and well-known colors.
  *
  * @see jtamaro.graphic.Color
  */

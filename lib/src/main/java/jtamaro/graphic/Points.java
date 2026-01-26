@@ -3,9 +3,10 @@ package jtamaro.graphic;
 import java.util.Map;
 
 /**
- * Names of notable points, that can be used as pinning positions for a graphic.
+ * Notable points that can be used to pin a graphic.
  *
  * @see jtamaro.graphic.Point
+ * @see Graphics#pin(Point, Graphic)
  */
 public final class Points {
 

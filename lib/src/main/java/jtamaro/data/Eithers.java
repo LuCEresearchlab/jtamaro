@@ -1,7 +1,7 @@
 package jtamaro.data;
 
 /**
- * Static methods for working with either instances.
+ * Procedures for working with {@link Either} objects.
  *
  * @see jtamaro.data.Either
  */
