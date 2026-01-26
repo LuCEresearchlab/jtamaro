@@ -1,6 +1,7 @@
 package jtamaro.example.interaction;
 
 import jtamaro.data.Sequence;
+import jtamaro.data.Sequences;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
