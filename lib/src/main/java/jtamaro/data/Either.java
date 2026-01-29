@@ -52,6 +52,21 @@ public sealed interface Either<L, R> permits Left, Right {
   <T> T fold(Function1<L, T> leftCase, Function1<R, T> rightCase);
 
   /**
+   * Produce an {@link Option}.
+   *
+   * @return An empty option if this either is right or an option a value if this either is left.
+   */
+  Option<L> optionLeft();
+
+
+  /**
+   * Produce an {@link Option}.
+   *
+   * @return An empty option if this either is left or an option a value if this either is right.
+   */
+  Option<R> optionRight();
+
+  /**
    * Produce a stream.
    *
    * @return An empty stream if this either is right or a stream with a single value if this either
