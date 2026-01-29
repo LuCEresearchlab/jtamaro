@@ -30,6 +30,16 @@ record Left<L, R>(L value) implements Either<L, R> {
   }
 
   @Override
+  public Option<L> optionLeft() {
+    return new Some<>(value);
+  }
+
+  @Override
+  public Option<R> optionRight() {
+    return new None<>();
+  }
+
+  @Override
   public Stream<L> streamLeft() {
     return Stream.of(value);
   }

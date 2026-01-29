@@ -76,6 +76,26 @@ public final class EitherTest {
   }
 
   @Test
+  public void leftOptionLeft() {
+    Assert.assertEquals(new Some<>(6), Eithers.left(6).optionLeft());
+  }
+
+  @Test
+  public void leftOptionRight() {
+    Assert.assertEquals(new None<>(), Eithers.left(9).optionRight());
+  }
+
+  @Test
+  public void rightOptionLeft() {
+    Assert.assertEquals(new None<>(), Eithers.right(7).optionLeft());
+  }
+
+  @Test
+  public void rightOptionRight() {
+    Assert.assertEquals(new Some<>(2), Eithers.right(2).optionRight());
+  }
+
+  @Test
   public void leftStreamLeftLenOne() {
     Assert.assertEquals(1, Eithers.left(0).streamLeft().count());
   }
