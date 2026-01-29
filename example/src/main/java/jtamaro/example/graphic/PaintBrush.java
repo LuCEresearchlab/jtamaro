@@ -20,7 +20,7 @@ import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.graphic.Points.CENTER;
 import static jtamaro.graphic.Points.CENTER_LEFT;
 import static jtamaro.graphic.Points.CENTER_RIGHT;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class PaintBrush {
 

@@ -21,7 +21,7 @@ import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.emptyGraphic;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rotate;
-import static jtamaro.io.IO.interact;
+import static jtamaro.io.GraphicIO.interact;
 
 public final class ColorPickerDemo {
 

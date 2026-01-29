@@ -9,7 +9,7 @@ import static jtamaro.data.Sequences.range;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Graphics.ellipse;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class PointSequenceDemo {
 

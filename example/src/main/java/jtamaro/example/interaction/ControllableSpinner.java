@@ -11,7 +11,7 @@ import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
-import static jtamaro.io.IO.interact;
+import static jtamaro.io.GraphicIO.interact;
 
 public final class ControllableSpinner {
 

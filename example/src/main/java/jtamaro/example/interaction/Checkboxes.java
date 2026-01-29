@@ -1,7 +1,6 @@
 package jtamaro.example.interaction;
 
 import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
@@ -19,7 +18,7 @@ import static jtamaro.graphic.Graphics.beside;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
-import static jtamaro.io.IO.interact;
+import static jtamaro.io.GraphicIO.interact;
 
 public final class Checkboxes {
 

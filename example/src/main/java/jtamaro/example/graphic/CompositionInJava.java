@@ -21,7 +21,7 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.CENTER_LEFT;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class CompositionInJava {
 

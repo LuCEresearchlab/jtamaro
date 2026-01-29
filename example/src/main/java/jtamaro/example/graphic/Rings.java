@@ -21,7 +21,7 @@ import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Colors.hsv;
 import static jtamaro.graphic.Graphics.circularSector;
 import static jtamaro.graphic.Graphics.rotate;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class Rings {
 

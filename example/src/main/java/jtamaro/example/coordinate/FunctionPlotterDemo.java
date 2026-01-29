@@ -12,7 +12,7 @@ import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.ellipse;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class FunctionPlotterDemo {
 

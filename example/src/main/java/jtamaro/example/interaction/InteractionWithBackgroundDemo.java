@@ -15,7 +15,7 @@ import static jtamaro.graphic.Graphics.emptyGraphic;
 import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Points.BOTTOM_LEFT;
-import static jtamaro.io.IO.interact;
+import static jtamaro.io.GraphicIO.interact;
 
 public final class InteractionWithBackgroundDemo {
 

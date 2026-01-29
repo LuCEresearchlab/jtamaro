@@ -15,8 +15,8 @@ import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Points.BOTTOM_CENTER;
-import static jtamaro.io.IO.animate;
-import static jtamaro.io.IO.showFilmStrip;
+import static jtamaro.io.GraphicIO.animate;
+import static jtamaro.io.GraphicIO.showFilmStrip;
 
 public final class CogWheel {
 
