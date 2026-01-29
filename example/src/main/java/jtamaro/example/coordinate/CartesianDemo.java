@@ -7,7 +7,7 @@ import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Colors.hsv;
 import static jtamaro.graphic.Colors.rgb;
 import static jtamaro.graphic.Graphics.ellipse;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class CartesianDemo {
 

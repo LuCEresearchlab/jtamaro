@@ -28,10 +28,10 @@ import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.BOTTOM_CENTER;
 import static jtamaro.graphic.Points.CENTER_LEFT;
 import static jtamaro.graphic.Points.TOP_CENTER;
-import static jtamaro.io.IO.animate;
-import static jtamaro.io.IO.println;
-import static jtamaro.io.IO.show;
-import static jtamaro.io.IO.showFilmStrip;
+import static jtamaro.io.GraphicIO.animate;
+import static jtamaro.io.GraphicIO.show;
+import static jtamaro.io.GraphicIO.showFilmStrip;
+import static jtamaro.io.StandardIO.println;
 
 public final class PhoneDial {
 

@@ -23,7 +23,7 @@ public final class MusicIO {
   }
 
   public static void play(Sequence<TimedChord> song, int bpm, int channel, Instrument instrument) {
-    LOGGER.info("IO.play:");
+    LOGGER.info("MusicIO.play:");
     final int msPerBeat = 60 * 1000 / bpm;
     try (Receiver receiver = MidiSystem.getReceiver()) {
       receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE,

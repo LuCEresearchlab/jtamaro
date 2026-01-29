@@ -28,8 +28,8 @@ import static jtamaro.graphic.Points.BOTTOM_CENTER;
 import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.graphic.Points.BOTTOM_RIGHT;
 import static jtamaro.graphic.Points.TOP_LEFT;
-import static jtamaro.io.IO.animate;
-import static jtamaro.io.IO.showFilmStrip;
+import static jtamaro.io.GraphicIO.animate;
+import static jtamaro.io.GraphicIO.showFilmStrip;
 
 public final class Fireworks {
 

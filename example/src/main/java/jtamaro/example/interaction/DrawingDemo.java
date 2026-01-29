@@ -13,7 +13,7 @@ import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.rectangle;
-import static jtamaro.io.IO.interact;
+import static jtamaro.io.GraphicIO.interact;
 
 public final class DrawingDemo {
 

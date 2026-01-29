@@ -2,7 +2,7 @@ package jtamaro.example.color;
 
 import jtamaro.graphic.Colors;
 
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class ColorDemo {
 

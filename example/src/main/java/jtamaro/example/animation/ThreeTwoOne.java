@@ -9,7 +9,7 @@ import static jtamaro.graphic.Colors.YELLOW;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
-import static jtamaro.io.IO.showFilmStrip;
+import static jtamaro.io.GraphicIO.showFilmStrip;
 
 public final class ThreeTwoOne {
 

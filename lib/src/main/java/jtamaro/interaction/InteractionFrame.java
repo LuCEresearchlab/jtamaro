@@ -26,7 +26,7 @@ import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
 import jtamaro.graphic.GuiGraphicCanvas;
 import jtamaro.graphic.RenderOptions;
-import jtamaro.io.IO;
+import jtamaro.io.GraphicIO;
 
 /**
  * GUI that allows the user to interact with an {@link Interaction}.
@@ -112,7 +112,7 @@ final class InteractionFrame<M> extends JFrame {
     viewFrame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     viewFrame.addActionListener(_ -> SwingUtilities.invokeLater(() -> {
       stopExecutor();
-      IO.show(renderer.apply(executor.getCurrentModel()));
+      GraphicIO.show(renderer.apply(executor.getCurrentModel()));
     }));
     fileMenu.add(viewFrame);
     final JMenuItem viewBackground = new JMenuItem("Inspect Background");
@@ -120,7 +120,7 @@ final class InteractionFrame<M> extends JFrame {
         KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK));
     viewBackground.addActionListener(_ -> SwingUtilities.invokeLater(() -> {
       stopExecutor();
-      IO.show(interaction.getBackground().fold(Function1.identity(), Graphics::emptyGraphic));
+      GraphicIO.show(interaction.getBackground().fold(Function1.identity(), Graphics::emptyGraphic));
     }));
     viewBackground.setEnabled(!interaction.getBackground().isEmpty());
     fileMenu.add(viewBackground);

@@ -6,7 +6,7 @@ import jtamaro.data.Sequence;
 import static jtamaro.data.Sequences.cons;
 import static jtamaro.data.Sequences.empty;
 import static jtamaro.data.Sequences.of;
-import static jtamaro.io.IO.println;
+import static jtamaro.io.StandardIO.println;
 
 public final class QuickSort {
 

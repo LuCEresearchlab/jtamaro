@@ -13,8 +13,8 @@ import static jtamaro.graphic.Graphics.compose;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
-import static jtamaro.io.IO.animate;
-import static jtamaro.io.IO.showFilmStrip;
+import static jtamaro.io.GraphicIO.animate;
+import static jtamaro.io.GraphicIO.showFilmStrip;
 
 public final class CountUp {
 

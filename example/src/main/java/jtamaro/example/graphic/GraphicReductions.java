@@ -10,7 +10,7 @@ import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Colors.GREEN;
 import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Graphics.text;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class GraphicReductions {
 

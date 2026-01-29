@@ -4,7 +4,7 @@ import jtamaro.data.Sequence;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
 import jtamaro.interaction.KeyboardKey;
-import jtamaro.io.IO;
+import jtamaro.io.GraphicIO;
 
 import static jtamaro.data.Sequences.cons;
 import static jtamaro.data.Sequences.empty;
@@ -33,7 +33,7 @@ public final class ElevatorDemo {
   }
 
   public static void main() {
-    IO.<Elevator>interact(new RestingElevator(0, empty()))
+    GraphicIO.<Elevator>interact(new RestingElevator(0, empty()))
         .withRenderer(ElevatorDemo::render)
         .withKeyReleaseHandler(ElevatorDemo::onKeypress)
         .run();

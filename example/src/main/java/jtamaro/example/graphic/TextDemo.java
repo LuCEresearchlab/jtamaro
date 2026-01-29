@@ -7,7 +7,7 @@ import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.BOTTOM_RIGHT;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class TextDemo {
 

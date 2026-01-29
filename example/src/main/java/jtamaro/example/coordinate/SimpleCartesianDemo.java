@@ -6,7 +6,7 @@ import static jtamaro.graphic.Colors.BLUE;
 import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.rectangle;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class SimpleCartesianDemo {
 

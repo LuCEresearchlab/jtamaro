@@ -12,7 +12,7 @@ import static jtamaro.graphic.Graphics.circularSector;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.triangle;
-import static jtamaro.io.IO.show;
+import static jtamaro.io.GraphicIO.show;
 
 public final class TriangleDemo {
 
