@@ -170,8 +170,13 @@ public final class SequencesTest {
   }
 
   @Test
-  public void testRangeDoubleEmpty() {
+  public void testRangeDoubleEmptySame() {
     TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.range(0.0, 0.0, 0.1));
+  }
+
+  @Test
+  public void testRangeDoubleEmptyInv() {
+    TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.range(1.0, 0.0, 0.1));
   }
 
   @Test
@@ -705,6 +710,11 @@ public final class SequencesTest {
   @Test(expected = IllegalArgumentException.class)
   public void testRangeStepZero() {
     Sequences.range(0, 1, 0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testRangeStepZeroDouble() {
+    Sequences.range(0.0, 0.1, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
