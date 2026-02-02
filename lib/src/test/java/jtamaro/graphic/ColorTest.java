@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public final class ColorTest {
 
-  private void assertColor(int r, int g, int b, int a, Color actual) {
+  private static void assertColor(int r, int g, int b, int a, Color actual) {
     Assert.assertEquals(new Color(r, g, b, a / 255.0), actual);
   }
 

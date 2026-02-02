@@ -38,7 +38,7 @@ public class GuiGraphicTreeCellRenderer extends DefaultTreeCellRenderer {
     if (value instanceof Graphic.InspectTreeNode node) {
       final Graphic graphic = node.getGraphic();
       setText(graphic.getInspectLabel());
-      final Map<String, String> props = graphic.getProps(false);
+      final Map<String, String> props = graphic.getProps(Graphic.PropStyle.HTML);
       final String toolTipText = "<html><b>" + graphic.getInspectLabel() + "</b>"
           + "<table>"
           + props.entrySet().stream()

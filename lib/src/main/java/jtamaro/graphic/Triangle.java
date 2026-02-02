@@ -70,14 +70,12 @@ final class Triangle extends Graphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
     props.put("side1", String.format("%.2f", side1));
     props.put("side2", String.format("%.2f", side2));
     props.put("angle", String.format("%.2f", angle));
-    props.put("color", plainText
-        ? color.toString()
-        : Colors.htmlString(color));
+    props.put("color", Colors.format(propStyle, color));
     return props;
   }
 

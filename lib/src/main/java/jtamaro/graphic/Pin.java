@@ -107,8 +107,8 @@ final class Pin extends Graphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
     props.put("pinPoint", Points.format(pinPoint));
     return props;
   }

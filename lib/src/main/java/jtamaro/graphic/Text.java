@@ -74,14 +74,12 @@ final class Text extends Graphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
     props.put("content", content);
     props.put("font", font);
     props.put("size", String.format("%.2f", size));
-    props.put("color", plainText
-        ? color.toString()
-        : Colors.htmlString(color));
+    props.put("color", Colors.format(propStyle, color));
     return props;
   }
 

@@ -47,7 +47,7 @@ public final class GuiGraphicPropertiesPanel extends JPanel {
     } else {
       label.setText("<html><b>" + graphic.getInspectLabel() + "</b>"
           + "<table>"
-          + graphic.getProps(false).entrySet().stream()
+          + graphic.getProps(Graphic.PropStyle.HTML).entrySet().stream()
           .map(e -> "<tr><td><b>"
               + e.getKey()
               + "</b></td><td>"

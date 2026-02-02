@@ -31,6 +31,12 @@ public record Color(
 
   @Override
   public String toString() {
-    return String.format("Color[rgb=#%1$02X%2$02X%3$02X, opacity=%4$.2f]", red, green, blue, opacity);
+    return String.format(
+        "Color[rgb=#%1$02X%2$02X%3$02X, opacity=%4$.2f]",
+        red,
+        green,
+        blue,
+        opacity
+    );
   }
 }

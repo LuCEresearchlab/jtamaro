@@ -226,31 +226,32 @@ public abstract sealed class Graphic
    *
    * @implSpec Remember to invoke {@code super.dump(sb, indent)} first, then add all children using
    * {@link #dumpChild(StringBuilder, String, String, Graphic)}.
-   * @implNote All the props from {@link #getProps(boolean)} are automatically added by invoking the
-   * super method.
+   * @implNote All the props from {@link #getProps(PropStyle)} are automatically added by invoking
+   * the super method.
    */
   protected final void dump(StringBuilder sb, String indent) {
-    sb.append(indent)
+    sb.append("\033[1m")
         .append(getClass().getSimpleName())
+        .append("\033[0m")
         .append("\n");
-    getProps(true).forEach((k, v) -> dumpField(sb, indent, k, v));
+    getProps(PropStyle.ANSI_ESCAPE_CODES).forEach((k, v) -> dumpField(sb, indent, k, v));
     getChildren().forEach((k, v) -> dumpChild(sb, indent, k, v));
   }
 
   private void dumpField(StringBuilder sb, String indent, String name, Object value) {
     sb.append(indent)
-        .append("├─ ")
+        .append("├─ \033[2m")
         .append(name)
-        .append(": ")
+        .append("\033[0m: ")
         .append(value)
         .append("\n");
   }
 
   private void dumpChild(StringBuilder sb, String indent, String name, Graphic child) {
     sb.append(indent)
-        .append("├─ ")
+        .append("├─ \033[2m")
         .append(name)
-        .append(":\n");
+        .append("\033[0m: ");
     child.dump(sb, indent + "│  ");
   }
 
@@ -272,13 +273,27 @@ public abstract sealed class Graphic
     return "graphic";
   }
 
+
+  /**
+   * Properties of the graphic.
+   *
+   * <p>Same as {@link #getProps(PropStyle)}, with {@link PropStyle#PLAIN} as the style.
+   *
+   * @implSpec The returned map is supposed to be mutable in non final-classes that override this
+   * method so that it's easier for subclasses to add more entries to it.
+   * @see #getProps(PropStyle)
+   */
+  protected SequencedMap<String, String> getProps() {
+    return getProps(PropStyle.PLAIN);
+  }
+
   /**
    * Properties of the graphic.
    *
    * <p>These are used to produce various representations of the graphic.
    *
-   * @param plainText Whether the value strings be in plain text ({@code true}) or formatted in HTML
-   *                  markup ({@code false}).
+   * @param propStyle Whether the value strings be in plain text, formatted in HTML or ANSI escape
+   *                  codes markup.
    * @implSpec The returned map is supposed to be mutable in non final-classes that override this
    * method so that it's easier for subclasses to add more entries to it.
    * @see #dump(StringBuilder, String)
@@ -286,7 +301,7 @@ public abstract sealed class Graphic
    * @see GuiGraphicPropertiesPanel
    * @see GuiGraphicTreeCellRenderer
    */
-  protected SequencedMap<String, String> getProps(boolean plainText) {
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
     // We use LinkedHashMap as the implementation class because:
     //   1. We care about insertion order
     //   2. We never perform random reads on the map, just forEach iterations
@@ -327,7 +342,7 @@ public abstract sealed class Graphic
   public final String toString() {
     return getClass().getSimpleName()
         + "["
-        + getProps(true).entrySet().stream()
+        + getProps(PropStyle.PLAIN).entrySet().stream()
         .map(e -> e.getKey() + "=" + e.getValue())
         .collect(Collectors.joining(", "))
         + "]";
@@ -350,5 +365,14 @@ public abstract sealed class Graphic
     public Graphic getGraphic() {
       return Graphic.this;
     }
+  }
+
+  /**
+   * @hidden
+   */
+  protected enum PropStyle {
+    PLAIN,
+    ANSI_ESCAPE_CODES,
+    HTML,
   }
 }

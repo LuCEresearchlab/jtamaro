@@ -66,8 +66,8 @@ final class ActionableGraphic<T> extends DelegatingGraphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
     if (!pressAction.isEmpty()) {
       props.put("onPress", "event");
     }

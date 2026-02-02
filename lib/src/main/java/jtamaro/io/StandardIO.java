@@ -3,6 +3,8 @@ package jtamaro.io;
 import java.util.Scanner;
 import jtamaro.data.Pair;
 import jtamaro.data.Sequence;
+import jtamaro.graphic.Color;
+import jtamaro.graphic.Colors;
 import jtamaro.graphic.Graphic;
 
 /**
@@ -17,6 +19,23 @@ public final class StandardIO {
   }
 
   /* **** CLI **** */
+
+  /**
+   * Print the given pair, one element right after the next, to the standard output. Each element is
+   * converted into a String to be printed. This does not add any newlines.
+   *
+   * @param <F>  the type of the first element
+   * @param <S>  the type of the second element
+   * @param pair the pair to print
+   */
+  public static <F, S> void print(Pair<F, S> pair) {
+    if (pair == null) {
+      System.err.print("Nothing to print");
+    } else {
+      System.out.print(pair.first());
+      System.out.print(pair.second());
+    }
+  }
 
   /**
    * Print the given sequence, one element right after the next, to standard output. Each element is
@@ -49,19 +68,17 @@ public final class StandardIO {
   }
 
   /**
-   * Print the given sequence, one element per line, to standard output. Each element is converted
-   * into a String to be printed.
+   * Print a colored textual representation of the given color and terminate the line.
    *
-   * @param <T>      the type of elements
-   * @param sequence the sequence to print
+   * @param color the color to print
+   * @see java.io.PrintStream#println(Object)
+   * @see Graphic#dump()
    */
-  public static <T> void println(Sequence<T> sequence) {
-    if (sequence == null) {
+  public static void println(Color color) {
+    if (color == null) {
       System.err.println("Nothing to print");
     } else {
-      for (T element : sequence) {
-        System.out.println(element);
-      }
+      System.out.println(Colors.formatAnsiEscape(color));
     }
   }
 
@@ -81,6 +98,40 @@ public final class StandardIO {
   }
 
   /**
+   * Print the given pair, one element per line, to the standard output. Each element is converted
+   * into a String to be printed.
+   *
+   * @param <F>  the type of the first element
+   * @param <S>  the type of the second element
+   * @param pair the pair to print
+   */
+  public static <F, S> void println(Pair<F, S> pair) {
+    if (pair == null) {
+      System.err.println("Nothing to print");
+    } else {
+      System.out.println(pair.first());
+      System.out.println(pair.second());
+    }
+  }
+
+  /**
+   * Print the given sequence, one element per line, to standard output. Each element is converted
+   * into a String to be printed.
+   *
+   * @param <T>      the type of elements
+   * @param sequence the sequence to print
+   */
+  public static <T> void println(Sequence<T> sequence) {
+    if (sequence == null) {
+      System.err.println("Nothing to print");
+    } else {
+      for (T element : sequence) {
+        System.out.println(element);
+      }
+    }
+  }
+
+  /**
    * Prints an object and terminate the line.
    *
    * @see java.io.PrintStream#println(Object)
@@ -96,40 +147,6 @@ public final class StandardIO {
    */
   public static void println() {
     System.out.println();
-  }
-
-  /**
-   * Print the given pair, one element right after the next, to the standard output. Each element is
-   * converted into a String to be printed. This does not add any newlines.
-   *
-   * @param <F>  the type of the first element
-   * @param <S>  the type of the second element
-   * @param pair the pair to print
-   */
-  public static <F, S> void print(Pair<F, S> pair) {
-    if (pair == null) {
-      System.err.print("Nothing to print");
-    } else {
-      System.out.print(pair.first());
-      System.out.print(pair.second());
-    }
-  }
-
-  /**
-   * Print the given pair, one element per line, to the standard output. Each element is converted
-   * into a String to be printed.
-   *
-   * @param <F>  the type of the first element
-   * @param <S>  the type of the second element
-   * @param pair the pair to print
-   */
-  public static <F, S> void println(Pair<F, S> pair) {
-    if (pair == null) {
-      System.err.println("Nothing to print");
-    } else {
-      System.out.println(pair.first());
-      System.out.println(pair.second());
-    }
   }
 
   /**
