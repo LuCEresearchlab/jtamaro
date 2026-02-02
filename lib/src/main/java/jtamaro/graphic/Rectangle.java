@@ -56,11 +56,9 @@ final class Rectangle extends Graphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
-    props.put("color", plainText
-        ? color.toString()
-        : Colors.htmlString(color));
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
+    props.put("color", Colors.format(propStyle, color));
     return props;
   }
 

@@ -63,13 +63,11 @@ final class CircularSector extends Graphic {
   }
 
   @Override
-  protected SequencedMap<String, String> getProps(boolean plainText) {
-    final SequencedMap<String, String> props = super.getProps(plainText);
+  protected SequencedMap<String, String> getProps(PropStyle propStyle) {
+    final SequencedMap<String, String> props = super.getProps(propStyle);
     props.put("radius", String.format("%.2f", radius));
     props.put("angle", String.format("%.2f", radius));
-    props.put("color", plainText
-        ? color.toString()
-        : Colors.htmlString(color));
+    props.put("color", Colors.format(propStyle, color));
     return props;
   }
 

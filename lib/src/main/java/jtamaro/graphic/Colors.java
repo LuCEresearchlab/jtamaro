@@ -166,23 +166,46 @@ public final class Colors {
   }
 
   /**
+   * Return a textual visualization for the given color following the given style.
+   */
+  static String format(Graphic.PropStyle style, Color color) {
+    return switch (style) {
+      case PLAIN -> color.toString();
+      case ANSI_ESCAPE_CODES -> formatAnsiEscape(color);
+      case HTML -> formatHtml(color);
+    };
+  }
+
+  /**
+   * Return a textual visualization for the given color with ansi escape codes that use the color
+   * itself to colorize its representation.
+   *
+   * @hidden
+   */
+  public static String formatAnsiEscape(Color color) {
+    return String.format(
+        "Color[rgb=\033[38;2;%5$sm\033[48;2;%1$d;%2$d;%3$dm#%1$02X%2$02X%3$02X\033[0m, opacity=%4$.2f]",
+        color.red(),
+        color.green(),
+        color.blue(),
+        color.opacity(),
+        isLight(color) ? "0;0;0" : "255;255;255"
+    );
+  }
+
+  /**
    * Return an HTML string of a span with text color that of the given color and for content its
    * <pre>#RRGGBB</pre> representation.
    */
-  static String htmlString(Color color) {
-    final double luminance = 0.2126 * color.red() / 255.0
-        + 0.7152 * color.green() / 255.0
-        + 0.0722 * color.blue() / 255.0;
-    final String foregroundColor = luminance > 0.5
-        ? "#000000"
-        : "#ffffff";
+  private static String formatHtml(Color color) {
     return String.format(
         "<font bgcolor=\"rgba(%1$d,%2$d,%3$d,%4$.2f)\" color=\"%5$s\">&nbsp;#%1$02x%2$02x%3$02x&nbsp;</font>",
         color.red(),
         color.green(),
         color.blue(),
         color.opacity(),
-        foregroundColor);
+        isLight(color) ? "#000000" : "#ffffff"
+    );
   }
 
   /**
@@ -190,5 +213,20 @@ public final class Colors {
    */
   public static java.awt.Color toAwtColor(Color color) {
     return new java.awt.Color(color.red(), color.green(), color.blue(), color.alpha());
+  }
+
+  /**
+   * Return whether the given color is light or dark.
+   *
+   * @implNote Formula taken from Item 3.5 of the
+   * <a href="https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf">
+   * Parameter values for the HDTV standards for production and international programme
+   * exchange</a>
+   */
+  private static boolean isLight(Color color) {
+    final double luminance = 0.2126 * color.red() / 255.0
+        + 0.7152 * color.green() / 255.0
+        + 0.0722 * color.blue() / 255.0;
+    return luminance > 0.5;
   }
 }
