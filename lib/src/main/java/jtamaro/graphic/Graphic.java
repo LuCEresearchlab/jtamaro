@@ -1,6 +1,5 @@
 package jtamaro.graphic;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
@@ -67,10 +66,18 @@ public abstract sealed class Graphic
 
   /* **** Location **** */
 
+  /**
+   * Get pinning point of the graphic.
+   *
+   * @see Point
+   */
   public Point getPin() {
     return pinPoint;
   }
 
+  /**
+   * Get the (tight) bounding box of this graphic.
+   */
   Rectangle2D getBBox() {
     return bbox;
   }
@@ -95,6 +102,11 @@ public abstract sealed class Graphic
     return getBBox().getMinY();
   }
 
+  /**
+   * Get the relative location for the given point with respect to this graphic.
+   *
+   * @implNote The location is computed with respect to the origin point of this graphic.
+   */
   RelativeLocation getLocation(Point point) {
     /*
      * switch (point.x) {
@@ -136,7 +148,7 @@ public abstract sealed class Graphic
    * Return the location coordinates relative to the (child) graphic corresponding to the given
    * absolute coordinates.
    *
-   * <p>The two coordinates must be given with respect to the origin point of the graphic.
+   * @apiNote The two coordinates must be given with respect to the origin point of the graphic.
    */
   Option<RelativeLocation> relativeLocationOf(double x, double y) {
     return path.contains(x, y)
@@ -147,31 +159,44 @@ public abstract sealed class Graphic
   /* **** Rendering **** */
 
   /**
-   * Render this Graphic into the given Graphics2D graphics context, using the given RenderOptions.
+   * Render this Graphic into the given {@link Graphics2D} graphics context, using the given
+   * {@link RenderOptions}.
    *
    * <p>The context can represent a GUI component (used when visualizing the graphic), or a bitmap
    * (used when writing the graphic into a bitmap file).
    */
   protected abstract void render(Graphics2D g2d, RenderOptions options);
 
+  /**
+   * Draw debug information for this graphic on the given {@link Graphics2D} graphics context.
+   */
   final void drawDebugInfo(Graphics2D g2d) {
     GraphicsDebugInfo.render(g2d, getPath(), getBBox());
   }
 
+  /**
+   * Get the path of this graphic.
+   */
   Path2D.Double getPath() {
     return path;
   }
 
+  /**
+   * Get the width of this graphic.
+   *
+   * @implNote Computed using the tight bounding box.
+   */
   public double getWidth() {
     return bbox.getWidth();
   }
 
+  /**
+   * Get the height of this graphic.
+   *
+   * @implNote Computed using the tight bounding box.
+   */
   public double getHeight() {
     return bbox.getHeight();
-  }
-
-  public static Color renderableColor(jtamaro.graphic.Color color) {
-    return new Color(color.red(), color.green(), color.blue(), color.alpha());
   }
 
   /**

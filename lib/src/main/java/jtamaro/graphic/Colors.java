@@ -178,6 +178,17 @@ public final class Colors {
         : "#ffffff";
     return String.format(
         "<font bgcolor=\"rgba(%1$d,%2$d,%3$d,%4$.2f)\" color=\"%5$s\">&nbsp;#%1$02x%2$02x%3$02x&nbsp;</font>",
-        color.red(), color.green(), color.blue(), color.opacity(), foregroundColor);
+        color.red(),
+        color.green(),
+        color.blue(),
+        color.opacity(),
+        foregroundColor);
+  }
+
+  /**
+   * Convert a given jtamaro color to an equivalent awt {@link java.awt.Color}.
+   */
+  public static java.awt.Color toAwtColor(Color color) {
+    return new java.awt.Color(color.red(), color.green(), color.blue(), color.alpha());
   }
 }

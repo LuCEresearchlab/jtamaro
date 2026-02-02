@@ -19,7 +19,7 @@ import jtamaro.data.Sequence;
  * @apiNote Not for public use.
  * @hidden
  */
-public final class FilmStripCanvas extends JComponent {
+public final class GuiFilmStripCanvas extends JComponent {
 
   private static final double GAP_FRACTION = 0.05;
 
@@ -55,7 +55,7 @@ public final class FilmStripCanvas extends JComponent {
 
   private int position;
 
-  public FilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
+  public GuiFilmStripCanvas(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
     super();
     this.indexedGraphics = graphics.zipWithIndex();
     this.frameWidth = frameWidth;
