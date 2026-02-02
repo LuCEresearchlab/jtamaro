@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import jtamaro.graphic.Color;
-import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Colors;
 
 final class ColorFrame extends JFrame {
 
@@ -30,7 +30,7 @@ final class ColorFrame extends JFrame {
 
       @Override
       protected void paintComponent(Graphics g) {
-        g.setColor(Graphic.renderableColor(color));
+        g.setColor(Colors.toAwtColor(color));
         g.fillRect(0, 0, getWidth(), getHeight());
       }
     };

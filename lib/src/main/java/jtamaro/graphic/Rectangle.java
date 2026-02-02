@@ -46,7 +46,7 @@ final class Rectangle extends Graphic {
 
   @Override
   protected void render(Graphics2D g2d, RenderOptions options) {
-    g2d.setPaint(renderableColor(color));
+    g2d.setPaint(Colors.toAwtColor(color));
     g2d.fill(getPath());
   }
 

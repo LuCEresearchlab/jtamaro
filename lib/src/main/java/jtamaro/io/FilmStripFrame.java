@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import jtamaro.data.Sequence;
-import jtamaro.graphic.FilmStripCanvas;
+import jtamaro.graphic.GuiFilmStripCanvas;
 import jtamaro.graphic.Graphic;
 
 final class FilmStripFrame extends JFrame {
@@ -20,7 +20,7 @@ final class FilmStripFrame extends JFrame {
 
   private final int completeFrameWidth;
 
-  private final FilmStripCanvas canvas;
+  private final GuiFilmStripCanvas canvas;
 
   public FilmStripFrame(Sequence<Graphic> graphics, int frameWidth, int frameHeight) {
     super();
@@ -28,8 +28,8 @@ final class FilmStripFrame extends JFrame {
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    completeFrameWidth = FilmStripCanvas.computeCompleteFrameWidth(frameWidth);
-    canvas = new FilmStripCanvas(graphics, frameWidth, frameHeight);
+    completeFrameWidth = GuiFilmStripCanvas.computeCompleteFrameWidth(frameWidth);
+    canvas = new GuiFilmStripCanvas(graphics, frameWidth, frameHeight);
     add(canvas, BorderLayout.CENTER);
     final JPanel bar = new JPanel(new BorderLayout());
     final JButton prevButton = new JButton("<");
