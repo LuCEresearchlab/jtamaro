@@ -21,113 +21,25 @@ public final class StandardIO {
   /* **** CLI **** */
 
   /**
-   * Print the given pair, one element right after the next, to the standard output. Each element is
-   * converted into a String to be printed. This does not add any newlines.
-   *
-   * @param <F>  the type of the first element
-   * @param <S>  the type of the second element
-   * @param pair the pair to print
-   */
-  public static <F, S> void print(Pair<F, S> pair) {
-    if (pair == null) {
-      System.err.print("Nothing to print");
-    } else {
-      System.out.print(pair.first());
-      System.out.print(pair.second());
-    }
-  }
-
-  /**
-   * Print the given sequence, one element right after the next, to standard output. Each element is
-   * converted into a String to be printed. This does not add any newlines.
-   *
-   * @param <T>      the type of elements
-   * @param sequence the sequence to print
-   */
-  public static <T> void print(Sequence<T> sequence) {
-    if (sequence == null) {
-      System.err.print("Nothing to print");
-    } else {
-      for (T element : sequence) {
-        System.out.print(element);
-      }
-    }
-  }
-
-  /**
-   * Prints an object.
+   * Prints a textual representation of a given object.
    *
    * @see java.io.PrintStream#print(Object)
    */
   public static void print(Object object) {
-    if (object == null) {
-      System.err.print("Nothing to print");
-    } else {
-      System.out.print(object);
-    }
-  }
-
-  /**
-   * Print a colored textual representation of the given color and terminate the line.
-   *
-   * @param color the color to print
-   * @see java.io.PrintStream#println(Object)
-   * @see Graphic#dump()
-   */
-  public static void println(Color color) {
-    if (color == null) {
-      System.err.println("Nothing to print");
-    } else {
-      System.out.println(Colors.formatAnsiEscape(color));
-    }
-  }
-
-  /**
-   * Print a tree-like visualization of the given graphic and terminate the line.
-   *
-   * @param graphic the graphic to print
-   * @see java.io.PrintStream#println(Object)
-   * @see Graphic#dump()
-   */
-  public static void println(Graphic graphic) {
-    if (graphic == null) {
-      System.err.println("Nothing to print");
-    } else {
-      System.out.println(graphic.dump());
-    }
-  }
-
-  /**
-   * Print the given pair, one element per line, to the standard output. Each element is converted
-   * into a String to be printed.
-   *
-   * @param <F>  the type of the first element
-   * @param <S>  the type of the second element
-   * @param pair the pair to print
-   */
-  public static <F, S> void println(Pair<F, S> pair) {
-    if (pair == null) {
-      System.err.println("Nothing to print");
-    } else {
-      System.out.println(pair.first());
-      System.out.println(pair.second());
-    }
-  }
-
-  /**
-   * Print the given sequence, one element per line, to standard output. Each element is converted
-   * into a String to be printed.
-   *
-   * @param <T>      the type of elements
-   * @param sequence the sequence to print
-   */
-  public static <T> void println(Sequence<T> sequence) {
-    if (sequence == null) {
-      System.err.println("Nothing to print");
-    } else {
-      for (T element : sequence) {
-        System.out.println(element);
+    switch (object) {
+      case Color color -> System.out.print(Colors.formatAnsiEscape(color));
+      case Graphic graphic -> System.out.print(graphic.dump());
+      case Pair(Object first, Object second) -> {
+        print(first);
+        print(second);
       }
+      case Sequence<?> seq -> {
+        for (Object element : seq) {
+          print(element);
+        }
+      }
+      case null -> System.err.print("Nothing to print");
+      default -> System.out.print(object);
     }
   }
 
@@ -137,7 +49,21 @@ public final class StandardIO {
    * @see java.io.PrintStream#println(Object)
    */
   public static void println(Object object) {
-    System.out.println(object);
+    switch (object) {
+      case Color color -> System.out.println(Colors.formatAnsiEscape(color));
+      case Graphic graphic -> System.out.println(graphic.dump());
+      case Pair(Object first, Object second) -> {
+        println(first);
+        println(second);
+      }
+      case Sequence<?> sequence -> {
+        for (Object element : sequence) {
+          println(element);
+        }
+      }
+      case null -> System.err.println("Nothing to print");
+      default -> System.out.println(object);
+    }
   }
 
   /**
