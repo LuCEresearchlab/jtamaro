@@ -67,7 +67,7 @@ public final class Graphics {
   /**
    * Creates a graphic with the text rendered using the specified font, size and color.
    *
-   * <p>>When the indicated True-Type Font is not found in the system, a very basilar font that is
+   * <p>When the indicated True-Type Font is not found in the system, a very basilar font that is
    * always available is used instead. The resulting graphic has the minimal size that still fits
    * the whole text.
    *
