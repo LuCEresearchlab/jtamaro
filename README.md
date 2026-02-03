@@ -40,13 +40,13 @@ Provides implementation for the following types:
 import jtamaro.graphic.Colors;
 import jtamaro.graphic.Graphic;
 import jtamaro.graphic.Graphics;
-import jtamaro.io.IO;
+import jtamaro.io.GraphicIO;
 
 void main() {
   final Graphic floor = Graphics.rectangle(100, 100, Colors.YELLOW);
   final Graphic roof = Graphics.rectangle(100, 100, 60, Colors.RED);
   final Graphic house = Graphics.above(roof, floor);
-  IO.show(house);
+  GraphicIO.show(house);
 }
 ```
 
@@ -59,7 +59,7 @@ import static jtamaro.graphic.Colors.*;
 import static jtamaro.graphic.Fonts.*;
 import static jtamaro.graphic.Graphics.*;
 import static jtamaro.interaction.KeyboardKey.*;
-import static jtamaro.io.IO.*;
+import static jtamaro.io.GraphicIO.*;
 
 void main() {
   interact(0)
