@@ -13,7 +13,7 @@ import java.util.SequencedMap;
 /**
  * A graphic with the text rendered using the specified font, size and color.
  *
- * <p>>When the indicated True-Type Font is not found in the system, a very basilar font that is
+ * <p>When the indicated True-Type Font is not found in the system, a very basilar font that is
  * always available is used instead. The resulting graphic has the minimal size that still fits the
  * whole text.
  *
@@ -76,8 +76,8 @@ final class Text extends Graphic {
   @Override
   protected SequencedMap<String, String> getProps(PropStyle propStyle) {
     final SequencedMap<String, String> props = super.getProps(propStyle);
-    props.put("content", content);
-    props.put("font", font);
+    props.put("content", "\"" + content + "\"");
+    props.put("font", "\"" + font + "\"");
     props.put("size", String.format("%.2f", size));
     props.put("color", Colors.format(propStyle, color));
     return props;
