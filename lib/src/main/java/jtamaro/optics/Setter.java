@@ -3,12 +3,11 @@ package jtamaro.optics;
 import jtamaro.data.Function1;
 
 /**
- * A Setter has the ability to lift a function of type {@code A -> B}
- * {@link #over(Function1, Object)} a function of type {@code S -> T}, applying the function to
- * update all the {@code A}s contained in {@code S}.
+ * A Setter has the ability to lift a function of type {@code A -> B} {@code over} a function of
+ * type {@code S -> T}, applying the function to update all the {@code A}s contained in {@code S}.
  *
- * <p>This can be used to {@link #set(Object, Object)}} all the {@code A}s to a single value (by
- * lifting a constant function).
+ * <p>This can be used to {@code set} all the {@code A}s to a single value (by lifting a constant
+ * function).
  *
  * @param <S> Source of the setter
  * @param <T> Modified source of the setter
