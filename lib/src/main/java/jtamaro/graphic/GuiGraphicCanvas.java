@@ -64,7 +64,10 @@ public final class GuiGraphicCanvas extends JComponent {
     super();
     this.state = new State();
     this.renderOptions = renderOptions;
-    renderOptions.addRenderOptionsListener(this::repaint);
+    renderOptions.addRenderOptionsListener(() -> {
+      this.state = new State(state.graphic, graphicToImage(renderOptions, state.graphic));
+      repaint();
+    });
   }
 
   /**
