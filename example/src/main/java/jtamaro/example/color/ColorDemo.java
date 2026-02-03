@@ -1,8 +1,7 @@
 package jtamaro.example.color;
 
 import jtamaro.graphic.Colors;
-
-import static jtamaro.io.GraphicIO.show;
+import jtamaro.io.GraphicIO;
 
 public final class ColorDemo {
 
@@ -10,6 +9,6 @@ public final class ColorDemo {
   }
 
   public static void main() {
-    show(Colors.RED);
+    GraphicIO.showColor(Colors.RED);
   }
 }

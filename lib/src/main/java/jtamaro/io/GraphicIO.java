@@ -50,7 +50,7 @@ public final class GraphicIO {
    *
    * @param color the color to show
    */
-  public static void show(Color color) {
+  public static void showColor(Color color) {
     if (color == null) {
       System.err.println("Nothing to show");
     } else {
