@@ -232,23 +232,23 @@ public abstract sealed class Graphic
   protected final void dump(StringBuilder sb, String indent) {
     sb.append("\033[1m")
         .append(getInspectLabel())
-        .append("\033[0m")
-        .append("\n");
+        .append("\033[0m");
     getProps(PropStyle.ANSI_ESCAPE_CODES).forEach((k, v) -> dumpField(sb, indent, k, v));
     getChildren().forEach((k, v) -> dumpChild(sb, indent, k, v));
   }
 
   private void dumpField(StringBuilder sb, String indent, String name, Object value) {
-    sb.append(indent)
+    sb.append("\n")
+        .append(indent)
         .append("├─ \033[2m")
         .append(name)
         .append("\033[0m: ")
-        .append(value)
-        .append("\n");
+        .append(value);
   }
 
   private void dumpChild(StringBuilder sb, String indent, String name, Graphic child) {
-    sb.append(indent)
+    sb.append("\n")
+        .append(indent)
         .append("├─ \033[2m")
         .append(name)
         .append("\033[0m: ");
