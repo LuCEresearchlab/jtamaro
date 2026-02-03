@@ -231,7 +231,7 @@ public abstract sealed class Graphic
    */
   protected final void dump(StringBuilder sb, String indent) {
     sb.append("\033[1m")
-        .append(getClass().getSimpleName())
+        .append(getInspectLabel())
         .append("\033[0m")
         .append("\n");
     getProps(PropStyle.ANSI_ESCAPE_CODES).forEach((k, v) -> dumpField(sb, indent, k, v));
