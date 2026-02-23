@@ -39,6 +39,8 @@ final class Text extends Graphic {
    * @param color   color to be used to fill the text
    */
   public Text(String content, String font, double size, Color color) {
+    assert size >= 0;
+
     super(buildPath(content, font, size));
     this.content = content;
     this.font = font;

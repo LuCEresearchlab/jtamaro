@@ -33,6 +33,9 @@ final class CircularSector extends Graphic {
    * @param color  the color to be used to fill the circular sector
    */
   public CircularSector(double radius, double angle, Color color) {
+    assert radius >= 0;
+    assert angle >= 0 && angle < 360;
+
     super(buildPath(radius, angle));
     this.radius = radius;
     this.angle = angle;

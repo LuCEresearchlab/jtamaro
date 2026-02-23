@@ -35,6 +35,10 @@ final class Triangle extends Graphic {
    * @param color color to be used to fill the triangle
    */
   public Triangle(double side1, double side2, double angle, Color color) {
+    assert side1 >= 0;
+    assert side2 >= 0;
+    assert angle >= 0 && angle <= 180;
+
     super(buildPath(side1, side2, angle));
     this.side1 = side1;
     this.side2 = side2;

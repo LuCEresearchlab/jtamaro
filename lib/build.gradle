@@ -8,5 +8,6 @@ dependencies {
 }
 
 test {
+  enableAssertions = true
   systemProperty("java.awt.headless", true)
 }

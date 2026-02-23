@@ -28,6 +28,9 @@ final class Ellipse extends Graphic {
    * @param color  color to be used to fill the ellipse
    */
   public Ellipse(double width, double height, Color color) {
+    assert width >= 0;
+    assert height >= 0;
+
     super(buildPath(width, height));
     this.width = width;
     this.height = height;

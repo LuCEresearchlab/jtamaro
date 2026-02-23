@@ -234,4 +234,64 @@ public final class GraphicSizesTest {
     Assert.assertEquals(outer, g.getWidth(), 0.0001);
     Assert.assertEquals(outer, g.getHeight(), 0.0001);
   }
+
+  @Test(expected = AssertionError.class)
+  public void testCircularSectorNegativeRadius() {
+    new CircularSector(-1, 0, Colors.WHITE);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testCircularSectorNegativeAngle() {
+    new CircularSector(0, -10, Colors.BLACK);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testCircularSectorAngleGt360() {
+    new CircularSector(0, 361, Colors.BLUE);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testEllipseNegativeWidth() {
+    new Ellipse(-1, 0, Colors.RED);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testEllipseNegativeHeight() {
+    new Ellipse(0, -1, Colors.GREEN);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testRectangleNegativeWidth() {
+    new Rectangle(-1, 0, Colors.YELLOW);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testRectangleNegativeHeight() {
+    new Rectangle(0, -1, Colors.MAGENTA);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testTextNegativeFontSize() {
+    new Text("", Fonts.SERIF, -1, Colors.TRANSPARENT);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void triangleNegativeSide1() {
+    new Triangle(-1, 0, 90, Colors.BLACK);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void triangleNegativeSide2() {
+    new Triangle(0, -1, 90, Colors.WHITE);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void triangleNegativeAngle() {
+    new Triangle(0, 0, -1, Colors.BLUE);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void triangleAngleGt180() {
+    new Triangle(0, 0, 181, Colors.RED);
+  }
 }
