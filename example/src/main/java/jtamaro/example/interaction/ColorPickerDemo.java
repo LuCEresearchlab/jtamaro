@@ -1,26 +1,26 @@
 package jtamaro.example.interaction;
 
 import java.awt.event.KeyEvent;
-
 import jtamaro.data.Sequence;
-import static jtamaro.data.Sequences.of;
-import static jtamaro.data.Sequences.range;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.CartesianWorld;
 import jtamaro.graphic.Color;
+import jtamaro.graphic.Graphic;
+import jtamaro.interaction.Coordinate;
+import jtamaro.interaction.KeyboardKey;
+
+import static jtamaro.data.Sequences.of;
+import static jtamaro.data.Sequences.range;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.TRANSPARENT;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Colors.hsl;
-import jtamaro.graphic.Graphic;
 import static jtamaro.graphic.Graphics.circularSector;
 import static jtamaro.graphic.Graphics.compose;
 import static jtamaro.graphic.Graphics.ellipse;
 import static jtamaro.graphic.Graphics.emptyGraphic;
 import static jtamaro.graphic.Graphics.overlay;
 import static jtamaro.graphic.Graphics.rotate;
-import jtamaro.interaction.Coordinate;
-import jtamaro.interaction.KeyboardKey;
 import static jtamaro.io.GraphicIO.interact;
 
 public final class ColorPickerDemo {

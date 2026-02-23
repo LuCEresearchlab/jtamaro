@@ -2,28 +2,29 @@ package jtamaro.example.interaction;
 
 import jtamaro.data.Function2;
 import jtamaro.data.Sequence;
+import jtamaro.graphic.Actionable;
+import jtamaro.graphic.Graphic;
+import jtamaro.graphic.Graphics;
+import jtamaro.interaction.KeyboardChar;
+import jtamaro.interaction.KeyboardKey;
+import jtamaro.optics.Glasses;
+import jtamaro.optics.Lens;
+
 import static jtamaro.data.Sequences.cons;
 import static jtamaro.data.Sequences.empty;
-import jtamaro.graphic.Actionable;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.GREEN;
 import static jtamaro.graphic.Colors.RED;
 import static jtamaro.graphic.Colors.TRANSPARENT;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Fonts.SANS_SERIF;
-import jtamaro.graphic.Graphic;
-import jtamaro.graphic.Graphics;
 import static jtamaro.graphic.Graphics.beside;
 import static jtamaro.graphic.Graphics.compose;
 import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.graphic.Points.CENTER_LEFT;
-import jtamaro.interaction.KeyboardChar;
-import jtamaro.interaction.KeyboardKey;
 import static jtamaro.io.GraphicIO.interact;
-import jtamaro.optics.Glasses;
-import jtamaro.optics.Lens;
 
 public final class ToDoDemo {
 
