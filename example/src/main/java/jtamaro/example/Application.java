@@ -21,6 +21,7 @@ import jtamaro.example.graphic.ChristmasTree;
 import jtamaro.example.graphic.CompositionInJava;
 import jtamaro.example.graphic.Daisy;
 import jtamaro.example.graphic.GraphicReductions;
+import jtamaro.example.graphic.JTamaroLogo;
 import jtamaro.example.graphic.PaintBrush;
 import jtamaro.example.graphic.Rings;
 import jtamaro.example.graphic.RotationPin;
@@ -109,6 +110,7 @@ public final class Application {
     CompositionInJava.main();
     Daisy.main();
     GraphicReductions.main();
+    JTamaroLogo.main();
     PaintBrush.main();
     Rings.main();
     RotationPin.main();
