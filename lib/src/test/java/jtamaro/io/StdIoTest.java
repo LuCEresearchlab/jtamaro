@@ -25,7 +25,7 @@ public final class StdIoTest {
          PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
-      StandardIO.print((Sequence<Object>) null);
+      StandardIO.print(null);
 
       Assert.assertEquals("Nothing to print", oStream.toString());
     } catch (IOException e) {
@@ -59,7 +59,7 @@ public final class StdIoTest {
          PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
-      StandardIO.println((Sequence<Object>) null);
+      StandardIO.println(null);
 
       Assert.assertEquals("Nothing to print" + NL, oStream.toString());
     } catch (IOException e) {
@@ -97,7 +97,7 @@ public final class StdIoTest {
          PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
-      StandardIO.println((Graphic) null);
+      StandardIO.println(null);
 
       Assert.assertEquals("Nothing to print" + NL, oStream.toString());
     } catch (IOException e) {
@@ -135,7 +135,7 @@ public final class StdIoTest {
          PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
-      StandardIO.print((Pair<Object, Object>) null);
+      StandardIO.print(null);
 
       Assert.assertEquals("Nothing to print", oStream.toString());
     } catch (IOException e) {
@@ -169,7 +169,7 @@ public final class StdIoTest {
          PrintStream testErr = new PrintStream(oStream)) {
       System.setErr(testErr);
 
-      StandardIO.println((Pair<Object, Object>) null);
+      StandardIO.println(null);
 
       Assert.assertEquals("Nothing to print" + NL, oStream.toString());
     } catch (IOException e) {

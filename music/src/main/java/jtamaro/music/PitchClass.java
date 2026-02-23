@@ -1,12 +1,6 @@
 package jtamaro.music;
 
-import jtamaro.data.Sequences;
-
-import static jtamaro.music.Chord.MAJOR_TRIAD;
-import static jtamaro.music.Chord.MINOR_TRIAD;
 import static jtamaro.music.Notes.note;
-import static jtamaro.music.Octave.OCTAVE_4;
-
 
 /**
  * Pitch class.
