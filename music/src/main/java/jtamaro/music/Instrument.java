@@ -149,6 +149,15 @@ public enum Instrument {
   }
 
   /**
+   * Get a sequence of all available instruments.
+   *
+   * @return a sequence of the available instruments.
+   */
+  public static Sequence<Instrument> instruments() {
+    return Sequences.fromStream(Arrays.stream(values()));
+  }
+
+  /**
    * Get the "program change" number, in the form shown to users (1-based).
    *
    * @return program change number (1-based)
@@ -177,14 +186,5 @@ public enum Instrument {
   @Override
   public String toString() {
     return family().capitalizedName() + ": " + capitalizedName() + " [PC# " + pcNumber + "]";
-  }
-
-  /**
-   * Get a sequence of all available instruments.
-   *
-   * @return a sequence of the available instruments.
-   */
-  public static Sequence<Instrument> instruments() {
-    return Sequences.fromStream(Arrays.stream(values()));
   }
 }

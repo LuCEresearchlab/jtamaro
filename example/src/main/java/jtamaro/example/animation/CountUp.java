@@ -26,7 +26,9 @@ public final class CountUp {
         text("" + (t / 100), Fonts.SANS_SERIF, 100, BLACK),
         compose(
             circularSector(100, (t * 360.0 / 100) % 360, RED),
-            rectangle(200, 200, WHITE))));
+            rectangle(200, 200, WHITE)
+        )
+    ));
     animate(frames, false, 10);
     showFilmStrip(frames.take(200));
   }

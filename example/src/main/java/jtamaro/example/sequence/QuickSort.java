@@ -18,17 +18,26 @@ public final class QuickSort {
     println(quickSortNice((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
   }
 
-  private static <T> Sequence<T> quickSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private static <T> Sequence<T> quickSort(
+      Function2<T, T, Boolean> lessEqual,
+      Sequence<T> sequence
+  ) {
     return sequence.isEmpty()
         ? empty()
         : quickSort(lessEqual, sequence.rest().filter(x -> lessEqual.apply(x, sequence.first())))
             .concat(cons(
                 sequence.first(),
-                quickSort(lessEqual,
-                    sequence.rest().filter(x -> !lessEqual.apply(x, sequence.first())))));
+                quickSort(
+                    lessEqual,
+                    sequence.rest().filter(x -> !lessEqual.apply(x, sequence.first()))
+                )
+            ));
   }
 
-  private static <T> Sequence<T> quickSortNice(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private static <T> Sequence<T> quickSortNice(
+      Function2<T, T, Boolean> lessEqual,
+      Sequence<T> sequence
+  ) {
     if (sequence.isEmpty()) {
       return empty();
     } else {

@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * A Sequence is an ordered list of elements of type {@code T}, it corresponds directly to what
- * you called "List-of-T" in {@code PF1}.
+ * A Sequence is an ordered list of elements of type {@code T}, it corresponds directly to what you
+ * called "List-of-T" in {@code PF1}.
  *
  * <p>To work with a Sequence, you can use the methods in the {@link Sequences} class.
  *
@@ -49,8 +49,8 @@ public sealed interface Sequence<T>
   /**
    * Filter the elements of this sequence by testing a given predicate.
    *
-   * @param predicate The test predicate. If this produces a {@code true} the tested element is
-   *                  kept in the newly produced Sequence, otherwise it is discarded.
+   * @param predicate The test predicate. If this produces a {@code true} the tested element is kept
+   *                  in the newly produced Sequence, otherwise it is discarded.
    * @return The filtered sequence
    */
   Sequence<T> filter(Function1<T, Boolean> predicate);

@@ -30,7 +30,8 @@ import static jtamaro.music.Notes.transpose;
 
 public final class TwelveBarBluesDemo {
 
-  private TwelveBarBluesDemo() {}
+  private TwelveBarBluesDemo() {
+  }
 
   public static void main() {
     playAsChords();

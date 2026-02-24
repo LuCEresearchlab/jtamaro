@@ -39,14 +39,6 @@ public final class Music {
   private Music() {
   }
 
-  public Note note(int midiNoteNumber) {
-    return new Note(midiNoteNumber);
-  }
-
-  public Note note(PitchClass pitchClass, Octave octave) {
-    return pitchClass.in(octave);
-  }
-
   public static AbsoluteChord chord(Sequence<Note> notes) {
     return new AbsoluteChord(notes);
   }
@@ -59,5 +51,13 @@ public final class Music {
   public static TimedChord pause(int beats) {
     assert beats > 0;
     return new TimedChord(beats, new AbsoluteChord(of()));
+  }
+
+  public Note note(int midiNoteNumber) {
+    return new Note(midiNoteNumber);
+  }
+
+  public Note note(PitchClass pitchClass, Octave octave) {
+    return pitchClass.in(octave);
   }
 }

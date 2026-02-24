@@ -33,9 +33,16 @@ public interface Fold<S, A> {
   default <U> Fold<S, U> then(Fold<A, U> other) {
     return new Fold<>() {
       @Override
-      public <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<U, R> map, S source) {
-        return Fold.this.foldMap(neutralElement, reducer,
-            a -> other.foldMap(neutralElement, reducer, map, a), source);
+      public <R> R foldMap(
+          R neutralElement,
+          Function2<R, R, R> reducer,
+          Function1<U, R> map,
+          S source
+      ) {
+        return Fold.this.foldMap(
+            neutralElement, reducer,
+            a -> other.foldMap(neutralElement, reducer, map, a), source
+        );
       }
     };
   }

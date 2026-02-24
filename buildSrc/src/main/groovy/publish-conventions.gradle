@@ -24,7 +24,10 @@ publishing {
   publications {
     mavenJava(MavenPublication) {
       artifactId = localProps.getProperty("artifact.${project.name}.id", project.name)
-      groupId = localProps.getProperty("artifact.${project.name}.group", rootProject.group.toString())
+      groupId = localProps.getProperty(
+          "artifact.${project.name}.group",
+          rootProject.group.toString()
+      )
       setVersion(project.version)
 
       from(components.java)

@@ -9,10 +9,6 @@ public final class SetterTest {
   private static final Setter<Rec, Rec, Character, Character> SETTER_REC_A =
       (lift, source) -> new Rec(lift.apply(source.a), source.b);
 
-  private record Rec(Character a, Boolean b) {
-
-  }
-
   @Test
   public void putPut() {
     final Rec s = new Rec('c', false);
@@ -66,5 +62,9 @@ public final class SetterTest {
         "!!",
         setter1.then(setter2).over(Math::sqrt, s)
     );
+  }
+
+  private record Rec(Character a, Boolean b) {
+
   }
 }

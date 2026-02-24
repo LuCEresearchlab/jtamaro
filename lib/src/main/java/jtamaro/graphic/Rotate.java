@@ -33,6 +33,22 @@ final class Rotate extends Graphic {
     this.graphic = graphic;
   }
 
+  private static Path2D.Double buildPath(double angle, Path2D.Double graphicPath) {
+    final Path2D.Double path = new Path2D.Double(graphicPath);
+    path.transform(AffineTransform.getRotateInstance(-Math.toRadians(angle)));
+    return path;
+  }
+
+  private static double normalizeAngle(double value) {
+    return (value < 0.0
+        // Negative angle: convert to positive
+        ? value + (360.0 * (1.0 + Math.floor(Math.abs(value) / 360.0)))
+        // Non-negative angle
+        : value)
+        // Modulo 360 to normalize
+        % 360.0;
+  }
+
   public double getAngle() {
     return angle;
   }
@@ -125,21 +141,5 @@ final class Rotate extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Rotate.class, angle, graphic);
-  }
-
-  private static Path2D.Double buildPath(double angle, Path2D.Double graphicPath) {
-    final Path2D.Double path = new Path2D.Double(graphicPath);
-    path.transform(AffineTransform.getRotateInstance(-Math.toRadians(angle)));
-    return path;
-  }
-
-  private static double normalizeAngle(double value) {
-    return (value < 0.0
-        // Negative angle: convert to positive
-        ? value + (360.0 * (1.0 + Math.floor(Math.abs(value) / 360.0)))
-        // Non-negative angle
-        : value)
-        // Modulo 360 to normalize
-        % 360.0;
   }
 }

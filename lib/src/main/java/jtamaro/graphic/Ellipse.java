@@ -37,6 +37,15 @@ final class Ellipse extends Graphic {
     this.color = color;
   }
 
+  private static Path2D.Double buildPath(double width, double height) {
+    return new Path2D.Double(new Ellipse2D.Double(
+        width / -2.0,
+        height / -2.0,
+        width,
+        height
+    ));
+  }
+
   @Override
   public double getWidth() {
     return width;
@@ -86,14 +95,5 @@ final class Ellipse extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Ellipse.class, width, height, color);
-  }
-
-  private static Path2D.Double buildPath(double width, double height) {
-    return new Path2D.Double(new Ellipse2D.Double(
-        width / -2.0,
-        height / -2.0,
-        width,
-        height
-    ));
   }
 }

@@ -24,10 +24,13 @@ final class Beside extends DelegatingGraphic {
    */
   public Beside(Graphic left, Graphic right) {
     super(
-        new Pin(Points.CENTER, new Compose(
-            new Pin(Points.CENTER_RIGHT, left),
-            new Pin(Points.CENTER_LEFT, right)
-        ))
+        new Pin(
+            Points.CENTER,
+            new Compose(
+                new Pin(Points.CENTER_RIGHT, left),
+                new Pin(Points.CENTER_LEFT, right)
+            )
+        )
     );
     this.left = left;
     this.right = right;

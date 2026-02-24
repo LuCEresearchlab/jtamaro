@@ -40,11 +40,11 @@ public record Octave(int number, boolean helmholzSmall, String helmholzSuffix, S
 
   private static final Octave[] OCTAVES = new Octave[11];
 
-  public static Octave get(int number) {
-    return OCTAVES[number + 1];
-  }
-
   public Octave {
     OCTAVES[number + 1] = this;
+  }
+
+  public static Octave get(int number) {
+    return OCTAVES[number + 1];
   }
 }

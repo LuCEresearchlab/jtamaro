@@ -131,7 +131,8 @@ public final class Interaction<M> {
   /**
    * Copy constructor.
    */
-  private Interaction(M initialModel,
+  private Interaction(
+      M initialModel,
       String name,
       int msBetweenTicks,
       Function1<M, M> tickHandler,
@@ -146,7 +147,8 @@ public final class Interaction<M> {
       int canvasWidth,
       int canvasHeight,
       Graphic background,
-      Function1<M, Graphic> renderer) {
+      Function1<M, Graphic> renderer
+  ) {
     this.initialModel = initialModel;
     this.renderer = renderer;
     this.tickHandler = tickHandler;
@@ -171,7 +173,8 @@ public final class Interaction<M> {
    * <p>The name will appear in the title of the window.
    */
   public Interaction<M> withName(String name) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -186,14 +189,16 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
    * Specify a time interval between ticks, in milliseconds.
    */
   public Interaction<M> withMsBetweenTicks(int msBetweenTicks) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -208,14 +213,16 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
    * Specify a function that is executed at every tick to evolve the model.
    */
   public Interaction<M> withTickHandler(Function1<M, M> tickHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -230,7 +237,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -239,7 +247,8 @@ public final class Interaction<M> {
    * <p>If this function returns {@code false}, an {@link Exception} is thrown.
    */
   public Interaction<M> withWellFormedPredicate(Function1<M, Boolean> wellFormedPredicate) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -254,7 +263,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -262,7 +272,8 @@ public final class Interaction<M> {
    * returns {@code false}, an {@link Exception} is thrown.
    */
   public Interaction<M> withStoppingPredicate(Function1<M, Boolean> stoppingPredicate) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -277,7 +288,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -286,7 +298,8 @@ public final class Interaction<M> {
    * @see KeyboardKey
    */
   public Interaction<M> withKeyPressHandler(Function2<M, KeyboardKey, M> keyPressHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -301,7 +314,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -310,7 +324,8 @@ public final class Interaction<M> {
    * @see KeyboardKey
    */
   public Interaction<M> withKeyReleaseHandler(Function2<M, KeyboardKey, M> keyReleaseHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -325,7 +340,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -334,7 +350,8 @@ public final class Interaction<M> {
    * @see KeyboardChar
    */
   public Interaction<M> withKeyTypeHandler(Function2<M, KeyboardChar, M> keyTypeHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -349,7 +366,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -358,7 +376,8 @@ public final class Interaction<M> {
    * @see MouseButton
    */
   public Interaction<M> withGlobalMousePressHandler(GlobalMousePressAction<M> mousePressHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -373,7 +392,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -382,7 +402,8 @@ public final class Interaction<M> {
    * @see MouseButton
    */
   public Interaction<M> withGlobalMouseReleaseHandler(GlobalMouseReleaseAction<M> mouseReleaseHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -397,7 +418,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -406,7 +428,8 @@ public final class Interaction<M> {
    * @see Coordinate
    */
   public Interaction<M> withGlobalMouseMoveHandler(GlobalMouseMoveAction<M> mouseMoveHandler) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -421,7 +444,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -431,7 +455,8 @@ public final class Interaction<M> {
    * @see #withRenderer(Function1)
    */
   public Interaction<M> withCanvasSize(int canvasWidth, int canvasHeight) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -446,7 +471,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -457,7 +483,8 @@ public final class Interaction<M> {
    * sized accordingly with respect to the background (if any).
    */
   public Interaction<M> withRenderer(Function1<M, Graphic> renderer) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -472,7 +499,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -483,7 +511,8 @@ public final class Interaction<M> {
    * accordingly with respect to graphics produced by the renderer.
    */
   public Interaction<M> withBackground(Graphic background) {
-    return new Interaction<>(initialModel,
+    return new Interaction<>(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -498,7 +527,8 @@ public final class Interaction<M> {
         canvasWidth,
         canvasHeight,
         background,
-        renderer);
+        renderer
+    );
   }
 
   /**
@@ -533,7 +563,8 @@ public final class Interaction<M> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(initialModel,
+    return Objects.hash(
+        initialModel,
         name,
         msBetweenTicks,
         tickHandler,
@@ -547,7 +578,8 @@ public final class Interaction<M> {
         mouseMoveHandler,
         canvasWidth,
         canvasHeight,
-        renderer);
+        renderer
+    );
   }
 
   /* **** Internal getters **** */

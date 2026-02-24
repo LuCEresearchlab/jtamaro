@@ -9,5 +9,6 @@ public record PubRecord(int a, Double b, Annotation an) {
 
   @Glasses
   protected record InnerRecord(Sequence<String> words) {
+
   }
 }

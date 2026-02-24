@@ -169,10 +169,13 @@ public final class GraphicIO {
         // no frames: use a default
         ? new Pair<>(400.0, 300.0)
         // known, finite number of frames: determine max
-        : graphics.reduce(new Pair<>(0.0, 0.0), (g, acc) -> new Pair<>(
-            Math.max(acc.first(), g.getWidth()),
-            Math.max(acc.second(), g.getHeight())
-        ));
+        : graphics.reduce(
+            new Pair<>(0.0, 0.0),
+            (g, acc) -> new Pair<>(
+                Math.max(acc.first(), g.getWidth()),
+                Math.max(acc.second(), g.getHeight())
+            )
+        );
   }
 
   private static <T> int length(Sequence<T> seq) {

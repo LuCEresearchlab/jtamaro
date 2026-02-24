@@ -56,9 +56,9 @@ public final class GuiGraphicCanvas extends JComponent {
       RenderingHints.VALUE_ANTIALIAS_ON
   );
 
-  private State state;
-
   private final RenderOptions renderOptions;
+
+  private State state;
 
   public GuiGraphicCanvas(RenderOptions renderOptions) {
     super();
@@ -68,6 +68,26 @@ public final class GuiGraphicCanvas extends JComponent {
       this.state = new State(state.graphic, graphicToImage(renderOptions, state.graphic));
       repaint();
     });
+  }
+
+  private static BufferedImage graphicToImage(RenderOptions renderOptions, Graphic graphic) {
+    final int padding = renderOptions.getPadding();
+    final Rectangle2D bbox = graphic.getBBox();
+    final int width = (int) Math.ceil(bbox.getWidth()) + 2 * padding;
+    final int height = (int) Math.ceil(bbox.getHeight()) + 2 * padding;
+
+    final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    // According to the documentation, the concrete type is always Graphics2D
+    final Graphics2D g2d = (Graphics2D) image.getGraphics();
+    try {
+      g2d.setRenderingHints(RENDERING_HINTS);
+      g2d.translate(padding, padding);
+      g2d.translate(-bbox.getMinX(), -bbox.getMinY());
+      graphic.render(g2d, renderOptions);
+      return image;
+    } finally {
+      g2d.dispose();
+    }
   }
 
   /**
@@ -187,9 +207,11 @@ public final class GuiGraphicCanvas extends JComponent {
    * Save the current graphic to the given path as a PNG file.
    */
   public boolean saveGraphic(Path path) {
-    try (OutputStream oStream = Files.newOutputStream(path,
+    try (OutputStream oStream = Files.newOutputStream(
+        path,
         StandardOpenOption.CREATE,
-        StandardOpenOption.WRITE)) {
+        StandardOpenOption.WRITE
+    )) {
       ImageIO.write(state.image, "png", oStream);
       return true;
     } catch (IOException e) {
@@ -282,26 +304,6 @@ public final class GuiGraphicCanvas extends JComponent {
         // Vertical remainder for the row
         g2d.fillRect(cols * BG_TILE_SIZE, row * BG_TILE_SIZE, extraVert, BG_TILE_SIZE);
       }
-    }
-  }
-
-  private static BufferedImage graphicToImage(RenderOptions renderOptions, Graphic graphic) {
-    final int padding = renderOptions.getPadding();
-    final Rectangle2D bbox = graphic.getBBox();
-    final int width = (int) Math.ceil(bbox.getWidth()) + 2 * padding;
-    final int height = (int) Math.ceil(bbox.getHeight()) + 2 * padding;
-
-    final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    // According to the documentation, the concrete type is always Graphics2D
-    final Graphics2D g2d = (Graphics2D) image.getGraphics();
-    try {
-      g2d.setRenderingHints(RENDERING_HINTS);
-      g2d.translate(padding, padding);
-      g2d.translate(-bbox.getMinX(), -bbox.getMinY());
-      graphic.render(g2d, renderOptions);
-      return image;
-    } finally {
-      g2d.dispose();
     }
   }
 

@@ -112,15 +112,17 @@ public final class TextFieldDemo {
     );
     final Graphic randomButton = text("?", Fonts.MONOSPACED, 100, WHITE);
     final boolean isEmpty = textField.text.isEmpty();
-    final Graphic shownButton = new Actionable<TextField>(overlay(
+    final Graphic shownButton = overlay(
         isEmpty ? randomButton : clearButton,
-        rectangle(SIZE, SIZE, BLACK)))
-        .withMousePressHandler((coords, btn) -> isEmpty
+        rectangle(SIZE, SIZE, BLACK)
+    );
+    final Graphic actionableShownButton = new Actionable<TextField>(shownButton)
+        .withMousePressHandler((_, _) -> isEmpty
             ? textField.random()
             : textField.clear())
         .asGraphic();
 
-    return beside(shownButton, board);
+    return beside(actionableShownButton, board);
   }
 
   // Model
@@ -145,15 +147,19 @@ public final class TextFieldDemo {
     }
 
     TextField character(char c) {
-      return new TextField(text.substring(0, cursor)
-          + c
-          + text.substring(cursor), cursor + 1, cursorVisible);
+      return new TextField(
+          text.substring(0, cursor)
+              + c
+              + text.substring(cursor), cursor + 1, cursorVisible
+      );
     }
 
     TextField backspace() {
       if (cursor > 0) {
-        return new TextField(text.substring(0, cursor - 1) + text.substring(
-            cursor), cursor - 1, cursorVisible);
+        return new TextField(
+            text.substring(0, cursor - 1) + text.substring(
+                cursor), cursor - 1, cursorVisible
+        );
       }
       return this;
     }

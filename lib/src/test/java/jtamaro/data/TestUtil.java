@@ -5,6 +5,9 @@ import org.junit.Assert;
 
 final class TestUtil {
 
+  private TestUtil() {
+  }
+
   public static <T> void assertSequenceEquals(Sequence<T> expected, Sequence<T> actual) {
     Sequence<T> e = expected;
     Sequence<T> a = actual;
@@ -20,11 +23,10 @@ final class TestUtil {
   }
 
   private static <T> String toString(Sequence<T> seq) {
-    return new Cons<>("[", seq.map(Objects::toString)
-        .intersperse(", "))
+    return new Cons<>(
+        "[", seq.map(Objects::toString)
+        .intersperse(", ")
+    )
         .foldRight("]", String::concat);
-  }
-
-  private TestUtil() {
   }
 }

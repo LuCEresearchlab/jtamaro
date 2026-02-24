@@ -46,6 +46,25 @@ final class Triangle extends Graphic {
     this.color = color;
   }
 
+  private static Path2D.Double buildPath(double side1, double side2, double angle) {
+    final double radAngle = Math.toRadians(-angle);
+    final double thirdPointX = side2 * Math.cos(radAngle);
+    final double thirdPointY = side2 * Math.sin(radAngle);
+
+    final Path2D.Double path = new Path2D.Double();
+    path.moveTo(0, 0);
+    path.lineTo(side1, 0);
+    path.lineTo(thirdPointX, thirdPointY);
+    path.closePath();
+
+    // translate path so (0, 0) -- which always is the pinning position -- is the centroid
+    final double centroidX = (side1 + thirdPointX) / 3;
+    final double centroidY = thirdPointY / 3;
+    path.transform(AffineTransform.getTranslateInstance(-centroidX, -centroidY));
+
+    return path;
+  }
+
   public double getSide1() {
     return side1;
   }
@@ -101,24 +120,5 @@ final class Triangle extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Triangle.class, side1, side2, angle, color);
-  }
-
-  private static Path2D.Double buildPath(double side1, double side2, double angle) {
-    final double radAngle = Math.toRadians(-angle);
-    final double thirdPointX = side2 * Math.cos(radAngle);
-    final double thirdPointY = side2 * Math.sin(radAngle);
-
-    final Path2D.Double path = new Path2D.Double();
-    path.moveTo(0, 0);
-    path.lineTo(side1, 0);
-    path.lineTo(thirdPointX, thirdPointY);
-    path.closePath();
-
-    // translate path so (0, 0) -- which always is the pinning position -- is the centroid
-    final double centroidX = (side1 + thirdPointX) / 3;
-    final double centroidY = thirdPointY / 3;
-    path.transform(AffineTransform.getTranslateInstance(-centroidX, -centroidY));
-
-    return path;
   }
 }

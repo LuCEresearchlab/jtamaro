@@ -162,10 +162,13 @@ public final class CartesianWorld {
 
       // Add graphic to composition
       composition = new Compose(
-          new Pin(originPin, new Compose(
-              new Pin(areaPin, area),
-              new Pin(areaPin, el.graphic)
-          )),
+          new Pin(
+              originPin,
+              new Compose(
+                  new Pin(areaPin, area),
+                  new Pin(areaPin, el.graphic)
+              )
+          ),
           composition
       );
     }

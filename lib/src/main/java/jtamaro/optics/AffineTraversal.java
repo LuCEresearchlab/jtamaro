@@ -38,8 +38,10 @@ public interface AffineTraversal<S, T, A, B> extends AffineFold<S, A>, Traversal
     return new AffineTraversal<>() {
       @Override
       public T set(B2 value, S source) {
-        return AffineTraversal.this.getOrModify(source).fold(Function1.identity(),
-            a -> AffineTraversal.this.set(other.set(value, a), source));
+        return AffineTraversal.this.getOrModify(source).fold(
+            Function1.identity(),
+            a -> AffineTraversal.this.set(other.set(value, a), source)
+        );
       }
 
       @Override
@@ -48,7 +50,9 @@ public interface AffineTraversal<S, T, A, B> extends AffineFold<S, A>, Traversal
             Eithers::left,
             a -> other.getOrModify(a).fold(
                 b -> Eithers.left(AffineTraversal.this.set(b, source)),
-                Eithers::right));
+                Eithers::right
+            )
+        );
       }
 
       @Override

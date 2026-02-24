@@ -26,10 +26,10 @@ public final class Scales {
 
   public static final Scale A_MAJOR_PENTATONIC = new Scale(A4, MAJOR_PENTATONIC);
 
-  public static Scale scale(Note root, Sequence<Integer> scaleType) {
-    return new Scale(root, scaleType);
+  private Scales() {
   }
 
-  private Scales() {
+  public static Scale scale(Note root, Sequence<Integer> scaleType) {
+    return new Scale(root, scaleType);
   }
 }

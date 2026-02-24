@@ -21,7 +21,8 @@ public final class RotationPin {
             9 * 5,
             compose(
                 pin(BOTTOM_CENTER, ellipse(200.0 / 3 / 2, 200.0 / 3 / 2, BLACK)),
-                pin(BOTTOM_CENTER, ellipse(200.0 / 3, 200.0 / 3, WHITE)))
+                pin(BOTTOM_CENTER, ellipse(200.0 / 3, 200.0 / 3, WHITE))
+            )
         )
     );
   }

@@ -120,7 +120,10 @@ final class InteractionFrame<M> extends JFrame {
         KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK));
     viewBackground.addActionListener(_ -> SwingUtilities.invokeLater(() -> {
       stopExecutor();
-      GraphicIO.show(interaction.getBackground().fold(Function1.identity(), Graphics::emptyGraphic));
+      GraphicIO.show(
+          interaction.getBackground()
+              .fold(Function1.identity(), Graphics::emptyGraphic)
+      );
     }));
     viewBackground.setEnabled(!interaction.getBackground().isEmpty());
     fileMenu.add(viewBackground);
@@ -208,6 +211,28 @@ final class InteractionFrame<M> extends JFrame {
     });
   }
 
+  private static <M> Pair<Integer, Integer> computeCanvasSize(Interaction<M> interaction) {
+    // Either user-defined size...
+    final int interactionWidth = interaction.getCanvasWidth();
+    final int interactionHeight = interaction.getCanvasHeight();
+    if (interactionWidth > 0 && interactionHeight > 0) {
+      return new Pair<>(interactionWidth, interactionHeight);
+    }
+
+    // ...or the biggest between first frame and background
+    final Graphic firstFrame = interaction.getRenderer().apply(interaction.getInitialModel());
+    final int firstFrameWidth = (int) firstFrame.getWidth();
+    final int firstFrameHeight = (int) firstFrame.getHeight();
+
+    final Option<Graphic> bg = interaction.getBackground();
+    final int bgWidth = bg.fold(g -> (int) g.getWidth(), () -> 0);
+    final int bgHeight = bg.fold(g -> (int) g.getHeight(), () -> 0);
+    return new Pair<>(
+        Math.max(firstFrameWidth, bgWidth),
+        Math.max(firstFrameHeight, bgHeight)
+    );
+  }
+
   /**
    * We consider the interaction "stopped" if the ticksLock is locked and is currently being held by
    * this thread (the AWT thread).
@@ -269,27 +294,5 @@ final class InteractionFrame<M> extends JFrame {
   private void renderAndShowGraphic() {
     final M model = executor.getCurrentModel();
     graphicCanvas.setGraphic(renderer.apply(model));
-  }
-
-  private static <M> Pair<Integer, Integer> computeCanvasSize(Interaction<M> interaction) {
-    // Either user-defined size...
-    final int interactionWidth = interaction.getCanvasWidth();
-    final int interactionHeight = interaction.getCanvasHeight();
-    if (interactionWidth > 0 && interactionHeight > 0) {
-      return new Pair<>(interactionWidth, interactionHeight);
-    }
-
-    // ...or the biggest between first frame and background
-    final Graphic firstFrame = interaction.getRenderer().apply(interaction.getInitialModel());
-    final int firstFrameWidth = (int) firstFrame.getWidth();
-    final int firstFrameHeight = (int) firstFrame.getHeight();
-
-    final Option<Graphic> bg = interaction.getBackground();
-    final int bgWidth = bg.fold(g -> (int) g.getWidth(), () -> 0);
-    final int bgHeight = bg.fold(g -> (int) g.getHeight(), () -> 0);
-    return new Pair<>(
-        Math.max(firstFrameWidth, bgWidth),
-        Math.max(firstFrameHeight, bgHeight)
-    );
   }
 }

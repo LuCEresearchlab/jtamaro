@@ -10,7 +10,8 @@ import static jtamaro.io.GraphicIO.show;
 
 public final class SimpleCartesianDemo {
 
-  private SimpleCartesianDemo() {}
+  private SimpleCartesianDemo() {
+  }
 
   public static void main() {
     final CartesianWorld cs = new CartesianWorld()

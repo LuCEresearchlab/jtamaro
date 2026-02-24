@@ -19,10 +19,16 @@ import static jtamaro.io.GraphicIO.showFilmStrip;
 
 public final class Polygons {
 
+  private Polygons() {
+  }
+
   private static Graphic polygonFacet(double radius, int number, int sides) {
-    return rotate(number * 360.0 / sides,
-        pin(CENTER_LEFT,
-            rotate(-360.0 / sides / 2,
+    return rotate(
+        number * 360.0 / sides,
+        pin(
+            CENTER_LEFT,
+            rotate(
+                -360.0 / sides / 2,
                 isoscelesTriangle(radius, 360.0 / sides, hsv(number * 360.0 / sides, 1, 1))
             )
         )
@@ -46,8 +52,5 @@ public final class Polygons {
     show(regularPolygon(200, 5));
     showFilmStrip(polygonAnimation());
     animate(polygonAnimation(), 1000);
-  }
-
-  private Polygons() {
   }
 }

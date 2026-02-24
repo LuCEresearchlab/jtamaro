@@ -155,25 +155,29 @@ public final class MusicDemo {
     for (PitchClass pc : PitchClass.PITCH_CLASSES) {
       System.out.println(pc);
       Note root = pc.in(OCTAVE_4);
-      MusicIO.playChords(Sequences.of(
-          Music.chord(Sequences.of(root)),
-          MAJOR_TRIAD.on(root),
-          MINOR_TRIAD.on(root)
-      ), 60);
+      MusicIO.playChords(
+          Sequences.of(
+              Music.chord(Sequences.of(root)),
+              MAJOR_TRIAD.on(root),
+              MINOR_TRIAD.on(root)
+          ), 60
+      );
     }
   }
 
   private static void relativeChord() {
     // https://blog.landr.com/common-chord-progressions/
-    MusicIO.playChords(Sequences.of(
-        RelativeChord.I_CHORD,
-        RelativeChord.V_CHORD,
-        RelativeChord.vi_CHORD,
-        RelativeChord.iii_CHORD,
-        RelativeChord.IV_CHORD,
-        RelativeChord.I_CHORD,
-        RelativeChord.IV_CHORD,
-        RelativeChord.V_CHORD
-    ).map(Scales.C_MAJOR::in), 60);
+    MusicIO.playChords(
+        Sequences.of(
+            RelativeChord.I_CHORD,
+            RelativeChord.V_CHORD,
+            RelativeChord.vi_CHORD,
+            RelativeChord.iii_CHORD,
+            RelativeChord.IV_CHORD,
+            RelativeChord.I_CHORD,
+            RelativeChord.IV_CHORD,
+            RelativeChord.V_CHORD
+        ).map(Scales.C_MAJOR::in), 60
+    );
   }
 }

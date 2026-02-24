@@ -21,7 +21,12 @@ public interface AffineFold<S, A> extends Fold<S, A> {
   Option<A> preview(S source);
 
   @Override
-  default <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, S source) {
+  default <R> R foldMap(
+      R neutralElement,
+      Function2<R, R, R> reducer,
+      Function1<A, R> map,
+      S source
+  ) {
     return preview(source).fold(
         it -> reducer.apply(neutralElement, map.apply(it)),
         () -> neutralElement
@@ -32,9 +37,11 @@ public interface AffineFold<S, A> extends Fold<S, A> {
    * Combine with another AffineFold.
    */
   default <U> AffineFold<S, U> then(AffineFold<A, U> other) {
-    return source -> AffineFold.this.foldMap(Options.none(),
+    return source -> AffineFold.this.foldMap(
+        Options.none(),
         (acc, it) -> acc.fold(Options::some, () -> it),
         other::preview,
-        source);
+        source
+    );
   }
 }

@@ -44,6 +44,20 @@ final class Pin extends Graphic {
     this.dy = graphic.yForLocation(pinLocation);
   }
 
+  private static Path2D.Double buildPath(Point pinPoint, Graphic graphic) {
+    final RelativeLocation location = graphic.getLocation(pinPoint);
+    final double dx = graphic.xForLocation(location);
+    final double dy = graphic.yForLocation(location);
+    if (Double.isNaN(dx) || Double.isNaN(dy)) {
+      throw new IllegalArgumentException("pinPoint "
+          + location
+          + " does not exist in the given graphic.");
+    }
+    final Path2D.Double path = new Path2D.Double(graphic.getPath());
+    path.transform(AffineTransform.getTranslateInstance(-dx, -dy));
+    return path;
+  }
+
   @Override
   public Point getPin() {
     return pinPoint;
@@ -83,7 +97,7 @@ final class Pin extends Graphic {
 
   @Override
   Option<RelativeLocation> relativeLocationOf(double x, double y) {
-    return graphic.relativeLocationOf( x + dx, y + dy);
+    return graphic.relativeLocationOf(x + dx, y + dy);
   }
 
   @Override
@@ -131,19 +145,5 @@ final class Pin extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Pin.class, pinPoint, graphic);
-  }
-
-  private static Path2D.Double buildPath(Point pinPoint, Graphic graphic) {
-    final RelativeLocation location = graphic.getLocation(pinPoint);
-    final double dx = graphic.xForLocation(location);
-    final double dy = graphic.yForLocation(location);
-    if (Double.isNaN(dx) || Double.isNaN(dy)) {
-      throw new IllegalArgumentException("pinPoint "
-          + location
-          + " does not exist in the given graphic.");
-    }
-    final Path2D.Double path = new Path2D.Double(graphic.getPath());
-    path.transform(AffineTransform.getTranslateInstance(-dx, -dy));
-    return path;
   }
 }

@@ -28,8 +28,8 @@ public final class Checkboxes {
   public static void main() {
     interact(new Model(of(
         new CheckboxModel("Hungry", true),
-        new CheckboxModel("Tired", false))
-    )).withRenderer(Checkboxes::renderCheckboxes).run();
+        new CheckboxModel("Tired", false)
+    ))).withRenderer(Checkboxes::renderCheckboxes).run();
   }
 
   private static Graphic renderCheckbox(CheckboxModel checkbox) {
@@ -37,7 +37,8 @@ public final class Checkboxes {
         beside(
             overlay(
                 rectangle(18, 18, checkbox.isPressed ? RED : WHITE),
-                rectangle(20, 20, BLACK)),
+                rectangle(20, 20, BLACK)
+            ),
             text(checkbox.label, SANS_SERIF, 20, BLACK)
         ),
         rectangle(200, 50, WHITE)

@@ -1,18 +1,17 @@
 package jtamaro.example.animation;
 
 import jtamaro.data.Sequence;
+import jtamaro.example.graphic.JTamaroLogo;
 import jtamaro.graphic.Color;
 import jtamaro.graphic.Fonts;
 import jtamaro.graphic.Graphic;
 
 import static jtamaro.data.Sequences.range;
-import static jtamaro.example.Toolbelt.equilateralTriangle;
 import static jtamaro.example.Toolbelt.get;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.TRANSPARENT;
 import static jtamaro.graphic.Colors.WHITE;
 import static jtamaro.graphic.Colors.hsv;
-import static jtamaro.graphic.Colors.rgb;
 import static jtamaro.graphic.Colors.rgba;
 import static jtamaro.graphic.Graphics.above;
 import static jtamaro.graphic.Graphics.circularSector;
@@ -24,7 +23,6 @@ import static jtamaro.graphic.Graphics.pin;
 import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.rotate;
 import static jtamaro.graphic.Graphics.text;
-import static jtamaro.graphic.Points.BOTTOM_CENTER;
 import static jtamaro.graphic.Points.BOTTOM_LEFT;
 import static jtamaro.graphic.Points.BOTTOM_RIGHT;
 import static jtamaro.graphic.Points.TOP_LEFT;
@@ -50,29 +48,19 @@ public final class Fireworks {
     animate(loop, true, 10);
   }
 
-  private static Graphic pytamaroLogo(double size) {
-    final Color logoRed = rgb(210, 7, 29);
-    final Graphic mountain = equilateralTriangle(size, logoRed);
-    final Color logoBlue = rgb(0, 139, 203);
-    final Graphic lake = rotate(180, equilateralTriangle(size / 2, logoBlue));
-    return compose(
-        pin(BOTTOM_CENTER, lake),
-        pin(BOTTOM_LEFT,
-            compose(
-                pin(BOTTOM_RIGHT, mountain),
-                pin(BOTTOM_CENTER, lake)
-            )
-        )
-    );
-  }
-
   private static Graphic center(double size, double time, double hue) {
     final Color color = hsv(hue, 1, 1);
     final double diameter = 1 + size / 10 * time;
     return ellipse(diameter, diameter, color);
   }
 
-  private static Graphic streakPrecomputeColors(double angle, double hue, double time_offset, double size, double time) {
+  private static Graphic streakPrecomputeColors(
+      double angle,
+      double hue,
+      double time_offset,
+      double size,
+      double time
+  ) {
     final int BANDS = 20;
     final Sequence<Color> COLORS = range(BANDS).map(v -> hsv(hue, 1, v / (double) BANDS));
     Graphic result = emptyGraphic();
@@ -86,7 +74,13 @@ public final class Fireworks {
     return result;
   }
 
-  private static Graphic streak(double angle, double hue, double timeOffset, double size, double time) {
+  private static Graphic streak(
+      double angle,
+      double hue,
+      double timeOffset,
+      double size,
+      double time
+  ) {
     assert time >= 0 && time <= 1;
     assert timeOffset >= 0 && timeOffset <= 1;
     final int BANDS = 20;
@@ -101,10 +95,20 @@ public final class Fireworks {
     return result;
   }
 
-  private static Graphic streaks(int count, double angle, double hue, double timeOffset, double size, double time) {
+  private static Graphic streaks(
+      int count,
+      double angle,
+      double hue,
+      double timeOffset,
+      double size,
+      double time
+  ) {
     Graphic streaks = emptyGraphic();
     for (int s : range(count)) {
-      var rotated_streak = rotate(s * 360.0 / count, streak(angle, hue, timeOffset, size, time));
+      final Graphic rotated_streak = rotate(
+          s * 360.0 / count,
+          streak(angle, hue, timeOffset, size, time)
+      );
       streaks = compose(streaks, rotated_streak);
     }
     return streaks;
@@ -128,22 +132,26 @@ public final class Fireworks {
 
   private static Graphic frame(double size, double time) {
     return compose(
-        pin(BOTTOM_RIGHT,
+        pin(
+            BOTTOM_RIGHT,
             above(
-                pytamaroLogo(size / 8),
+                JTamaroLogo.logo(size / 8),
                 above(
                     rectangle(1, size / 40, TRANSPARENT),
                     text("Made with JTamaro", "Din Alternate", size / 20, WHITE)
                 )
             )
         ),
-        pin(BOTTOM_RIGHT,
+        pin(
+            BOTTOM_RIGHT,
             overlay(
                 above(
-                    text("Happy New Year!",
+                    text(
+                        "Happy New Year!",
                         "Din Alternate",
                         size / 4,
-                        rgba(255, 255, 255, 0.8)),
+                        rgba(255, 255, 255, 0.8)
+                    ),
                     text("With Enlightening Compositions!", Fonts.SANS_SERIF, size / 8, WHITE)
                 ),
                 fireworks(size, time)

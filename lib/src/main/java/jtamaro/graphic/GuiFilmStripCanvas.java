@@ -70,20 +70,22 @@ public final class GuiFilmStripCanvas extends JComponent {
 
     final float sepDashLength = (float) completeFrameHeight / MARK_DASH_COUNT * 1 / 10;
     final float sepGapLength = (float) completeFrameHeight / MARK_DASH_COUNT * 9 / 10;
-    this.markStroke = new BasicStroke(2,
+    this.markStroke = new BasicStroke(
+        2,
         BasicStroke.CAP_ROUND,
         BasicStroke.JOIN_ROUND,
         0,
         new float[]{sepDashLength, sepGapLength},
-        sepDashLength + sepGapLength / 2);
-  }
-
-  public int getNetWidth() {
-    return getWidth() - 2 * MARGIN;
+        sepDashLength + sepGapLength / 2
+    );
   }
 
   public static int computeCompleteFrameWidth(double frameWidth) {
     return (int) (frameWidth * (1 + GAP_FRACTION));
+  }
+
+  public int getNetWidth() {
+    return getWidth() - 2 * MARGIN;
   }
 
   public void setPosition(int position) {
@@ -106,8 +108,9 @@ public final class GuiFilmStripCanvas extends JComponent {
     g2.fillRect(0, 0, getWidth(), getHeight());
     final RenderOptions renderOptions = new RenderOptions(0);
     g2.setRenderingHints(new RenderingHints(
-        RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON)
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON
+        )
     );
     final int windowWidth = getWidth();
     final int positionAtLeftWindowEdge = position - MARGIN;
@@ -125,11 +128,15 @@ public final class GuiFilmStripCanvas extends JComponent {
       final int offset = frameIndex * completeFrameWidth - position + MARGIN;
       g2.translate(offset, 0);
       drawFrameBackground(g2, frameIndex);
-      g2.translate(-graphic.getBoundsMinX() + gapWidth / 2.0,
-          -graphic.getBoundsMinY() + trackHeight);
+      g2.translate(
+          -graphic.getBoundsMinX() + gapWidth / 2.0,
+          -graphic.getBoundsMinY() + trackHeight
+      );
       graphic.render(g2, renderOptions);
-      g2.translate(graphic.getBoundsMinX() - gapWidth / 2.0,
-          graphic.getBoundsMinY() - trackHeight);
+      g2.translate(
+          graphic.getBoundsMinX() - gapWidth / 2.0,
+          graphic.getBoundsMinY() - trackHeight
+      );
       g2.translate(-offset, 0);
     }
   }
@@ -147,10 +154,12 @@ public final class GuiFilmStripCanvas extends JComponent {
     final int holeX = (stepWidth - holeWidth) / 2;
     for (int i = 0; i < HOLES; i++) {
       g2.fillRect(stepWidth * i + holeX, holeY, holeWidth, holeHeight);
-      g2.fillRect(stepWidth * i + holeX,
+      g2.fillRect(
+          stepWidth * i + holeX,
           completeFrameHeight - holeHeight - holeY,
           holeWidth,
-          holeHeight);
+          holeHeight
+      );
     }
     if (frameIndex > 0) {
       g2.setColor(Color.WHITE);
@@ -163,8 +172,10 @@ public final class GuiFilmStripCanvas extends JComponent {
     g2.setFont(frameNumberFont);
     final FontMetrics metrics = g2.getFontMetrics(frameNumberFont);
     final String text = "Frame #" + frameIndex;
-    g2.drawString(text,
+    g2.drawString(
+        text,
         (completeFrameWidth - metrics.stringWidth(text)) / 2,
-        completeFrameHeight - indexMargin);
+        completeFrameHeight - indexMargin
+    );
   }
 }

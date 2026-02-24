@@ -53,8 +53,10 @@ final class GuiGraphicFrame extends JFrame {
     menuBar.add(fileMenu);
 
     final JMenuItem copyItem = new JMenuItem("Copy graphic", KeyEvent.VK_C);
-    copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
-        KeyEvent.SHIFT_DOWN_MASK | menuShortcutKey));
+    copyItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_C,
+        KeyEvent.SHIFT_DOWN_MASK | menuShortcutKey
+    ));
     copyItem.addActionListener(_ -> copyGraphicToClipboard());
     fileMenu.add(copyItem);
 
@@ -101,13 +103,15 @@ final class GuiGraphicFrame extends JFrame {
   }
 
   private void setPadding() {
-    final String valueStr = (String) JOptionPane.showInputDialog(this,
+    final String valueStr = (String) JOptionPane.showInputDialog(
+        this,
         "Set the padding for the graphic",
         "Padding",
         JOptionPane.PLAIN_MESSAGE,
         null,
         null,
-        String.valueOf(renderOptions.getPadding()));
+        String.valueOf(renderOptions.getPadding())
+    );
 
     if (valueStr == null) {
       // User clicked on cancel
@@ -118,10 +122,12 @@ final class GuiGraphicFrame extends JFrame {
       final int padding = Integer.parseInt(valueStr);
       renderOptions.setPadding(padding);
     } catch (NumberFormatException ex) {
-      JOptionPane.showMessageDialog(this,
+      JOptionPane.showMessageDialog(
+          this,
           "Padding must be an integer",
           "Padding",
-          JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE
+      );
     }
   }
 
@@ -146,14 +152,16 @@ final class GuiGraphicFrame extends JFrame {
     final boolean writeResult = canvas.saveGraphic(selectedFile);
 
     if (writeResult) {
-      final int result = JOptionPane.showOptionDialog(this,
+      final int result = JOptionPane.showOptionDialog(
+          this,
           "Saved graphic to " + selectedFile.toAbsolutePath(),
           "Save graphic",
           JOptionPane.YES_NO_OPTION,
           JOptionPane.PLAIN_MESSAGE,
           null,
           new Object[]{"Ok", "Show in files"},
-          null);
+          null
+      );
       if (result == 1) {
         // Show in files option
         try {
@@ -162,20 +170,24 @@ final class GuiGraphicFrame extends JFrame {
         }
       }
     } else {
-      JOptionPane.showMessageDialog(this,
+      JOptionPane.showMessageDialog(
+          this,
           "Failed to save graphic to " + selectedFile.toAbsolutePath(),
           "Save graphic",
-          JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE
+      );
     }
   }
 
   private void copyGraphicToClipboard() {
     final boolean copyResult = canvas.copyGraphicToClipboard();
     if (!copyResult) {
-      JOptionPane.showMessageDialog(this,
+      JOptionPane.showMessageDialog(
+          this,
           "Failed to copy graphic to clipboard",
           "Copy graphic",
-          JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE
+      );
     }
   }
 }

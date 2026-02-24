@@ -18,6 +18,9 @@ public final class MusicIO {
 
   private static final Logger LOGGER = Logger.getLogger(MusicIO.class.getSimpleName());
 
+  private MusicIO() {
+  }
+
   public static void play(Sequence<TimedChord> song, int bpm) {
     play(song, bpm, 0, Instrument.ACOUSTIC_GRAND_PIANO);
   }
@@ -26,10 +29,14 @@ public final class MusicIO {
     LOGGER.info("MusicIO.play:");
     final int msPerBeat = 60 * 1000 / bpm;
     try (Receiver receiver = MidiSystem.getReceiver()) {
-      receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE,
-          channel,
-          instrument.internalPcNumber(),
-          0), -1);
+      receiver.send(
+          new ShortMessage(
+              ShortMessage.PROGRAM_CHANGE,
+              channel,
+              instrument.internalPcNumber(),
+              0
+          ), -1
+      );
       for (TimedChord c : cons(timed(2, chord(of())), song)) {
         LOGGER.info(c.toString());
         c.play(receiver, channel, msPerBeat);
@@ -58,7 +65,12 @@ public final class MusicIO {
     playChords(chords, bpm, 9, Instrument.ACOUSTIC_GRAND_PIANO);
   }
 
-  public static void playChords(Sequence<AbsoluteChord> chords, int bpm, int channel, Instrument instrument) {
+  public static void playChords(
+      Sequence<AbsoluteChord> chords,
+      int bpm,
+      int channel,
+      Instrument instrument
+  ) {
     play(chords.map(chord -> timed(1, chord)), bpm, channel, instrument);
   }
 
@@ -81,8 +93,5 @@ public final class MusicIO {
 
   public static void playNotes(Sequence<Note> notes, int bpm, int channel, Instrument instrument) {
     play(notes.map(n -> timed(1, chord(of(n)))), bpm, channel, instrument);
-  }
-
-  private MusicIO() {
   }
 }

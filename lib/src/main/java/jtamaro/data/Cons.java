@@ -14,16 +14,20 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
 
   @Override
   public <U> Sequence<U> map(Function1<T, U> mapper) {
-    return foldRight((Sequence<U>) new Empty<U>(),
-        (it, acc) -> new Cons<>(mapper.apply(it), acc));
+    return foldRight(
+        (Sequence<U>) new Empty<U>(),
+        (it, acc) -> new Cons<>(mapper.apply(it), acc)
+    );
   }
 
   @Override
   public Sequence<T> filter(Function1<T, Boolean> predicate) {
-    return foldRight((Sequence<T>) new Empty<T>(),
+    return foldRight(
+        (Sequence<T>) new Empty<T>(),
         (it, acc) -> predicate.apply(it)
             ? new Cons<>(it, acc)
-            : acc);
+            : acc
+    );
   }
 
   @Override
@@ -50,8 +54,10 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
 
   @Override
   public <U> Sequence<U> flatMap(Function1<T, Sequence<U>> mapper) {
-    return foldLeft((Sequence<U>) new Empty<U>(),
-        (acc, it) -> acc.concat(mapper.apply(it)));
+    return foldLeft(
+        (Sequence<U>) new Empty<U>(),
+        (acc, it) -> acc.concat(mapper.apply(it))
+    );
   }
 
   /**

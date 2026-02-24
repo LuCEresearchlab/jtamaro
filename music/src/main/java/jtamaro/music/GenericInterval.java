@@ -46,6 +46,11 @@ public enum GenericInterval {
     this.name = name;
   }
 
+  public static GenericInterval byStaffPositions(int staffPositions) {
+    assert staffPositions >= 1 && staffPositions <= 8 : "staffPositions must be 1...8";
+    return INTERVAL_BY_STAFF_POSITIONS[staffPositions];
+  }
+
   public int getStaffPositions() {
     return staffPositions;
   }
@@ -68,10 +73,5 @@ public enum GenericInterval {
 
   public GenericInterval getSimple() {
     return byStaffPositions((staffPositions - 1) % 7 + 1);
-  }
-
-  public static GenericInterval byStaffPositions(int staffPositions) {
-    assert staffPositions >= 1 && staffPositions <= 8 : "staffPositions must be 1...8";
-    return INTERVAL_BY_STAFF_POSITIONS[staffPositions];
   }
 }

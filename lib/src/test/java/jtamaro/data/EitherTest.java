@@ -8,26 +8,34 @@ public final class EitherTest {
 
   @Test
   public void leftFlatMapLeft() {
-    Assert.assertEquals(Eithers.right(0),
-        Eithers.left(0).flatMapLeft(_ -> Eithers.right(0)));
+    Assert.assertEquals(
+        Eithers.right(0),
+        Eithers.left(0).flatMapLeft(_ -> Eithers.right(0))
+    );
   }
 
   @Test
   public void leftFlatMapRight() {
-    Assert.assertEquals(Eithers.left(0),
-        Eithers.left(0).flatMapRight(_ -> Eithers.right(0)));
+    Assert.assertEquals(
+        Eithers.left(0),
+        Eithers.left(0).flatMapRight(_ -> Eithers.right(0))
+    );
   }
 
   @Test
   public void rightFlatMapLeft() {
-    Assert.assertEquals(Eithers.right(0),
-        Eithers.right(0).flatMapLeft(_ -> Eithers.left(0)));
+    Assert.assertEquals(
+        Eithers.right(0),
+        Eithers.right(0).flatMapLeft(_ -> Eithers.left(0))
+    );
   }
 
   @Test
   public void rightFlatMapRight() {
-    Assert.assertEquals(Eithers.left(0),
-        Eithers.right(0).flatMapRight(_ -> Eithers.left(0)));
+    Assert.assertEquals(
+        Eithers.left(0),
+        Eithers.right(0).flatMapRight(_ -> Eithers.left(0))
+    );
   }
 
   @Test
@@ -53,8 +61,10 @@ public final class EitherTest {
   @Test
   public void rightFold() {
     final AtomicInteger i = new AtomicInteger(0);
-    Assert.assertEquals(6,
-        (long) Eithers.right(5).fold(_ -> 0, x -> x + i.incrementAndGet()));
+    Assert.assertEquals(
+        6,
+        (long) Eithers.right(5).fold(_ -> 0, x -> x + i.incrementAndGet())
+    );
     Assert.assertEquals(1, i.get());
   }
 

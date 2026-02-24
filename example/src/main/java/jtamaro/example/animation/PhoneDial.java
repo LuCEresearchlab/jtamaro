@@ -35,6 +35,9 @@ import static jtamaro.io.StandardIO.println;
 
 public final class PhoneDial {
 
+  private PhoneDial() {
+  }
+
   public static Graphic background(double diameter) {
     return overlay(
         circle(diameter * 0.5, WHITE),
@@ -50,10 +53,12 @@ public final class PhoneDial {
   }
 
   public static Graphic shiftedKeyGraphic(double diameter, int number) {
-    return pin(BOTTOM_CENTER, compose(
-        pin(BOTTOM_CENTER, keyGraphic(diameter, number)),
-        pin(TOP_CENTER, rectangle(0, (diameter / 2) * 0.6, TRANSPARENT))
-    ));
+    return pin(
+        BOTTOM_CENTER, compose(
+            pin(BOTTOM_CENTER, keyGraphic(diameter, number)),
+            pin(TOP_CENTER, rectangle(0, (diameter / 2) * 0.6, TRANSPARENT))
+        )
+    );
   }
 
   public static Sequence<Integer> keyNumbers() {
@@ -71,10 +76,12 @@ public final class PhoneDial {
   }
 
   public static Graphic indicator(double diameter) {
-    return pin(CENTER_LEFT, beside(
-        rectangle(diameter / 2 * 0.4, 0, BLACK),
-        rotate(180 - 30, equilateralTriangle(diameter / 2 * 0.2, RED))
-    ));
+    return pin(
+        CENTER_LEFT, beside(
+            rectangle(diameter / 2 * 0.4, 0, BLACK),
+            rotate(180 - 30, equilateralTriangle(diameter / 2 * 0.2, RED))
+        )
+    );
   }
 
   public static Graphic dialGraphic(double diameter, double rotation) {
@@ -96,11 +103,18 @@ public final class PhoneDial {
         .map(angle -> overlay(ov, dialGraphic(diameter, angle)));
   }
 
-  public static Sequence<Graphic> dialDigitsAnimation(double diameter, Sequence<Integer> digitsSequence) {
-    return digitsSequence.reduce(empty(), (Integer digit, Sequence<Graphic> overall) -> concats(
-        of(dialOneDigitAnimation(diameter, digit),
-            replicate(dialGraphic(diameter, 0), 40),
-            overall)));
+  public static Sequence<Graphic> dialDigitsAnimation(
+      double diameter,
+      Sequence<Integer> digitsSequence
+  ) {
+    return digitsSequence.reduce(
+        empty(), (Integer digit, Sequence<Graphic> overall) -> concats(
+            of(
+                dialOneDigitAnimation(diameter, digit),
+                replicate(dialGraphic(diameter, 0), 40),
+                overall
+            ))
+    );
   }
 
   public static int angleForNumber(int number) {
@@ -121,8 +135,5 @@ public final class PhoneDial {
     show(dialGraphic(300, 0));
     showFilmStrip(dialOneDigitAnimation(300, 5));
     animate(dialDigitsAnimation(300, of(0, 5, 8, 6, 6, 4, 0, 0, 0)), 10);
-  }
-
-  private PhoneDial() {
   }
 }

@@ -24,7 +24,8 @@ public final class CartesianDemo {
           return cw.place(
               100 * Math.cos(angle),
               100 * Math.sin(angle),
-              ellipse(diameter, diameter, hsv(Math.toDegrees(angle), 1, 1)));
+              ellipse(diameter, diameter, hsv(Math.toDegrees(angle), 1, 1))
+          );
         }
     ).asGraphic());
   }

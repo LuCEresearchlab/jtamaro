@@ -29,7 +29,12 @@ public final class CogWheel {
     animate(loop);
   }
 
-  private static Graphic tooth(double innerDiameter, double outerDiameter, double angle, Color color) {
+  private static Graphic tooth(
+      double innerDiameter,
+      double outerDiameter,
+      double angle,
+      Color color
+  ) {
     final double diameter = (innerDiameter + outerDiameter) / 2;
     final double angleRad = angle * 2 * Math.PI / 360;
     final double width = Math.sin(angleRad / 2) * diameter;
@@ -37,7 +42,12 @@ public final class CogWheel {
     return pin(BOTTOM_CENTER, rectangle(width, height, color));
   }
 
-  private static Graphic cogs(double innerDiameter, double outerDiameter, int toothCount, Color color) {
+  private static Graphic cogs(
+      double innerDiameter,
+      double outerDiameter,
+      int toothCount,
+      Color color
+  ) {
     final double toothAngle = 360.0 / (2 * toothCount);
     final Graphic tooth = tooth(innerDiameter, outerDiameter, toothAngle, color);
     final Sequence<Integer> angles = range(0, 360, 360 / toothCount);
@@ -49,7 +59,12 @@ public final class CogWheel {
     return composition;
   }
 
-  private static Graphic cogwheel(double innerDiameter, double outerDiameter, int toothCount, Color color) {
+  private static Graphic cogwheel(
+      double innerDiameter,
+      double outerDiameter,
+      int toothCount,
+      Color color
+  ) {
     return compose(
         compose(
             circle(innerDiameter, color),

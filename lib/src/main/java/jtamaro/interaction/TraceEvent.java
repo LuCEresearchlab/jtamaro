@@ -81,11 +81,11 @@ abstract sealed class TraceEvent<M> {
 
   abstract static sealed class AbstractMouseEvent<M> extends TraceEvent<M> {
 
-    private final String kind;
-
     protected final Coordinate coordinate;
 
     protected final MouseButton button;
+
+    private final String kind;
 
     private AbstractMouseEvent(String kind, Coordinate coordinate, MouseButton button) {
       this.kind = kind;

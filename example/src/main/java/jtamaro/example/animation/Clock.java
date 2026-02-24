@@ -90,7 +90,8 @@ public final class Clock {
     final Graphic shortPart = rectangle(width, 0.165 * diameter, RED);
     final Graphic tip = circle(0.105 * diameter, RED);
     return compose(
-        pin(BOTTOM_CENTER,
+        pin(
+            BOTTOM_CENTER,
             compose(
                 pin(CENTER, tip),
                 pin(TOP_CENTER, longPart)
@@ -117,7 +118,8 @@ public final class Clock {
     final double innerRadius = outerRadius - length;
     final Graphic tick = rectangle(width, length, BLACK);
     final Graphic gap = rectangle(width, innerRadius, TRANSPARENT);
-    final Graphic positionedTick = pin(BOTTOM_CENTER,
+    final Graphic positionedTick = pin(
+        BOTTOM_CENTER,
         compose(
             pin(BOTTOM_CENTER, tick),
             pin(TOP_CENTER, gap)

@@ -87,11 +87,13 @@ public final class FileIO {
    */
   public static void writeFileUnsafe(Path path, String content) {
     try {
-      Files.writeString(path,
+      Files.writeString(
+          path,
           content,
           StandardCharsets.UTF_8,
           StandardOpenOption.WRITE,
-          StandardOpenOption.CREATE);
+          StandardOpenOption.CREATE
+      );
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

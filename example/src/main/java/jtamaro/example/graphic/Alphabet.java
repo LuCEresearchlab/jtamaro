@@ -203,10 +203,14 @@ public final class Alphabet {
   private static Graphic outlinedSector(double size, Color color) {
     return compose(
         compose(
-            pin(BOTTOM_LEFT,
-                rectangle(size * (1 - OUTLINE_FRACTION), size * OUTLINE_FRACTION, BLACK)),
-            pin(BOTTOM_LEFT,
-                rectangle(size * OUTLINE_FRACTION, size * (1 - OUTLINE_FRACTION), BLACK))
+            pin(
+                BOTTOM_LEFT,
+                rectangle(size * (1 - OUTLINE_FRACTION), size * OUTLINE_FRACTION, BLACK)
+            ),
+            pin(
+                BOTTOM_LEFT,
+                rectangle(size * OUTLINE_FRACTION, size * (1 - OUTLINE_FRACTION), BLACK)
+            )
         ),
         compose(
             pin(BOTTOM_LEFT, circularSector(size * (1 - OUTLINE_FRACTION), 90, color)),

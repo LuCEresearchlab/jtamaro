@@ -41,10 +41,6 @@ public enum InstrumentFamily {
     return null;
   }
 
-  public String capitalizedName() {
-    return capitalizedName(name());
-  }
-
   // convert XXX_XXX_XXX into Xxx Xxx Xxx
   public static String capitalizedName(String name) {
     return Arrays
@@ -55,5 +51,9 @@ public enum InstrumentFamily {
                 .substring(1)
                 .toLowerCase())
         .collect(Collectors.joining(" "));
+  }
+
+  public String capitalizedName() {
+    return capitalizedName(name());
   }
 }

@@ -29,12 +29,18 @@ public class GuiGraphicTreeCellRenderer extends DefaultTreeCellRenderer {
       boolean expanded,
       boolean leaf,
       int row,
-      boolean hasFocus) {
+      boolean hasFocus
+  ) {
 
     super.getTreeCellRendererComponent(
-        tree, value, sel,
-        expanded, leaf, row,
-        hasFocus);
+        tree,
+        value,
+        sel,
+        expanded,
+        leaf,
+        row,
+        hasFocus
+    );
     if (value instanceof Graphic.InspectTreeNode node) {
       final Graphic graphic = node.getGraphic();
       setText(graphic.getInspectLabel());

@@ -176,12 +176,16 @@ public final class GraphicSizesTest {
         Math.min(Math.min(rotAy, rotBy), rotCy)
             - Math.max(Math.max(rotAy, rotBy), rotCy));
 
-    Assert.assertEquals(rotWidth,
+    Assert.assertEquals(
+        rotWidth,
         rotate.getWidth(),
-        TEST_DELTA);
-    Assert.assertEquals(rotHeight,
+        TEST_DELTA
+    );
+    Assert.assertEquals(
+        rotHeight,
         rotate.getHeight(),
-        TEST_DELTA);
+        TEST_DELTA
+    );
 
     Assert.assertEquals(rotate, Graphics.rotate(22.45, t));
   }
@@ -208,13 +212,19 @@ public final class GraphicSizesTest {
     Assert.assertEquals(Colors.YELLOW, triangle.getColor());
 
     final double radAngle = Math.toRadians(triangle.getAngle());
-    Assert.assertEquals(Math.max(triangle.getSide1(),
-            triangle.getSide2() * Math.cos(radAngle)),
+    Assert.assertEquals(
+        Math.max(
+            triangle.getSide1(),
+            triangle.getSide2() * Math.cos(radAngle)
+        ),
         triangle.getWidth(),
-        TEST_DELTA);
-    Assert.assertEquals(triangle.getSide2() * Math.sin(radAngle),
+        TEST_DELTA
+    );
+    Assert.assertEquals(
+        triangle.getSide2() * Math.sin(radAngle),
         triangle.getHeight(),
-        TEST_DELTA);
+        TEST_DELTA
+    );
 
     Assert.assertEquals(triangle, Graphics.triangle(20.0, 32.0, 71.0, Colors.YELLOW));
   }
@@ -228,7 +238,8 @@ public final class GraphicSizesTest {
         9 * 5,
         compose(
             pin(BOTTOM_CENTER, ellipse(inner, inner, Colors.BLACK)),
-            pin(BOTTOM_CENTER, ellipse(outer, outer, Colors.WHITE)))
+            pin(BOTTOM_CENTER, ellipse(outer, outer, Colors.WHITE))
+        )
     );
 
     Assert.assertEquals(outer, g.getWidth(), 0.0001);

@@ -96,10 +96,13 @@ final class ModelFrame<M> extends JFrame {
           accessor.setAccessible(false);
         }
       } catch (IllegalAccessException | InvocationTargetException e) {
-        LOGGER.log(Level.WARNING, "Failed to read component"
-            + compName
-            + " of record class "
-            + recName, e);
+        LOGGER.log(
+            Level.WARNING,
+            "Failed to read component"
+                + compName
+                + " of record class "
+                + recName, e
+        );
         compSb.append("???");
       }
 

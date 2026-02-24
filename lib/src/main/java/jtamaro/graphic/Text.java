@@ -48,6 +48,17 @@ final class Text extends Graphic {
     this.color = color;
   }
 
+  private static Path2D.Double buildPath(String content, String fontName, double size) {
+    final Font font = new Font(fontName, Font.PLAIN, (int) size);
+    final FontRenderContext frc = new FontRenderContext(null, true, true);
+    final GlyphVector glyphVector = font.createGlyphVector(frc, content);
+    final Path2D.Double path = new Path2D.Double(glyphVector.getOutline());
+
+    final Rectangle2D tmpBbox = path.getBounds2D();
+    path.transform(AffineTransform.getTranslateInstance(-tmpBbox.getMinX(), 0.0));
+    return path;
+  }
+
   public String getContent() {
     return content;
   }
@@ -103,16 +114,5 @@ final class Text extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Text.class, content, font, size, color);
-  }
-
-  private static Path2D.Double buildPath(String content, String fontName, double size) {
-    final Font font = new Font(fontName, Font.PLAIN, (int) size);
-    final FontRenderContext frc = new FontRenderContext(null, true, true);
-    final GlyphVector glyphVector = font.createGlyphVector(frc, content);
-    final Path2D.Double path = new Path2D.Double(glyphVector.getOutline());
-
-    final Rectangle2D tmpBbox = path.getBounds2D();
-    path.transform(AffineTransform.getTranslateInstance(-tmpBbox.getMinX(), 0.0));
-    return path;
   }
 }

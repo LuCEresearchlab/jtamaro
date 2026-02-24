@@ -24,10 +24,13 @@ final class Above extends DelegatingGraphic {
    */
   public Above(Graphic top, Graphic bottom) {
     super(
-        new Pin(Points.CENTER, new Compose(
-            new Pin(Points.BOTTOM_CENTER, top),
-            new Pin(Points.TOP_CENTER, bottom)
-        ))
+        new Pin(
+            Points.CENTER,
+            new Compose(
+                new Pin(Points.BOTTOM_CENTER, top),
+                new Pin(Points.TOP_CENTER, bottom)
+            )
+        )
     );
     this.top = top;
     this.bottom = bottom;

@@ -7,12 +7,12 @@ import jtamaro.data.Sequences;
 
 final class Trace<T> {
 
+  private final List<TraceListener> listeners;
+
   private Sequence<TraceEvent<T>> events;
 
   // Cache for performance
   private int length;
-
-  private final List<TraceListener> listeners;
 
   public Trace() {
     events = Sequences.empty();

@@ -77,18 +77,22 @@ public final class ElevatorDemo {
     Graphic render();
   }
 
-  record MovingElevator(int currentFloor,
-                        int destination,
-                        Sequence<Integer> scheduled) implements Elevator {
+  record MovingElevator(
+      int currentFloor,
+      int destination,
+      Sequence<Integer> scheduled
+  ) implements Elevator {
 
     @Override
     public Elevator scheduleFloor(int floor) {
       final boolean alreadyInSchedule = floor == currentFloor
           || floor == destination
           || !scheduled.filter(f -> f == floor).isEmpty();
-      return new MovingElevator(currentFloor,
+      return new MovingElevator(
+          currentFloor,
           destination,
-          alreadyInSchedule ? scheduled : cons(floor, scheduled));
+          alreadyInSchedule ? scheduled : cons(floor, scheduled)
+      );
     }
 
     @Override
@@ -107,13 +111,17 @@ public final class ElevatorDemo {
     @Override
     public Graphic render() {
       return above(
-          text(String.format("%d --> %d (+%d more)",
+          text(
+              String.format(
+                  "%d --> %d (+%d more)",
                   currentFloor,
                   destination,
-                  scheduled.reduce(0, (x, acc) -> acc + 1)),
+                  scheduled.reduce(0, (x, acc) -> acc + 1)
+              ),
               MONOSPACED,
               20,
-              RED),
+              RED
+          ),
           overlay(
               rectangle(2, 500, WHITE),
               rectangle(200, 500, BLACK)
@@ -122,15 +130,19 @@ public final class ElevatorDemo {
     }
   }
 
-  record RestingElevator(int currentFloor,
-                         Sequence<Integer> scheduled) implements Elevator {
+  record RestingElevator(
+      int currentFloor,
+      Sequence<Integer> scheduled
+  ) implements Elevator {
 
     @Override
     public Elevator scheduleFloor(int floor) {
       final boolean alreadyInSchedule = floor == currentFloor
           || !scheduled.filter(f -> f == floor).isEmpty();
-      return new RestingElevator(currentFloor,
-          alreadyInSchedule ? scheduled : cons(floor, scheduled));
+      return new RestingElevator(
+          currentFloor,
+          alreadyInSchedule ? scheduled : cons(floor, scheduled)
+      );
     }
 
     @Override
@@ -151,12 +163,16 @@ public final class ElevatorDemo {
     @Override
     public Graphic render() {
       return above(
-          text(String.format("%d (%d scheduled)",
+          text(
+              String.format(
+                  "%d (%d scheduled)",
                   currentFloor,
-                  scheduled.reduce(0, (x, acc) -> acc + 1)),
+                  scheduled.reduce(0, (x, acc) -> acc + 1)
+              ),
               MONOSPACED,
               20,
-              RED),
+              RED
+          ),
           overlay(
               rectangle(190, 500, WHITE),
               rectangle(200, 500, BLACK)

@@ -201,8 +201,10 @@ public final class SequencesTest {
 
   @Test
   public void testRangeDoubleThreeUntilZeroStepMinusZeroDotFive() {
-    TestUtil.assertSequenceEquals(Sequences.of(3.0, 2.5, 2.0, 1.5, 1.0, 0.5),
-        Sequences.range(3.0, 0.0, -0.5));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(3.0, 2.5, 2.0, 1.5, 1.0, 0.5),
+        Sequences.range(3.0, 0.0, -0.5)
+    );
   }
 
   @Test
@@ -313,8 +315,10 @@ public final class SequencesTest {
 
   @Test
   public void testReverseFive() {
-    TestUtil.assertSequenceEquals(Sequences.rangeClosed(4, 0, -1),
-        Sequences.rangeClosed(0, 4).reverse());
+    TestUtil.assertSequenceEquals(
+        Sequences.rangeClosed(4, 0, -1),
+        Sequences.rangeClosed(0, 4).reverse()
+    );
   }
 
   @Test
@@ -324,20 +328,26 @@ public final class SequencesTest {
 
   @Test
   public void testMapOneElem() {
-    TestUtil.assertSequenceEquals(Sequences.of(3),
-        Sequences.of("ABC").map(String::length));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(3),
+        Sequences.of("ABC").map(String::length)
+    );
   }
 
   @Test
   public void testMapTwoElems() {
-    TestUtil.assertSequenceEquals(Sequences.of(3, 2),
-        Sequences.of("ABC", "12").map(String::length));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(3, 2),
+        Sequences.of("ABC", "12").map(String::length)
+    );
   }
 
   @Test
   public void testMapThreeElems() {
-    TestUtil.assertSequenceEquals(Sequences.of(3, 2, 4),
-        Sequences.of("ABC", "12", "....").map(String::length));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(3, 2, 4),
+        Sequences.of("ABC", "12", "....").map(String::length)
+    );
   }
 
   @Test
@@ -397,8 +407,10 @@ public final class SequencesTest {
 
   @Test
   public void testFilterMany() {
-    TestUtil.assertSequenceEquals(Sequences.of(0, 2, 4, 6, 8),
-        Sequences.range(10).filter(i -> i % 2 == 0));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(0, 2, 4, 6, 8),
+        Sequences.range(10).filter(i -> i % 2 == 0)
+    );
   }
 
   @Test
@@ -453,8 +465,10 @@ public final class SequencesTest {
 
   @Test
   public void testFoldRightMany() {
-    Assert.assertEquals(110L,
-        (long) Sequences.range(10).foldRight(100, (_, a) -> a + 1));
+    Assert.assertEquals(
+        110L,
+        (long) Sequences.range(10).foldRight(100, (_, a) -> a + 1)
+    );
   }
 
   @Test
@@ -489,14 +503,18 @@ public final class SequencesTest {
 
   @Test
   public void testFlatMap() {
-    TestUtil.assertSequenceEquals(Sequences.of('A', 'B', 'C', 'C', 'D', 'E', 'E', 'F', 'G'),
-        Sequences.ofStringLines("ABC\nCDE\nEFG").flatMap(Sequences::ofStringCharacters));
+    TestUtil.assertSequenceEquals(
+        Sequences.of('A', 'B', 'C', 'C', 'D', 'E', 'E', 'F', 'G'),
+        Sequences.ofStringLines("ABC\nCDE\nEFG").flatMap(Sequences::ofStringCharacters)
+    );
   }
 
   @Test
   public void testEmptyFlatMap() {
-    TestUtil.assertSequenceEquals(Sequences.of(),
-        Sequences.<String>of().flatMap(Sequences::ofStringCharacters));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(),
+        Sequences.<String>of().flatMap(Sequences::ofStringCharacters)
+    );
   }
 
   @Test
@@ -511,14 +529,18 @@ public final class SequencesTest {
 
   @Test
   public void testDropNone() {
-    TestUtil.assertSequenceEquals(Sequences.of(10, 20, 30),
-        Sequences.of(10, 20, 30).drop(0));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(10, 20, 30),
+        Sequences.of(10, 20, 30).drop(0)
+    );
   }
 
   @Test
   public void testDropOne() {
-    TestUtil.assertSequenceEquals(Sequences.of(20, 30),
-        Sequences.of(10, 20, 30).drop(1));
+    TestUtil.assertSequenceEquals(
+        Sequences.of(20, 30),
+        Sequences.of(10, 20, 30).drop(1)
+    );
   }
 
   @Test
@@ -573,21 +595,26 @@ public final class SequencesTest {
 
   @Test
   public void testConcat() {
-    TestUtil.assertSequenceEquals(Sequences.range(1, 10),
-        Sequences.of(1, 2, 3, 4).concat(Sequences.of(5, 6, 7, 8, 9)));
+    TestUtil.assertSequenceEquals(
+        Sequences.range(1, 10),
+        Sequences.of(1, 2, 3, 4).concat(Sequences.of(5, 6, 7, 8, 9))
+    );
   }
 
   @Test
   public void testConcatAssociativity() {
     TestUtil.assertSequenceEquals(
         Sequences.of(1).concat(Sequences.of(2)).concat(Sequences.of(3)),
-        Sequences.of(1).concat(Sequences.of(2).concat(Sequences.of(3))));
+        Sequences.of(1).concat(Sequences.of(2).concat(Sequences.of(3)))
+    );
   }
 
   @Test
   public void testConcatEmpty() {
-    TestUtil.assertSequenceEquals(Sequences.range(1, 5),
-        Sequences.of(1, 2, 3, 4).concat(Sequences.empty()));
+    TestUtil.assertSequenceEquals(
+        Sequences.range(1, 5),
+        Sequences.of(1, 2, 3, 4).concat(Sequences.empty())
+    );
   }
 
   @Test
@@ -689,9 +716,10 @@ public final class SequencesTest {
   @Test
   public void testUnzip() {
     final Pair<Sequence<Character>, Sequence<Integer>> pair = Sequences.unzip(Sequences.of(
-        new Pair<>('A', 1),
-        new Pair<>('B', 2),
-        new Pair<>('C', 3))
+            new Pair<>('A', 1),
+            new Pair<>('B', 2),
+            new Pair<>('C', 3)
+        )
     );
     TestUtil.assertSequenceEquals(Sequences.of('A', 'B', 'C'), pair.first());
     TestUtil.assertSequenceEquals(Sequences.of(1, 2, 3), pair.second());

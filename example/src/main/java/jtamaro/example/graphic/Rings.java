@@ -67,7 +67,8 @@ public final class Rings {
             circle(40, BLACK),
             3
         ),
-        rotate(60,
+        rotate(
+            60,
             ring(
                 400 - (40.0 / 2),
                 circle(40, WHITE),
@@ -82,7 +83,9 @@ public final class Rings {
         0,
         range(count).map(i -> rotate(
             -(360.0 / count / 2.0),
-            circularSector(200, 360.0 / count, hsv(i * 360.0 / count, 1, 1)))));
+            circularSector(200, 360.0 / count, hsv(i * 360.0 / count, 1, 1))
+        ))
+    );
     show(colorWheel);
 
     final Graphic nested2 = ring(400, ring(40, circle(10, JT_RED), 12), 24);
@@ -91,20 +94,26 @@ public final class Rings {
     final Graphic nested3 = ring(400, ring(80, ring(40, circle(10, JT_RED), 10), 6), 8);
     show(nested3);
 
-    final Graphic satellite1 = ringSectorList(200,
+    final Graphic satellite1 = ringSectorList(
+        200,
         -90,
         90,
-        times(6, of(circle(20, JT_BLUE), square(20, JT_RED))));
-    final Graphic satellite2 = ringSectorList(200,
+        times(6, of(circle(20, JT_BLUE), square(20, JT_RED)))
+    );
+    final Graphic satellite2 = ringSectorList(
+        200,
         -90,
         90,
-        times(6, of(circle(20, JT_YELLOW), square(20, JT_BROWN))));
+        times(6, of(circle(20, JT_YELLOW), square(20, JT_BROWN)))
+    );
     final Graphic nestedSpecial = ringList(
         400,
-        times(3, of(
-            satellite1,
-            satellite2
-        ))
+        times(
+            3, of(
+                satellite1,
+                satellite2
+            )
+        )
     );
     show(nestedSpecial);
   }

@@ -39,7 +39,8 @@ public final class FunctionPlotterDemo {
     Sequence<Pair<Integer, Double>> points = viewXs.zipWith(viewYs);
     CartesianWorld cs = points.reduce(
         new CartesianWorld(),
-        (point, world) -> world.place(point.first(), point.second(), dot));
+        (point, world) -> world.place(point.first(), point.second(), dot)
+    );
     return cs.withAxes(BLACK)
         .withBackground(WHITE)
         .asGraphic();

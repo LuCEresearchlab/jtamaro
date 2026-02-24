@@ -33,6 +33,18 @@ final class Rectangle extends Graphic {
     this.color = color;
   }
 
+  private static Path2D.Double buildPath(double width, double height) {
+    final Path2D.Double path = new Path2D.Double();
+    final double halfWidth = width / 2.0;
+    final double halfHeight = height / 2.0;
+    path.moveTo(-halfWidth, -halfHeight);
+    path.lineTo(halfWidth, -halfHeight);
+    path.lineTo(halfWidth, halfHeight);
+    path.lineTo(-halfWidth, halfHeight);
+    path.closePath();
+    return path;
+  }
+
   public Color getColor() {
     return color;
   }
@@ -82,17 +94,5 @@ final class Rectangle extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Rectangle.class, width, height, color);
-  }
-
-  private static Path2D.Double buildPath(double width, double height) {
-    final Path2D.Double path = new Path2D.Double();
-    final double halfWidth = width / 2.0;
-    final double halfHeight = height / 2.0;
-    path.moveTo(-halfWidth, -halfHeight);
-    path.lineTo(halfWidth, -halfHeight);
-    path.lineTo(halfWidth, halfHeight);
-    path.lineTo(-halfWidth, halfHeight);
-    path.closePath();
-    return path;
   }
 }

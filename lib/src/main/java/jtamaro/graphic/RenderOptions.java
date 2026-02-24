@@ -11,17 +11,17 @@ import java.util.List;
  */
 public final class RenderOptions {
 
-  private int padding;
-
   private final int fixedWidth;
 
   private final int fixedHeight;
 
   private final boolean drawBackground;
 
-  private Graphic selection;
-
   private final List<Listener> listeners;
+
+  private int padding;
+
+  private Graphic selection;
 
   public RenderOptions(int padding) {
     this(padding, -1, -1, true);
@@ -41,13 +41,13 @@ public final class RenderOptions {
     this.listeners = new ArrayList<>();
   }
 
+  public int getPadding() {
+    return padding;
+  }
+
   public void setPadding(int padding) {
     this.padding = padding;
     fireRenderOptionsChanged();
-  }
-
-  public int getPadding() {
-    return padding;
   }
 
   public boolean hasFixedSize() {

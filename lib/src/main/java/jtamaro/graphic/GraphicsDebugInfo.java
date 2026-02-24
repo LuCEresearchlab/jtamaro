@@ -73,7 +73,8 @@ final class GraphicsDebugInfo {
         (int) bbox.getMinX(),
         (int) bbox.getMinY(),
         (int) bbox.getWidth(),
-        (int) bbox.getHeight());
+        (int) bbox.getHeight()
+    );
   }
 
   /**
@@ -100,30 +101,38 @@ final class GraphicsDebugInfo {
   private static void renderHole(Graphics2D g2d) {
     // The hole is always at 0, 0
     g2d.setColor(new Color(0, 0, 0, 16));
-    drawCrossLine(g2d,
+    drawCrossLine(
+        g2d,
         CROSS_SHADOW_LINE_WIDTH,
         CROSS_SHADOW_SIZE,
         CROSS_SHADOW_LINE_HEIGHT,
-        POINT_SHADOW_RADIUS);
+        POINT_SHADOW_RADIUS
+    );
     g2d.setColor(Color.WHITE);
-    drawCrossLine(g2d,
+    drawCrossLine(
+        g2d,
         CROSS_OUTER_LINE_WIDTH,
         CROSS_OUTER_SIZE,
         CROSS_OUTER_LINE_HEIGHT,
-        POINT_OUTER_RADIUS);
+        POINT_OUTER_RADIUS
+    );
     g2d.setColor(Color.BLACK);
-    drawCrossLine(g2d,
+    drawCrossLine(
+        g2d,
         CROSS_INNER_LINE_WIDTH,
         CROSS_INNER_SIZE,
         CROSS_INNER_LINE_HEIGHT,
-        POINT_INNER_RADIUS);
+        POINT_INNER_RADIUS
+    );
   }
 
-  private static void drawCrossLine(Graphics2D g2d,
+  private static void drawCrossLine(
+      Graphics2D g2d,
       int crossLineWidth,
       int crossSize,
       int crossLineHeight,
-      int dotRadius) {
+      int dotRadius
+  ) {
     g2d.fillRoundRect(
         -crossLineWidth / 2,
         -crossSize / 2,

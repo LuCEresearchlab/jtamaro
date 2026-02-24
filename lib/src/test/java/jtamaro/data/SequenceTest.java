@@ -13,8 +13,10 @@ public final class SequenceTest {
 
   @Test
   public void testStreamNonEmpty() {
-    Assert.assertArrayEquals(IntStream.range(1, 5).map(x -> x + 1).toArray(),
-        Sequences.range(1, 5).stream().mapToInt(x -> x + 1).toArray());
+    Assert.assertArrayEquals(
+        IntStream.range(1, 5).map(x -> x + 1).toArray(),
+        Sequences.range(1, 5).stream().mapToInt(x -> x + 1).toArray()
+    );
   }
 
   @Test

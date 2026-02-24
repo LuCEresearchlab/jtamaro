@@ -32,10 +32,6 @@ public final class LensTest {
     }
   };
 
-  record Rec(int a, int b) {
-
-  }
-
   @Test
   public void getPut() {
     final Rec s = new Rec(16, 18);
@@ -90,5 +86,9 @@ public final class LensTest {
         new Rec(LENS_SQRT.over(f, s.a), s.b),
         LENS_REC_A.then(LENS_SQRT).over(f, s)
     );
+  }
+
+  record Rec(int a, int b) {
+
   }
 }

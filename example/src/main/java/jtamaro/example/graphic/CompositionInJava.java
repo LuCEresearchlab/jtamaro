@@ -73,12 +73,12 @@ public final class CompositionInJava {
   }
 
   private static Graphic renderText(String text, String font, double size, double lineWidth) {
-    Graphic offset = rectangle(lineWidth * 2, lineWidth * 2, TRANSPARENT);
-    Graphic bgText = text(text, font, size, BLACK);
-    Graphic tr = beside(offset, above(bgText, offset));
-    Graphic tl = beside(above(bgText, offset), offset);
-    Graphic br = beside(offset, above(offset, bgText));
-    Graphic bl = beside(above(offset, bgText), offset);
+    final Graphic offset = rectangle(lineWidth * 2, lineWidth * 2, TRANSPARENT);
+    final Graphic bgText = text(text, font, size, BLACK);
+    final Graphic tr = beside(offset, above(bgText, offset));
+    final Graphic tl = beside(above(bgText, offset), offset);
+    final Graphic br = beside(offset, above(offset, bgText));
+    final Graphic bl = beside(above(offset, bgText), offset);
     return overlay(
         text(text, font, size, WHITE),
         overlay(overlay(tr, tl), overlay(br, bl))
@@ -89,7 +89,12 @@ public final class CompositionInJava {
     return sequence.reduce(0, (e, r) -> r + 1);
   }
 
-  private static Graphic colorRing(double offsetAngle, double lineWidth, double radius, Sequence<Color> palette) {
+  private static Graphic colorRing(
+      double offsetAngle,
+      double lineWidth,
+      double radius,
+      Sequence<Color> palette
+  ) {
     final int sectorAngle = 360 / length(palette);
     Graphic result = emptyGraphic();
     int sectorIndex = 0;
@@ -103,20 +108,27 @@ public final class CompositionInJava {
       sectorIndex++;
     }
     for (final double angle : range(0, 360, sectorAngle)) {
-      Graphic ray = pin(CENTER_LEFT, rectangle(radius, lineWidth, BLACK));
+      final Graphic ray = pin(CENTER_LEFT, rectangle(radius, lineWidth, BLACK));
       result = compose(rotate(offsetAngle + angle, ray), result);
     }
     return result;
   }
 
-  private static Graphic colorRings(int rings, double lineWidth, double radius, Sequence<Color> palette) {
-    double segmentAngle = 360.0 / length(palette);
+  private static Graphic colorRings(
+      int rings,
+      double lineWidth,
+      double radius,
+      Sequence<Color> palette
+  ) {
+    final double segmentAngle = 360.0 / length(palette);
     Graphic result = emptyGraphic();
-    for (int ringIndex : range(rings)) {
-      Graphic ring = colorRing(ringIndex * segmentAngle / 2.0,
+    for (final int ringIndex : range(rings)) {
+      final Graphic ring = colorRing(
+          ringIndex * segmentAngle / 2.0,
           lineWidth,
           radius / rings * (ringIndex + 1),
-          palette);
+          palette
+      );
       result = compose(result, ring);
     }
     return result;

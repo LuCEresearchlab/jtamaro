@@ -353,6 +353,15 @@ public abstract sealed class Graphic
   /**
    * @hidden
    */
+  protected enum PropStyle {
+    PLAIN,
+    ANSI_ESCAPE_CODES,
+    HTML,
+  }
+
+  /**
+   * @hidden
+   */
   final class InspectTreeNode extends DefaultMutableTreeNode {
 
     public InspectTreeNode(Iterable<Graphic> children) {
@@ -365,14 +374,5 @@ public abstract sealed class Graphic
     public Graphic getGraphic() {
       return Graphic.this;
     }
-  }
-
-  /**
-   * @hidden
-   */
-  protected enum PropStyle {
-    PLAIN,
-    ANSI_ESCAPE_CODES,
-    HTML,
   }
 }

@@ -10,6 +10,20 @@ import javax.lang.model.util.Types;
 
 final class ComponentLensesGenerator extends OpticsGenerator {
 
+  private static final String TEMPLATE_METHOD_LENS = """
+        public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$s = new Lens<>() {
+          @Override
+          public %1$s over(Function1<%2$s, %2$s> lift, %1$s source) {
+            return %4$s;
+          }
+
+          @Override
+          public %2$s view(%1$s source) {
+            return source.%3$s();
+          }
+        };
+      """; // Lower indentation on purpose!
+
   public ComponentLensesGenerator(
       Types types,
       TypeMirror targetRecordType,
@@ -55,19 +69,8 @@ final class ComponentLensesGenerator extends OpticsGenerator {
         allComponentNames,
         accessor -> "lift.apply(" + accessor + ")"
     );
-    return String.format("""
-              public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$s = new Lens<>() {
-                @Override
-                public %1$s over(Function1<%2$s, %2$s> lift, %1$s source) {
-                  return %4$s;
-                }
-
-                @Override
-                public %2$s view(%1$s source) {
-                  return source.%3$s();
-                }
-              };
-            """, // Lower indentation on purpose!
+    return String.format(
+        TEMPLATE_METHOD_LENS,
         sourceTypeStr,    // S, T
         componentTypeStr, // A, B
         targetName,       // 3: target component name

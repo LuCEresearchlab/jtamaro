@@ -28,18 +28,20 @@ public final class JTamaroLogo {
     show(logo(400));
   }
 
-  private static Graphic logo(double size) {
+  public static Graphic logo(double size) {
     final Graphic lake = pin(
         BOTTOM_CENTER,
-        rotate(180, triangle(size / 4, size / 4, 60, JAVA_BLUE))
+        rotate(180, triangle(size / 2, size / 2, 60, JAVA_BLUE))
     );
-    final Graphic mountain = triangle(size / 2, size / 2, 60, JAVA_ORANGE);
+    final Graphic mountain = triangle(size, size, 60, JAVA_ORANGE);
     return compose(
-        pin(BOTTOM_RIGHT,
+        pin(
+            BOTTOM_RIGHT,
             compose(
                 lake,
                 pin(BOTTOM_LEFT, mountain)
-            )),
+            )
+        ),
         lake
     );
   }

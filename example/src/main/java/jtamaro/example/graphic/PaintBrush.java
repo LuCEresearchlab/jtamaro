@@ -31,7 +31,12 @@ public final class PaintBrush {
     show(paintBrush(RED));
   }
 
-  private static Graphic trapeze(double width, double smallHeight, double largeHeight, Color color) {
+  private static Graphic trapeze(
+      double width,
+      double smallHeight,
+      double largeHeight,
+      Color color
+  ) {
     return aboves(of(
         rotate(90, rightTriangle((largeHeight - smallHeight) / 2, width, color)),
         rectangle(width, smallHeight, color),
@@ -45,20 +50,26 @@ public final class PaintBrush {
     final double minWidth = width * 3 / 5;
     final double endDiameter = minWidth * 2 / 3;
     return compose(
-        pin(CENTER,
+        pin(
+            CENTER,
             ellipse(endDiameter, minWidth, color)
         ),
-        pin(CENTER_LEFT,
+        pin(
+            CENTER_LEFT,
             compose(
-                pin(CENTER_RIGHT,
+                pin(
+                    CENTER_RIGHT,
                     trapeze(tipLength, minWidth, width, color)
                 ),
-                pin(CENTER_LEFT,
+                pin(
+                    CENTER_LEFT,
                     compose(
-                        pin(CENTER_RIGHT,
+                        pin(
+                            CENTER_RIGHT,
                             rotate(180, trapeze(endLength, minWidth, width, color))
                         ),
-                        pin(CENTER,
+                        pin(
+                            CENTER,
                             ellipse(endDiameter, minWidth, color)
                         )
                     )

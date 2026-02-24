@@ -8,8 +8,6 @@ package jtamaro.data;
  */
 public interface Function1<A, R> {
 
-  R apply(A a);
-
   /**
    * Returns a function that always returns its input argument.
    *
@@ -18,4 +16,6 @@ public interface Function1<A, R> {
   static <T> Function1<T, T> identity() {
     return t -> t;
   }
+
+  R apply(A a);
 }

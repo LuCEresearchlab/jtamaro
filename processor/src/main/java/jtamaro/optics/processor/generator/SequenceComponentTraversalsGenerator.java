@@ -13,7 +13,7 @@ import javax.lang.model.util.Types;
 
 final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
 
-  private static final String METHOD_LENS_AT_INDEX = """
+  private static final String TEMPLATE_METHOD_LENS_AT_INDEX = """
         private static <T> Lens<Sequence<T>, Sequence<T>, T, T> lensAtIndex(int idx) {
           return new Lens<>() {
             @Override
@@ -32,6 +32,38 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         }
       """; // Lower indentation on purpose!
 
+  private static final String TEMPLATE_METHOD_TRAVERSAL_ELEMENTS = """
+        public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElements = new Traversal<>() {
+          @Override
+          public %1$s over(Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
+                           %1$s source) {
+            final Sequence<%2$s> newValue = source.%3$s().zipWithIndex()
+                .map(p -> lift.apply(%3$s.then(lensAtIndex(p.second()))));
+            return %4$s;
+          }
+
+          @Override
+          public <R> R foldMap(R neutralElement,
+                               Function2<R, R, R> reducer,
+                               Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
+                               %1$s source) {
+            return source.%3$s().zipWithIndex().foldLeft(
+                neutralElement,
+                (acc, p) -> reducer.apply(
+                    acc,
+                    map.apply(%3$s.then(lensAtIndex(p.second())))
+                )
+            );
+          }
+        };
+      """; // Lower indentation on purpose!
+
+  private static final String TEMPLATE_METHOD_LENS_AT = """
+        public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$sLensAt(int idx) {
+          return %3$s.then(lensAtIndex(idx));
+        }
+      """; // Lower indentation on purpose!
+
   public SequenceComponentTraversalsGenerator(
       Types types,
       TypeMirror targetRecordType,
@@ -39,6 +71,19 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
       SequencedSet<String> allComponentsNames
   ) {
     super(types, targetRecordType, allComponents, allComponentsNames);
+  }
+
+  /**
+   * Get the {@link TypeMirror} of the first type parameter of the given {@link TypeMirror}.
+   */
+  private static TypeMirror getFirstTypeArgument(TypeMirror typeMirror) {
+    if (typeMirror instanceof DeclaredType declaredType) {
+      final List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
+      if (!typeArgs.isEmpty()) {
+        return typeArgs.getFirst();
+      }
+    }
+    throw new IllegalArgumentException("Provided type " + typeMirror + " has no type parameter");
   }
 
   @Override
@@ -55,7 +100,7 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         });
     return Stream.concat(
         traversals,
-        Stream.of(METHOD_LENS_AT_INDEX)
+        Stream.of(TEMPLATE_METHOD_LENS_AT_INDEX)
     ).toList();
   }
 
@@ -92,35 +137,12 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         allComponentNames,
         _ -> "newValue"
     );
-    return String.format("""
-              public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElements = new Traversal<>() {
-                @Override
-                public %1$s over(Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
-                                 %1$s source) {
-                  final Sequence<%2$s> newValue = source.%3$s().zipWithIndex()
-                      .map(p -> lift.apply(%3$s.then(lensAtIndex(p.second()))));
-                  return %4$s;
-                }
-
-                @Override
-                public <R> R foldMap(R neutralElement,
-                                     Function2<R, R, R> reducer,
-                                     Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
-                                     %1$s source) {
-                  return source.%3$s().zipWithIndex().foldLeft(
-                      neutralElement,
-                      (acc, p) -> reducer.apply(
-                          acc,
-                          map.apply(%3$s.then(lensAtIndex(p.second())))
-                      )
-                  );
-                }
-              };
-            """, // Lower indentation on purpose!
-        sourceTypeStr,    // S, T
+    return String.format(
+        TEMPLATE_METHOD_TRAVERSAL_ELEMENTS,
+        sourceTypeStr, // S, T
         componentElementTypeStr, // A, B
-        targetName,       // 3: target component name
-        overImpl          // 4: new instance in over
+        targetName, // 3: target component name
+        overImpl // 4: new instance in over
     );
   }
 
@@ -130,27 +152,11 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
   ) {
     final String sourceTypeStr = Utils.formatType(types, targetRecordType);
     final String componentElementTypeStr = Utils.formatType(types, targetElementType);
-    return String.format("""
-              public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$sLensAt(int idx) {
-                return %3$s.then(lensAtIndex(idx));
-              }
-            """, // Lower indentation on purpose!
+    return String.format(
+        TEMPLATE_METHOD_LENS_AT,
         sourceTypeStr, // S, T
         componentElementTypeStr, // A, B
         targetName // 3: target component name
     );
-  }
-
-  /**
-   * Get the {@link TypeMirror} of the first type parameter of the given {@link TypeMirror}.
-   */
-  private static TypeMirror getFirstTypeArgument(TypeMirror typeMirror) {
-    if (typeMirror instanceof DeclaredType declaredType) {
-      final List<? extends TypeMirror> typeArgs = declaredType.getTypeArguments();
-      if (!typeArgs.isEmpty()) {
-        return typeArgs.getFirst();
-      }
-    }
-    throw new IllegalArgumentException("Provided type " + typeMirror + " has no type parameter");
   }
 }

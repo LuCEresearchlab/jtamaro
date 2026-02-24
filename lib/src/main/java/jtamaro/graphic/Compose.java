@@ -34,6 +34,13 @@ final class Compose extends Graphic {
     this.background = background;
   }
 
+  private static Path2D.Double buildPath(Path2D.Double fgPath, Path2D.Double bgPath) {
+    final Path2D.Double path = new Path2D.Double();
+    path.append(bgPath, false);
+    path.append(fgPath, false);
+    return path;
+  }
+
   public Graphic getForeground() {
     return foreground;
   }
@@ -145,12 +152,5 @@ final class Compose extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(Compose.class, foreground, background);
-  }
-
-  private static Path2D.Double buildPath(Path2D.Double fgPath, Path2D.Double bgPath) {
-    final Path2D.Double path = new Path2D.Double();
-    path.append(bgPath, false);
-    path.append(fgPath, false);
-    return path;
   }
 }

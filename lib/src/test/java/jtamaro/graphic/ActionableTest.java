@@ -34,7 +34,7 @@ public class ActionableTest {
         ? ag.getPressAction()
         : Options.none()
     ).stream().forEach(action ->
-      action.apply(new Coordinate(0, 0), new MouseButton(0)));
+        action.apply(new Coordinate(0, 0), new MouseButton(0)));
     Assert.assertEquals(1, count[0]);
   }
 

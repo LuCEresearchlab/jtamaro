@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import jtamaro.data.Sequence;
-import jtamaro.graphic.GuiFilmStripCanvas;
 import jtamaro.graphic.Graphic;
+import jtamaro.graphic.GuiFilmStripCanvas;
 
 final class FilmStripFrame extends JFrame {
 

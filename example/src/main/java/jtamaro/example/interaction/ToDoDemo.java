@@ -42,10 +42,14 @@ public final class ToDoDemo {
 
   private static Graphic renderInputField(Model model) {
     return compose(
-        pin(CENTER_LEFT,
-            text(model.currentInput, SANS_SERIF, 20, WHITE)),
-        pin(CENTER_LEFT,
-            rectangle(500, 50, BLACK))
+        pin(
+            CENTER_LEFT,
+            text(model.currentInput, SANS_SERIF, 20, WHITE)
+        ),
+        pin(
+            CENTER_LEFT,
+            rectangle(500, 50, BLACK)
+        )
     );
   }
 
@@ -64,12 +68,20 @@ public final class ToDoDemo {
         .asGraphic();
 
     final Graphic entryGraphic = compose(
-        pin(CENTER_LEFT,
-            beside(actionableCheckbox,
-                beside(rectangle(10, 0, TRANSPARENT),
-                    textGraphic))),
-        pin(CENTER_LEFT,
-            rectangle(500, 50, WHITE))
+        pin(
+            CENTER_LEFT,
+            beside(
+                actionableCheckbox,
+                beside(
+                    rectangle(10, 0, TRANSPARENT),
+                    textGraphic
+                )
+            )
+        ),
+        pin(
+            CENTER_LEFT,
+            rectangle(500, 50, WHITE)
+        )
     );
 
     return new Actionable<Model>(entryGraphic).withMouseReleaseHandler(

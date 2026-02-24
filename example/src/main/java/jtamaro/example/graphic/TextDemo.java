@@ -15,7 +15,7 @@ public final class TextDemo {
   }
 
   public static void main() {
-    Graphic text = text("up!", Fonts.SANS_SERIF, 400, BLACK);
+    final Graphic text = text("up!", Fonts.SANS_SERIF, 400, BLACK);
     show(pin(BOTTOM_RIGHT, text));
   }
 }

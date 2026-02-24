@@ -22,9 +22,16 @@ public interface Traversal<S, T, A, B> extends Fold<S, A>, Setter<S, T, A, B> {
   default <A2, B2> Traversal<S, T, A2, B2> then(Traversal<A, B, A2, B2> other) {
     return new Traversal<>() {
       @Override
-      public <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A2, R> map, S source) {
-        return Traversal.this.foldMap(neutralElement, reducer,
-            a -> other.foldMap(neutralElement, reducer, map, a), source);
+      public <R> R foldMap(
+          R neutralElement,
+          Function2<R, R, R> reducer,
+          Function1<A2, R> map,
+          S source
+      ) {
+        return Traversal.this.foldMap(
+            neutralElement, reducer,
+            a -> other.foldMap(neutralElement, reducer, map, a), source
+        );
       }
 
       @Override

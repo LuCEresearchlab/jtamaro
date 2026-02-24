@@ -99,10 +99,12 @@ public final class StandardIO {
       throw new Exception();
     } catch (Exception e) {
       final StackTraceElement cause = e.getStackTrace()[1];
-      System.err.printf("TODO: %1$s in file %2$s at line %3$d%n",
+      System.err.printf(
+          "TODO: %1$s in file %2$s at line %3$d%n",
           message,
           cause.getFileName(),
-          cause.getLineNumber());
+          cause.getLineNumber()
+      );
     }
     return null;
   }

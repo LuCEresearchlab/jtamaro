@@ -12,10 +12,11 @@ import static jtamaro.io.GraphicIO.show;
 
 public final class StuffDemo {
 
-  private StuffDemo() {}
+  private StuffDemo() {
+  }
 
   public static void main() {
-    CartesianWorld cs = new CartesianWorld()
+    final CartesianWorld cs = new CartesianWorld()
         .withBackground(hsv(45, 0.2, 1.0))
         .withAxes(hsv(45, 0.2, 0.75))
         .place(50, 20, ellipse(200, 200, BLUE))

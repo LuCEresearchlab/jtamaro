@@ -42,6 +42,18 @@ final class CircularSector extends Graphic {
     this.color = color;
   }
 
+  private static Path2D.Double buildPath(double radius, double angle) {
+    return new Path2D.Double(new Arc2D.Double(
+        -radius,
+        -radius,
+        radius * 2.0,
+        radius * 2.0,
+        0.0,
+        angle,
+        Arc2D.PIE
+    ));
+  }
+
   public double getRadius() {
     return radius;
   }
@@ -91,17 +103,5 @@ final class CircularSector extends Graphic {
   @Override
   public int hashCode() {
     return Objects.hash(CircularSector.class, radius, angle, color);
-  }
-
-  private static Path2D.Double buildPath(double radius, double angle) {
-    return new Path2D.Double(new Arc2D.Double(
-        -radius,
-        -radius,
-        radius * 2.0,
-        radius * 2.0,
-        0.0,
-        angle,
-        Arc2D.PIE
-    ));
   }
 }

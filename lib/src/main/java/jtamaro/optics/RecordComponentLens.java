@@ -11,8 +11,8 @@ import jtamaro.data.Function1;
  *
  * @implNote This class uses reflection to automatically generate a lens for a record component. It
  * is not properly type-checked at compile time, as unchecked casts are used.
- * @hidden Usage in public projects is not recommended. Please use the
- * {@link Glasses} annotation on record classes and the annotation processor instead.
+ * @hidden Usage in public projects is not recommended. Please use the {@link Glasses} annotation on
+ * record classes and the annotation processor instead.
  */
 @SuppressWarnings("unchecked")
 public final class RecordComponentLens<R extends Record, C> implements Lens<R, R, C, C> {
@@ -32,33 +32,6 @@ public final class RecordComponentLens<R extends Record, C> implements Lens<R, R
     target = findComponent(components, targetComponentName);
     constructor = getDefaultConstructor(recordClass, components);
     constructor.setAccessible(true);
-  }
-
-  @Override
-  public C view(R source) {
-    return (C) getComponentValue(target, source);
-  }
-
-  @Override
-  public R over(Function1<C, C> lift, R source) {
-    final int n = components.length;
-    final Object[] values = new Object[n];
-
-    for (int i = 0; i < n; i++) {
-      final RecordComponent component = components[i];
-      final Object value = getComponentValue(component, source);
-      values[i] = component == target
-          ? lift.apply((C) value)
-          : value;
-    }
-
-    try {
-      return constructor.newInstance(values);
-    } catch (IllegalAccessException
-             | InstantiationException
-             | InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   private static RecordComponent findComponent(
@@ -98,6 +71,33 @@ public final class RecordComponentLens<R extends Record, C> implements Lens<R, R
       accessor.setAccessible(true);
       return accessor.invoke(recordInstance);
     } catch (IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public C view(R source) {
+    return (C) getComponentValue(target, source);
+  }
+
+  @Override
+  public R over(Function1<C, C> lift, R source) {
+    final int n = components.length;
+    final Object[] values = new Object[n];
+
+    for (int i = 0; i < n; i++) {
+      final RecordComponent component = components[i];
+      final Object value = getComponentValue(component, source);
+      values[i] = component == target
+          ? lift.apply((C) value)
+          : value;
+    }
+
+    try {
+      return constructor.newInstance(values);
+    } catch (IllegalAccessException
+             | InstantiationException
+             | InvocationTargetException e) {
       throw new RuntimeException(e);
     }
   }

@@ -18,7 +18,12 @@ import jtamaro.data.Option;
 public interface Prism<S, T, A, B> extends AffineTraversal<S, T, A, B>, Review<T, B> {
 
   @Override
-  default <R> R foldMap(R neutralElement, Function2<R, R, R> reducer, Function1<A, R> map, S source) {
+  default <R> R foldMap(
+      R neutralElement,
+      Function2<R, R, R> reducer,
+      Function1<A, R> map,
+      S source
+  ) {
     return getOrModify(source).fold(_ -> neutralElement, map);
   }
 

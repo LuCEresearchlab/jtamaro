@@ -18,7 +18,10 @@ public final class InsertionSort {
     println(insertionSort((a, b) -> a.compareTo(b) <= 0, of("B", "A", "Z", "C")));
   }
 
-  private static <T> Sequence<T> insertionSort(Function2<T, T, Boolean> lessEqual, Sequence<T> sequence) {
+  private static <T> Sequence<T> insertionSort(
+      Function2<T, T, Boolean> lessEqual,
+      Sequence<T> sequence
+  ) {
     return sequence.isEmpty()
         ? empty()
         : insert(
@@ -28,7 +31,11 @@ public final class InsertionSort {
         );
   }
 
-  private static <T> Sequence<T> insert(T element, Sequence<T> sequence, Function2<T, T, Boolean> lessEqual) {
+  private static <T> Sequence<T> insert(
+      T element,
+      Sequence<T> sequence,
+      Function2<T, T, Boolean> lessEqual
+  ) {
     return sequence.isEmpty()
         ? cons(element, empty())
         : lessEqual.apply(element, sequence.first())

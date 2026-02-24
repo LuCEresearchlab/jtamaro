@@ -256,7 +256,12 @@ public final class Toolbelt {
    * Construct a convex kite, given: the lengths of the two parts of the symmetry diagonal (height1
    * and height2) the length of the cross diagonal
    */
-  public static Graphic kiteByHeights(double height1, double height2, double crossDiagonal, Color color) {
+  public static Graphic kiteByHeights(
+      double height1,
+      double height2,
+      double crossDiagonal,
+      Color color
+  ) {
     assert height1 >= 0;
     assert height2 >= 0;
     assert crossDiagonal >= 0;
@@ -272,11 +277,17 @@ public final class Toolbelt {
 
 
   //--- trapezoids
-  public static Graphic isoscelesTrapezoid(double bottomWidth, double height, double topWidth, Color color) {
+  public static Graphic isoscelesTrapezoid(
+      double bottomWidth,
+      double height,
+      double topWidth,
+      Color color
+  ) {
     assert topWidth <= bottomWidth;
     assert height > 0;
     assert bottomWidth > 0;
-    final Graphic leftTriangle = rotate(90,
+    final Graphic leftTriangle = rotate(
+        90,
         triangle(height, (bottomWidth - topWidth) / 2, 90, color)
     );
     final Graphic rightTriangle = triangle((bottomWidth - topWidth) / 2, height, 90, color);
@@ -287,20 +298,33 @@ public final class Toolbelt {
   /**
    * Construct a right trapezoid by placing a right triangle on the right side of a rectangle
    */
-  public static Graphic rightTrapezoid(double bottomWidth, double height, double topWidth, Color color, boolean flip) {
+  public static Graphic rightTrapezoid(
+      double bottomWidth,
+      double height,
+      double topWidth,
+      Color color,
+      boolean flip
+  ) {
     assert topWidth <= bottomWidth;
     assert height > 0;
     assert bottomWidth > 0;
     final double wDiff = bottomWidth - topWidth;
-    final Graphic tri = rotate(flip ? -90 : 0,
-        triangle(flip ? height : wDiff, flip ? wDiff : height, 90, color));
+    final Graphic tri = rotate(
+        flip ? -90 : 0,
+        triangle(flip ? height : wDiff, flip ? wDiff : height, 90, color)
+    );
     final Graphic rec = rectangle(bottomWidth - wDiff, height, color);
     return beside(rec, tri);
   }
 
 
   //--- rings
-  public static Graphic ringSectorList(double diameter, double startAngle, double endAngle, Sequence<Graphic> pieces) {
+  public static Graphic ringSectorList(
+      double diameter,
+      double startAngle,
+      double endAngle,
+      Sequence<Graphic> pieces
+  ) {
     Graphic result = emptyGraphic();
     final double angleDelta = (endAngle - startAngle) / length(pieces);
     double angle = startAngle;
@@ -317,7 +341,13 @@ public final class Toolbelt {
     return ringSectorList(diameter, 0, 360, pieces);
   }
 
-  public static Graphic ringSector(double diameter, double startAngle, double endAngle, Graphic piece, int count) {
+  public static Graphic ringSector(
+      double diameter,
+      double startAngle,
+      double endAngle,
+      Graphic piece,
+      int count
+  ) {
     return ringSectorList(diameter, startAngle, endAngle, replicate(piece, count));
   }
 
@@ -329,7 +359,8 @@ public final class Toolbelt {
   //--- star using ring
   public static Graphic star(double innerRadius, double outerRadius, int points, Color color) {
     // TODO: reformulate using kite()
-    final Graphic tri1 = rotate(-360.0 / 2.0 / points,
+    final Graphic tri1 = rotate(
+        -360.0 / 2.0 / points,
         triangle(innerRadius, outerRadius, 360.0 / 2.0 / points, color)
     );
     final Graphic tri2 = triangle(outerRadius, innerRadius, 360.0 / 2.0 / points, color);
@@ -340,8 +371,10 @@ public final class Toolbelt {
 
   //--- polygon using ring
   public static Graphic polygon(double diameter, int sideCount, Color color) {
-    return ring(0,
+    return ring(
+        0,
         rotate(-360.0 / sideCount / 2.0, triangle(diameter, diameter, 360.0 / sideCount, color)),
-        sideCount);
+        sideCount
+    );
   }
 }

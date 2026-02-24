@@ -15,10 +15,11 @@ public final class GlassesTest {
   public void composedLens() {
     final Lens<PkgRecord, PkgRecord, Integer, Integer> lens = PkgRecordLenses.pr
         .then(PubRecordLenses.a);
-    final PkgRecord rec = new PkgRecord(new PubRecord(0,
+    final PkgRecord rec = new PkgRecord(new PubRecord(
+        0,
         0.1,
-        () -> Annotation.class)
-    );
+        () -> Annotation.class
+    ));
 
     Assert.assertEquals(
         Integer.valueOf(0),

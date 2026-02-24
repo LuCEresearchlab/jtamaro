@@ -67,6 +67,9 @@ public final class Points {
       BOTTOM_RIGHT, "BOTTOM_RIGHT"
   );
 
+  private Points() {
+  }
+
   /**
    * Format point as a string using known point names, if possible.
    */
@@ -74,8 +77,5 @@ public final class Points {
     return KNOWN_POINT_NAMES.containsKey(point)
         ? KNOWN_POINT_NAMES.get(point)
         : point.toString();
-  }
-
-  private Points() {
   }
 }
