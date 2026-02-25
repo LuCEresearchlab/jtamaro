@@ -92,13 +92,7 @@ final class InteractionMouseHandler<M> extends MouseAdapter {
     ));
   }
 
-  private static final class UnsafeMouseAction<T> implements MouseAction<T> {
-
-    private final MouseAction<?> erasedAction;
-
-    public UnsafeMouseAction(MouseAction<?> action) {
-      this.erasedAction = action;
-    }
+  private record UnsafeMouseAction<T>(MouseAction<?> erasedAction) implements MouseAction<T> {
 
     @Override
     @SuppressWarnings("unchecked")
