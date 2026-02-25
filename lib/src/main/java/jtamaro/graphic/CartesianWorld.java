@@ -90,7 +90,7 @@ public final class CartesianWorld {
 
 
   /**
-   * Produce a graphic from the cartesian world.
+   * Produce a graphic from the Cartesian world.
    */
   public Graphic asGraphic() {
     /*

@@ -58,9 +58,9 @@ final class Utils {
 
   /**
    * Create a new record instance expr that copies the values of all components except for one (the
-   * {@code targetComponent}), which is transformed using the {@code targetComponentExpr} function
-   * that is invoked with the string of the expression for getting the original value of the
-   * component.
+   * {@code targetComponent}). That value is transformed using the {@code targetComponentExpr}
+   * function that is invoked with the string of the expression for getting the original value of
+   * the component.
    */
   public static String newRecordInstanceExpr(
       String recordTypeStr,

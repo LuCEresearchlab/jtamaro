@@ -68,7 +68,7 @@ public final class ChristmasTree {
                 rectangle(0, triangleSide * 2, TRANSPARENT),
                 JTamaroLogo.logo(triangleSide),
                 rectangle(1, triangleSide * 0.2, TRANSPARENT),
-                text("Made with PyTamaro", "Din Alternate", triangleSide * 0.25, BLACK),
+                text("Made with JTamaro", "Din Alternate", triangleSide * 0.25, BLACK),
                 rectangle(0, triangleSide * 2, TRANSPARENT),
                 text("Merry Christmas!", "Din Alternate", triangleSide * 0.8, TEXT_COLOR),
                 text(

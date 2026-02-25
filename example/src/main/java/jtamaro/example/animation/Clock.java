@@ -58,7 +58,7 @@ public final class Clock {
   }
 
   private static int angle(int steps, int stepsPerCycle) {
-    //return -360 * steps / stepsPerCycle; // PyTamaro
+    //return -360 * steps / stepsPerCycle; // JTamaro
     return -360 * steps / stepsPerCycle;
   }
 
