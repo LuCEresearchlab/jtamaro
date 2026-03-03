@@ -23,8 +23,9 @@ public final class Graphics {
    * <p>The pinning position is at the center of the circle from which the circular sector is
    * taken.
    *
-   * @param radius radius of the circle from which the circular sector is taken
-   * @param angle  central angle, in degrees
+   * @param radius radius of the circle from which the circular sector is taken. Must be
+   *               non-negative
+   * @param angle  central angle, in degrees [0-360]
    * @param color  the color to be used to fill the circular sector
    */
   public static Graphic circularSector(double radius, double angle, Color color) {
@@ -37,8 +38,8 @@ public final class Graphics {
    * <p>When width and height are the same, the ellipse becomes a circle with a diameter equal to
    * the provided size.
    *
-   * @param width  width of the ellipse
-   * @param height height of the ellipse
+   * @param width  width of the ellipse. Must be non-negative
+   * @param height height of the ellipse. Must be non-negative
    * @param color  color to be used to fill the ellipse
    */
   public static Graphic ellipse(double width, double height, Color color) {
@@ -56,8 +57,8 @@ public final class Graphics {
   /**
    * Creates a rectangle of the given size, filled with a color.
    *
-   * @param width  width of the rectangle
-   * @param height height of the rectangle
+   * @param width  width of the rectangle. Must be non-negative
+   * @param height height of the rectangle. Must be non-negative
    * @param color  color to be used to fill the rectangle
    */
   public static Graphic rectangle(double width, double height, Color color) {
@@ -76,7 +77,7 @@ public final class Graphics {
    *
    * @param content text to render
    * @param font    the font to be used to render the text
-   * @param size    size in typographic points (e.g., 16)
+   * @param size    size in typographic points (e.g., 16). Must be non-negative
    * @param color   color to be used to fill the text
    */
   public static Graphic text(String content, String font, double size, Color color) {
@@ -93,9 +94,9 @@ public final class Graphics {
    *
    * <p>The pinning position is the centroid of the triangle.
    *
-   * @param side1 length of the first, horizontal side of the triangle
-   * @param side2 length of the second side of the triangle
-   * @param angle angle between the two sides, in degrees
+   * @param side1 length of the first, horizontal side of the triangle. Must be non-negative
+   * @param side2 length of the second side of the triangle. Must be non-negative
+   * @param angle angle between the two sides, in degrees [0-180]
    * @param color color to be used to fill the triangle
    */
   public static Graphic triangle(double side1, double side2, double angle, Color color) {
