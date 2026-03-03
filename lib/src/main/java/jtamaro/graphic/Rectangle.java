@@ -19,8 +19,8 @@ final class Rectangle extends Graphic {
   /**
    * Default constructor.
    *
-   * @param width  width of the rectangle
-   * @param height height of the rectangle
+   * @param width  width of the rectangle. Must be non-negative
+   * @param height height of the rectangle. Must be non-negative
    * @param color  color to be used to fill the rectangle
    */
   public Rectangle(double width, double height, Color color) {

@@ -28,8 +28,9 @@ final class CircularSector extends Graphic {
   /**
    * Default constructor.
    *
-   * @param radius radius of the circle from which the circular sector is taken
-   * @param angle  central angle, in degrees
+   * @param radius radius of the circle from which the circular sector is taken. Must be
+   *               non-negative
+   * @param angle  central angle, in degrees [0-360]
    * @param color  the color to be used to fill the circular sector
    */
   public CircularSector(double radius, double angle, Color color) {

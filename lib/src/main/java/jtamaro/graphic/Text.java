@@ -35,7 +35,7 @@ final class Text extends Graphic {
    *
    * @param content text to render
    * @param font    the font to be used to render the text
-   * @param size    size in typographic points (e.g., 16)
+   * @param size    size in typographic points (e.g., 16). Must be non-negative
    * @param color   color to be used to fill the text
    */
   public Text(String content, String font, double size, Color color) {

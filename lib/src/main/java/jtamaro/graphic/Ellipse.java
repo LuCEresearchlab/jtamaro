@@ -23,8 +23,8 @@ final class Ellipse extends Graphic {
   /**
    * Default constructor.
    *
-   * @param width  width of the ellipse
-   * @param height height of the ellipse
+   * @param width  width of the ellipse. Must be non-negative
+   * @param height height of the ellipse. Must be non-negative
    * @param color  color to be used to fill the ellipse
    */
   public Ellipse(double width, double height, Color color) {

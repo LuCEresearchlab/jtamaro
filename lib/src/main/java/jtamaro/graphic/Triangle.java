@@ -29,9 +29,9 @@ final class Triangle extends Graphic {
   /**
    * Default constructor.
    *
-   * @param side1 length of the first, horizontal side of the triangle
-   * @param side2 length of the second side of the triangle
-   * @param angle angle between the two sides, in degrees
+   * @param side1 length of the first, horizontal side of the triangle. Must be non-negative
+   * @param side2 length of the second side of the triangle. Must be non-negative
+   * @param angle angle between the two sides, in degrees [0-180]
    * @param color color to be used to fill the triangle
    */
   public Triangle(double side1, double side2, double angle, Color color) {
