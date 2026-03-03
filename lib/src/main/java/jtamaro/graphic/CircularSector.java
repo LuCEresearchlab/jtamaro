@@ -34,7 +34,7 @@ final class CircularSector extends Graphic {
    */
   public CircularSector(double radius, double angle, Color color) {
     assert radius >= 0;
-    assert angle >= 0 && angle < 360;
+    assert angle >= 0 && angle <= 360;
 
     super(buildPath(radius, angle));
     this.radius = radius;

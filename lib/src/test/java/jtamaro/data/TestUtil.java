@@ -26,7 +26,6 @@ final class TestUtil {
     return new Cons<>(
         "[", seq.map(Objects::toString)
         .intersperse(", ")
-    )
-        .foldRight("]", String::concat);
+    ).foldRight("]", String::concat);
   }
 }
