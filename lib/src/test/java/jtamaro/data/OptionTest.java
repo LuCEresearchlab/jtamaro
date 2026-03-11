@@ -61,4 +61,22 @@ public final class OptionTest {
   public void noneStreamLenOne() {
     Assert.assertEquals(0, Options.none().stream().count());
   }
+
+  @Test
+  public void noneForEach() {
+    int value = 0;
+    for (Object _ : Options.none()) {
+      value++;
+    }
+    Assert.assertEquals(0, value);
+  }
+
+  @Test
+  public void someForEach() {
+    int value = 0;
+    for (Object _ : Options.some(0)) {
+      value++;
+    }
+    Assert.assertEquals(1, value);
+  }
 }

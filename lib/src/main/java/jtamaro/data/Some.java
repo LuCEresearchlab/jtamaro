@@ -1,5 +1,7 @@
 package jtamaro.data;
 
+import java.util.Iterator;
+
 record Some<T>(T value) implements Option<T> {
 
   @Override
@@ -15,5 +17,10 @@ record Some<T>(T value) implements Option<T> {
   @Override
   public <S> S fold(Function1<T, S> someCase, Function0<S> noneCase) {
     return someCase.apply(value);
+  }
+
+  @Override
+  public Iterator<T> iterator() {
+    return new SingleElementIterator<>(value);
   }
 }

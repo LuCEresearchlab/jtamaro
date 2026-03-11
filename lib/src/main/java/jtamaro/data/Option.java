@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 /**
  * Option type is used to handle errors.
  */
-public sealed interface Option<T> permits Some, None {
+public sealed interface Option<T> extends Iterable<T> permits Some, None {
 
   /**
    * Apply a function to this option.

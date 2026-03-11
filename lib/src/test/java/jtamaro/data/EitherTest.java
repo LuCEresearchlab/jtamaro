@@ -124,4 +124,44 @@ public final class EitherTest {
   public void rightStreamRightLenOne() {
     Assert.assertEquals(1, Eithers.right(0).streamRight().count());
   }
+
+  @Test
+  public void leftIterableLeft() {
+    int value = 0;
+    for (Object _ : Eithers.left(0).iterableLeft()) {
+      value++;
+    }
+
+    Assert.assertEquals(1, value);
+  }
+
+  @Test
+  public void leftIterableRight() {
+    int value = 0;
+    for (Object _ : Eithers.right(0).iterableLeft()) {
+      value++;
+    }
+
+    Assert.assertEquals(0, value);
+  }
+
+  @Test
+  public void rightIterableLeft() {
+    int value = 0;
+    for (Object _ : Eithers.left(0).iterableRight()) {
+      value++;
+    }
+
+    Assert.assertEquals(0, value);
+  }
+
+  @Test
+  public void rightIterableRight() {
+    int value = 0;
+    for (Object _ : Eithers.right(0).iterableRight()) {
+      value++;
+    }
+
+    Assert.assertEquals(1, value);
+  }
 }

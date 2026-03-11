@@ -1,5 +1,6 @@
 package jtamaro.data;
 
+import java.util.Collections;
 import java.util.stream.Stream;
 
 record Left<L, R>(L value) implements Either<L, R> {
@@ -47,5 +48,15 @@ record Left<L, R>(L value) implements Either<L, R> {
   @Override
   public Stream<R> streamRight() {
     return Stream.empty();
+  }
+
+  @Override
+  public Iterable<L> iterableLeft() {
+    return () -> new SingleElementIterator<>(value);
+  }
+
+  @Override
+  public Iterable<R> iterableRight() {
+    return Collections::emptyIterator;
   }
 }

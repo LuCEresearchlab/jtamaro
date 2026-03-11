@@ -58,7 +58,6 @@ public sealed interface Either<L, R> permits Left, Right {
    */
   Option<L> optionLeft();
 
-
   /**
    * Produce an {@link Option}.
    *
@@ -81,6 +80,22 @@ public sealed interface Either<L, R> permits Left, Right {
    * is right.
    */
   Stream<R> streamRight();
+
+  /**
+   * Produce an iterable.
+   *
+   * @return An empty iterable if this either is right or an iterable with a single value if this
+   * either is left.
+   */
+  Iterable<L> iterableLeft();
+
+  /**
+   * Produce an iterable.
+   *
+   * @return An empty iterable if this either is left or an iterable with a single value if this
+   * either is right.
+   */
+  Iterable<R> iterableRight();
 
   /**
    * Determine whether this either is right.
