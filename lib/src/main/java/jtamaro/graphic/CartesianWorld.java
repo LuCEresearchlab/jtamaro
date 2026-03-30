@@ -16,6 +16,10 @@ import jtamaro.data.Sequences;
  */
 public final class CartesianWorld {
 
+  // Account for rounding errors that are not actually visible when graphics are rendered, but that
+  // would lead to incorrect computations
+  private static final double STRADDLE_THRESHOLD = 0.001;
+
   /**
    * @implNote It is ok to use Sequence here because it is useful have fast insertion, and we never
    * need to perform random accesses.
@@ -118,8 +122,8 @@ public final class CartesianWorld {
 
       final double strutWidth = Math.abs(el.x) + el.offsetX;
       final double strutHeight = Math.abs(el.y) + el.offsetY;
-      final boolean straddleX0 = Math.abs(el.x) < el.offsetX;
-      final boolean straddleY0 = Math.abs(el.y) < el.offsetY;
+      final boolean straddleX0 = el.offsetX - Math.abs(el.x) > STRADDLE_THRESHOLD;
+      final boolean straddleY0 = el.offsetY - Math.abs(el.y) > STRADDLE_THRESHOLD;
 
       final Graphic area = new Rectangle(
           straddleX0 ? strutWidth * 2 : strutWidth,
