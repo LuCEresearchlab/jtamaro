@@ -98,6 +98,7 @@ public final class GlassesProcessor extends AbstractProcessor {
 
     final List<String> typesToImport = generators.stream()
         .flatMap(generator -> generator.usedTypes().stream())
+        .distinct()
         .sorted()
         .toList();
 
