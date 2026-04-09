@@ -13,7 +13,7 @@ import javax.lang.model.util.Types;
 
 final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
 
-  private static final String TEMPLATE_METHOD_LENS_AT_INDEX = """
+  private static final String TEMPLATE_LENS_AT_INDEX = """
         private static <T> Lens<Sequence<T>, Sequence<T>, T, T> lensAtIndex(int idx) {
           return new Lens<>() {
             @Override
@@ -32,21 +32,65 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         }
       """; // Lower indentation on purpose!
 
-  private static final String TEMPLATE_METHOD_TRAVERSAL_ELEMENTS = """
+  private static final String TEMPLATE_LENS_AT = """
+        public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$sLensAt(int idx) {
+          return %3$s.then(lensAtIndex(idx));
+        }
+      """; // Lower indentation on purpose!
+
+  private static final String TEMPLATE_TRAVERSAL_LENS_WHERE = """
+        public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s>
+        %3$sWhere(Function1<%2$s, Boolean> predicate) {
+          return new Traversal<>() {
+            @Override
+            public %1$s over(
+              Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
+              %1$s source
+            ) {
+              final Sequence<%2$s> $%3$s = source.%3$s().zipWithIndex()
+                  .map(p -> predicate.apply(p.first())
+                      ? lift.apply(%3$s.then(lensAtIndex(p.second())))
+                      : p.first());
+              return %4$s;
+            }
+
+            @Override
+            public <R> R foldMap(
+              R neutralElement,
+              Function2<R, R, R> reducer,
+              Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
+              %1$s source
+            ) {
+              return source.%3$s().zipWithIndex()
+                  .filter(p -> predicate.apply(p.first()))
+                  .foldLeft(
+                    neutralElement,
+                    (acc, p) -> reducer.apply(acc, map.apply(%3$s.then(lensAtIndex(p.second()))))
+                  );
+            }
+          };
+        }
+      """; // Lower indentation on purpose!
+
+  private static final String TEMPLATE_TRAVERSAL_ELEMENTS = """
         public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElements = new Traversal<>() {
           @Override
-          public %1$s over(Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
-                           %1$s source) {
-            final Sequence<%2$s> newValue = source.%3$s().zipWithIndex()
+          public %1$s over(
+            Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
+            %1$s source
+          ) {
+            final Sequence<%2$s> $%3$s = source.%3$s().zipWithIndex()
                 .map(p -> lift.apply(%3$s.then(lensAtIndex(p.second()))));
             return %4$s;
           }
 
           @Override
-          public <R> R foldMap(R neutralElement,
-                               Function2<R, R, R> reducer,
-                               Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
-                               %1$s source) {
+          public <R> R foldMap(
+            R neutralElement,
+            Function2<R, R, R> reducer,
+            Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
+            %1$s source
+          ) {
             return source.%3$s().zipWithIndex().foldLeft(
                 neutralElement,
                 (acc, p) -> reducer.apply(
@@ -56,12 +100,6 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
             );
           }
         };
-      """; // Lower indentation on purpose!
-
-  private static final String TEMPLATE_METHOD_LENS_AT = """
-        public static final Lens<%1$s, %1$s, %2$s, %2$s> %3$sLensAt(int idx) {
-          return %3$s.then(lensAtIndex(idx));
-        }
       """; // Lower indentation on purpose!
 
   public SequenceComponentTraversalsGenerator(
@@ -94,13 +132,22 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
           final String targetName = e.getKey();
           final TypeMirror targetElementType = getFirstTypeArgument(e.getValue());
           return Stream.of(
-              lensTraversalForComponent(targetName, targetElementType),
+              lensTraversalForComponent(
+                  targetName,
+                  targetElementType,
+                  TEMPLATE_TRAVERSAL_ELEMENTS
+              ),
+              lensTraversalForComponent(
+                  targetName,
+                  targetElementType,
+                  TEMPLATE_TRAVERSAL_LENS_WHERE
+              ),
               lensAtIndexForComponent(targetName, targetElementType)
           );
         });
     return Stream.concat(
         traversals,
-        Stream.of(TEMPLATE_METHOD_LENS_AT_INDEX)
+        Stream.of(TEMPLATE_LENS_AT_INDEX)
     ).toList();
   }
 
@@ -127,7 +174,8 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
    */
   private String lensTraversalForComponent(
       String targetName,
-      TypeMirror targetElementType
+      TypeMirror targetElementType,
+      String template
   ) {
     final String sourceTypeStr = Utils.formatType(types, targetRecordType);
     final String componentElementTypeStr = Utils.formatType(types, targetElementType);
@@ -135,10 +183,10 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         sourceTypeStr,
         targetName,
         allComponentNames,
-        _ -> "newValue"
+        _ -> "$" + targetName
     );
     return String.format(
-        TEMPLATE_METHOD_TRAVERSAL_ELEMENTS,
+        template,
         sourceTypeStr, // S, T
         componentElementTypeStr, // A, B
         targetName, // 3: target component name
@@ -153,7 +201,7 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
     final String sourceTypeStr = Utils.formatType(types, targetRecordType);
     final String componentElementTypeStr = Utils.formatType(types, targetElementType);
     return String.format(
-        TEMPLATE_METHOD_LENS_AT,
+        TEMPLATE_LENS_AT,
         sourceTypeStr, // S, T
         componentElementTypeStr, // A, B
         targetName // 3: target component name

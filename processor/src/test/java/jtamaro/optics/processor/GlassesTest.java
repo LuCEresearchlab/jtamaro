@@ -79,4 +79,23 @@ public final class GlassesTest {
         lens.set("One", rec)
     );
   }
+
+  @Test
+  public void sequenceAtPredicateLens() {
+    final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>, String>
+        traversal = PubRecord$InnerRecordOptics.wordsWhere(it -> it.startsWith("h"));
+
+    final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
+        Sequences.of("hello", "hallo", "ciao"));
+
+    Assert.assertEquals(
+        new PubRecord.InnerRecord(
+            rec.words().map(it -> it.startsWith("h") ? it.toUpperCase(Locale.ROOT) : it)),
+        traversal.over(
+            l -> l.view(rec).toUpperCase(Locale.ROOT),
+            rec
+        )
+    );
+  }
+
 }
