@@ -64,7 +64,7 @@ public final class ToDoDemo {
 
     final Graphic actionableCheckbox = new Actionable<Model>(checkedGraphic)
         .withMouseReleaseHandler((_, _) ->
-            lens.then(ToDoDemo$EntryLenses.isChecked).over(b -> !b, model))
+            lens.then(ToDoDemo$EntryOptics.isChecked).over(b -> !b, model))
         .asGraphic();
 
     final Graphic entryGraphic = compose(
@@ -88,11 +88,11 @@ public final class ToDoDemo {
         (_, _) -> new Model(
             entry.content,
             model.entries,
-            (m, newContent) -> ToDoDemo$ModelLenses.currentInput.set(
+            (m, newContent) -> ToDoDemo$ModelOptics.currentInput.set(
                 "",
-                ToDoDemo$ModelLenses.onEnter.set(
+                ToDoDemo$ModelOptics.onEnter.set(
                     ToDoDemo::addNewEntry,
-                    lens.then(ToDoDemo$EntryLenses.content).set(newContent, m)
+                    lens.then(ToDoDemo$EntryOptics.content).set(newContent, m)
                 )
             )
         )
@@ -100,7 +100,7 @@ public final class ToDoDemo {
   }
 
   private static Graphic render(Model model) {
-    return ToDoDemo$ModelLenses.entriesElements.foldMap(
+    return ToDoDemo$ModelOptics.entriesElements.foldMap(
         renderInputField(model),
         Graphics::above,
         lens -> renderEntry(lens, model),
@@ -111,7 +111,7 @@ public final class ToDoDemo {
   private static Model onKeyType(Model model, KeyboardChar keyboardChar) {
     final char c = keyboardChar.keyChar();
     if (Character.isLetterOrDigit(c) || Character.isSpaceChar(c)) {
-      return ToDoDemo$ModelLenses.currentInput.over(
+      return ToDoDemo$ModelOptics.currentInput.over(
           input -> input + c,
           model
       );
@@ -123,7 +123,7 @@ public final class ToDoDemo {
   private static Model onKeyPress(Model model, KeyboardKey key) {
     return switch (key.keyCode()) {
       // Remove last char
-      case KeyboardKey.BACK_SPACE -> ToDoDemo$ModelLenses.currentInput.over(
+      case KeyboardKey.BACK_SPACE -> ToDoDemo$ModelOptics.currentInput.over(
           input -> switch (input.length()) {
             case 0, 1 -> "";
             default -> input.substring(0, input.length() - 1);

@@ -37,11 +37,11 @@ public final class ControllableSpinner {
   }
 
   private static Spinner tick(Spinner spinner) {
-    return ControllableSpinner$SpinnerLenses.angle.over(a -> a + spinner.speed, spinner);
+    return ControllableSpinner$SpinnerOptics.angle.over(a -> a + spinner.speed, spinner);
   }
 
   private static Spinner onGlobalMouseMove(Spinner spinner, Coordinate c, MouseButton btn) {
-    return ControllableSpinner$SpinnerLenses.speed.set(c.x() / 100.0, spinner);
+    return ControllableSpinner$SpinnerOptics.speed.set(c.x() / 100.0, spinner);
   }
 
   @Glasses

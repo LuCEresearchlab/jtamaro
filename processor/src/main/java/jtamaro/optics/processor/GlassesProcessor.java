@@ -179,12 +179,12 @@ public final class GlassesProcessor extends AbstractProcessor {
         .substring(packageName.length() + 1)
         // Replace the "." of inner classes with "$"
         .replace(".", "$");
-    return classNameWithEnclosing + "Lenses";
+    return classNameWithEnclosing + "Optics";
   }
 
   private void printSkipWarning(String reason, Element el) {
     final Messager messager = processingEnv.getMessager();
-    messager.printWarning("Skipping Lenses generation for "
+    messager.printWarning("Skipping Optics generation for "
         + reason
         + " "
         + el.getSimpleName());

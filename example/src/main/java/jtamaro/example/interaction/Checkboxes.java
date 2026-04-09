@@ -53,7 +53,7 @@ public final class Checkboxes {
     final Graphic checkboxGraphic = renderCheckbox(checkboxModelLens.view(model));
     // feature 2: compose together a lens that can *modify* a specific submodel without manual reconstruction
     final Lens<Model, Model, Boolean, Boolean> isPressedLens = checkboxModelLens.then(
-        Checkboxes$CheckboxModelLenses.isPressed);
+        Checkboxes$CheckboxModelOptics.isPressed);
 
     return new Actionable<Model>(checkboxGraphic)
         .withMousePressHandler((Coordinate _, MouseButton _) ->
@@ -69,7 +69,7 @@ public final class Checkboxes {
   private static Graphic renderCheckboxes(Model model) {
     // - Map from sequence of checkbox lenses to graphics
     // - Fold (compose) the graphics
-    return Checkboxes$ModelLenses.checkboxesElements.foldMap(
+    return Checkboxes$ModelOptics.checkboxesElements.foldMap(
         Graphics.emptyGraphic(),
         Graphics::beside,
         itLens -> clickableCheckbox(model, itLens),

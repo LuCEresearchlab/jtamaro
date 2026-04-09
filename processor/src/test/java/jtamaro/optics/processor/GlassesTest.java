@@ -13,8 +13,8 @@ public final class GlassesTest {
 
   @Test
   public void composedLens() {
-    final Lens<PkgRecord, PkgRecord, Integer, Integer> lens = PkgRecordLenses.pr
-        .then(PubRecordLenses.a);
+    final Lens<PkgRecord, PkgRecord, Integer, Integer> lens = PkgRecordOptics.pr
+        .then(PubRecordOptics.a);
     final PkgRecord rec = new PkgRecord(new PubRecord(
         0,
         0.1,
@@ -34,7 +34,7 @@ public final class GlassesTest {
   @Test
   public void parametricType() {
     final Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, Sequence<String>, Sequence<String>>
-        lens = PubRecord$InnerRecordLenses.words;
+        lens = PubRecord$InnerRecordOptics.words;
     final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(Sequences.of("hi"));
 
     Assert.assertEquals(
@@ -50,7 +50,7 @@ public final class GlassesTest {
   @Test
   public void sequenceType() {
     final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>, String>
-        traversal = PubRecord$InnerRecordLenses.wordsElements;
+        traversal = PubRecord$InnerRecordOptics.wordsElements;
 
     final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
         Sequences.of("hello", "world"));
@@ -68,7 +68,7 @@ public final class GlassesTest {
   @Test
   public void sequenceAtIndexLens() {
     final Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String> lens
-        = PubRecord$InnerRecordLenses.wordsLensAt(1);
+        = PubRecord$InnerRecordOptics.wordsLensAt(1);
 
     final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
         Sequences.of("Zero", "Two", "Two"));
