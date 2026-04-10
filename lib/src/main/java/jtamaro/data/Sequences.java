@@ -100,6 +100,37 @@ public final class Sequences {
   }
 
   /**
+   * Constructs a sequence that consists of substrings of a given string. The substrings are
+   * determined by searching from left to right for occurrences of a given separator. These
+   * occurrences are not part of any string returned in the sequence, but serve to divide up the
+   * given string.
+   *
+   * @param separator String of arbitrary length  used to delimit the string chunks
+   * @param s         The string to split
+   * @return a new sequence that consists of substrings of the given string
+   * @implNote Follows the specifications of <a
+   * href="https://tc39.es/ecma262/multipage/text-processing.html#sec-string.prototype.split">ECMA262
+   * 22.1.3.23</a>
+   */
+  public static Sequence<String> ofStringSplit(String separator, String s) {
+    if (separator.isEmpty()) {
+      return ofStringCharacters(s).map(Object::toString);
+    }
+
+    final int separatorLen = separator.length();
+    Sequence<String> result = new Empty<>();
+    int curr = 0;
+    int match = s.indexOf(separator);
+    while (match >= 0) {
+      result = new Cons<>(s.substring(curr, match), result);
+      curr = match + separatorLen;
+      match = s.indexOf(separator, curr);
+    }
+    result = new Cons<>(s.substring(curr), result);
+    return result.reverse();
+  }
+
+  /**
    * Constructs a sequence of integers starting at 0, with the last element being
    * {@code toExclusive - 1}.
    *

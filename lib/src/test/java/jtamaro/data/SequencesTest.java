@@ -90,6 +90,102 @@ public final class SequencesTest {
   }
 
   @Test
+  public void testOfStringSplitEmpty() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of(""),
+        Sequences.ofStringSplit(" ", "")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitEmptySeparator() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("a", "b", "c"),
+        Sequences.ofStringSplit("", "abc")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitSingleCharacterNoSeparator() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("a"),
+        Sequences.ofStringSplit(" ", "a")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitSingleCharacterWithSeparator() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("", ""),
+        Sequences.ofStringSplit(" ", " ")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitWithSeparatorAtBeginning() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("", "a"),
+        Sequences.ofStringSplit(" ", " a")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitWithSeparatorAtEnd() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("a", ""),
+        Sequences.ofStringSplit(" ", "a ")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitMultipleSeparators() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("a", "b", "c"),
+        Sequences.ofStringSplit(" ", "a b c")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitNoSeparators() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("abc"),
+        Sequences.ofStringSplit(" ", "abc")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitAllSeparators() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("", "", "", ""),
+        Sequences.ofStringSplit(" ", "   ")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitWithDifferentSeparator() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("x", "y y", "z z z"),
+        Sequences.ofStringSplit(",", "x,y y,z z z")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitWithConsecutiveSeparators() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("a", "", "b"),
+        Sequences.ofStringSplit(",", "a,,b")
+    );
+  }
+
+  @Test
+  public void testOfStringSplitWithLongSeparator() {
+    TestUtil.assertSequenceEquals(
+        Sequences.of("1", "2", "3"),
+        Sequences.ofStringSplit("--", "1--2--3")
+    );
+  }
+
+  @Test
   public void testRangeEmpty() {
     TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.range(0, 0));
   }
