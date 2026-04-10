@@ -38,19 +38,19 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
         }
       """; // Lower indentation on purpose!
 
-  private static final String TEMPLATE_TRAVERSAL_LENS_WHERE = """
-        public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s>
+  private static final String TEMPLATE_TRAVERSAL_SEQUENCE_WHERE = """
+        public static final Traversal<%1$s, %1$s, %2$s, %2$s>
         %3$sWhere(Function1<%2$s, Boolean> predicate) {
           return new Traversal<>() {
             @Override
             public %1$s over(
-              Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
+              Function1<%2$s, %2$s> lift,
               %1$s source
             ) {
-              final Sequence<%2$s> $%3$s = source.%3$s().zipWithIndex()
-                  .map(p -> predicate.apply(p.first())
-                      ? lift.apply(%3$s.then(lensAtIndex(p.second())))
-                      : p.first());
+              final Sequence<%2$s> $%3$s = source.%3$s()
+                  .map(it -> predicate.apply(it)
+                      ? lift.apply(it)
+                      : it);
               return %4$s;
             }
 
@@ -58,22 +58,46 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
             public <R> R foldMap(
               R neutralElement,
               Function2<R, R, R> reducer,
-              Function1<Lens<%1$s, %1$s, %2$s, %2$s>, R> map,
+              Function1<%2$s, R> map,
               %1$s source
             ) {
-              return source.%3$s().zipWithIndex()
-                  .filter(p -> predicate.apply(p.first()))
-                  .foldLeft(
-                    neutralElement,
-                    (acc, p) -> reducer.apply(acc, map.apply(%3$s.then(lensAtIndex(p.second()))))
-                  );
+              return source.%3$s().filter(predicate::apply).foldLeft(
+                  neutralElement,
+                  (acc, it) -> reducer.apply(acc, map.apply(it))
+              );
             }
           };
         }
       """; // Lower indentation on purpose!
 
-  private static final String TEMPLATE_TRAVERSAL_ELEMENTS = """
-        public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElements = new Traversal<>() {
+  private static final String TEMPLATE_TRAVERSAL_SEQUENCE_ELEMENTS = """
+        public static final Traversal<%1$s, %1$s, %2$s, %2$s> %3$sElements = new Traversal<>() {
+          @Override
+          public %1$s over(
+            Function1<%2$s, %2$s> lift,
+            %1$s source
+          ) {
+            final Sequence<%2$s> $%3$s = source.%3$s().map(it -> lift.apply(it));
+            return %4$s;
+          }
+
+          @Override
+          public <R> R foldMap(
+            R neutralElement,
+            Function2<R, R, R> reducer,
+            Function1<%2$s, R> map,
+            %1$s source
+          ) {
+            return source.%3$s().foldLeft(
+                neutralElement,
+                (acc, it) -> reducer.apply(acc, map.apply(it))
+            );
+          }
+        };
+      """; // Lower indentation on purpose!
+
+  private static final String TEMPLATE_TRAVERSAL_SEQUENCE_ELEMENT_LENSES = """
+        public static final Traversal<%1$s, %1$s, Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> %3$sElementLenses = new Traversal<>() {
           @Override
           public %1$s over(
             Function1<Lens<%1$s, %1$s, %2$s, %2$s>, %2$s> lift,
@@ -135,12 +159,17 @@ final class SequenceComponentTraversalsGenerator extends OpticsGenerator {
               lensTraversalForComponent(
                   targetName,
                   targetElementType,
-                  TEMPLATE_TRAVERSAL_ELEMENTS
+                  TEMPLATE_TRAVERSAL_SEQUENCE_ELEMENTS
               ),
               lensTraversalForComponent(
                   targetName,
                   targetElementType,
-                  TEMPLATE_TRAVERSAL_LENS_WHERE
+                  TEMPLATE_TRAVERSAL_SEQUENCE_WHERE
+              ),
+              lensTraversalForComponent(
+                  targetName,
+                  targetElementType,
+                  TEMPLATE_TRAVERSAL_SEQUENCE_ELEMENT_LENSES
               ),
               lensAtIndexForComponent(targetName, targetElementType)
           );

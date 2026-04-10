@@ -48,9 +48,9 @@ public final class GlassesTest {
   }
 
   @Test
-  public void sequenceType() {
+  public void sequenceElementLenses() {
     final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>, String>
-        traversal = PubRecord$InnerRecordOptics.wordsElements;
+        traversal = PubRecord$InnerRecordOptics.wordsElementLenses;
 
     final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
         Sequences.of("hello", "world"));
@@ -60,6 +60,24 @@ public final class GlassesTest {
             .map(it -> it.toUpperCase(Locale.ROOT))),
         traversal.over(
             l -> l.view(rec).toUpperCase(Locale.ROOT),
+            rec
+        )
+    );
+  }
+
+  @Test
+  public void sequenceElements() {
+    final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>
+        traversal = PubRecord$InnerRecordOptics.wordsElements;
+
+    final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
+        Sequences.of("hello", "world"));
+
+    Assert.assertEquals(
+        new PubRecord.InnerRecord(rec.words()
+            .map(it -> it.toUpperCase(Locale.ROOT))),
+        traversal.over(
+            l -> l.toUpperCase(Locale.ROOT),
             rec
         )
     );
@@ -82,7 +100,7 @@ public final class GlassesTest {
 
   @Test
   public void sequenceAtPredicateLens() {
-    final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, Lens<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>, String>
+    final Traversal<PubRecord.InnerRecord, PubRecord.InnerRecord, String, String>
         traversal = PubRecord$InnerRecordOptics.wordsWhere(it -> it.startsWith("h"));
 
     final PubRecord.InnerRecord rec = new PubRecord.InnerRecord(
@@ -92,10 +110,9 @@ public final class GlassesTest {
         new PubRecord.InnerRecord(
             rec.words().map(it -> it.startsWith("h") ? it.toUpperCase(Locale.ROOT) : it)),
         traversal.over(
-            l -> l.view(rec).toUpperCase(Locale.ROOT),
+            w -> w.toUpperCase(Locale.ROOT),
             rec
         )
     );
   }
-
 }

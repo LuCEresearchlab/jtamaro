@@ -100,7 +100,7 @@ public final class ToDoDemo {
   }
 
   private static Graphic render(Model model) {
-    return ToDoDemo$ModelOptics.entriesElements.foldMap(
+    return ToDoDemo$ModelOptics.entriesElementLenses.foldMap(
         renderInputField(model),
         Graphics::above,
         lens -> renderEntry(lens, model),

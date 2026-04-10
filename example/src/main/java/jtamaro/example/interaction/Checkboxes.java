@@ -69,7 +69,7 @@ public final class Checkboxes {
   private static Graphic renderCheckboxes(Model model) {
     // - Map from sequence of checkbox lenses to graphics
     // - Fold (compose) the graphics
-    return Checkboxes$ModelOptics.checkboxesElements.foldMap(
+    return Checkboxes$ModelOptics.checkboxesElementLenses.foldMap(
         Graphics.emptyGraphic(),
         Graphics::beside,
         itLens -> clickableCheckbox(model, itLens),
