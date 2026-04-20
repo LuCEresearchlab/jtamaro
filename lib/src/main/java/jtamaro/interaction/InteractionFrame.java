@@ -89,9 +89,7 @@ final class InteractionFrame<M> extends JFrame {
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent winEvt) {
-        // No need to call the stopExecutor() method, we don't need
-        // to update UI components at this point.
-        schedulerService.shutdownNow();
+        terminateExecutor();
       }
     });
 
@@ -278,6 +276,20 @@ final class InteractionFrame<M> extends JFrame {
   private void dispatchToExecutor(TraceEvent<M> event) {
     schedulerService.schedule(() -> executor.traceEvent(event), 0L, TimeUnit.MILLISECONDS);
   }
+
+  private void terminateExecutor() {
+    // No need to call the stopExecutor() method, we don't need
+    // to update UI components at this point.
+    schedulerService.shutdownNow();
+
+    try {
+      //noinspection ResultOfMethodCallIgnored
+      schedulerService.awaitTermination(8, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 
   private void onEvent(TraceEvent<M> event) {
     eventsTrace.append(event);
