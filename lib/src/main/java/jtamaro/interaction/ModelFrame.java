@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -34,12 +35,12 @@ final class ModelFrame<M> extends JFrame {
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
     add(scrollPane);
 
-    final TraceListener tl = _ -> {
-      final M model = getLastModel(trace.getEventSequence(), bang.getInitialModel());
+    final Consumer<TraceEvent<M>> tl = _ -> {
+      final M model = trace.getLastModel(bang.getInitialModel());
       textArea.setText(prettyPrint(model, 0));
     };
     // Load current model
-    tl.eventAppended(null);
+    tl.accept(null);
     // Register listener
     trace.addTraceListener(tl);
     addWindowListener(new WindowAdapter() {
@@ -50,12 +51,6 @@ final class ModelFrame<M> extends JFrame {
     });
 
     pack();
-  }
-
-  private M getLastModel(Sequence<TraceEvent<M>> events, M model) {
-    return events.isEmpty()
-        ? model
-        : events.first().process(getLastModel(events.rest(), model));
   }
 
   private String prettyPrint(Object obj, int indent) {

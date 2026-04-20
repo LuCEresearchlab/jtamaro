@@ -2,59 +2,51 @@ package jtamaro.interaction;
 
 import java.util.ArrayList;
 import java.util.List;
-import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
+import java.util.function.Consumer;
 
 final class Trace<T> {
 
-  private final List<TraceListener> listeners;
+  private final List<TraceEvent<T>> events;
 
-  private Sequence<TraceEvent<T>> events;
-
-  // Cache for performance
-  private int length;
+  private final List<Consumer<TraceEvent<T>>> listeners;
 
   public Trace() {
-    events = Sequences.empty();
-    length = 0;
+    events = new ArrayList<>();
     listeners = new ArrayList<>();
   }
 
   public void append(TraceEvent<T> event) {
-    events = Sequences.cons(event, events);
-    length++;
-    fireEventAppended(event);
+    events.add(event);
+    onEventAppended(event);
   }
 
   public int length() {
-    return length;
+    return events.size();
   }
 
   public TraceEvent<T> get(int index) {
-    Sequence<TraceEvent<T>> itr = events;
-    int i = 0;
-    while (i < index && !itr.isEmpty()) {
-      itr = itr.rest();
-      i++;
+    return events.get(index);
+  }
+
+  public T getLastModel(T initialModel) {
+    T model = initialModel;
+    for (final TraceEvent<T> event : events) {
+      model = event.process(model);
     }
-    return itr.first();
+    return model;
   }
 
-  public Sequence<TraceEvent<T>> getEventSequence() {
-    return events;
-  }
-
-  public void addTraceListener(TraceListener listener) {
+  public void addTraceListener(Consumer<TraceEvent<T>> listener) {
     listeners.add(listener);
   }
 
-  public void removeTraceListener(TraceListener listener) {
+  public void removeTraceListener(Consumer<TraceEvent<T>> listener) {
     listeners.remove(listener);
   }
 
-  private void fireEventAppended(TraceEvent<T> event) {
-    for (final TraceListener listener : listeners) {
-      listener.eventAppended(event);
+  private void onEventAppended(TraceEvent<T> event) {
+    for (final Consumer<TraceEvent<T>> listener : listeners) {
+      listener.accept(event);
     }
   }
 }

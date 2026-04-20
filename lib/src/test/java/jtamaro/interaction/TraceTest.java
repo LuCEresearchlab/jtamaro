@@ -1,9 +1,9 @@
 package jtamaro.interaction;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import jtamaro.data.Sequence;
-import jtamaro.data.Sequences;
+import java.util.function.Consumer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,12 +14,14 @@ public final class TraceTest {
     Assert.assertEquals(0, new Trace<>().length());
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @Test(expected = IndexOutOfBoundsException.class)
   public void getEmpty() {
     new Trace<>().get(0);
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @Test(expected = IndexOutOfBoundsException.class)
   public void getOutOfBounds() {
     new Trace<>().get(1);
   }
@@ -56,24 +58,27 @@ public final class TraceTest {
   }
 
   @Test
-  public void getEventSequence() {
+  public void getLastModel() {
     final Trace<String> trace = new Trace<>();
-    final Sequence<TraceEvent<String>> events = Sequences.of(
+    final List<TraceEvent<String>> events = List.of(
         new TraceEvent.Tick<>(s -> s + s, 1L),
         new TraceEvent.Tick<>(s -> s + s, 2L),
         new TraceEvent.Tick<>(s -> s + s, 3L)
     );
     events.forEach(trace::append);
 
-    Assert.assertEquals(events.reverse(), trace.getEventSequence());
+    Assert.assertEquals(
+        "!".repeat(1 << events.size()),
+        trace.getLastModel("!")
+    );
   }
 
   @Test
   public void testListener() {
     final AtomicInteger counter = new AtomicInteger(0);
     final Trace<Double> trace = new Trace<>();
-    final TraceListener lInc = _ -> counter.getAndIncrement();
-    final TraceListener lDec = _ -> counter.getAndDecrement();
+    final Consumer<TraceEvent<Double>> lInc = _ -> counter.getAndIncrement();
+    final Consumer<TraceEvent<Double>> lDec = _ -> counter.getAndDecrement();
     trace.addTraceListener(lInc);
     trace.addTraceListener(lDec);
     trace.append(new TraceEvent.KeyboardKeyEvent<>(
