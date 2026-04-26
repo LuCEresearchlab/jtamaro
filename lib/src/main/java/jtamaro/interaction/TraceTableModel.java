@@ -68,11 +68,11 @@ final class TraceTableModel<T> implements TableModel {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    final TraceEvent<?> event = trace.get(getRowCount() - 1 - rowIndex);
+    final TraceEvent<T> event = trace.get(rowIndex);
     return switch (columnIndex) {
       case INDEX_COLUMN -> rowIndex;
       case TIME_COLUMN -> {
-        final TraceEvent<?> first = trace.get(getRowCount() - 1);
+        final TraceEvent<T> first = trace.get(0);
         final long startTime = first.getTimeStamp();
         final long eventTime = event.getTimeStamp();
         final long delta = eventTime - startTime;
