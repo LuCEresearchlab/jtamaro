@@ -45,7 +45,7 @@ final class ModelFrame<M> extends JFrame {
     trace.addTraceListener(tl);
     addWindowListener(new WindowAdapter() {
       @Override
-      public void windowClosed(WindowEvent e) {
+      public void windowClosing(WindowEvent e) {
         trace.removeTraceListener(tl);
       }
     });
