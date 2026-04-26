@@ -5,8 +5,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-
-final class TraceTableModel implements TableModel {
+final class TraceTableModel<T> implements TableModel {
 
   private static final int INDEX_COLUMN = 0;
 
@@ -30,12 +29,11 @@ final class TraceTableModel implements TableModel {
 
   private final List<TableModelListener> listeners;
 
-  private final Trace<?> trace;
+  private final Trace<T> trace;
 
-  public TraceTableModel(Trace<?> trace) {
+  public TraceTableModel(Trace<T> trace) {
     this.listeners = new ArrayList<>();
     this.trace = trace;
-    trace.addTraceListener(_ -> fireTableDataChanged());
   }
 
   @Override
@@ -98,7 +96,7 @@ final class TraceTableModel implements TableModel {
     throw new UnsupportedOperationException();
   }
 
-  private void fireTableDataChanged() {
+  public void fireTableDataChanged() {
     for (final TableModelListener listener : listeners) {
       listener.tableChanged(null);
     }

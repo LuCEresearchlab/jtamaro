@@ -133,7 +133,7 @@ final class InteractionFrame<M> extends JFrame {
     final JMenuItem viewTrace = new JMenuItem("Trace");
     viewTrace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
     viewTrace.addActionListener(_ -> SwingUtilities.invokeLater(() ->
-        new TraceFrame(eventsTrace).setVisible(true)));
+        new TraceFrame<>(eventsTrace).setVisible(true)));
     viewMenu.add(viewTrace);
 
     final JMenuItem viewModel = new JMenuItem("Model");
