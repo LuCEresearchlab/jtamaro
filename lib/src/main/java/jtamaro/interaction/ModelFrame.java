@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InaccessibleObjectException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -90,7 +91,9 @@ final class ModelFrame<M> extends JFrame {
         if (!isAccessible) {
           accessor.setAccessible(false);
         }
-      } catch (IllegalAccessException | InvocationTargetException e) {
+      } catch (IllegalAccessException
+               | InaccessibleObjectException
+               | InvocationTargetException e) {
         LOGGER.log(
             Level.WARNING,
             "Failed to read component"
