@@ -31,14 +31,17 @@ final class InteractionExecutor<M> implements Runnable {
 
   @Override
   public void run() {
-    lock.lock();
     try {
+      lock.lockInterruptibly();
+
       if (stopPredicate.apply(getCurrentModel())) {
         Thread.currentThread().interrupt();
-        return;
+      } else {
+        traceEvent(new TraceEvent.Tick<>(tickHandler, state.tick()));
       }
-
-      traceEvent(new TraceEvent.Tick<>(tickHandler, state.tick()));
+    } catch (InterruptedException _) {
+      // Propagate interruption
+      Thread.currentThread().interrupt();
     } finally {
       lock.unlock();
     }
@@ -50,12 +53,16 @@ final class InteractionExecutor<M> implements Runnable {
       return;
     }
 
-    lock.lock();
     try {
+      lock.lockInterruptibly();
+
       final M before = state.getModel();
       final M after = event.process(before);
       state.update("Model after " + event.getKind(), after);
       SwingUtilities.invokeLater(() -> dispatchEvent.accept(event));
+    } catch (InterruptedException _) {
+      // Propagate interruption
+      Thread.currentThread().interrupt();
     } finally {
       lock.unlock();
     }
