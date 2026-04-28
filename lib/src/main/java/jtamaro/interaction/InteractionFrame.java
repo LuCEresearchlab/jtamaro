@@ -194,7 +194,7 @@ final class InteractionFrame<M> extends JFrame {
 
     SwingUtilities.invokeLater(() -> {
       // Request focus to capture keyboard and mouse events
-      graphicCanvas.requestFocus();
+      graphicCanvas.requestFocusInWindow();
 
       // Render initial model
       renderAndShowGraphic();
@@ -289,7 +289,6 @@ final class InteractionFrame<M> extends JFrame {
       throw new RuntimeException(e);
     }
   }
-
 
   private void onEvent(TraceEvent<M> event) {
     eventsTrace.append(event);

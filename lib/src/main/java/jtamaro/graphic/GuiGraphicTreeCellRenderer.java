@@ -31,7 +31,6 @@ public class GuiGraphicTreeCellRenderer extends DefaultTreeCellRenderer {
       int row,
       boolean hasFocus
   ) {
-
     super.getTreeCellRendererComponent(
         tree,
         value,

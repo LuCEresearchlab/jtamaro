@@ -67,7 +67,7 @@ final class InteractionMouseHandler<M> extends MouseAdapter {
       MouseEvent ev,
       GlobalMouseAction<M> globalAction
   ) {
-    canvas.requestFocus();
+    canvas.requestFocusInWindow();
     final Coordinate absoluteCoordinates = new Coordinate(ev.getX(), ev.getY());
     final MouseButton button = new MouseButton(ev);
 
