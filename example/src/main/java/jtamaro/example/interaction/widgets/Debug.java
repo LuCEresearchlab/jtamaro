@@ -15,7 +15,7 @@ import jtamaro.graphic.Color;
 import jtamaro.graphic.Graphic;
 
 
-public class ModelAsText {
+public class Debug {
 
   private static final int FONT_SIZE = 15;
   private static final int GAP_HEIGHT = 5;

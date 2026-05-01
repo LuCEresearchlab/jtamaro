@@ -42,8 +42,8 @@ public class Widgets {
     return Grid.create(graphics);
   }
 
-  public static Graphic modelAsText(Object model, int columns) {
-    return ModelAsText.create(model, columns);
+  public static Graphic debug(Object model, int columns) {
+    return Debug.create(model, columns);
   }
 
 }
