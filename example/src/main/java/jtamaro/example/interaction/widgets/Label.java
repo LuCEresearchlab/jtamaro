@@ -1,7 +1,10 @@
 package jtamaro.example.interaction.widgets;
 
 import static jtamaro.graphic.Colors.BLACK;
+import static jtamaro.graphic.Colors.TRANSPARENT;
 import static jtamaro.graphic.Fonts.SANS_SERIF;
+import static jtamaro.graphic.Graphics.overlay;
+import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
 
 import jtamaro.graphic.Graphic;
@@ -13,6 +16,13 @@ public class Label {
 
   public static Graphic create(String label) {
     return text(label, SANS_SERIF, FONT_SIZE, BLACK);
+  }
+
+  public static Graphic create(String label, double minWidth) {
+    return overlay(
+      text(label, SANS_SERIF, FONT_SIZE, BLACK),
+      rectangle(minWidth, 0, TRANSPARENT)
+    );
   }
 
 }

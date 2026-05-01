@@ -19,7 +19,7 @@ import jtamaro.optics.Lens;
 
 public class Slider {
 
-  private static final int WIDTH = 200;
+  private static final int WIDTH = 256;
   private static final int HEIGHT = 20;
   private static final int RAIL_HEIGHT = 2;
   private static final int KNOB_WIDTH = 10;
@@ -27,7 +27,6 @@ public class Slider {
   public static <M> Graphic create(int min, int max, Lens<M,M,Integer,Integer> lens, M model) {
     final Graphic graphic = slider(min, max, lens.view(model));
     return new Actionable<M>(graphic)
-        //.withMousePressHandler((Coordinate c, MouseButton _) -> update(min, max, c, lens, model))
         .withMouseDragHandler((Coordinate c, MouseButton _) -> update(min, max, c, lens, model))
         .asGraphic();
   }
@@ -35,8 +34,9 @@ public class Slider {
   private static <M> M update(int min, int max, Coordinate c, Lens<M,M,Integer,Integer> lens, M model) {
     final int viewX = c.x() - KNOB_WIDTH / 2;
     final int range = max - min;
-    final int modelX = (int)Math.round(viewX * range / (double)WIDTH);
-    return lens.set(modelX, model);
+    final int modelX = min + (int)Math.round(viewX * range / (double)WIDTH);
+    final int boundedModelX = Math.min(max, Math.max(min, modelX));
+    return lens.set(boundedModelX, model);
   }
 
   private static Graphic slider(int min, int max, int current) {

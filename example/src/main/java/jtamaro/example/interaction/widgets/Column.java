@@ -9,13 +9,13 @@ import jtamaro.graphic.Graphics;
 import jtamaro.data.Sequence;
 
 
-public class Row {
+public class Column {
 
   private static final int MARGIN_SIZE = 20;
 
   public static Graphic create(Sequence<Graphic> graphics) {
     final Graphic gap = rectangle(MARGIN_SIZE, MARGIN_SIZE, TRANSPARENT);
-    return graphics.intersperse(gap).reduce(emptyGraphic(), Graphics::beside);
+    return graphics.intersperse(gap).reduce(emptyGraphic(), Graphics::above);
   }
 
 }
