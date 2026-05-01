@@ -1,0 +1,29 @@
+package jtamaro.example.interaction.widgets;
+
+import jtamaro.data.Sequence;
+import jtamaro.graphic.Graphic;
+import jtamaro.optics.Lens;
+
+
+/**
+ * This is a possible GUI Widget tookit API.
+ */
+public class Widgets {
+
+  public static Graphic label(String text) {
+    return Label.create(text);
+  }
+
+  public static Graphic row(Sequence<Graphic> graphics) {
+    return Row.create(graphics);
+  }
+
+  public static <M> Graphic checkbox(String label, Lens<M,M,Boolean,Boolean> lens, M model) {
+    return Checkbox.create(label, lens, model);
+  }
+
+  public static <M> Graphic slider(int min, int max, Lens<M,M,Integer,Integer> lens, M model) {
+    return Slider.create(min, max, lens, model);
+  }
+
+}
