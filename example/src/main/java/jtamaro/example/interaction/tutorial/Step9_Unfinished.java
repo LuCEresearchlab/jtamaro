@@ -1,19 +1,19 @@
 package jtamaro.example.interaction.tutorial;
 
+import jtamaro.data.Either;
 import jtamaro.data.Function1;
-import jtamaro.data.Function2;
 import jtamaro.data.Option;
-import jtamaro.example.Toolbelt;
-import jtamaro.example.interaction.tutorial.Step9_Unfinished.ComputerPlayer;
-import jtamaro.example.interaction.tutorial.Step9_Unfinished.HumanPlayer;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
-import jtamaro.graphic.Graphics;
 import jtamaro.interaction.Coordinate;
 import jtamaro.interaction.MouseButton;
+import jtamaro.optics.AffineTraversal;
 import jtamaro.optics.Glasses;
-import jtamaro.optics.Lens;
+import jtamaro.optics.Prism;
 
+import static jtamaro.data.Eithers.left;
+import static jtamaro.data.Eithers.right;
+import static jtamaro.data.Options.none;
 import static jtamaro.data.Options.some;
 import static jtamaro.graphic.Colors.BLACK;
 import static jtamaro.graphic.Colors.RED;
@@ -28,30 +28,24 @@ import static jtamaro.graphic.Graphics.rectangle;
 import static jtamaro.graphic.Graphics.text;
 import static jtamaro.io.GraphicIO.interact;
 
-import java.util.Map;
-
 
 /**
  * STEP 9 -- Models involving Sum Types
  *
- * Model and UI.
- * UI performs output (renders based on model).
- * Model can be "changed" (it's immutable, so it has to be replaced)
- * UI handles input (events), locally:
- *   Automatic mapping of coordinates to graphics.
- *   Lenses allow mutating appropriate part of model
- *   Lenses are automatically generated (based on @Glasses annotations)
- *   For hierarchical models we can compose lenses with Lens.then
- *   For models containing submodels that are sum types, we can use???
+ * Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
+ * immutable, so it has to be replaced) UI handles input (events), locally: Automatic mapping of
+ * coordinates to graphics. Lenses allow mutating appropriate part of model Lenses are automatically
+ * generated (based on @Glasses annotations) For hierarchical models we can compose lenses with
+ * Lens.then For models containing submodels that are sum types, we can use???
  */
 public final class Step9_Unfinished {
 
 
   public static void main() {
     final Game model = new Game(
-      Math.random() < 0.5
-        ? new HumanPlayer(true, false)
-        : new ComputerPlayer(true)
+        Math.random() < 0.5
+            ? new HumanPlayer(true, false)
+            : new ComputerPlayer(true)
     );
     interact(model).withRenderer(Step9_Unfinished::ui).run();
   }
@@ -60,20 +54,28 @@ public final class Step9_Unfinished {
   //=== Model (things that CHANGE in our app)
   @Glasses
   record Game(Player player) {
+
   }
 
-  interface Player {
+  sealed interface Player {
+
     public boolean happy();
   }
 
   @Glasses
   record HumanPlayer(boolean hungry, boolean tired) implements Player {
-    public boolean happy() { return (!hungry) && (!tired); }
+
+    public boolean happy() {
+      return (!hungry) && (!tired);
+    }
   }
 
   @Glasses
   record ComputerPlayer(boolean hasTokensLeft) implements Player {
-    public boolean happy() { return hasTokensLeft; }
+
+    public boolean happy() {
+      return hasTokensLeft;
+    }
   }
 
 
@@ -81,22 +83,22 @@ public final class Step9_Unfinished {
   private static Graphic ui(Game model) {
     // Note: the GameOptics class is automatically generated, because @Glasses on Game.
     return above(
-      above(
-        label("Player Configurator"),
-        playerOptions(Step9_Unfinished$GameOptics.player, model)
-      ),
-      label(model.player().happy() ? "Players is happy" : "Player needs care")
+        above(
+            label("Player Configurator"),
+            playerOptions(model)
+        ),
+        label(model.player().happy() ? "Players is happy" : "Player needs care")
     );
   }
 
   private static Graphic label(String text) {
     return overlay(
-      text(text, "Fira Sans", 24, BLACK),
-      rectangle(400, 50, TRANSPARENT)
+        text(text, "Fira Sans", 24, BLACK),
+        rectangle(400, 50, TRANSPARENT)
     );
   }
 
-  private static Graphic playerOptions(Lens<Game, Game, Player, Player> lens, Game model) {
+  private static Graphic playerOptions(Game model) {
     // Dispatch based on subtype of player: HumanPlayer --> humanPlayerOptions, ComputerPlayer --> computerPlayerOptions
     //
     // TODO: how can we do this in general?
@@ -119,68 +121,72 @@ public final class Step9_Unfinished {
     //   ComputerPlayer.class, Step9::computerPlayerOptions
     // ));
 
-    final Player player = lens.view(model);
-    if (player instanceof HumanPlayer) {
-      // hLens downcasts from Player to HumanPlayer where needed
-      final Lens<Game, Game, HumanPlayer, HumanPlayer> hLens = new Lens<>() {
-        @Override
-        public HumanPlayer view(Game source) {
-          return (HumanPlayer)lens.view(source);
-        }
-        @Override
-        public Game over(Function1<HumanPlayer, HumanPlayer> lift, Game source) {
-          return lens.over((Player p) -> lift.apply((HumanPlayer)p), source);
-        }
-      };
-      return humanPlayerOptions(hLens, model);
-    } else if (player instanceof ComputerPlayer) {
-      // cLens downcasts from Player to ComputerPlayer where needed
-      final Lens<Game, Game, ComputerPlayer, ComputerPlayer> cLens = new Lens<>() {
-        @Override
-        public ComputerPlayer view(Game source) {
-          return (ComputerPlayer)lens.view(source);
-        }
-        @Override
-        public Game over(Function1<ComputerPlayer, ComputerPlayer> lift, Game source) {
-          return lens.over((Player p) -> lift.apply((ComputerPlayer)p), source);
-        }
-      };
-      return computerPlayerOptions(cLens, model);
-    } else {
-      // should never happen
-      return emptyGraphic();
-    }
+    // TOOD: ideally, we'd want a way to dynamically generate such a dispatcher with the annotation
+    // processor. If the type is sealed we might be able to do it.
+    return switch (model.player) {
+      case ComputerPlayer _ -> computerPlayerOptions(PRISM_PLAYER_COMPUTER, model);
+      case HumanPlayer _ -> humanPlayerOptions(PRISM_PLAYER_HUMAN, model);
+    };
   }
 
-  private static Graphic humanPlayerOptions(Lens<Game, Game, HumanPlayer, HumanPlayer> lens, Game model) {
+  private static Graphic humanPlayerOptions(
+      AffineTraversal<Game, Game, HumanPlayer, HumanPlayer> lens,
+      Game model
+  ) {
     // Note: the HumanPlayerOptics class is automatically generated, because @Glasses on HumanPlayer.
     return above(
-      label("Human Player"),
-      beside(
-        // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the hungry Boolean
-        clickableCheckbox("Hungry", lens.then(Step9_Unfinished$HumanPlayerOptics.hungry), model),
-        // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the tired Boolean
-        clickableCheckbox("Tired", lens.then(Step9_Unfinished$HumanPlayerOptics.tired), model)
-      )
+        label("Human Player"),
+        beside(
+            // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the hungry Boolean
+            clickableCheckbox(
+                "Hungry",
+                lens.then(Step9_Unfinished$HumanPlayerOptics.hungry),
+                model
+            ),
+            // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the tired Boolean
+            clickableCheckbox("Tired", lens.then(Step9_Unfinished$HumanPlayerOptics.tired), model)
+        )
     );
   }
 
-  private static Graphic computerPlayerOptions(Lens<Game, Game, ComputerPlayer, ComputerPlayer> lens, Game model) {
+  private static Graphic computerPlayerOptions(
+      AffineTraversal<Game, Game, ComputerPlayer, ComputerPlayer> lens,
+      Game model
+  ) {
     // Note: the ComputerPlayerOptics class is automatically generated, because @Glasses on ComputerPlayer.
     return above(
-      label("Computer Player"),
-      // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the hungry Boolean
-      clickableCheckbox("Has Tokens", lens.then(Step9_Unfinished$ComputerPlayerOptics.hasTokensLeft), model)
+        label("Computer Player"),
+        // compose the lens going from the Model to the HumanPlayer with the lens going from the HumanPlayer to the hungry Boolean
+        clickableCheckbox(
+            "Has Tokens",
+            lens.then(Step9_Unfinished$ComputerPlayerOptics.hasTokensLeft),
+            model
+        )
     );
   }
 
 
   //=== UI Widget (Reusable! Can be used to update ANY Boolean of ANY Model!!!)
-  private static Graphic clickableCheckbox(String label, Lens<Game,Game,Boolean,Boolean> lens, Game model) {
-    final Graphic checkboxGraphic = checkbox(label, lens.view(model));
+  private static Graphic clickableCheckbox(
+      String label,
+      AffineTraversal<Game, Game, Boolean, Boolean> trav,
+      Game model
+  ) {
+    final Option<Boolean> valueOpt = trav.preview(model);
+    if (valueOpt.isEmpty()) {
+      return emptyGraphic();
+    }
+
+    final Graphic checkboxGraphic = checkbox(
+        label,
+        valueOpt.fold(Function1.identity(), () -> false)
+    );
     return new Actionable<Game>(checkboxGraphic)
         //.withMousePressHandler((Coordinate _, MouseButton _) -> lens.set(!lens.view(model), model))
-        .withMousePressHandler((Coordinate _, MouseButton _) -> lens.over(checked -> !checked, model))
+        .withMousePressHandler((Coordinate _, MouseButton _) -> trav.over(
+            checked -> !checked,
+            model
+        ))
         .asGraphic();
   }
 
@@ -197,4 +203,47 @@ public final class Step9_Unfinished {
     );
   }
 
+  private static final Prism<Game, Game, HumanPlayer, HumanPlayer>
+      PRISM_PLAYER_HUMAN = new Prism<>() {
+    @Override
+    public Either<Game, HumanPlayer> getOrModify(Game source) {
+      return source.player() instanceof HumanPlayer humanPlayer
+          ? right(humanPlayer)
+          : left(source);
+    }
+
+    @Override
+    public Option<HumanPlayer> preview(Game source) {
+      return source.player instanceof HumanPlayer humanPlayer
+          ? some(humanPlayer)
+          : none();
+    }
+
+    @Override
+    public Game review(HumanPlayer value) {
+      return new Game(value);
+    }
+  };
+
+  private static final Prism<Game, Game, ComputerPlayer, ComputerPlayer>
+      PRISM_PLAYER_COMPUTER = new Prism<>() {
+    @Override
+    public Either<Game, ComputerPlayer> getOrModify(Game source) {
+      return source.player() instanceof ComputerPlayer computerPlayer
+          ? right(computerPlayer)
+          : left(source);
+    }
+
+    @Override
+    public Option<ComputerPlayer> preview(Game source) {
+      return source.player() instanceof ComputerPlayer computerPlayer
+          ? some(computerPlayer)
+          : none();
+    }
+
+    @Override
+    public Game review(ComputerPlayer value) {
+      return new Game(value);
+    }
+  };
 }
