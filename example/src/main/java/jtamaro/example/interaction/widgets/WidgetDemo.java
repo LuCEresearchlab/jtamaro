@@ -49,6 +49,7 @@ public class WidgetDemo {
           ellipse(m.size(), m.size(), rgb(m.red(), m.green(), m.blue())),
           ellipse(m.size() + 4, m.size() + 4, m.outline() ? BLACK : TRANSPARENT)
         ),
+        // a GUI widget that just shows a string representation of the given object; useful for debugging
         debug(m, 50)
       ))
     );
