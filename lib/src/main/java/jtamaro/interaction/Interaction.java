@@ -535,6 +535,7 @@ public final class Interaction<M> {
    * Execute this interaction.
    */
   public void run() {
+    System.setProperty("apple.awt.application.name", name);
     SwingUtilities.invokeLater(() ->
         new InteractionFrame<>(this).setVisible(true));
   }
