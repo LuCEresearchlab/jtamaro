@@ -23,54 +23,69 @@ import static jtamaro.io.GraphicIO.interact;
 /**
  * STEP 3 -- Getters & setters to work with any field in model
  *
- * Model and UI.
- * UI performs output (renders based on model).
- * Model can be "changed" (it's immutable, so it has to be replaced)
- * UI handles input (events), locally:
- *   Automatic mapping of coordinates to graphics.
- *   Functions for getting/setting model field allow mutating appropriate part of model
+ * <p>Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
+ * immutable, so it has to be replaced) UI handles input (events), locally: Automatic mapping of
+ * coordinates to graphics. Functions for getting/setting model field allow mutating appropriate
+ * part of model
  */
 public final class Step3 {
-
 
   public static void main() {
     interact(new Model(true, false)).withRenderer(Step3::ui).run();
   }
 
-
   //=== Model (things that CHANGE in our app)
   @Glasses
-  record Model(boolean hungry, boolean tired) { }
+  record Model(boolean hungry, boolean tired) {
 
+  }
 
   //=== UI (output: rendering a Graphic, input: handling mouse/key events)
   private static Graphic ui(Model model) {
     return above(
-      label("How do you feel?"),
-      checkboxes(model)
+        label("How do you feel?"),
+        checkboxes(model)
     );
   }
 
   private static Graphic label(String text) {
     return overlay(
-      text(text, "Fira Sans", 24, BLACK),
-      rectangle(400, 50, WHITE)
+        text(text, "Fira Sans", 24, BLACK),
+        rectangle(400, 50, WHITE)
     );
   }
 
   private static Graphic checkboxes(Model model) {
     return beside(
-      clickableCheckbox("Hungry", m -> m.hungry(), (m, h) -> new Model(h, m.tired()), model),
-      clickableCheckbox("Tired", m -> m.tired(), (m, t) -> new Model(m.hungry(), t), model)
+        clickableCheckbox(
+            "Hungry",
+            m -> m.hungry(),
+            (m, h) -> new Model(h, m.tired()),
+            model
+        ),
+        clickableCheckbox(
+            "Tired",
+            m -> m.tired(),
+            (m, t) -> new Model(m.hungry(), t),
+            model
+        )
     );
   }
 
 
   //=== UI Widget (Reusable! Can be used to update ANY Boolean of ANY Model!!!)
-  private static Graphic clickableCheckbox(String label, Function1<Model,Boolean> getter, Function2<Model,Boolean,Model> setter, Model model) {
+  private static Graphic clickableCheckbox(
+      String label,
+      Function1<Model, Boolean> getter,
+      Function2<Model, Boolean, Model> setter,
+      Model model
+  ) {
     final Graphic checkboxGraphic = checkbox(label, getter.apply(model));
     return new Actionable<Model>(checkboxGraphic)
-        .withMousePressHandler((Coordinate _, MouseButton _) -> setter.apply(model, !getter.apply(model)))
+        .withMousePressHandler((Coordinate _, MouseButton _) -> setter.apply(
+            model,
+            !getter.apply(model)
+        ))
         .asGraphic();
   }
 

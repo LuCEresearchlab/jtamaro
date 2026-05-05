@@ -21,64 +21,77 @@ import static jtamaro.io.GraphicIO.interact;
 /**
  * STEP 4 -- Lenses combining getters & setters
  *
- * Model and UI.
- * UI performs output (renders based on model).
- * Model can be "changed" (it's immutable, so it has to be replaced)
- * UI handles input (events), locally:
- *   Automatic mapping of coordinates to graphics.
- *   Lenses allow mutating appropriate part of model
+ * <p>Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
+ * immutable, so it has to be replaced) UI handles input (events), locally: Automatic mapping of
+ * coordinates to graphics. Lenses allow mutating appropriate part of model
  */
 public final class Step4 {
-
 
   public static void main() {
     interact(new Model(true, false)).withRenderer(Step4::ui).run();
   }
 
-
   //=== Model (things that CHANGE in our app)
   @Glasses
-  record Model(boolean hungry, boolean tired) { }
+  record Model(boolean hungry, boolean tired) {
+
+  }
 
 
   //=== UI (output: rendering a Graphic, input: handling mouse/key events)
   private static Graphic ui(Model model) {
     return above(
-      label("How do you feel?"),
-      checkboxes(model)
+        label("How do you feel?"),
+        checkboxes(model)
     );
   }
 
   private static Graphic label(String text) {
     return overlay(
-      text(text, "Fira Sans", 24, BLACK),
-      rectangle(400, 50, WHITE)
+        text(text, "Fira Sans", 24, BLACK),
+        rectangle(400, 50, WHITE)
     );
   }
 
   private static Graphic checkboxes(Model model) {
     return beside(
-      clickableCheckbox("Hungry", new HungryLens(), model),
-      clickableCheckbox("Tired", new TiredLens(), model)
+        clickableCheckbox("Hungry", new HungryLens(), model),
+        clickableCheckbox("Tired", new TiredLens(), model)
     );
   }
 
   // A Lens combines a getter and a setter
-  public static interface Lens<M,E> {
-    public E view(M m);
-    public M set(E e, M m);
+  interface Lens<M, E> {
+
+    E view(M m);
+
+    M set(E e, M m);
   }
-  public static class HungryLens implements Lens<Model, Boolean> {
-    public Boolean view(Model m) { return m.hungry(); }
-    public Model set(Boolean h, Model m) { return new Model(h, m.tired()); }
+
+  static class HungryLens implements Lens<Model, Boolean> {
+
+    public Boolean view(Model m) {
+      return m.hungry();
+    }
+
+    public Model set(Boolean h, Model m) {
+      return new Model(h, m.tired());
+    }
   }
-  public static class TiredLens implements Lens<Model, Boolean> {
-    public Boolean view(Model m) { return m.tired(); }
-    public Model set(Boolean t, Model m) { return new Model(m.hungry(), t); }
+
+  static class TiredLens implements Lens<Model, Boolean> {
+
+    public Boolean view(Model m) {
+      return m.tired();
+    }
+
+    public Model set(Boolean t, Model m) {
+      return new Model(m.hungry(), t);
+    }
   }
 
   //=== UI Widget (Reusable! Can be used to update ANY Boolean of ANY Model!!!)
-  private static Graphic clickableCheckbox(String label, Lens<Model,Boolean> lens, Model model) {
+  private static Graphic clickableCheckbox(String label, Lens<Model, Boolean> lens, Model model) {
     final Graphic checkboxGraphic = checkbox(label, lens.view(model));
     return new Actionable<Model>(checkboxGraphic)
         .withMousePressHandler((Coordinate _, MouseButton _) -> lens.set(!lens.view(model), model))

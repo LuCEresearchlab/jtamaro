@@ -1,6 +1,5 @@
 package jtamaro.example.interaction.tutorial;
 
-import jtamaro.data.Function1;
 import jtamaro.data.Option;
 import jtamaro.graphic.Actionable;
 import jtamaro.graphic.Graphic;
@@ -10,6 +9,7 @@ import jtamaro.interaction.MouseButton;
 import jtamaro.optics.AffineTraversal;
 import jtamaro.optics.Glasses;
 import jtamaro.optics.Prisms;
+import jtamaro.optics.Setter;
 
 import static jtamaro.data.Options.some;
 import static jtamaro.graphic.Colors.BLACK;
@@ -29,14 +29,18 @@ import static jtamaro.io.GraphicIO.interact;
 /**
  * STEP 8 -- Models involving Options
  *
- * Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
- * immutable, so it has to be replaced) UI handles input (events), locally: Automatic mapping of
- * coordinates to graphics. Lenses allow mutating appropriate part of model Lenses are automatically
- * generated (based on @Glasses annotations) For hierarchical models we can compose lenses with
- * Lens.then For models containing options of submodels, we can use AffineTraversals
+ * <p>Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
+ * immutable, so it has to be replaced) UI handles input (events), locally:
+ * <ul>
+ * <li>Automatic mapping of coordinates to graphics.</li>
+ * <li>Lenses allow mutating appropriate part of model</li>
+ * <li>Lenses are automatically generated (based on <code>@Glasses</code> annotations)</li>
+ * <li>For hierarchical models we can compose lenses with <code>Lens.then</code></li>
+ * <li>For models containing sequences of submodels, we can use <code>Traversal.foldMap</code></li>
+ * <li>For models containing options of submodels, we can use Prisms and AffineTraversals</li>
+ * </ui>
  */
-public final class Step8_Unfinished {
-
+public final class Step8 {
 
   public static void main() {
     final Game model = new Game(
@@ -44,7 +48,7 @@ public final class Step8_Unfinished {
             new Player(true, false)
         )
     );
-    interact(model).withRenderer(Step8_Unfinished::ui).run();
+    interact(model).withRenderer(Step8::ui).run();
   }
 
 
@@ -71,7 +75,8 @@ public final class Step8_Unfinished {
   private static Graphic ui(Game model) {
     // Note: the GameOptics class is automatically generated, because @Glasses on Game.
     // Affine traversal focuses on a component with multiplicity 0 or 1 (option)
-    final AffineTraversal<Game, Game, Player, Player> traversal = Step8_Unfinished$GameOptics.player
+    // A composition of a Lens and Prism (or vice versa) is an AffineTraversal
+    final AffineTraversal<Game, Game, Player, Player> traversal = Step8$GameOptics.player
         // Use the "some" to "determine the multiplicity"
         .then(Prisms.some());
     return above(
@@ -104,33 +109,45 @@ public final class Step8_Unfinished {
     return above(
         label(playerName),
         beside(
-            // compose the lens going from the Model to the Player with the lens going from the Player to the hungry Boolean
-            clickableCheckbox("Hungry", trav.then(Step8_Unfinished$PlayerOptics.hungry), model),
-            // compose the lens going from the Model to the Player with the lens going from the Player to the tired Boolean
-            clickableCheckbox("Tired", trav.then(Step8_Unfinished$PlayerOptics.tired), model)
+            // compose the lens going from the Model to the Player with the lens going from the
+            // Player to the hungry Boolean
+            optionalClickableCheckbox(
+                "Hungry",
+                trav.then(Step8$PlayerOptics.hungry),
+                model
+            ),
+            // compose the lens going from the Model to the Player with the lens going from the
+            // Player to the tired Boolean
+            optionalClickableCheckbox(
+                "Tired",
+                trav.then(Step8$PlayerOptics.tired),
+                model
+            )
         )
     );
   }
 
-
   //=== UI Widget (Reusable! Can be used to update ANY Boolean of ANY Model!!!)
-  private static Graphic clickableCheckbox(
+  private static Graphic optionalClickableCheckbox(
       String label,
       AffineTraversal<Game, Game, Boolean, Boolean> trav,
       Game model
   ) {
-    // TODO: This is not ideal -- maybe there's a way to have a function
-    //   asLensOrElse(trav: AffineTraversal<S,T,A,B>, f1: (Lens<S,T,A,B> -> R), f2: () -> R) -> R
-    //   so that we run f1 if the preview is a some, or f2 if it's a none.
-    //   here f2 would be Graphics::emptyGraphic
-    final boolean isHappy = trav.preview(model).fold(Function1.identity(), () -> false);
-    final Graphic checkboxGraphic = checkbox(label, isHappy);
+    return trav.preview(model).fold(
+        checked -> clickableCheckbox(label, checked, trav, model),
+        Graphics::emptyGraphic
+    );
+  }
+
+  private static Graphic clickableCheckbox(
+      String label,
+      boolean checked,
+      Setter<Game, Game, Boolean, Boolean> setter,
+      Game model
+  ) {
+    final Graphic checkboxGraphic = checkbox(label, checked);
     return new Actionable<Game>(checkboxGraphic)
-        //.withMousePressHandler((Coordinate _, MouseButton _) -> lens.set(!lens.view(model), model))
-        .withMousePressHandler((Coordinate _, MouseButton _) -> trav.over(
-            checked -> !checked,
-            model
-        ))
+        .withMousePressHandler((Coordinate _, MouseButton _) -> setter.set(!checked, model))
         .asGraphic();
   }
 

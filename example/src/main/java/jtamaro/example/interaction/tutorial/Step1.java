@@ -19,48 +19,48 @@ import static jtamaro.io.GraphicIO.interact;
 /**
  * STEP 1 -- Updating model based on mouse events
  *
- * Model and UI.
- * UI performs output (renders based on model).
- * Model can be "changed" (it's immutable, so it has to be replaced)
- * UI handles input (events), but only globally:
- *   extremely brittle manual mapping of coordinates to graphics.
+ * <p>Model and UI. UI performs output (renders based on model). Model can be "changed" (it's
+ * immutable, so it has to be replaced) UI handles input (events), but only globally: extremely
+ * brittle manual mapping of coordinates to graphics.
  */
 public final class Step1 {
 
-
   public static void main() {
     interact(new Model(true, false))
-      .withRenderer(Step1::ui)
-      .withGlobalMousePressHandler(
-        (Model m, Coordinate c, MouseButton _) -> c.x() < 200 ? new Model(!m.hungry(), m.tired()) : new Model(m.hungry(), !m.tired())
-      )
-      .run();
+        .withRenderer(Step1::ui)
+        .withGlobalMousePressHandler(
+            (Model m, Coordinate c, MouseButton _) -> c.x() < 200 ? new Model(
+                !m.hungry(),
+                m.tired()
+            ) : new Model(m.hungry(), !m.tired())
+        )
+        .run();
   }
 
-
   //=== Model (things that CHANGE in our app)
-  record Model(boolean hungry, boolean tired) { }
+  record Model(boolean hungry, boolean tired) {
 
+  }
 
   //=== UI (output: rendering a Graphic, input: handling mouse/key events)
   private static Graphic ui(Model model) {
     return above(
-      label("How do you feel?"),
-      checkboxes(model)
+        label("How do you feel?"),
+        checkboxes(model)
     );
   }
 
   private static Graphic label(String text) {
     return overlay(
-      text(text, "Fira Sans", 24, BLACK),
-      rectangle(400, 50, WHITE)
+        text(text, "Fira Sans", 24, BLACK),
+        rectangle(400, 50, WHITE)
     );
   }
 
   private static Graphic checkboxes(Model model) {
     return beside(
-      checkbox("Hungry", model.hungry()),
-      checkbox("Tired", model.tired())
+        checkbox("Hungry", model.hungry()),
+        checkbox("Tired", model.tired())
     );
   }
 
