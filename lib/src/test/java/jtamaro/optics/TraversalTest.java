@@ -11,7 +11,7 @@ import org.junit.Test;
 public final class TraversalTest {
 
   private static final Traversal<Set<Integer>, Set<Integer>, Integer, Integer>
-      TRAVERSAL_LIST = new Traversal<>() {
+      TRAVERSAL_SET = new Traversal<>() {
     @Override
     public <R> R foldMap(
         R neutralElement,
@@ -43,7 +43,7 @@ public final class TraversalTest {
 
     Assert.assertEquals(
         Integer.valueOf(n * (n + 1) / 2),
-        TRAVERSAL_LIST.fold(
+        TRAVERSAL_SET.fold(
             0,
             Integer::sum,
             IntStream.range(0, n + 1).boxed().collect(Collectors.toSet())
@@ -57,7 +57,7 @@ public final class TraversalTest {
 
     Assert.assertEquals(
         s.stream().map(x -> x * 2).collect(Collectors.toSet()),
-        TRAVERSAL_LIST.over(x -> x * 2, s)
+        TRAVERSAL_SET.over(x -> x * 2, s)
     );
   }
 }
