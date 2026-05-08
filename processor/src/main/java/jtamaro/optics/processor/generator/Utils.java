@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.SequencedSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
@@ -11,11 +12,22 @@ import javax.lang.model.util.Types;
 
 final class Utils {
 
+  public static final String EITHER_CLASS_NAME = "jtamaro.data.Either";
+
+  public static final String EITHERS_CLASS_NAME = "jtamaro.data.Eithers";
+
   public static final String FUNCTION_1_CLASS_NAME = "jtamaro.data.Function1";
 
   public static final String FUNCTION_2_CLASS_NAME = "jtamaro.data.Function2";
 
   public static final String SEQUENCE_CLASS_NAME = "jtamaro.data.Sequence";
+
+  public static final String OPTION_CLASS_NAME = "jtamaro.data.Option";
+
+  public static final String OPTIONS_CLASS_NAME = "jtamaro.data.Options";
+
+  public static final String AFFINE_TRAVERSAL_CLASS_NAME
+      = "jtamaro.optics.AffineTraversal";
 
   public static final String LENS_CLASS_NAME = "jtamaro.optics.Lens";
 
@@ -25,12 +37,16 @@ final class Utils {
   }
 
   /**
+   * Return appropriate string representation of a given {@link TypeElement}.
+   */
+  public static String formatType(Types types, TypeElement typeElement) {
+    return formatType(types, typeElement.asType());
+  }
+
+  /**
    * Return appropriate string representation of a given {@link TypeMirror}.
    */
-  public static String formatType(
-      Types types,
-      TypeMirror type
-  ) {
+  public static String formatType(Types types, TypeMirror type) {
     return switch (type) {
       // Wrap primitives for usage with generics
       case PrimitiveType primitiveType -> formatType(
@@ -80,5 +96,15 @@ final class Utils {
         })
         .collect(Collectors.joining(", "));
     return "new " + recordTypeStr + "(" + args + ")";
+  }
+
+  public static String firstCharUppercase(CharSequence cs) {
+    return String.valueOf(Character.toUpperCase(cs.charAt(0)))
+        + cs.subSequence(1, cs.length());
+  }
+
+  public static String firstCharLowercase(CharSequence cs) {
+    return String.valueOf(Character.toLowerCase(cs.charAt(0)))
+        + cs.subSequence(1, cs.length());
   }
 }

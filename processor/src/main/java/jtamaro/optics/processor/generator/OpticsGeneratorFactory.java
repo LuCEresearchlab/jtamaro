@@ -6,6 +6,9 @@ import java.util.SequencedMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
@@ -25,6 +28,7 @@ public final class OpticsGeneratorFactory {
 
     return Stream.of(
             componentLenses(types, recordTypeMirror, allComponents),
+            sumTypeAffineTraversals(types, recordTypeMirror, allComponents),
             listTraversals(types, recordTypeMirror, allComponents)
         )
         .filter(OpticsGenerator::isProducingSomething)
@@ -68,6 +72,36 @@ public final class OpticsGeneratorFactory {
     );
   }
 
+  private static OpticsGenerator sumTypeAffineTraversals(
+      Types types,
+      TypeMirror recordTypeMirror,
+      SequencedMap<String, TypeMirror> allComponents
+  ) {
+    // Filter components to only those that are of a type that is a sealed
+    // interface
+    final SequencedMap<String, TypeMirror> listComponents = allComponents
+        .sequencedEntrySet()
+        .stream()
+        .filter(e -> {
+          final Element elem = types.asElement(e.getValue());
+          return elem instanceof TypeElement te
+              && te.getKind() == ElementKind.INTERFACE
+              && !te.getModifiers().contains(Modifier.PRIVATE)
+              && te.getModifiers().contains(Modifier.SEALED);
+        })
+        .collect(Collectors.toMap(
+            Map.Entry::getKey,
+            Map.Entry::getValue,
+            OpticsGeneratorFactory::noDuplicateKeys,
+            LinkedHashMap::new
+        ));
+    return new SumTypesAffineTraversalsGenerator(
+        types,
+        recordTypeMirror,
+        listComponents,
+        allComponents.sequencedKeySet()
+    );
+  }
 
   /**
    * Get a mapping from name to {@link TypeMirror} of all components of a given record.
