@@ -13,7 +13,7 @@ public final class SumTypeTest {
 
     Assert.assertEquals(
         Options.some("1"),
-        SumTypeTest$ContainerOptics.sthSomeString
+        SumTypeTest$ContainerOptics.sthSomeString()
             .then(SumTypeTest$SomeStringOptics.str)
             .preview(c)
     );
@@ -25,7 +25,7 @@ public final class SumTypeTest {
 
     Assert.assertEquals(
         Options.none(),
-        SumTypeTest$ContainerOptics.sthSomeString
+        SumTypeTest$ContainerOptics.sthSomeString()
             .then(SumTypeTest$SomeStringOptics.str)
             .preview(c)
     );

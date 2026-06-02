@@ -11,6 +11,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 public final class OpticsGeneratorFactory {
@@ -19,6 +20,7 @@ public final class OpticsGeneratorFactory {
   }
 
   public static Set<OpticsGenerator> produce(
+      Elements elements,
       Types types,
       TypeElement targetRecordElement
   ) {
@@ -28,7 +30,7 @@ public final class OpticsGeneratorFactory {
 
     return Stream.of(
             componentLenses(types, recordTypeMirror, allComponents),
-            sumTypeAffineTraversals(types, recordTypeMirror, allComponents),
+            sumTypeAffineTraversals(elements, types, recordTypeMirror, allComponents),
             listTraversals(types, recordTypeMirror, allComponents)
         )
         .filter(OpticsGenerator::isProducingSomething)
@@ -73,6 +75,7 @@ public final class OpticsGeneratorFactory {
   }
 
   private static OpticsGenerator sumTypeAffineTraversals(
+      Elements elements,
       Types types,
       TypeMirror recordTypeMirror,
       SequencedMap<String, TypeMirror> allComponents
@@ -96,6 +99,7 @@ public final class OpticsGeneratorFactory {
             LinkedHashMap::new
         ));
     return new SumTypesAffineTraversalsGenerator(
+        elements,
         types,
         recordTypeMirror,
         listComponents,

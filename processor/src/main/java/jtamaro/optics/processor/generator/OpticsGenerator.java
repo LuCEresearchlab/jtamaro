@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.SequencedMap;
 import java.util.SequencedSet;
 import java.util.Set;
+import javax.lang.model.element.Name;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
@@ -57,11 +59,23 @@ public abstract class OpticsGenerator {
       // No need to add primitive types
       return;
     }
+    if (tm instanceof NullType) {
+      // Ignore null-type (used as a lower bound for type parameters)
+      return;
+    }
 
     // Add type parameters
     if (tm instanceof DeclaredType dt) {
       for (final TypeMirror paramTm : dt.getTypeArguments()) {
         addTypesToSet(paramTm, targetSet);
+      }
+
+      // Skip types of the java.lang package
+      final Name enclosingPackage
+          = Utils.getEnclosingPackageName(dt.asElement());
+      if (enclosingPackage != null
+          && enclosingPackage.contentEquals("java.lang")) {
+        return;
       }
     }
 

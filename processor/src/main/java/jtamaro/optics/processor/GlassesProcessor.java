@@ -88,6 +88,7 @@ public final class GlassesProcessor extends AbstractProcessor {
       String className
   ) {
     final Set<OpticsGenerator> generators = OpticsGeneratorFactory.produce(
+        elements,
         types,
         targetRecordElement
     );
