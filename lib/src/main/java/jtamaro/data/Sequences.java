@@ -171,10 +171,7 @@ public final class Sequences {
       throw new IllegalArgumentException("Step must not be zero");
     } else if (from == toExclusive) {
       return new Empty<>();
-    } else if (
-      // (step > 0 && from > toExclusive) || (step < 0 && from < toExclusive)
-        step * (from - toExclusive) > 0
-    ) {
+    } else if ((step > 0 && from > toExclusive) || (step < 0 && from < toExclusive)) {
       return new Empty<>();
     } else {
       Sequence<Integer> seq = new Empty<>();
@@ -183,10 +180,7 @@ public final class Sequences {
         lastElement -= step;
       }
 
-      for (int i = lastElement;
-        // step > 0 ? (i >= from) : (i <= from)
-           step * (i - from) >= 0;
-           i -= step) {
+      for (int i = lastElement; step > 0 ? (i >= from) : (i <= from); i -= step) {
         seq = new Cons<>(i, seq);
       }
       return seq;
@@ -209,10 +203,7 @@ public final class Sequences {
       throw new IllegalArgumentException("Step must not be zero");
     } else if (from - toExclusive == 0.0) {
       return new Empty<>();
-    } else if (
-      // (step > 0 && from > toExclusive) || (step < 0 && from < toExclusive)
-        step * (from - toExclusive) > 0
-    ) {
+    } else if ((step > 0 && from > toExclusive) || (step < 0 && from < toExclusive)) {
       return new Empty<>();
     } else {
       Sequence<Double> seq = new Empty<>();
@@ -257,18 +248,12 @@ public final class Sequences {
       throw new IllegalArgumentException("Step must not be zero");
     } else if (from == to) {
       return of(from);
-    } else if (
-      // (step > 0 && from > to) || (step < 0 && from < to)
-        step * (from - to) > 0
-    ) {
+    } else if ((step > 0 && from > to) || (step < 0 && from < to)) {
       return new Empty<>();
     } else {
       Sequence<Integer> seq = new Empty<>();
       final int lastElement = getLastElementClosed(from, to, step);
-      for (int i = lastElement;
-        // step > 0 ? (i >= from) : (i <= from)
-           step * (i - from) >= 0;
-           i -= step) {
+      for (int i = lastElement; step > 0 ? (i >= from) : (i <= from); i -= step) {
         seq = new Cons<>(i, seq);
       }
       return seq;
