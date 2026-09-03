@@ -225,7 +225,7 @@ public final class Sequences {
 
   /**
    * Constructs a sequence of integers starting at {@code from}, with the last element being
-   * {@code toExclusive}.
+   * {@code to}.
    *
    * <p>Example: {@code rangeClosed(1, 3) === of(1, 2, 3)}
    *
@@ -238,7 +238,7 @@ public final class Sequences {
 
   /**
    * Constructs a sequence of integers starting at {@code from}, with the last element being
-   * {@code toExclusive}.
+   * {@code to}.
    *
    * <p>Example: {@code range(0, 8, 2) === of(0, 2, 4, 6, 8)}
    *
@@ -265,7 +265,7 @@ public final class Sequences {
 
   /**
    * Constructs a sequence of characters starting at {@code from}, with the last element being
-   * {@code toExclusive}.
+   * {@code to}.
    *
    * <p>Example: {@code rangeClosed('a', 'd') === of('a', 'b','c','d')}
    *
