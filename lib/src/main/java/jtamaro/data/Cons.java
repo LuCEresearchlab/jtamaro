@@ -32,11 +32,35 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
 
   @Override
   public <U> U foldRight(U initial, Function2<T, U, U> reducer) {
-    U acc = initial;
-    Sequence<T> itr = reverse();
-    while (itr instanceof Cons<T>(T head, Sequence<T> tail)) {
-      acc = reducer.apply(head, acc);
+    // Note: This method is widely used, so we want to optimize the
+    // implementation for performance (both space and time wise) over clarity.
+
+    // A simple implementation would be the following one-liner:
+    //     reverse().foldLeft(initial, (acc, it) -> reducer.apply(it, acc));
+
+    // Copy all elements into a temporary array in reverse order, so that we
+    // don't have to allocate N+1 Sequence objects for iterating over the
+    // elements of this sequence.
+
+    // Step 1. Count how many elements are in this Sequence so we allocate.
+    Sequence<T> itr = this;
+    int idx = 0;
+    while (itr instanceof Cons<T>(T _, Sequence<T> tail)) {
+      idx++;
       itr = tail;
+    }
+    // Step 2. Allocate an array with the right amount of slots to avoid wasting space.
+    final int n = idx;
+    @SuppressWarnings("unchecked") final T[] arr = (T[]) new Object[n];
+    itr = this;
+    while (itr instanceof Cons<T>(T head, Sequence<T> tail)) {
+      arr[--idx] = head;
+      itr = tail;
+    }
+    // Step 3. Iterate over the array and apply the reduction.
+    U acc = initial;
+    while (idx < n) {
+      acc = reducer.apply(arr[idx++], acc);
     }
     return acc;
   }
@@ -60,9 +84,6 @@ record Cons<T>(T first, Sequence<T> rest) implements Sequence<T> {
     );
   }
 
-  /**
-   * @implSpec Cannot depend on {@link #foldRight(Object, Function2)}.
-   */
   @Override
   public Sequence<T> reverse() {
     Sequence<T> result = new Empty<>();

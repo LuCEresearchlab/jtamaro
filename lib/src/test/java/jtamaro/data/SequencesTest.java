@@ -578,6 +578,17 @@ public final class SequencesTest {
   }
 
   @Test
+  public void testFoldRightEqualReverseFoldLeft() {
+    final Sequence<Character> seq = Sequences.rangeClosed('M', 'Q');
+    final String neutralElement = "!";
+    final Function2<Character, String, String> reduction = (it, acc) -> acc + it;
+    Assert.assertEquals(
+        seq.reverse().foldLeft(neutralElement, (acc, it) -> reduction.apply(it, acc)),
+        seq.foldRight(neutralElement, reduction)
+    );
+  }
+
+  @Test
   public void testFoldLeftEmpty() {
     Assert.assertEquals(0L, (long) Sequences.empty().foldLeft(0, (a, _) -> a));
   }
