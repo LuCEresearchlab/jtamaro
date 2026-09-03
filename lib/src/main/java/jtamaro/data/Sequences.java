@@ -207,14 +207,17 @@ public final class Sequences {
       return new Empty<>();
     } else {
       Sequence<Double> seq = new Empty<>();
+      // Compute the number of elements a priori to partially avoid
+      // floating-point round error accumulation.
+      int n = (int) Math.ceil((toExclusive - from) / step);
       double curr = from;
       do {
         seq = new Cons<>(curr, seq);
+        // Here we could do curr = from + (step * idx), but it would not
+        // address the problem of rounding error accumulation, let's keep
+        // it simple.
         curr += step;
-      } while (
-        // step > 0 ? curr < toExclusive : curr > toExclusive
-          step * (toExclusive - curr) > 0
-      );
+      } while (--n > 0);
 
       return seq.reverse();
     }

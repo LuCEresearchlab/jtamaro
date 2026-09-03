@@ -304,6 +304,15 @@ public final class SequencesTest {
   }
 
   @Test
+  public void testRangeDoubleCountNoDrift() {
+    // Repeatedly accumulating curr += step until curr crosses toExclusive
+    // drifts and produces the wrong element count on long ranges.
+    final int n = 1_000_000;
+    final double step = 2.9; // Known value that cannot be represented properly by floats
+    Assert.assertEquals(n, Sequences.range(0.0, n * step, step).stream().count());
+  }
+
+  @Test
   public void testRangeClosedOneElem() {
     TestUtil.assertSequenceEquals(Sequences.of(0), Sequences.rangeClosed(0, 0));
   }
