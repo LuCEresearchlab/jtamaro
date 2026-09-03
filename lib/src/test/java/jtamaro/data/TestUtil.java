@@ -23,9 +23,6 @@ final class TestUtil {
   }
 
   private static <T> String toString(Sequence<T> seq) {
-    return new Cons<>(
-        "[", seq.map(Objects::toString)
-        .intersperse(", ")
-    ).foldRight("]", String::concat);
+    return "[" + seq.map(Objects::toString).intersperse(", ") + "]";
   }
 }
