@@ -675,12 +675,12 @@ public final class SequencesTest {
   }
 
   @Test
-  public void takeEmptyNone() {
+  public void testTakeEmptyNone() {
     TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().take(0));
   }
 
   @Test
-  public void takeEmptyOne() {
+  public void testTakeEmptyOne() {
     TestUtil.assertSequenceEquals(Sequences.empty(), Sequences.empty().take(1));
   }
 
