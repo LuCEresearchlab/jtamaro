@@ -10,7 +10,7 @@ final class SingleElementIterator<T> implements Iterator<T> {
 
   private final T element;
 
-  boolean consumed;
+  private volatile boolean consumed;
 
   SingleElementIterator(T element) {
     this.element = element;
