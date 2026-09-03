@@ -273,8 +273,7 @@ public final class Sequences {
    * @param to   the value of the last element
    */
   public static Sequence<Character> rangeClosed(char from, char to) {
-    return rangeClosed((short) from, (short) to)
-        .map(x -> (char) x.shortValue());
+    return rangeClosed(from, to, 1).map(x -> (char) x.intValue());
   }
 
   /**
