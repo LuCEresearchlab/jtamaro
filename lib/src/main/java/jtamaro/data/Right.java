@@ -1,8 +1,6 @@
 package jtamaro.data;
 
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 record Right<L, R>(R value) implements Either<L, R> {
